@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, MessageCircle, Mail, MapPin, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { Phone, MessageCircle, MapPin, Clock, CheckCircle2 } from 'lucide-react';
 import { siteConfig } from '../config/siteConfig';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 import Map from './Map';
@@ -8,7 +8,6 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    email: '',
     from: '',
     to: '',
     message: ''
@@ -20,7 +19,6 @@ export default function Contact() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Option 1: Send via WhatsApp
   const handleSendWhatsApp = (e) => {
     e.preventDefault();
     if (!formData.name || !formData.phone) {
@@ -33,7 +31,6 @@ export default function Contact() {
 Inquiry Details from Website:
 • Name: ${formData.name}
 • Phone: ${formData.phone}
-• Email: ${formData.email || 'Not provided'}
 • Pickup (From): ${formData.from}
 • Destination (To): ${formData.to || 'Not specified'}
 
@@ -42,35 +39,6 @@ ${formData.message || 'I would like to inquire about taxi booking options and fa
 
     bookOnWhatsApp(message);
     setFormSuccess('Opening WhatsApp with your pre-filled inquiry...');
-  };
-
-  // Option 2: Send via Email (mailto:)
-  const handleSendEmail = (e) => {
-    e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      setFormSuccess('Please provide at least your Name and Phone Number.');
-      return;
-    }
-
-    const subject = encodeURIComponent(`Taxi Inquiry from ${formData.name} (${formData.from} to ${formData.to || 'Outstation'})`);
-    const body = encodeURIComponent(`Hello ${siteConfig.businessName},
-
-Below are my trip details:
-
-Name: ${formData.name}
-Phone: ${formData.phone}
-Email: ${formData.email}
-From: ${formData.from}
-To: ${formData.to}
-
-Message:
-${formData.message}
-
-Please get back to me with availability and pricing.`);
-
-    const mailtoUrl = `mailto:${siteConfig.email}?subject=${subject}&body=${body}`;
-    window.location.href = mailtoUrl;
-    setFormSuccess('Opening your email client...');
   };
 
   return (
@@ -86,7 +54,7 @@ Please get back to me with availability and pricing.`);
             Get in Touch With Us
           </h2>
           <p className="mt-4 text-base sm:text-lg text-gray-600 font-medium">
-            Have questions about fares, customized tour packages, or airport transfers? Contact us directly on WhatsApp, phone, or send an email inquiry.
+            Have questions about fares, customized tour packages, or airport transfers? Contact us directly on WhatsApp or phone.
           </p>
         </div>
 
@@ -139,18 +107,6 @@ Please get back to me with availability and pricing.`);
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-2xl bg-slate-800 text-blue-400 flex items-center justify-center flex-shrink-0 border border-slate-700">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-xs text-gray-400 font-semibold block">Email Inquiry</span>
-                    <a href={`mailto:${siteConfig.email}`} className="text-base font-bold text-white hover:text-blue-400 transition-colors">
-                      {siteConfig.email}
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 rounded-2xl bg-slate-800 text-amber-400 flex items-center justify-center flex-shrink-0 border border-slate-700">
                     <MapPin className="w-5 h-5" />
                   </div>
@@ -189,7 +145,7 @@ Please get back to me with availability and pricing.`);
               Send an Enquiry
             </h3>
             <p className="text-xs sm:text-sm text-gray-500 mb-6 font-medium">
-              Fill in your details below and choose whether to send your inquiry directly via WhatsApp or Email.
+              Fill in your details below to send your inquiry directly via WhatsApp.
             </p>
 
             {formSuccess && (
@@ -232,21 +188,7 @@ Please get back to me with availability and pricing.`);
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="e.g. gurpreet@gmail.com"
-                    className="w-full bg-gray-50 border border-gray-200 p-3.5 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-brand-yellow focus:ring-2 focus:ring-yellow-400/20"
-                  />
-                </div>
-
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                     From
@@ -290,8 +232,7 @@ Please get back to me with availability and pricing.`);
                 ></textarea>
               </div>
 
-              {/* TWO Action Buttons */}
-              <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="pt-2">
                 <button
                   type="button"
                   onClick={handleSendWhatsApp}
@@ -301,14 +242,6 @@ Please get back to me with availability and pricing.`);
                   <span>Send via WhatsApp</span>
                 </button>
 
-                <button
-                  type="button"
-                  onClick={handleSendEmail}
-                  className="bg-slate-900 hover:bg-slate-800 text-white py-3.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center space-x-2 transition-colors shadow-md"
-                >
-                  <Mail className="w-4 h-4 text-yellow-400" />
-                  <span>Send via Email</span>
-                </button>
               </div>
 
             </form>

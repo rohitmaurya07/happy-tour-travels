@@ -14,7 +14,6 @@ export const siteConfig = {
   whatsappNumberFormatted: "+91 78371 75090",
   phoneNumberFormatted: "+91 78371 75090",
   phoneNumber: "+91 78371 75090",
-  email: "harbhajan.7837@gmail.com",
   address: "Phagwara Road, Jalandhar Cantt, Jalandhar, Punjab 144005, India",
 
   // Local SEO & Geographical Info

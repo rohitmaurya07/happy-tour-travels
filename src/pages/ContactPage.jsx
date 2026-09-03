@@ -15,7 +15,7 @@ export default function ContactPage() {
             Contact Happy Tour & Travels Jalandhar
           </h1>
           <p className="mt-4 text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-medium">
-            Reach out via WhatsApp, phone, or send an email inquiry. Our customer desk is available round-the-clock to confirm your taxi booking.
+            Reach out via WhatsApp or phone. Our customer desk is available round-the-clock to confirm your taxi booking.
           </p>
         </div>
       </div> */}
