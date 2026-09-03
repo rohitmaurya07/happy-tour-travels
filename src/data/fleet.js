@@ -1,0 +1,72 @@
+export const fleetData = [
+  {
+    id: "dzire",
+    name: "Maruti Suzuki Dzire",
+    category: "Compact Sedan",
+    seats: "4 + 1 Passengers",
+    luggage: "2-3 Bags",
+    ac: "Dual AC",
+    fuel: "Petrol/CNG",
+    image: "/assets/images/dzire.jpg",
+    altText: "Dzire taxi available for outstation travel from Jalandhar",
+    tag: "Most Popular",
+    description: "Comfortable and economic sedan ideal for city commutes, airport transfers, and one-way outstation trips from Jalandhar.",
+    ratesHint: "Best for 1-4 passengers"
+  },
+  {
+    id: "verna",
+    name: "Hyundai Verna",
+    category: "Executive Sedan",
+    seats: "4 + 1 Passengers",
+    luggage: "3 Bags",
+    ac: "Automatic Climate Control",
+    fuel: "Petrol/Diesel",
+    image: "/assets/images/verna.png",
+    altText: "Hyundai Verna luxury taxi service in Jalandhar",
+    tag: "Premium Executive",
+    description: "Stylish executive sedan offering plush interiors, smooth highway suspension, and superior comfort for business & VIP travel.",
+    ratesHint: "Luxury sedan comfort"
+  },
+  {
+    id: "ertiga",
+    name: "Maruti Suzuki Ertiga",
+    category: "Family MUV",
+    seats: "6 + 1 Passengers",
+    luggage: "3-4 Bags",
+    ac: "Front & Rear AC Vents",
+    fuel: "Petrol/CNG",
+    image: "/assets/images/ertiga.png",
+    altText: "Ertiga taxi service in Jalandhar for family outstation travel",
+    tag: "Family Choice",
+    description: "Spacious 7-seater MUV perfectly suited for family trips, outstation tours to Himachal Pradesh, and airport group travel.",
+    ratesHint: "Ideal for family groups"
+  },
+  {
+    id: "innova",
+    name: "Toyota Innova Crysta",
+    category: "Premium SUV / MUV",
+    seats: "6/7 + 1 Passengers",
+    luggage: "4-5 Bags",
+    ac: "Triple Zone AC",
+    fuel: "Diesel",
+    image: "/assets/images/innova.png",
+    altText: "Toyota Innova Crysta outstation cab from Jalandhar to Shimla Manali",
+    tag: "Luxury Travel",
+    description: "The gold standard for highway comfort and mountain tours. Unmatched legroom, plush captain seats, and exceptional ride stability.",
+    ratesHint: "Ultimate long-distance luxury"
+  },
+  {
+    id: "tempo",
+    name: "Force Tempo Traveller",
+    category: "Luxury Minibus",
+    seats: "12 / 16 / 20 Seats",
+    luggage: "Ample Luggage Storage",
+    ac: "Roof Mounted Heavy AC",
+    fuel: "Diesel",
+    image: "/assets/images/tempo.png",
+    altText: "Tempo Traveller on rent in Jalandhar for group tour packages",
+    tag: "Group Special",
+    description: "Spacious vehicle with pushback seats, individual charging points, and music system. Designed for large family reunions & wedding groups.",
+    ratesHint: "Large groups & wedding tours"
+  }
+];
