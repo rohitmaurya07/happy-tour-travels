@@ -29,17 +29,17 @@ export default function Hero({ onSearch }) {
         {/* Trust Badge */}
         <div className="inline-flex items-center space-x-2 bg-[#FFC72C]/10 border border-[#FFC72C]/30 px-3.5 py-1 rounded-full text-[#FFC72C] text-xs font-semibold mb-4 backdrop-blur-md">
           <Star className="w-3.5 h-3.5 fill-[#FFC72C] text-[#FFC72C]" />
-          <span>Best Taxi Service in Jalandhar</span>
+          <span>Best Taxi Service in North India</span>
         </div>
 
         {/* Clean Shortened Hero Title */}
         <h1 className="text-3xl sm:text-5xl lg:text-5xl font-nexa tracking-tight font-heading leading-tight drop-shadow-md">
-          Travel Comfortably. <span className="text-brand-yellow">Arrive Confidently.</span>
+          Safe, Reliable and Comfortable <span className="text-brand-yellow">Taxi Services.</span>
         </h1>
 
         {/* Concise Supporting Text */}
         <p className="mt-3 text-sm sm:text-lg text-gray-200 max-w-2xl font-medium drop-shadow-sm">
-          Reliable cabs, airport transfers & tour packages from Jalandhar across Punjab, Himachal & Delhi.
+          Across North India, wherever your journey takes you.
         </p>
 
         {/* Search Form Centered Prominently */}

@@ -50,7 +50,7 @@ export default function Navbar() {
           <div className="flex items-center space-x-6">
             <span className="flex items-center text-yellow-400 font-medium">
               <MapPin className="w-3.5 h-3.5 mr-1" />
-              Primary Hub: Jalandhar, Punjab (Serving Punjab, Himachal & Delhi NCR)
+              Primary Hub: North India (Serving Punjab, Himachal, Chandigarh & Delhi NCR)
             </span>
             <span className="text-gray-600">|</span>
             <span className="text-gray-300">24/7 Outstation & Airport Taxi Booking</span>

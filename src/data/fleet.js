@@ -8,10 +8,14 @@ export const fleetData = [
     ac: "Dual AC",
     fuel: "Petrol/CNG",
     image: "/assets/images/dzire.jpg",
-    altText: "Dzire taxi available for outstation travel from Jalandhar",
+    altText: "Dzire taxi available for outstation travel in North India",
     tag: "Most Popular",
-    description: "Comfortable and economic sedan ideal for city commutes, airport transfers, and one-way outstation trips from Jalandhar.",
-    ratesHint: "Best for 1-4 passengers"
+    description: "Comfortable and economic sedan ideal for city commutes, airport transfers, and one-way outstation trips.",
+    ratesHint: "₹12/km One Way • ₹11/km Round Trip",
+    oneWayRate: 12,
+    roundTripRate: 11,
+    hourlyRate: 2100, // 8 Hrs / 80 Kms
+    airportFixedRate: 2499,
   },
   {
     id: "verna",
@@ -22,10 +26,14 @@ export const fleetData = [
     ac: "Automatic Climate Control",
     fuel: "Petrol/Diesel",
     image: "/assets/images/verna.png",
-    altText: "Hyundai Verna luxury taxi service in Jalandhar",
+    altText: "Hyundai Verna luxury taxi service in North India",
     tag: "Premium Executive",
     description: "Stylish executive sedan offering plush interiors, smooth highway suspension, and superior comfort for business & VIP travel.",
-    ratesHint: "Luxury sedan comfort"
+    ratesHint: "₹13/km One Way • ₹12/km Round Trip",
+    oneWayRate: 13,
+    roundTripRate: 12,
+    hourlyRate: 2600, // 8 Hrs / 80 Kms
+    airportFixedRate: 2999,
   },
   {
     id: "ertiga",
@@ -36,10 +44,14 @@ export const fleetData = [
     ac: "Front & Rear AC Vents",
     fuel: "Petrol/CNG",
     image: "/assets/images/ertiga.png",
-    altText: "Ertiga taxi service in Jalandhar for family outstation travel",
+    altText: "Ertiga taxi service in North India for family outstation travel",
     tag: "Family Choice",
     description: "Spacious 7-seater MUV perfectly suited for family trips, outstation tours to Himachal Pradesh, and airport group travel.",
-    ratesHint: "Ideal for family groups"
+    ratesHint: "₹15/km One Way • ₹14/km Round Trip",
+    oneWayRate: 15,
+    roundTripRate: 14,
+    hourlyRate: 3000, // 8 Hrs / 80 Kms
+    airportFixedRate: 3499,
   },
   {
     id: "innova",
@@ -50,10 +62,14 @@ export const fleetData = [
     ac: "Triple Zone AC",
     fuel: "Diesel",
     image: "/assets/images/innova.png",
-    altText: "Toyota Innova Crysta outstation cab from Jalandhar to Shimla Manali",
+    altText: "Toyota Innova Crysta outstation cab across North India",
     tag: "Luxury Travel",
     description: "The gold standard for highway comfort and mountain tours. Unmatched legroom, plush captain seats, and exceptional ride stability.",
-    ratesHint: "Ultimate long-distance luxury"
+    ratesHint: "₹20/km One Way • ₹17.50/km Round Trip",
+    oneWayRate: 20,
+    roundTripRate: 17.5,
+    hourlyRate: 4200, // 8 Hrs / 80 Kms
+    airportFixedRate: 4999,
   },
   {
     id: "tempo",
@@ -64,9 +80,13 @@ export const fleetData = [
     ac: "Roof Mounted Heavy AC",
     fuel: "Diesel",
     image: "/assets/images/tempo.png",
-    altText: "Tempo Traveller on rent in Jalandhar for group tour packages",
+    altText: "Tempo Traveller on rent in North India for group tour packages",
     tag: "Group Special",
     description: "Spacious vehicle with pushback seats, individual charging points, and music system. Designed for large family reunions & wedding groups.",
-    ratesHint: "Large groups & wedding tours"
+    ratesHint: "₹25/km One Way • ₹24/km Round Trip",
+    oneWayRate: 25,
+    roundTripRate: 24,
+    hourlyRate: 5500, // 8 Hrs / 80 Kms
+    airportFixedRate: 6999,
   }
 ];

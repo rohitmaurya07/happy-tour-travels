@@ -12,7 +12,7 @@ export const packagesData = [
   },
   {
     id: "punjab-tour",
-    title: "Heritage Punjab Tour",
+    title: "Anandpur City",
     category: "Punjab Tours",
     duration: "2 Nights / 3 Days",
     highlights: ["Amritsar Golden Temple", "Wagah Border Ceremony", "Jallianwala Bagh", "Anandpur Sahib"],
