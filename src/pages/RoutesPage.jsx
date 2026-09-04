@@ -61,7 +61,7 @@ export default function RoutesPage() {
     <div className="pt-24 pb-20 bg-white min-h-screen">
       
       {/* Page Hero Banner */}
-      <div className="bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
+      {/* <div className="bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
         <div className="max-w-7xl mx-auto text-center">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-yellow bg-yellow-400/10 px-4 py-1.5 rounded-full border border-yellow-400/30">
             North India Highway & Airport Route Directory
@@ -73,7 +73,7 @@ export default function RoutesPage() {
             Connecting All Punjab, Delhi Airport, Chandigarh Airport, and all Himachal Pradesh destinations with safe, reliable and comfortable cabs.
           </p>
         </div>
-      </div>
+      </div> */}
 
       {/* 9 Category Popular Routes Grid with See More */}
       <PopularRoutesSection />
