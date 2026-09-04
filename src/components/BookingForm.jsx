@@ -16,7 +16,7 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
   };
 
   const [tripType, setTripType] = useState(initialTripType);
-  const [fromLocation, setFromLocation] = useState('Jalandhar');
+  const [fromLocation, setFromLocation] = useState('');
   const [toLocation, setToLocation] = useState('');
   const [departureDate, setDepartureDate] = useState(todayStr);
   const [pickupTime, setPickupTime] = useState(defaultTimeStr());

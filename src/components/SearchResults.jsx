@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Luggage, Wind, Fuel, MessageCircle, CheckCircle, Car, ArrowRight, ShieldCheck, Tag, Info, Calendar, Clock, MapPin, Sparkles } from 'lucide-react';
+import { Users, Luggage, Wind, Fuel, MessageCircle, CheckCircle, ArrowRight, ShieldCheck, Calendar, Clock, Sparkles, CircleCheck } from 'lucide-react';
 import { fleetData } from '../data/fleet';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 
@@ -8,48 +8,59 @@ export default function SearchResults({ searchParams, onModifySearch }) {
 
   const { tripType, fromLocation, toLocation, departureDate, pickupTime, distanceKm } = searchParams;
 
-  // Calculate billable distance (One way vs Round trip)
   const isRoundTrip = tripType === 'Round Trip';
-  const effectiveDistance = isRoundTrip ? Math.max((distanceKm || 0) * 2, 250) : (distanceKm || 0);
+  const isHourly = tripType === 'Hourly Rental';
+  const isAirport = tripType === 'Airport';
 
-  // Helper to calculate estimated fare and post km rate for each vehicle
+  // Determine effective billable KMs based on trip type
+  let effectiveDistance = 0;
+  if (isHourly) {
+    effectiveDistance = 80;
+  } else if (isRoundTrip) {
+    effectiveDistance = Math.round((distanceKm || 50) * 2);
+  } else {
+    // One Way or Airport
+    effectiveDistance = Math.round(distanceKm || 50);
+  }
+
+  // Calculate pricing strictly based on rates for each vehicle
   const getVehiclePricing = (vehicle) => {
+    let ratePerKm = isRoundTrip ? vehicle.roundTripRate : vehicle.oneWayRate;
     let baseFare = 0;
-    let ratePerKm = 0;
     let postKmRateStr = '';
     let distanceDisplay = '';
-    let inclusionsText = 'Includes State Taxes, Toll Taxes, Driver Allowance & Fuel';
+    let inclusionsText = 'State Taxes, Toll Taxes, Fuel & Driver Allowance Included';
 
-    if (tripType === 'Hourly Rental') {
-      baseFare = vehicle.hourlyRate || 2100;
-      ratePerKm = vehicle.oneWayRate;
-      postKmRateStr = `₹${ratePerKm}/km post 80 km`;
-      distanceDisplay = '8 Hrs / 80 Kms Package';
-      inclusionsText = 'Includes Fuel & Driver Allowance. Toll/Parking as actual.';
-    } else if (tripType === 'Airport') {
-      baseFare = vehicle.airportFixedRate || 2499;
-      ratePerKm = vehicle.oneWayRate;
-      postKmRateStr = `₹${ratePerKm}/km post base distance`;
-      distanceDisplay = `${distanceKm || 90} km estimated`;
-      inclusionsText = 'Includes Airport Parking, Toll Taxes & State Taxes';
+    if (isHourly) {
+      // 8 Hrs / 80 Kms local city rental
+      baseFare = Math.round(80 * vehicle.oneWayRate);
+      postKmRateStr = `₹${vehicle.oneWayRate}/km post 80 km`;
+      distanceDisplay = '80 KMs (8 Hrs Local Package)';
+      inclusionsText = 'Fuel & Driver Allowance Included. Toll & Parking as actual.';
+    } else if (isAirport) {
+      // Airport Transfer based on exact distance & one-way rate
+      baseFare = Math.round(effectiveDistance * vehicle.oneWayRate);
+      postKmRateStr = `₹${vehicle.oneWayRate}/km for extra kms`;
+      distanceDisplay = `${effectiveDistance} KMs (Airport Transfer)`;
+      inclusionsText = 'Airport Toll Taxes, State Taxes, Fuel & Driver Allowance Included';
     } else if (isRoundTrip) {
-      ratePerKm = vehicle.roundTripRate;
-      baseFare = Math.round(effectiveDistance * ratePerKm);
-      postKmRateStr = `₹${ratePerKm}/km for extra kms`;
-      distanceDisplay = `${effectiveDistance} km total (${distanceKm || 0} km × 2 sides)`;
-      inclusionsText = 'Includes State Taxes, Toll Taxes, Driver Allowance & Fuel';
+      // Round Trip based strictly on round-trip per-km rate & total 2-way distance
+      baseFare = Math.round(effectiveDistance * vehicle.roundTripRate);
+      postKmRateStr = `₹${vehicle.roundTripRate}/km for extra kms`;
+      distanceDisplay = `${effectiveDistance} KMs Total (${distanceKm || 0} km × 2 sides)`;
+      inclusionsText = 'State Taxes, Toll Taxes, Driver Allowance & Fuel Included';
     } else {
-      // One Way
-      ratePerKm = vehicle.oneWayRate;
-      baseFare = Math.round(effectiveDistance * ratePerKm);
-      postKmRateStr = `₹${ratePerKm}/km for extra kms`;
-      distanceDisplay = `${effectiveDistance} km (One Way)`;
-      inclusionsText = 'Includes State Taxes, Toll Taxes, Driver Allowance & Fuel';
+      // One Way based strictly on one-way per-km rate
+      baseFare = Math.round(effectiveDistance * vehicle.oneWayRate);
+      postKmRateStr = `₹${vehicle.oneWayRate}/km for extra kms`;
+      distanceDisplay = `${effectiveDistance} KMs (One Way)`;
+      inclusionsText = 'State Taxes, Toll Taxes, Driver Allowance & Fuel Included';
     }
 
     return {
       baseFare,
       ratePerKm,
+      effectiveDistance,
       postKmRateStr,
       distanceDisplay,
       inclusionsText,
@@ -65,7 +76,7 @@ export default function SearchResults({ searchParams, onModifySearch }) {
 
   const handleBookVehicle = (vehicle) => {
     const pricing = getVehiclePricing(vehicle);
-    const destination = tripType === 'Hourly Rental' ? 'Local City Rental' : toLocation;
+    const destination = isHourly ? 'Local City Rental (8 Hrs / 80 Kms)' : toLocation;
 
     const message = `Hello Happy Tour & Travels, I want to book a taxi.
 
@@ -78,7 +89,7 @@ export default function SearchResults({ searchParams, onModifySearch }) {
 
 🚘 *Selected Cab:* ${vehicle.name} (${vehicle.category})
 💰 *Estimated Fare:* ${pricing.formattedFare}
-⚡ *Post KM Rate:* ${pricing.postKmRateStr}
+⚡ *Rate:* ₹${pricing.ratePerKm}/km (${pricing.postKmRateStr})
 ✅ *Inclusions:* State Taxes & Toll Taxes Included
 
 Please confirm cab availability and driver assignment.`;
@@ -102,7 +113,7 @@ Please confirm cab availability and driver assignment.`;
 
             <h1 className="text-2xl sm:text-3xl font-nexa font-heading text-white flex flex-wrap items-center gap-2">
               <span>{fromLocation}</span>
-              {tripType !== 'Hourly Rental' && (
+              {!isHourly && (
                 <>
                   <ArrowRight className="w-5 h-5 text-brand-yellow flex-shrink-0" />
                   <span>{toLocation}</span>
@@ -150,115 +161,121 @@ Please confirm cab availability and driver assignment.`;
         </p>
       </div>
 
-      {/* Vehicle Cards List / Grid (Mobile: Image on Left, Details & Price on Right) */}
-      <div className="space-y-5 lg:space-y-6">
+      {/* Vehicle Cards List */}
+      <div className="space-y-6 lg:space-y-8">
         {fleetData.map((vehicle) => {
           const pricing = getVehiclePricing(vehicle);
 
           return (
             <div
               key={vehicle.id}
-              className="bg-white rounded-3xl overflow-hidden border border-gray-200/90 shadow-md hover:shadow-xl transition-all duration-300 group"
+              className="bg-white rounded-3xl overflow-hidden border border-gray-200/90 shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col"
             >
-              {/* Flex Container: Mobile is Row (Image Left, Info Right); Desktop is clean horizontal card */}
-              <div className="flex flex-row items-stretch">
+              {/* TOP SECTION: Big Car Image on Left + Main Information & Price on Right */}
+              <div className="flex flex-row items-center p-3 sm:p-6 gap-3 sm:gap-6 border-b border-gray-100">
                 
-                {/* Left Side: Vehicle Image (Mobile: ~35-40% width; Desktop: ~260px) */}
-                <div className="w-2/5 sm:w-1/3 md:w-64 bg-gradient-to-b from-gray-100 to-gray-50 p-2 sm:p-4 flex flex-col items-center justify-center relative border-r border-gray-100 flex-shrink-0">
+                {/* Left: BIG Vehicle Image Box */}
+                <div className="w-1/2 sm:w-5/12 md:w-80 lg:w-96 bg-gradient-to-b from-gray-100/90 to-gray-50/70 p-2 sm:p-4 rounded-2xl flex flex-col items-center justify-center relative flex-shrink-0 min-h-[140px] sm:min-h-[190px] md:min-h-[220px]">
+                  <span className="absolute top-2 left-2 bg-slate-950 text-yellow-400 font-extrabold text-[8px] sm:text-[10px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-sm z-10">
+                    {vehicle.tag}
+                  </span>
+                  
                   <img
                     src={vehicle.image}
                     alt={vehicle.altText}
                     loading="lazy"
-                    className="max-h-24 sm:max-h-36 md:max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
+                    className="w-full h-auto max-h-32 sm:max-h-44 md:max-h-52 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md py-1"
                   />
-                  <span className="mt-1 sm:mt-2 bg-slate-950 text-yellow-400 font-extrabold text-[9px] sm:text-[11px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-center">
-                    {vehicle.tag}
-                  </span>
+
                   <span className="text-[10px] text-gray-500 font-bold mt-1 text-center hidden sm:block">
                     {vehicle.category}
                   </span>
                 </div>
 
-                {/* Right Side: Details, Pricing, Inclusions, and WhatsApp CTA */}
-                <div className="w-3/5 sm:w-2/3 md:flex-grow p-3.5 sm:p-5 flex flex-col justify-between">
-                  
-                  {/* Top: Name & Specs */}
+                {/* Right: Main Information, Fare & WhatsApp Button */}
+                <div className="w-1/2 sm:w-7/12 md:flex-grow flex flex-col justify-between py-1">
                   <div>
-                    <div className="flex flex-wrap items-start justify-between gap-1">
-                      <div>
-                        <h2 className="text-base sm:text-xl md:text-2xl font-bold font-heading text-slate-900 leading-tight">
-                          {vehicle.name}
-                        </h2>
-                        <span className="text-[10px] sm:text-xs text-gray-400 font-bold uppercase sm:hidden block">
-                          {vehicle.category}
-                        </span>
-                      </div>
-
-                      {/* Estimated Price Block (Desktop & Mobile) */}
-                      <div className="text-right">
-                        <div className="text-lg sm:text-2xl md:text-3xl font-extrabold text-slate-950 font-heading leading-tight">
-                          {pricing.formattedFare}
-                        </div>
-                        <span className="text-[10px] sm:text-xs text-gray-500 font-semibold block">
-                          Estimated Total Fare
-                        </span>
-                      </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] sm:text-xs text-amber-700 font-bold uppercase tracking-wider block">
+                        {vehicle.category}
+                      </span>
+                      <span className="bg-yellow-100 text-yellow-800 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-md">
+                        ₹{pricing.ratePerKm}/km
+                      </span>
                     </div>
 
+                    <h2 className="text-base sm:text-2xl md:text-3xl font-extrabold font-heading text-slate-900 leading-tight mt-0.5">
+                      {vehicle.name}
+                    </h2>
+
                     {/* Specs Pills */}
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2.5 mt-2.5 text-[10px] sm:text-xs font-semibold text-slate-700">
-                      <span className="bg-gray-100 px-2 py-1 rounded-lg flex items-center">
-                        <Users className="w-3 h-3 mr-1 text-yellow-600" />
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3 text-[10px] sm:text-xs font-semibold text-slate-700">
+                      <span className="bg-gray-100 px-2 sm:px-2.5 py-1 rounded-lg flex items-center">
+                        <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 text-yellow-600 flex-shrink-0" />
                         {vehicle.seats}
                       </span>
-                      <span className="bg-gray-100 px-2 py-1 rounded-lg flex items-center">
-                        <Luggage className="w-3 h-3 mr-1 text-yellow-600" />
+                      <span className="bg-gray-100 px-2 sm:px-2.5 py-1 rounded-lg flex items-center">
+                        <Luggage className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 text-yellow-600 flex-shrink-0" />
                         {vehicle.luggage}
                       </span>
-                      <span className="bg-gray-100 px-2 py-1 rounded-lg hidden sm:flex items-center">
-                        <Wind className="w-3 h-3 mr-1 text-blue-500" />
+                      <span className="bg-gray-100 px-2 sm:px-2.5 py-1 rounded-lg hidden sm:flex items-center">
+                        <Wind className="w-3.5 h-3.5 mr-1 text-blue-500 flex-shrink-0" />
                         {vehicle.ac}
                       </span>
-                      <span className="bg-gray-100 px-2 py-1 rounded-lg hidden sm:flex items-center">
-                        <Fuel className="w-3 h-3 mr-1 text-amber-500" />
+                      <span className="bg-gray-100 px-2 sm:px-2.5 py-1 rounded-lg hidden sm:flex items-center">
+                        <Fuel className="w-3.5 h-3.5 mr-1 text-amber-500 flex-shrink-0" />
                         {vehicle.fuel}
                       </span>
                     </div>
 
-                    {/* Distance & Post KMS Rate Info */}
-                    <div className="mt-3 pt-2.5 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 gap-1 sm:gap-2 text-[11px] sm:text-xs">
-                      <div className="text-slate-700 font-medium">
-                        <strong className="text-slate-900">Total KMS:</strong> {pricing.distanceDisplay}
+                    {/* Price Block */}
+                    <div className="mt-3 sm:mt-4">
+                      <div className="text-xl sm:text-3xl md:text-4xl font-extrabold text-slate-950 font-heading leading-tight">
+                        {pricing.formattedFare}
                       </div>
-                      <div className="text-slate-700 font-medium">
-                        <strong className="text-slate-900">Post KM Rate:</strong>{' '}
-                        <span className="text-amber-700 font-bold">{pricing.postKmRateStr}</span>
-                      </div>
-                    </div>
-
-                    {/* Inclusions Badge */}
-                    <div className="mt-2 text-[10px] sm:text-xs font-bold text-emerald-700 flex items-center space-x-1 bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-100">
-                      <CheckCircle className="w-3 h-3 text-emerald-600 flex-shrink-0" />
-                      <span>{pricing.inclusionsText}</span>
+                      <span className="text-[10px] sm:text-xs text-gray-500 font-semibold block">
+                        Estimated Total Price ({pricing.distanceDisplay})
+                      </span>
                     </div>
                   </div>
 
-                  {/* Bottom: Book on WhatsApp CTA */}
-                  <div className="mt-3 pt-2 sm:pt-3 border-t border-gray-100 flex items-center justify-between gap-3">
-                    <div className="hidden md:block text-[11px] text-gray-500 font-medium">
-                      Instant Booking • No Advance Cancellation Fee • Verified Chauffeur
-                    </div>
+                  {/* Primary WhatsApp Action */}
+                  <div className="mt-3 sm:mt-4">
                     <button
                       onClick={() => handleBookVehicle(vehicle)}
-                      className="w-full md:w-auto yellow-gradient-btn px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-slate-950 font-bold text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-md hover:shadow-lg transition-all"
+                      className="w-full sm:w-auto yellow-gradient-btn px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-md hover:shadow-lg transition-all"
                     >
-                      <MessageCircle className="w-4 h-4 fill-slate-950 stroke-none" />
-                      <span>Book on WhatsApp</span>
+                      <span>Book</span>
+                      <CircleCheck className="w-4 h-4" />
                     </button>
                   </div>
-
                 </div>
+
               </div>
+
+              {/* BOTTOM SECTION: Extra Information (Full Width) */}
+              <div className="bg-gray-50/80 px-4 sm:px-6 py-3 sm:py-3.5 border-t border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-2.5 text-xs">
+                
+                {/* Distance & Extra KMS Rate */}
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-slate-700">
+                  <div className="font-medium">
+                    <strong className="text-slate-900">Total KMS:</strong> {pricing.distanceDisplay}
+                  </div>
+                  <span className="text-gray-300 hidden sm:inline">•</span>
+                  <div className="font-medium">
+                    <strong className="text-slate-900">Post KMS Rate:</strong>{' '}
+                    <span className="text-amber-700 font-bold">{pricing.postKmRateStr}</span>
+                  </div>
+                </div>
+
+                {/* Inclusions Badge */}
+                <div className="text-[11px] sm:text-xs font-bold text-emerald-700 flex items-center space-x-1.5 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100">
+                  <CheckCircle className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                  <span>{pricing.inclusionsText}</span>
+                </div>
+
+              </div>
+
             </div>
           );
         })}

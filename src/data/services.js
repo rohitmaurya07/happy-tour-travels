@@ -1,42 +1,66 @@
 export const servicesData = [
   {
-    id: "airport-transfer",
-    title: "Airport Transfer",
-    tagline: "Punctual Pickups & Drops",
-    description: "Reliable airport taxi service connecting Jalandhar to Sri Guru Ram Dass Jee International Airport (Amritsar), Shaheed Bhagat Singh Airport (Chandigarh), and Indira Gandhi International Airport (Delhi).",
+    id: "airport-transfers",
+    title: "Airport Transfer Services",
+    tagline: "Punjab • Delhi • Chandigarh",
+    description: "Specialized 24/7 airport pickup and drop services connecting all regions. Flight tracking, terminal doorstep pickup, and fixed upfront fares.",
     iconName: "Plane",
-    popularRoutes: ["Jalandhar ↔ Amritsar Airport", "Jalandhar ↔ Chandigarh Airport", "Jalandhar ↔ Delhi IGI Airport"],
-    badge: "24/7 Service",
-    defaultMessage: `Hello, I would like to inquire about an Airport Transfer taxi from Jalandhar. Please share fare and vehicle details.`
+    popularRoutes: [
+      "All Punjab → Delhi IGI Airport (DEL)",
+      "All Punjab → Amritsar Airport (ATQ)",
+      "All Punjab → Chandigarh Airport (IXC)",
+      "Delhi Airport → Ludhiana, Jalandhar & Amritsar",
+      "Chandigarh Airport → All Punjab & Himachal",
+    ],
+    badge: "24/7 Airport Cab",
+    defaultMessage: `Hello Happy Tour & Travels, I want to book an Airport Transfer taxi. Please share fare and cab availability.`
   },
   {
-    id: "one-way-taxi",
-    title: "One Way Taxi",
-    tagline: "Pay Only for One Side",
-    description: "Budget-friendly one-way taxi services between Jalandhar and surrounding hubs like Delhi, Chandigarh, Ludhiana, and Amritsar. No return fare charges.",
-    iconName: "Navigation",
-    popularRoutes: ["Jalandhar → Delhi", "Jalandhar → Chandigarh", "Jalandhar → Amritsar"],
-    badge: "Best Value",
-    defaultMessage: `Hello, I would like to book a One-Way taxi from Jalandhar. Please share vehicle options and available rates.`
-  },
-  {
-    id: "outstation-taxi",
-    title: "Outstation Taxi",
-    tagline: "Comfortable Long Distance Trips",
-    description: "Premium long-distance outstation rides for family vacations, business trips, and group travels across Punjab, Himachal Pradesh, Haryana, and Rajasthan.",
-    iconName: "Car",
-    popularRoutes: ["Jalandhar to Himachal", "Jalandhar to Shimla/Manali", "Jalandhar to Jammu & Kashmir"],
-    badge: "Top Rated",
-    defaultMessage: `Hello, I need an Outstation taxi for a multi-day trip starting from Jalandhar. Please share availability and tariff details.`
-  },
-  {
-    id: "tour-packages",
-    title: "Tour Packages",
-    tagline: "Customized Travel Itineraries",
-    description: "Thoughtfully crafted tour packages covering Himachal hill stations, Punjab heritage tours, religious pilgrimages, and North India sightseeing tours.",
+    id: "delhi-airport-himachal",
+    title: "Delhi Airport to Himachal Tours",
+    tagline: "Scenic Hill Transfers",
+    description: "Direct pickup from Delhi IGI Airport Terminal 1, 2 & 3 to all Himachal hill stations with expert mountain drivers and comfortable AC sedans/SUVs.",
     iconName: "Compass",
-    popularRoutes: ["Shimla & Manali Tour", "Dharamshala & Dalhousie Tour", "Golden Temple & Punjab Tour"],
-    badge: "Customizable",
-    defaultMessage: `Hello, I am interested in exploring Tour Packages from Jalandhar. Please share popular itineraries and custom quotes.`
+    popularRoutes: [
+      "Delhi Airport → Chandigarh",
+      "Delhi Airport → Shimla & Kufri",
+      "Delhi Airport → Manali & Solang",
+      "Delhi Airport → Kasol & Tosh",
+      "Delhi Airport → All Himachal Destinations",
+    ],
+    badge: "Hill Station Special",
+    defaultMessage: `Hello Happy Tour & Travels, I want to book a taxi from Delhi Airport to Himachal Pradesh (Shimla / Manali / Kasol). Please share tariff.`
+  },
+  {
+    id: "chandigarh-airport-gateway",
+    title: "Chandigarh Airport to Punjab & Himachal",
+    tagline: "Instant Airport Connections",
+    description: "Punctual pickup from Shaheed Bhagat Singh International Airport (IXC) Chandigarh to every city in Punjab and hill stations across Himachal Pradesh.",
+    iconName: "Navigation",
+    popularRoutes: [
+      "Chandigarh Airport → Jalandhar & Ludhiana",
+      "Chandigarh Airport → Amritsar & Bathinda",
+      "Chandigarh Airport → Shimla & Kasauli",
+      "Chandigarh Airport → Manali & Dharamshala",
+      "Chandigarh Airport → All Punjab & Himachal",
+    ],
+    badge: "Fast Pickup",
+    defaultMessage: `Hello Happy Tour & Travels, I need a taxi from Chandigarh Airport to Punjab / Himachal. Please share available cabs.`
+  },
+  {
+    id: "punjab-to-delhi-intercity",
+    title: "All Punjab to Delhi One-Way & Round Trip",
+    tagline: "Doorstep Pickup Across Punjab",
+    description: "Comfortable highway cab service on NH44 connecting every district of Punjab (Jalandhar, Ludhiana, Amritsar, Bathinda, Patiala, Phagwara, Hoshiarpur) to Delhi NCR.",
+    iconName: "Car",
+    popularRoutes: [
+      "All Punjab → Delhi NCR",
+      "Delhi Airport → Ludhiana, Jalandhar, Amritsar",
+      "Jalandhar ↔ Delhi One Way / Round Trip",
+      "Amritsar ↔ Delhi One Way / Round Trip",
+      "Ludhiana ↔ Delhi One Way / Round Trip",
+    ],
+    badge: "Most Popular",
+    defaultMessage: `Hello Happy Tour & Travels, I would like to book a taxi from Punjab to Delhi / Delhi Airport. Please share rates.`
   }
 ];
