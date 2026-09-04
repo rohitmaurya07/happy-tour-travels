@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Users, Luggage, Wind, Fuel, MessageCircle, CheckCircle, ArrowRight, ShieldCheck, Calendar, Clock, Sparkles, CircleCheck } from 'lucide-react';
 import { fleetData } from '../data/fleet';
 import { bookOnWhatsApp } from '../utils/whatsapp';
@@ -8,6 +8,8 @@ export default function SearchResults({ searchParams, onModifySearch }) {
 
   const { tripType, fromLocation, toLocation, departureDate, pickupTime, distanceKm } = searchParams;
 
+  const [hourlyPackage, setHourlyPackage] = useState('8h'); // '4h' (40km) | '8h' (80km)
+
   const isRoundTrip = tripType === 'Round Trip';
   const isHourly = tripType === 'Hourly Rental';
   const isAirport = tripType === 'Airport';
@@ -15,7 +17,7 @@ export default function SearchResults({ searchParams, onModifySearch }) {
   // Determine effective billable KMs based on trip type
   let effectiveDistance = 0;
   if (isHourly) {
-    effectiveDistance = 80;
+    effectiveDistance = hourlyPackage === '4h' ? 40 : 80;
   } else if (isRoundTrip) {
     effectiveDistance = Math.round((distanceKm || 50) * 2);
   } else {
@@ -32,11 +34,16 @@ export default function SearchResults({ searchParams, onModifySearch }) {
     let inclusionsText = 'State Taxes, Toll Taxes, Fuel & Driver Allowance Included';
 
     if (isHourly) {
-      // 8 Hrs / 80 Kms local city rental
-      baseFare = Math.round(80 * vehicle.oneWayRate);
-      postKmRateStr = `₹${vehicle.oneWayRate}/km post 80 km`;
-      distanceDisplay = '80 KMs (8 Hrs Local Package)';
-      inclusionsText = 'Fuel & Driver Allowance Included. Toll & Parking as actual.';
+      if (hourlyPackage === '4h') {
+        baseFare = vehicle.localPackages ? vehicle.localPackages.fourHours : Math.round(40 * vehicle.oneWayRate);
+        postKmRateStr = `₹${vehicle.oneWayRate}/km post 40 km`;
+        distanceDisplay = '40 KMs (4 Hrs Local Package)';
+      } else {
+        baseFare = vehicle.localPackages ? vehicle.localPackages.eightHours : (vehicle.hourlyRate || Math.round(80 * vehicle.oneWayRate));
+        postKmRateStr = `₹${vehicle.oneWayRate}/km post 80 km`;
+        distanceDisplay = '80 KMs (8 Hrs Local Package)';
+      }
+      inclusionsText = 'Chauffeur Allowance & Fuel Included. Toll & Parking as actual.';
     } else if (isAirport) {
       // Airport Transfer based on exact distance & one-way rate
       baseFare = Math.round(effectiveDistance * vehicle.oneWayRate);
@@ -76,21 +83,21 @@ export default function SearchResults({ searchParams, onModifySearch }) {
 
   const handleBookVehicle = (vehicle) => {
     const pricing = getVehiclePricing(vehicle);
-    const destination = isHourly ? 'Local City Rental (8 Hrs / 80 Kms)' : toLocation;
+    const destination = isHourly ? `Local City Rental (${hourlyPackage === '4h' ? '4 Hrs / 40 Kms' : '8 Hrs / 80 Kms'})` : toLocation;
 
     const message = `Hello Happy Tour & Travels, I want to book a taxi.
 
 🚖 *Booking Request Details:*
-• *Trip Type:* ${tripType}
+• *Trip Type:* ${tripType} ${isHourly ? `(${hourlyPackage === '4h' ? '4 Hrs / 40 KM' : '8 Hrs / 80 KM'})` : ''}
 • *From:* ${fromLocation}
 • *To:* ${destination}
 • *Schedule:* ${formattedDate} at ${pickupTime}
-• *Total Distance:* ${pricing.distanceDisplay}
+• *Total Distance / Package:* ${pricing.distanceDisplay}
 
 🚘 *Selected Cab:* ${vehicle.name} (${vehicle.category})
 💰 *Estimated Fare:* ${pricing.formattedFare}
-⚡ *Rate:* ₹${pricing.ratePerKm}/km (${pricing.postKmRateStr})
-✅ *Inclusions:* State Taxes & Toll Taxes Included
+⚡ *Rate:* ${isHourly ? `${pricing.formattedFare} package (${pricing.postKmRateStr})` : `₹${pricing.ratePerKm}/km (${pricing.postKmRateStr})`}
+✅ *Inclusions:* ${pricing.inclusionsText}
 
 Please confirm cab availability and driver assignment.`;
 
@@ -133,13 +140,38 @@ Please confirm cab availability and driver assignment.`;
                 <Clock className="w-3.5 h-3.5 mr-1 text-amber-400" />
                 {pickupTime}
               </span>
-              {effectiveDistance > 0 && (
+              {effectiveDistance > 0 && !isHourly && (
                 <span className="bg-emerald-950/80 text-emerald-400 font-bold px-3 py-1 rounded-full border border-emerald-800/80 flex items-center">
                   <Sparkles className="w-3 h-3 mr-1" />
                   Total: {effectiveDistance} KMs
                 </span>
               )}
             </div>
+
+            {/* If Hourly Rental: Package Selection Switcher */}
+            {isHourly && (
+              <div className="mt-4 flex items-center space-x-2">
+                <span className="text-xs font-bold text-gray-300">Local Package:</span>
+                <div className="inline-flex p-1 bg-slate-900 rounded-xl border border-slate-700">
+                  <button
+                    onClick={() => setHourlyPackage('4h')}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                      hourlyPackage === '4h' ? 'bg-yellow-400 text-slate-950 shadow' : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    4 Hours / 40 KM
+                  </button>
+                  <button
+                    onClick={() => setHourlyPackage('8h')}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                      hourlyPackage === '8h' ? 'bg-yellow-400 text-slate-950 shadow' : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    8 Hours / 80 KM (Full Day)
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           {onModifySearch && (
@@ -157,7 +189,7 @@ Please confirm cab availability and driver assignment.`;
       <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-3.5 sm:p-4 mb-8 flex items-center space-x-3 text-emerald-900">
         <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0" />
         <p className="text-xs sm:text-sm font-bold leading-tight">
-          Transparent All-Inclusive Fares: All quotes below <span className="text-emerald-700 underline font-extrabold">include State Taxes, Highway Toll Taxes & Driver Allowance</span>. No hidden surprises!
+          Transparent Guaranteed Fares: All quotes below <span className="text-emerald-700 underline font-extrabold">{isHourly ? 'include Chauffeur Allowance & Fuel' : 'include State Taxes, Highway Toll Taxes & Driver Allowance'}</span>. No hidden surprises!
         </p>
       </div>
 
@@ -200,7 +232,7 @@ Please confirm cab availability and driver assignment.`;
                         {vehicle.category}
                       </span>
                       <span className="bg-yellow-100 text-yellow-800 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-md">
-                        ₹{pricing.ratePerKm}/km
+                        {isHourly ? (hourlyPackage === '4h' ? '4 Hrs Package' : '8 Hrs Package') : `₹${pricing.ratePerKm}/km`}
                       </span>
                     </div>
 
@@ -245,7 +277,7 @@ Please confirm cab availability and driver assignment.`;
                       onClick={() => handleBookVehicle(vehicle)}
                       className="w-full sm:w-auto yellow-gradient-btn px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-md hover:shadow-lg transition-all"
                     >
-                      <span>Book</span>
+                      <span>🟢 Book Now</span>
                       <CircleCheck className="w-4 h-4" />
                     </button>
                   </div>
@@ -259,7 +291,7 @@ Please confirm cab availability and driver assignment.`;
                 {/* Distance & Extra KMS Rate */}
                 <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-slate-700">
                   <div className="font-medium">
-                    <strong className="text-slate-900">Total KMS:</strong> {pricing.distanceDisplay}
+                    <strong className="text-slate-900">Package / Distance:</strong> {pricing.distanceDisplay}
                   </div>
                   <span className="text-gray-300 hidden sm:inline">•</span>
                   <div className="font-medium">

@@ -1,5 +1,6 @@
 import React from 'react';
 import Services from '../components/Services';
+import LocalTaxiRates from '../components/LocalTaxiRates';
 import { Plane, Navigation, Car, Compass, Clock, ShieldCheck, CheckCircle, MessageCircle } from 'lucide-react';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 import { siteConfig } from '../config/siteConfig';
@@ -18,23 +19,11 @@ export default function ServicesPage() {
   return (
     <div className="pt-24 pb-20 bg-gray-50 min-h-screen">
       
-      {/* Page Hero Banner */}
-      {/* <div className="bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-yellow bg-yellow-400/10 px-4 py-1.5 rounded-full border border-yellow-400/30">
-            Comprehensive Travel Solutions
-          </span>
-          <h1 className="text-4xl sm:text-5xl font-nexa font-heading mt-4 text-white">
-            Taxi & Outstation Services from Jalandhar
-          </h1>
-          <p className="mt-4 text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-medium">
-            From emergency airport pickups to planned multi-day hill station vacations in Himachal Pradesh — explore our complete range of dedicated cab services.
-          </p>
-        </div>
-      </div> */}
-
       {/* Main Services Grid Component */}
       <Services />
+
+      {/* Local Taxi Rental Hourly Rates */}
+      <LocalTaxiRates />
 
       {/* Transparent Rate Card Guide */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

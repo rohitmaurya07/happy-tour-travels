@@ -1,6 +1,7 @@
 import React from 'react';
 import Fleet from '../components/Fleet';
-import { ShieldCheck, CheckCircle2, Award, Sparkles, MessageCircle } from 'lucide-react';
+import LocalTaxiRates from '../components/LocalTaxiRates';
+import { ShieldCheck, Award, Sparkles, MessageCircle } from 'lucide-react';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 import { siteConfig } from '../config/siteConfig';
 
@@ -8,23 +9,11 @@ export default function FleetPage() {
   return (
     <div className="pt-24 pb-20 bg-gray-50 min-h-screen">
       
-      {/* Page Hero Banner */}
-      {/* <div className="bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-yellow bg-yellow-400/10 px-4 py-1.5 rounded-full border border-yellow-400/30">
-            Commercial Tourist Registered Cabs
-          </span>
-          <h1 className="text-4xl sm:text-5xl font-nexa font-heading mt-4 text-white">
-            Our Vehicle Fleet & Taxi Options
-          </h1>
-          <p className="mt-4 text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-medium">
-            Explore our fleet of immaculate sedans, executive cars, family MUVs, and luxury tempo travellers. Every vehicle is commercial registered with yellow tourist license plates.
-          </p>
-        </div>
-      </div> */}
-
       {/* Fleet Component */}
       <Fleet />
+
+      {/* Local Taxi Rental Rates Component */}
+      <LocalTaxiRates />
 
       {/* Fleet Maintenance & Feature Specs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -69,7 +58,7 @@ export default function FleetPage() {
           <div className="mt-10 text-center">
             <button
               onClick={() => bookOnWhatsApp(`Hello ${siteConfig.businessName}, I want to check availability for a specific vehicle model.`)}
-              className="yellow-gradient-btn px-8 py-3.5 rounded-full text-slate-950 font-nexa text-sm inline-flex items-center space-x-2 shadow-yellow-glow"
+              className="yellow-gradient-btn px-8 py-3.5 rounded-full text-slate-950 font-nexa text-sm font-bold inline-flex items-center space-x-2 shadow-yellow-glow"
             >
               <MessageCircle className="w-4 h-4 fill-slate-950 stroke-none" />
               <span>Inquire Vehicle Availability on WhatsApp</span>

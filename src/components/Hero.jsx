@@ -15,7 +15,7 @@ export default function Hero({ onSearch }) {
           playsInline
           className="w-full h-full object-cover scale-105 filter brightness-[0.65] contrast-110"
         >
-          <source src="/assets/hero-video.mp4" type="video/mp4" />
+          <source src="/assets/herovideo.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         

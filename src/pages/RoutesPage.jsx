@@ -1,6 +1,7 @@
 import React from 'react';
+import PopularRoutesSection from '../components/PopularRoutesSection';
 import LocalSeoSection from '../components/LocalSeoSection';
-import { MapPin, Navigation, Compass, CheckCircle2, Phone, MessageCircle, ArrowRight } from 'lucide-react';
+import { MapPin, ArrowRight, MessageCircle } from 'lucide-react';
 import { siteConfig } from '../config/siteConfig';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 
@@ -74,6 +75,9 @@ export default function RoutesPage() {
         </div>
       </div>
 
+      {/* 9 Category Popular Routes Grid with See More */}
+      <PopularRoutesSection />
+
       {/* Main Local SEO Component */}
       <LocalSeoSection />
 
@@ -83,10 +87,10 @@ export default function RoutesPage() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div>
               <span className="text-xs font-bold uppercase tracking-wider text-brand-gold">
-                Popular Connections & Airport Routes
+                Popular Highway Connections
               </span>
               <h3 className="text-2xl font-nexa text-slate-900 font-heading mt-1">
-                Major Taxi Routes Across North India
+                Major Taxi Corridors Across North India
               </h3>
             </div>
             <button
