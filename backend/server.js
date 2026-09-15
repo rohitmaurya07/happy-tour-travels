@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { initDb } from './utils/storage.js';
 import authRoutes from './routes/authRoutes.js';
@@ -26,7 +27,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
+// API Routes
 app.use('/api/admin', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/site-data', siteDataRoutes);
@@ -36,12 +37,24 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', serverTime: new Date().toISOString() });
 });
 
+// Serve frontend static files in production if available
+const frontendDistPath = path.join(__dirname, '..', 'frontend', 'dist');
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+  app.get('*', (req, res) => {
+    if (req.originalUrl.startsWith('/api') || req.originalUrl.startsWith('/uploads')) {
+      return res.status(404).json({ error: 'Endpoint not found' });
+    }
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+}
+
 // Initialize storage and seed initial defaults
 initDb().then(() => {
   app.listen(PORT, () => {
-    console.log(`?? Happy Tour & Travels API Server running on port ${PORT}`);
-    console.log(`?? Public Site Data: http://localhost:${PORT}/api/site-data`);
-    console.log(`?? Admin Auth: http://localhost:${PORT}/api/admin/login`);
+    console.log('🚀 Happy Tour & Travels API Server running on port ' + PORT);
+    console.log('🌐 Public Site Data: http://localhost:' + PORT + '/api/site-data');
+    console.log('🔒 Admin Auth: http://localhost:' + PORT + '/api/admin/login');
   });
 }).catch(err => {
   console.error('Failed to initialize database:', err);

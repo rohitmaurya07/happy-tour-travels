@@ -1,6 +1,6 @@
 // Frontend API Client for Happy Tour & Travels
 
-const API_BASE = '';
+const API_BASE = import.meta.env.VITE_API_BASE || '';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('happy_admin_token');
