@@ -1,0 +1,233 @@
+[
+  {
+    "name": "Jalandhar",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 31.326,
+    "lon": 75.5762
+  },
+  {
+    "name": "Amritsar",
+    "state": "Punjab",
+    "type": "City & Heritage",
+    "lat": 31.634,
+    "lon": 74.8723
+  },
+  {
+    "name": "Amritsar Airport",
+    "state": "Punjab",
+    "type": "Airport",
+    "lat": 31.7096,
+    "lon": 74.7973
+  },
+  {
+    "name": "Sri Guru Ram Dass Jee Airport (ATQ)",
+    "state": "Punjab",
+    "type": "Airport",
+    "lat": 31.7096,
+    "lon": 74.7973
+  },
+  {
+    "name": "Ludhiana",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.901,
+    "lon": 75.8573
+  },
+  {
+    "name": "Chandigarh",
+    "state": "UT",
+    "type": "Capital & Hub",
+    "lat": 30.7333,
+    "lon": 76.7794
+  },
+  {
+    "name": "Chandigarh Airport",
+    "state": "Chandigarh",
+    "type": "Airport",
+    "lat": 30.6735,
+    "lon": 76.7885
+  },
+  {
+    "name": "Shaheed Bhagat Singh Airport (IXC)",
+    "state": "Chandigarh",
+    "type": "Airport",
+    "lat": 30.6735,
+    "lon": 76.7885
+  },
+  {
+    "name": "Mohali",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.7046,
+    "lon": 76.7179
+  },
+  {
+    "name": "Zirakpur",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.6425,
+    "lon": 76.8173
+  },
+  {
+    "name": "Phagwara",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 31.224,
+    "lon": 75.7708
+  },
+  {
+    "name": "Hoshiarpur",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 31.5273,
+    "lon": 75.9149
+  },
+  {
+    "name": "Patiala",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.3398,
+    "lon": 76.3869
+  },
+  {
+    "name": "Bathinda",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.211,
+    "lon": 74.9455
+  },
+  {
+    "name": "Pathankot",
+    "state": "Punjab",
+    "type": "City & Gateway",
+    "lat": 32.2689,
+    "lon": 75.6499
+  },
+  {
+    "name": "Kapurthala",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 31.38,
+    "lon": 75.38
+  },
+  {
+    "name": "Nawanshahr (SBS Nagar)",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 31.1256,
+    "lon": 76.1189
+  },
+  {
+    "name": "Moga",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.8165,
+    "lon": 75.1717
+  },
+  {
+    "name": "Delhi",
+    "state": "Delhi",
+    "type": "Capital",
+    "lat": 28.6139,
+    "lon": 77.209
+  },
+  {
+    "name": "Delhi Airport",
+    "state": "Delhi",
+    "type": "Airport",
+    "lat": 28.5562,
+    "lon": 77.1
+  },
+  {
+    "name": "Indira Gandhi International Airport (DEL)",
+    "state": "Delhi",
+    "type": "Airport",
+    "lat": 28.5562,
+    "lon": 77.1
+  },
+  {
+    "name": "Gurgaon / Gurugram",
+    "state": "Haryana",
+    "type": "NCR Hub",
+    "lat": 28.4595,
+    "lon": 77.0266
+  },
+  {
+    "name": "Noida",
+    "state": "Uttar Pradesh",
+    "type": "NCR Hub",
+    "lat": 28.5355,
+    "lon": 77.391
+  },
+  {
+    "name": "Shimla",
+    "state": "Himachal Pradesh",
+    "type": "Hill Station",
+    "lat": 31.1048,
+    "lon": 77.1734
+  },
+  {
+    "name": "Manali",
+    "state": "Himachal Pradesh",
+    "type": "Hill Station",
+    "lat": 32.2432,
+    "lon": 77.1892
+  },
+  {
+    "name": "Kullu",
+    "state": "Himachal Pradesh",
+    "type": "Valley",
+    "lat": 31.9579,
+    "lon": 77.1095
+  },
+  {
+    "name": "Dharamshala",
+    "state": "Himachal Pradesh",
+    "type": "Hill Station",
+    "lat": 32.219,
+    "lon": 76.3234
+  },
+  {
+    "name": "Dalhousie",
+    "state": "Himachal Pradesh",
+    "type": "Hill Station",
+    "lat": 32.5387,
+    "lon": 75.971
+  },
+  {
+    "name": "Kasol",
+    "state": "Himachal Pradesh",
+    "type": "Hill Station",
+    "lat": 32.01,
+    "lon": 77.315
+  },
+  {
+    "name": "Jammu",
+    "state": "Jammu & Kashmir",
+    "type": "City",
+    "lat": 32.7266,
+    "lon": 74.857
+  },
+  {
+    "name": "Katra",
+    "state": "Jammu & Kashmir",
+    "type": "Pilgrimage",
+    "lat": 32.9926,
+    "lon": 74.9317
+  },
+  {
+    "name": "Dehradun",
+    "state": "Uttarakhand",
+    "type": "Capital",
+    "lat": 30.3165,
+    "lon": 78.0322
+  },
+  {
+    "name": "Haridwar",
+    "state": "Uttarakhand",
+    "type": "Pilgrimage",
+    "lat": 29.9457,
+    "lon": 78.1642
+  }
+]

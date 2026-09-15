@@ -1,0 +1,54 @@
+{
+  "tollIncluded": true,
+  "stateTaxIncluded": true,
+  "driverAllowanceIncluded": true,
+  "fuelIncluded": true,
+  "nightChargesAmount": 250,
+  "nightChargeStartHour": 23,
+  "nightChargeEndHour": 5,
+  "gstPercent": 0,
+  "gstIncluded": true,
+  "termsAndConditions": "All outstation round-trip and one-way estimates include State Taxes, Highway Toll Taxes, Driver Allowance and Fuel. Toll & parking on local rentals as per actual.",
+  "airportOverrides": [
+    {
+      "id": "delhi-airport",
+      "name": "Delhi Airport (DEL)",
+      "routeKeyword": "Delhi Airport",
+      "rates": {
+        "dzire": 5180,
+        "verna": 5580,
+        "ertiga": 6000,
+        "innova": 7500,
+        "fortuner": 10500,
+        "tempo": 9500
+      }
+    },
+    {
+      "id": "amritsar-airport",
+      "name": "Amritsar Airport (ATQ)",
+      "routeKeyword": "Amritsar Airport",
+      "rates": {
+        "dzire": 1900,
+        "verna": 2300,
+        "ertiga": 2400,
+        "innova": 3500,
+        "fortuner": 5500,
+        "tempo": 5000
+      }
+    },
+    {
+      "id": "chandigarh-airport",
+      "name": "Chandigarh Airport (IXC)",
+      "routeKeyword": "Chandigarh Airport",
+      "rates": {
+        "dzire": 2500,
+        "verna": 2900,
+        "ertiga": 3000,
+        "innova": 4500,
+        "fortuner": 7000,
+        "tempo": 6000
+      }
+    }
+  ],
+  "updatedAt": "2026-09-15T19:01:56.651Z"
+}
