@@ -1,4 +1,4 @@
-﻿import fs from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
@@ -56,7 +56,7 @@ export const initDb = async () => {
       name: 'Happy Tour & Travels Admin',
       updatedAt: new Date().toISOString()
     });
-    console.log('✓ Admin user initialized: username=admin');
+    console.log('[OK] Admin user initialized: username=admin');
   }
 
   // 2. Site Config
@@ -137,9 +137,10 @@ export const initDb = async () => {
   }
 
   // 5. Fleet Data with Plain/Hill Rates, Minimum KM, Driver Allowance & Active status
+  // 5. Fleet Data with Full Configurable Pricing (Slabs, Long Distance, Hourly Packages, Airport, Terrain Rates)
   let fleet = readJson('fleet');
-  if (!fleet || !fleet.some(v => v.plainRatePerKm !== undefined)) {
-    const defaultFleet = [
+  const normalizeFleet = (list) => {
+    const defaultPricing = [
       {
         id: 'dzire',
         name: 'Maruti Suzuki Dzire',
@@ -153,30 +154,32 @@ export const initDb = async () => {
         tag: 'Budget Sedan',
         rank: 5,
         description: 'Comfortable and economic 4-seater sedan ideal for city commutes, airport transfers, and one-way outstation trips.',
-        ratesHint: '₹10/km Plain • ₹11/km Hill • Min 250 KM',
+        ratesHint: '₹12/km Plain • ₹14/km Hill • Min 20 KM',
+        minBookingKm: 20,
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 900 },
+          { minKm: 35, maxKm: 55, price: 1100 },
+          { minKm: 55, maxKm: 75, price: 1300 },
+          { minKm: 75, maxKm: 95, price: 1500 }
+        ],
+        longDistance: {
+          startAfterKm: 95,
+          baseFare: 1700,
+          additionalKmRate: 12
+        },
+        oneWayRate: 12,
+        roundTripRate: 11,
+        packages: {
+          fourHours: { price: 1000, includedKm: 40 },
+          eightHours: { price: 1500, includedKm: 80 }
+        },
+        airportBasePrice: 2499,
         plainRatePerKm: 10,
         hillRatePerKm: 11,
         minimumKm: 250,
         extraKmRate: 11,
         driverAllowance: 300,
-        active: true,
-        oneWayRate: 10,
-        roundTripRate: 10,
-        localPackages: {
-          fourHours: 1000,
-          eightHours: 1500
-        },
-        hourlyRate: 1500,
-        airportFixedRate: 2499,
-        slabs: {
-          minKm: 20,
-          slab20_35: 900,
-          slab35_55: 1100,
-          slab55_75: 1300,
-          slab75_95: 1500,
-          slab95Base: 1700,
-          post95Rate: 10
-        }
+        active: true
       },
       {
         id: 'verna',
@@ -191,30 +194,32 @@ export const initDb = async () => {
         tag: 'Comfortable Sedan',
         rank: 4,
         description: 'Stylish 4-seater executive sedan offering plush interiors, smooth highway suspension, and superior comfort for business & VIP travel.',
-        ratesHint: '₹12/km Plain • ₹14/km Hill • Min 250 KM',
+        ratesHint: '₹14/km Plain • ₹16/km Hill • Min 20 KM',
+        minBookingKm: 20,
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 1300 },
+          { minKm: 35, maxKm: 55, price: 1500 },
+          { minKm: 55, maxKm: 75, price: 1700 },
+          { minKm: 75, maxKm: 95, price: 1900 }
+        ],
+        longDistance: {
+          startAfterKm: 95,
+          baseFare: 2100,
+          additionalKmRate: 14
+        },
+        oneWayRate: 14,
+        roundTripRate: 13,
+        packages: {
+          fourHours: { price: 1200, includedKm: 40 },
+          eightHours: { price: 2000, includedKm: 80 }
+        },
+        airportBasePrice: 2999,
         plainRatePerKm: 12,
         hillRatePerKm: 14,
         minimumKm: 250,
         extraKmRate: 13,
         driverAllowance: 300,
-        active: true,
-        oneWayRate: 12,
-        roundTripRate: 12,
-        localPackages: {
-          fourHours: 1200,
-          eightHours: 2000
-        },
-        hourlyRate: 2000,
-        airportFixedRate: 2999,
-        slabs: {
-          minKm: 20,
-          slab20_35: 1300,
-          slab35_55: 1500,
-          slab55_75: 1700,
-          slab75_95: 1900,
-          slab95Base: 2100,
-          post95Rate: 12
-        }
+        active: true
       },
       {
         id: 'ertiga',
@@ -226,34 +231,35 @@ export const initDb = async () => {
         fuel: 'Petrol/CNG',
         image: '/assets/images/ertiga.png',
         altText: 'Maruti Ertiga 6-7 seater family taxi service in North India',
-        tag: '⭐ Family Choice',
+        tag: 'Family Choice',
         rank: 3,
-        badgeEmoji: '⭐',
         description: 'Spacious 6–7 seater family car perfectly suited for family trips, outstation tours to Himachal Pradesh, and airport group travel.',
-        ratesHint: '₹14/km Plain • ₹16/km Hill • Min 250 KM',
+        ratesHint: '₹16/km Plain • ₹18/km Hill • Min 20 KM',
+        minBookingKm: 20,
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 1400 },
+          { minKm: 35, maxKm: 55, price: 1600 },
+          { minKm: 55, maxKm: 75, price: 1800 },
+          { minKm: 75, maxKm: 95, price: 2000 }
+        ],
+        longDistance: {
+          startAfterKm: 95,
+          baseFare: 2200,
+          additionalKmRate: 16
+        },
+        oneWayRate: 16,
+        roundTripRate: 15,
+        packages: {
+          fourHours: { price: 1500, includedKm: 40 },
+          eightHours: { price: 2300, includedKm: 80 }
+        },
+        airportBasePrice: 3499,
         plainRatePerKm: 14,
         hillRatePerKm: 16,
         minimumKm: 250,
         extraKmRate: 15,
         driverAllowance: 300,
-        active: true,
-        oneWayRate: 14,
-        roundTripRate: 14,
-        localPackages: {
-          fourHours: 1500,
-          eightHours: 2300
-        },
-        hourlyRate: 2300,
-        airportFixedRate: 3499,
-        slabs: {
-          minKm: 20,
-          slab20_35: 1400,
-          slab35_55: 1600,
-          slab55_75: 1800,
-          slab75_95: 2000,
-          slab95Base: 2200,
-          post95Rate: 14
-        }
+        active: true
       },
       {
         id: 'innova',
@@ -265,34 +271,35 @@ export const initDb = async () => {
         fuel: 'Diesel',
         image: '/assets/images/innova.png',
         altText: 'Toyota Innova Crysta 7-8 seater premium cab across North India',
-        tag: '👑 Premium Family',
+        tag: 'Premium Family',
         rank: 2,
-        badgeEmoji: '👑',
         description: 'The gold standard for highway comfort and mountain tours. 7–8 seater with unmatched legroom, plush captain seats, and exceptional ride stability.',
-        ratesHint: '₹18/km Plain • ₹20/km Hill • Min 250 KM',
+        ratesHint: '₹20/km Plain • ₹22/km Hill • Min 20 KM',
+        minBookingKm: 20,
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 1800 },
+          { minKm: 35, maxKm: 55, price: 2200 },
+          { minKm: 55, maxKm: 75, price: 2600 },
+          { minKm: 75, maxKm: 95, price: 3000 }
+        ],
+        longDistance: {
+          startAfterKm: 95,
+          baseFare: 3300,
+          additionalKmRate: 20
+        },
+        oneWayRate: 20,
+        roundTripRate: 19,
+        packages: {
+          fourHours: { price: 1800, includedKm: 40 },
+          eightHours: { price: 3000, includedKm: 80 }
+        },
+        airportBasePrice: 4999,
         plainRatePerKm: 18,
         hillRatePerKm: 20,
         minimumKm: 250,
         extraKmRate: 19,
         driverAllowance: 400,
-        active: true,
-        oneWayRate: 18,
-        roundTripRate: 17.5,
-        localPackages: {
-          fourHours: 1800,
-          eightHours: 3000
-        },
-        hourlyRate: 3000,
-        airportFixedRate: 4999,
-        slabs: {
-          minKm: 20,
-          slab20_35: 1800,
-          slab35_55: 2200,
-          slab55_75: 2600,
-          slab75_95: 3000,
-          slab95Base: 3300,
-          post95Rate: 18
-        }
+        active: true
       },
       {
         id: 'fortuner',
@@ -304,34 +311,35 @@ export const initDb = async () => {
         fuel: 'Diesel Automatic',
         image: '/assets/images/fortuner.png',
         altText: 'Toyota Fortuner Automatic premium luxury SUV taxi in North India',
-        tag: '🔥 Premium SUV',
+        tag: 'Premium SUV',
         rank: 1,
-        badgeEmoji: '🔥',
         description: 'Commanding 6–7 seater premium SUV with automatic transmission. Luxurious interiors, supreme road presence, and ultimate highway capability.',
-        ratesHint: '₹26/km Plain • ₹30/km Hill • Min 250 KM',
+        ratesHint: '₹30/km Plain • ₹32/km Hill • Min 20 KM',
+        minBookingKm: 20,
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 2400 },
+          { minKm: 35, maxKm: 55, price: 3000 },
+          { minKm: 55, maxKm: 75, price: 3600 },
+          { minKm: 75, maxKm: 95, price: 4200 }
+        ],
+        longDistance: {
+          startAfterKm: 95,
+          baseFare: 4600,
+          additionalKmRate: 30
+        },
+        oneWayRate: 30,
+        roundTripRate: 28,
+        packages: {
+          fourHours: { price: 2000, includedKm: 40 },
+          eightHours: { price: 5000, includedKm: 80 }
+        },
+        airportBasePrice: 6499,
         plainRatePerKm: 26,
         hillRatePerKm: 30,
         minimumKm: 250,
         extraKmRate: 28,
         driverAllowance: 500,
-        active: true,
-        oneWayRate: 26,
-        roundTripRate: 25,
-        localPackages: {
-          fourHours: 2000,
-          eightHours: 5000
-        },
-        hourlyRate: 5000,
-        airportFixedRate: 6499,
-        slabs: {
-          minKm: 20,
-          slab20_35: 2400,
-          slab35_55: 3000,
-          slab55_75: 3600,
-          slab75_95: 4200,
-          slab95Base: 4600,
-          post95Rate: 26
-        }
+        active: true
       },
       {
         id: 'tempo',
@@ -346,33 +354,83 @@ export const initDb = async () => {
         tag: 'Group Special',
         rank: 6,
         description: 'Spacious vehicle with pushback seats, individual charging points, and music system. Designed for large family reunions & wedding groups.',
-        ratesHint: '₹24/km Plain • ₹28/km Hill • Min 250 KM',
+        ratesHint: '₹28/km Plain • ₹30/km Hill • Min 20 KM',
+        minBookingKm: 20,
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 2800 },
+          { minKm: 35, maxKm: 55, price: 3500 },
+          { minKm: 55, maxKm: 75, price: 4200 },
+          { minKm: 75, maxKm: 95, price: 4900 }
+        ],
+        longDistance: {
+          startAfterKm: 95,
+          baseFare: 5500,
+          additionalKmRate: 28
+        },
+        oneWayRate: 28,
+        roundTripRate: 26,
+        packages: {
+          fourHours: { price: 3500, includedKm: 40 },
+          eightHours: { price: 5500, includedKm: 80 }
+        },
+        airportBasePrice: 6999,
         plainRatePerKm: 24,
         hillRatePerKm: 28,
         minimumKm: 250,
         extraKmRate: 25,
         driverAllowance: 500,
-        active: true,
-        oneWayRate: 24,
-        roundTripRate: 24,
-        localPackages: {
-          fourHours: 3500,
-          eightHours: 5500
-        },
-        hourlyRate: 5500,
-        airportFixedRate: 6999,
-        slabs: {
-          minKm: 20,
-          slab20_35: 2800,
-          slab35_55: 3500,
-          slab55_75: 4200,
-          slab75_95: 4900,
-          slab95Base: 5500,
-          post95Rate: 24
-        }
+        active: true
       }
     ];
-    writeJson('fleet', defaultFleet);
+
+    if (!list || list.length === 0) return defaultPricing;
+
+    return list.map(item => {
+      const def = defaultPricing.find(d => d.id === item.id) || {};
+      const slabs = Array.isArray(item.slabs) ? item.slabs : (def.slabs || []);
+      const longDistance = item.longDistance || def.longDistance || {
+        startAfterKm: 95,
+        baseFare: item.plainRatePerKm ? item.plainRatePerKm * 95 : 1700,
+        additionalKmRate: item.oneWayRate || item.plainRatePerKm || 12
+      };
+      const packages = item.packages || {
+        fourHours: {
+          price: item.localPackages?.fourHours || def.packages?.fourHours?.price || 1000,
+          includedKm: 40
+        },
+        eightHours: {
+          price: item.localPackages?.eightHours || item.hourlyRate || def.packages?.eightHours?.price || 1500,
+          includedKm: 80
+        }
+      };
+
+      return {
+        ...def,
+        ...item,
+        minBookingKm: item.minBookingKm !== undefined ? Number(item.minBookingKm) : (def.minBookingKm || 20),
+        slabs,
+        longDistance: {
+          startAfterKm: Number(longDistance.startAfterKm) || 95,
+          baseFare: Number(longDistance.baseFare) || 1700,
+          additionalKmRate: Number(longDistance.additionalKmRate) || (item.plainRatePerKm || 12)
+        },
+        oneWayRate: item.oneWayRate !== undefined ? Number(item.oneWayRate) : (def.oneWayRate || 12),
+        roundTripRate: item.roundTripRate !== undefined ? Number(item.roundTripRate) : (def.roundTripRate || 11),
+        packages,
+        airportBasePrice: item.airportBasePrice !== undefined ? Number(item.airportBasePrice) : (item.airportFixedRate || def.airportBasePrice || 2499),
+        plainRatePerKm: item.plainRatePerKm !== undefined ? Number(item.plainRatePerKm) : (def.plainRatePerKm || 10),
+        hillRatePerKm: item.hillRatePerKm !== undefined ? Number(item.hillRatePerKm) : (def.hillRatePerKm || 11),
+        minimumKm: item.minimumKm !== undefined ? Number(item.minimumKm) : (def.minimumKm || 250),
+        extraKmRate: item.extraKmRate !== undefined ? Number(item.extraKmRate) : (def.extraKmRate || 11),
+        driverAllowance: item.driverAllowance !== undefined ? Number(item.driverAllowance) : (def.driverAllowance || 300),
+        active: item.active !== undefined ? Boolean(item.active) : true
+      };
+    });
+  };
+
+  const normalizedFleet = normalizeFleet(fleet);
+  if (!fleet || fleet.length === 0 || JSON.stringify(fleet) !== JSON.stringify(normalizedFleet)) {
+    writeJson('fleet', normalizedFleet);
   }
 
   // 6. Pricing Routes Data (Specific Routes, Fixed/Per-Km & Plain/Hill Classifications)

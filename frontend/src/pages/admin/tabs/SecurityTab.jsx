@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Lock, User, Eye, EyeOff, CheckCircle2, AlertCircle, Sparkles, KeyRound } from 'lucide-react';
+import { ShieldCheck, Lock, User, Eye, EyeOff, CheckCircle2, AlertCircle, KeyRound, Check, X } from 'lucide-react';
 import { useSiteData } from '../../../context/SiteDataContext';
 
 export default function SecurityTab() {
   const { adminUser, changePassword } = useSiteData();
 
-  const [currentUsername] = useState(adminUser?.username || 'admin');
   const [newUsername, setNewUsername] = useState(adminUser?.username || 'admin');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -29,73 +28,76 @@ export default function SecurityTab() {
   const getStrengthLabel = () => {
     if (!newPassword) return '';
     if (strengthScore <= 2) return 'Weak';
-    if (strengthScore === 3 || strengthScore === 4) return 'Moderate';
+    if (strengthScore <= 4) return 'Good';
     return 'Strong';
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatusMsg({ type: '', text: '' });
-
     if (!currentPassword) {
-      setStatusMsg({ type: 'error', text: 'Please enter your current password.' });
+      setStatusMsg({ type: 'error', text: 'Please enter your current password to authorize changes.' });
       return;
     }
 
-    if (newPassword) {
-      if (newPassword !== confirmPassword) {
-        setStatusMsg({ type: 'error', text: 'New password and confirmation do not match.' });
-        return;
-      }
-      if (strengthScore < 5) {
-        setStatusMsg({
-          type: 'error',
-          text: 'Please satisfy all strong password requirements (8+ chars, uppercase, lowercase, number, special symbol).'
-        });
-        return;
-      }
+    if (newPassword && newPassword !== confirmPassword) {
+      setStatusMsg({ type: 'error', text: 'New passwords do not match. Please verify.' });
+      return;
+    }
+
+    if (newPassword && strengthScore < 5) {
+      setStatusMsg({
+        type: 'error',
+        text: 'New password must satisfy all 5 security requirements (8+ chars, uppercase, lowercase, digit, special symbol).'
+      });
+      return;
     }
 
     try {
       setIsSaving(true);
-      await changePassword({
-        currentPassword,
-        newUsername: newUsername.trim(),
-        newPassword: newPassword ? newPassword : undefined
-      });
+      setStatusMsg({ type: '', text: '' });
 
+      const payload = {
+        currentPassword,
+        newUsername: newUsername.trim() !== adminUser?.username ? newUsername.trim() : undefined,
+        newPassword: newPassword ? newPassword : undefined
+      };
+
+      const res = await changePassword(payload);
       setStatusMsg({
         type: 'success',
-        text: 'Admin credentials and security settings updated successfully!'
+        text: res.message || 'Admin security credentials updated successfully!'
       });
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     } catch (err) {
-      setStatusMsg({ type: 'error', text: err.message || 'Failed to update security credentials.' });
+      setStatusMsg({
+        type: 'error',
+        text: err.message || 'Failed to update credentials. Please check current password.'
+      });
     } finally {
       setIsSaving(false);
     }
   };
 
   return (
-    <div className="space-y-8 animate-fadeIn max-w-4xl">
+    <div className="space-y-8 animate-fadeIn">
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-gray-200/90 shadow-sm">
         <div>
           <div className="inline-flex items-center space-x-1.5 bg-yellow-400/10 px-3 py-1 rounded-full text-yellow-700 text-xs font-bold uppercase tracking-wider mb-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-yellow-600" />
-            <span>Administrator Security</span>
+            <span>Admin Authentication & Security</span>
           </div>
-          <h1 className="text-2xl font-bold font-nexa text-slate-900">Admin Account & Password Settings</h1>
+          <h1 className="text-2xl font-bold font-nexa text-slate-900">Admin Account Credentials</h1>
           <p className="text-xs text-gray-500 font-medium mt-0.5">
-            Update your administrator username and protect access with a strong password.
+            Update your admin master login username and set a secure custom password.
           </p>
         </div>
       </div>
 
-      {/* Status Alert */}
+      {/* Status Message */}
       {statusMsg.text && (
         <div className={`p-4 rounded-2xl text-xs sm:text-sm font-semibold flex items-center space-x-2 animate-fadeIn ${
           statusMsg.type === 'success' ? 'bg-emerald-50 border border-emerald-200 text-emerald-800' : 'bg-red-50 border border-red-200 text-red-800'
@@ -223,23 +225,23 @@ export default function SecurityTab() {
 
                 <ul className="text-[11px] space-y-1 text-gray-600 pt-1">
                   <li className={`flex items-center space-x-1.5 ${hasMinLength ? 'text-emerald-700 font-bold' : ''}`}>
-                    <span>{hasMinLength ? '?' : '•'}</span>
+                    {hasMinLength ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-gray-400" />}
                     <span>At least 8 characters long</span>
                   </li>
                   <li className={`flex items-center space-x-1.5 ${hasUppercase ? 'text-emerald-700 font-bold' : ''}`}>
-                    <span>{hasUppercase ? '?' : '•'}</span>
+                    {hasUppercase ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-gray-400" />}
                     <span>Contains uppercase letter (A-Z)</span>
                   </li>
                   <li className={`flex items-center space-x-1.5 ${hasLowercase ? 'text-emerald-700 font-bold' : ''}`}>
-                    <span>{hasLowercase ? '?' : '•'}</span>
+                    {hasLowercase ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-gray-400" />}
                     <span>Contains lowercase letter (a-z)</span>
                   </li>
                   <li className={`flex items-center space-x-1.5 ${hasDigit ? 'text-emerald-700 font-bold' : ''}`}>
-                    <span>{hasDigit ? '?' : '•'}</span>
+                    {hasDigit ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-gray-400" />}
                     <span>Contains number (0-9)</span>
                   </li>
                   <li className={`flex items-center space-x-1.5 ${hasSpecial ? 'text-emerald-700 font-bold' : ''}`}>
-                    <span>{hasSpecial ? '?' : '•'}</span>
+                    {hasSpecial ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <X className="w-3.5 h-3.5 text-gray-400" />}
                     <span>Contains special symbol (!@#$%^&*...)</span>
                   </li>
                 </ul>

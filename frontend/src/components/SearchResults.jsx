@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Users, Luggage, Wind, Fuel, CheckCircle, ArrowRight, ShieldCheck, 
   Calendar, Clock, Sparkles, CircleCheck, Tag, Mountain, Navigation, 
@@ -35,7 +35,8 @@ export default function SearchResults({ searchParams, onModifySearch }) {
           tripType,
           departureDate,
           pickupTime,
-          hourlyPackage
+          hourlyPackage,
+          distanceKm: Number(distanceKm) > 0 ? Number(distanceKm) : undefined
         });
 
         if (isMounted && response?.results) {
@@ -399,14 +400,6 @@ Please confirm cab availability and driver assignment.`;
                     <span>WhatsApp</span>
                   </button>
 
-                  <button
-                    type="button"
-                    disabled={isSubmittingBooking}
-                    onClick={() => handleInstantBooking(fare)}
-                    className="w-full py-2.5 px-3 rounded-xl bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-black text-xs transition-colors flex items-center justify-center space-x-1.5 shadow-sm"
-                  >
-                    <span>Instant Book</span>
-                  </button>
                 </div>
 
               </div>

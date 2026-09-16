@@ -13,161 +13,191 @@ const ROAD_FACTOR = 1.28;
 /**
  * Exact realistic road distances for popular pairs (in KM)
  */
-const knownDistances = {
+export const knownDistances = {
   // From Jalandhar
-  "Jalandhar|Amritsar": 82,
-  "Jalandhar|Amritsar Airport": 95,
-  "Jalandhar|Sri Guru Ram Dass Jee Airport (ATQ)": 95,
-  "Jalandhar|Chandigarh": 148,
-  "Jalandhar|Chandigarh Airport": 155,
-  "Jalandhar|Shaheed Bhagat Singh Airport (IXC)": 155,
-  "Jalandhar|Mohali": 142,
-  "Jalandhar|Zirakpur": 152,
-  "Jalandhar|Ludhiana": 61,
-  "Jalandhar|Phagwara": 22,
-  "Jalandhar|Hoshiarpur": 42,
-  "Jalandhar|Pathankot": 112,
-  "Jalandhar|Patiala": 152,
-  "Jalandhar|Bathinda": 165,
-  "Jalandhar|Delhi": 375,
-  "Jalandhar|Delhi Airport": 385,
-  "Jalandhar|Indira Gandhi International Airport (DEL)": 385,
-  "Jalandhar|Gurgaon / Gurugram": 395,
-  "Jalandhar|Gurgaon": 395,
-  "Jalandhar|Noida": 410,
-  "Jalandhar|Faridabad": 415,
-  "Jalandhar|Shimla": 220,
-  "Jalandhar|Manali": 315,
-  "Jalandhar|Dharamshala": 165,
-  "Jalandhar|McLeod Ganj": 175,
-  "Jalandhar|Dalhousie": 185,
-  "Jalandhar|Khajjiar": 200,
-  "Jalandhar|Kullu": 275,
-  "Jalandhar|Kasol": 290,
-  "Jalandhar|Kasauli": 180,
-  "Jalandhar|Jammu": 215,
-  "Jalandhar|Katra": 260,
-  "Jalandhar|Katra (Vaishno Devi)": 260,
-  "Jalandhar|Srinagar": 480,
-  "Jalandhar|Haridwar": 330,
-  "Jalandhar|Rishikesh": 350,
-  "Jalandhar|Dehradun": 310,
-  "Jalandhar|Mussoorie": 340,
-  "Jalandhar|Jaipur": 620,
-  "Jalandhar|Agra (Taj Mahal)": 590,
+  "jalandhar|amritsar": 82,
+  "jalandhar|amritsar airport": 95,
+  "jalandhar|sri guru ram dass jee airport (atq)": 95,
+  "jalandhar|chandigarh": 148,
+  "jalandhar|chandigarh airport": 155,
+  "jalandhar|shaheed bhagat singh airport (ixc)": 155,
+  "jalandhar|mohali": 142,
+  "jalandhar|zirakpur": 152,
+  "jalandhar|ludhiana": 61,
+  "jalandhar|phagwara": 22,
+  "jalandhar|hoshiarpur": 42,
+  "jalandhar|pathankot": 112,
+  "jalandhar|patiala": 152,
+  "jalandhar|bathinda": 165,
+  "jalandhar|moga": 70,
+  "jalandhar|kapurthala": 22,
+  "jalandhar|delhi": 375,
+  "jalandhar|delhi airport": 385,
+  "jalandhar|indira gandhi international airport (del)": 385,
+  "jalandhar|gurgaon": 395,
+  "jalandhar|gurgaon / gurugram": 395,
+  "jalandhar|noida": 410,
+  "jalandhar|faridabad": 415,
+  "jalandhar|shimla": 220,
+  "jalandhar|manali": 315,
+  "jalandhar|dharamshala": 165,
+  "jalandhar|mcleod ganj": 175,
+  "jalandhar|dalhousie": 185,
+  "jalandhar|khajjiar": 200,
+  "jalandhar|kullu": 275,
+  "jalandhar|kasol": 290,
+  "jalandhar|kasauli": 180,
+  "jalandhar|solan": 190,
+  "jalandhar|mandi": 220,
+  "jalandhar|palampur": 190,
+  "jalandhar|jammu": 215,
+  "jalandhar|katra": 260,
+  "jalandhar|katra (vaishno devi)": 260,
+  "jalandhar|srinagar": 480,
+  "jalandhar|haridwar": 330,
+  "jalandhar|rishikesh": 350,
+  "jalandhar|dehradun": 310,
+  "jalandhar|mussoorie": 340,
+  "jalandhar|jaipur": 620,
+  "jalandhar|agra (taj mahal)": 590,
 
   // From Amritsar
-  "Amritsar|Delhi": 450,
-  "Amritsar|Delhi Airport": 460,
-  "Amritsar|Indira Gandhi International Airport (DEL)": 460,
-  "Amritsar|Chandigarh": 230,
-  "Amritsar|Chandigarh Airport": 238,
-  "Amritsar|Jalandhar": 82,
-  "Amritsar|Ludhiana": 142,
-  "Amritsar|Amritsar Airport": 14,
-  "Amritsar|Shimla": 300,
-  "Amritsar|Manali": 395,
-  "Amritsar|Kullu": 360,
-  "Amritsar|Dharamshala": 200,
-  "Amritsar|Dalhousie": 190,
-  "Amritsar|Pathankot": 110,
-  "Amritsar|Jammu": 215,
-  "Amritsar|Katra": 260,
-  "Amritsar|Hoshiarpur": 120,
-  "Amritsar|Patiala": 230,
-  "Amritsar|Mohali": 225,
-  "Amritsar|Dehradun": 390,
+  "amritsar|delhi": 450,
+  "amritsar|delhi airport": 460,
+  "amritsar|indira gandhi international airport (del)": 460,
+  "amritsar|chandigarh": 230,
+  "amritsar|chandigarh airport": 238,
+  "amritsar|jalandhar": 82,
+  "amritsar|ludhiana": 142,
+  "amritsar|amritsar airport": 14,
+  "amritsar|sri guru ram dass jee airport (atq)": 14,
+  "amritsar|shimla": 300,
+  "amritsar|manali": 395,
+  "amritsar|kullu": 360,
+  "amritsar|dharamshala": 200,
+  "amritsar|dalhousie": 190,
+  "amritsar|pathankot": 110,
+  "amritsar|jammu": 215,
+  "amritsar|katra": 260,
+  "amritsar|hoshiarpur": 120,
+  "amritsar|patiala": 230,
+  "amritsar|mohali": 225,
+  "amritsar|dehradun": 390,
+  "amritsar|bathinda": 185,
 
   // From Ludhiana
-  "Ludhiana|Delhi": 315,
-  "Ludhiana|Delhi Airport": 325,
-  "Ludhiana|Chandigarh": 105,
-  "Ludhiana|Chandigarh Airport": 112,
-  "Ludhiana|Amritsar": 142,
-  "Ludhiana|Amritsar Airport": 154,
-  "Ludhiana|Jalandhar": 61,
-  "Ludhiana|Shimla": 225,
-  "Ludhiana|Manali": 335,
-  "Ludhiana|Kullu": 295,
-  "Ludhiana|Dharamshala": 215,
-  "Ludhiana|Dalhousie": 245,
-  "Ludhiana|Pathankot": 170,
-  "Ludhiana|Patiala": 95,
-  "Ludhiana|Mohali": 98,
-  "Ludhiana|Zirakpur": 108,
-  "Ludhiana|Dehradun": 255,
-  "Ludhiana|Jaipur": 560,
+  "ludhiana|delhi": 315,
+  "ludhiana|delhi airport": 325,
+  "ludhiana|indira gandhi international airport (del)": 325,
+  "ludhiana|chandigarh": 105,
+  "ludhiana|chandigarh airport": 112,
+  "ludhiana|amritsar": 142,
+  "ludhiana|amritsar airport": 154,
+  "ludhiana|jalandhar": 61,
+  "ludhiana|shimla": 225,
+  "ludhiana|manali": 335,
+  "ludhiana|kullu": 295,
+  "ludhiana|dharamshala": 215,
+  "ludhiana|dalhousie": 245,
+  "ludhiana|pathankot": 170,
+  "ludhiana|patiala": 95,
+  "ludhiana|mohali": 98,
+  "ludhiana|zirakpur": 108,
+  "ludhiana|dehradun": 255,
+  "ludhiana|jaipur": 560,
+  "ludhiana|bathinda": 135,
+  "ludhiana|hoshiarpur": 75,
+  "ludhiana|moga": 70,
 
   // From Delhi / Delhi Airport
-  "Delhi Airport|Jalandhar": 385,
-  "Delhi Airport|Amritsar": 460,
-  "Delhi Airport|Ludhiana": 325,
-  "Delhi Airport|Chandigarh": 260,
-  "Delhi Airport|Patiala": 255,
-  "Delhi Airport|Bathinda": 320,
-  "Delhi Airport|Hoshiarpur": 405,
-  "Delhi Airport|Moga": 375,
-  "Delhi Airport|Kapurthala": 398,
-  "Delhi Airport|Pathankot": 490,
-  "Delhi Airport|Shimla": 355,
-  "Delhi Airport|Manali": 540,
-  "Delhi Airport|Kullu": 500,
-  "Delhi Airport|Dharamshala": 485,
-  "Delhi Airport|Dalhousie": 570,
-  "Delhi Airport|Kasauli": 305,
-  "Delhi Airport|Solan": 315,
-  "Delhi Airport|Mandi": 440,
-  "Delhi Airport|Palampur": 505,
-  "Delhi Airport|Gurgaon / Gurugram": 18,
-  "Delhi Airport|Gurgaon": 18,
-  "Delhi Airport|Faridabad": 38,
-  "Delhi Airport|Panipat": 105,
-  "Delhi Airport|Karnal": 140,
-  "Delhi Airport|Rohtak": 82,
-  "Delhi Airport|Hisar": 175,
-  "Delhi Airport|Sonipat": 65,
-  "Delhi Airport|Ambala": 220,
-  "Delhi Airport|Panchkula": 265,
+  "delhi airport|jalandhar": 385,
+  "delhi airport|amritsar": 460,
+  "delhi airport|ludhiana": 325,
+  "delhi airport|chandigarh": 260,
+  "delhi airport|patiala": 255,
+  "delhi airport|bathinda": 320,
+  "delhi airport|hoshiarpur": 405,
+  "delhi airport|moga": 375,
+  "delhi airport|kapurthala": 398,
+  "delhi airport|pathankot": 490,
+  "delhi airport|shimla": 355,
+  "delhi airport|manali": 540,
+  "delhi airport|kullu": 500,
+  "delhi airport|dharamshala": 485,
+  "delhi airport|dalhousie": 570,
+  "delhi airport|kasauli": 305,
+  "delhi airport|solan": 315,
+  "delhi airport|mandi": 440,
+  "delhi airport|palampur": 505,
+  "delhi airport|gurgaon / gurugram": 18,
+  "delhi airport|gurgaon": 18,
+  "delhi airport|faridabad": 38,
+  "delhi airport|panipat": 105,
+  "delhi airport|karnal": 140,
+  "delhi airport|rohtak": 82,
+  "delhi airport|hisar": 175,
+  "delhi airport|sonipat": 65,
+  "delhi airport|ambala": 220,
+  "delhi airport|panchkula": 265,
+  "delhi airport|dehradun": 255,
+  "delhi airport|haridwar": 235,
+  "delhi airport|rishikesh": 255,
+  "delhi airport|jaipur": 260,
 
-  // From Chandigarh
-  "Chandigarh|Shimla": 110,
-  "Chandigarh|Manali": 270,
-  "Chandigarh|Kullu": 230,
-  "Chandigarh|Dharamshala": 240,
-  "Chandigarh|Dalhousie": 310,
-  "Chandigarh|Kasauli": 55,
-  "Chandigarh|Solan": 68,
-  "Chandigarh|Mandi": 185,
-  "Chandigarh|Palampur": 255,
-  "Chandigarh|Chail": 105,
-  "Chandigarh|Jalandhar": 148,
-  "Chandigarh|Amritsar": 230,
-  "Chandigarh|Ludhiana": 105,
-  "Chandigarh|Patiala": 70,
-  "Chandigarh|Mohali": 10,
-  "Chandigarh|Zirakpur": 12,
-  "Chandigarh|Bathinda": 225,
-  "Chandigarh|Hoshiarpur": 140,
-  "Chandigarh|Pathankot": 245,
-  "Chandigarh|Moga": 175,
-  "Chandigarh|Delhi": 250,
-  "Chandigarh|Delhi Airport": 260,
-  "Chandigarh|Gurgaon / Gurugram": 280,
-  "Chandigarh|Noida": 275,
-  "Chandigarh|Faridabad": 290,
-  "Chandigarh|Ghaziabad": 265,
-  "Chandigarh|Dehradun": 170,
-  "Chandigarh|Haridwar": 205,
-  "Chandigarh|Rishikesh": 225,
-  "Chandigarh|Mussoorie": 200,
+  // From Delhi City
+  "delhi|jalandhar": 375,
+  "delhi|amritsar": 450,
+  "delhi|ludhiana": 315,
+  "delhi|chandigarh": 250,
+  "delhi|patiala": 245,
+  "delhi|bathinda": 310,
+  "delhi|hoshiarpur": 395,
+  "delhi|shimla": 345,
+  "delhi|manali": 530,
+  "delhi|dharamshala": 475,
+  "delhi|dalhousie": 560,
+
+  // From Chandigarh / Chandigarh Airport
+  "chandigarh|shimla": 110,
+  "chandigarh|manali": 270,
+  "chandigarh|kullu": 230,
+  "chandigarh|dharamshala": 240,
+  "chandigarh|dalhousie": 310,
+  "chandigarh|kasauli": 55,
+  "chandigarh|solan": 68,
+  "chandigarh|mandi": 185,
+  "chandigarh|palampur": 255,
+  "chandigarh|chail": 105,
+  "chandigarh|jalandhar": 148,
+  "chandigarh|amritsar": 230,
+  "chandigarh|ludhiana": 105,
+  "chandigarh|patiala": 70,
+  "chandigarh|mohali": 10,
+  "chandigarh|zirakpur": 12,
+  "chandigarh|bathinda": 225,
+  "chandigarh|hoshiarpur": 140,
+  "chandigarh|pathankot": 245,
+  "chandigarh|moga": 175,
+  "chandigarh|delhi": 250,
+  "chandigarh|delhi airport": 260,
+  "chandigarh|gurgaon / gurugram": 280,
+  "chandigarh|gurgaon": 280,
+  "chandigarh|noida": 275,
+  "chandigarh|faridabad": 290,
+  "chandigarh|ghaziabad": 265,
+  "chandigarh|dehradun": 170,
+  "chandigarh|haridwar": 205,
+  "chandigarh|rishikesh": 225,
+  "chandigarh|mussoorie": 200,
+  "chandigarh|jaipur": 490
 };
 
 /**
  * Normalizes city string for lookups
  */
 const normalizeCity = (str) => {
-  if (!str) return '';
-  return str.split(',')[0].trim();
+  if (!str || typeof str !== 'string') return '';
+  return str.split(',')[0].trim().toLowerCase();
 };
 
 /**
@@ -175,11 +205,12 @@ const normalizeCity = (str) => {
  */
 export const findCoordsByName = (name) => {
   if (!name) return null;
-  const clean = name.toLowerCase().trim();
-  const match = popularLocations.find(
-    (l) => l.name.toLowerCase() === clean || clean.includes(l.name.toLowerCase())
-  );
-  return match ? { lat: match.lat, lon: match.lon } : null;
+  const clean = normalizeCity(name);
+  const match = popularLocations.find((l) => {
+    const locName = (l.name || '').toLowerCase();
+    return locName === clean || clean.includes(locName) || locName.includes(clean);
+  });
+  return match && match.lat && match.lon ? { lat: match.lat, lon: match.lon } : null;
 };
 
 /**
@@ -200,22 +231,22 @@ export const getDistanceKm = (from, to, fromCoords = null, toCoords = null) => {
   if (knownDistances[key1]) return knownDistances[key1];
   if (knownDistances[key2]) return knownDistances[key2];
 
-  // Try substring matches in keys
+  // 2. Substring matches in keys
   for (const [k, dist] of Object.entries(knownDistances)) {
     const [kFrom, kTo] = k.split('|');
     if (
-      (cleanFrom.toLowerCase().includes(kFrom.toLowerCase()) || kFrom.toLowerCase().includes(cleanFrom.toLowerCase())) &&
-      (cleanTo.toLowerCase().includes(kTo.toLowerCase()) || kTo.toLowerCase().includes(cleanTo.toLowerCase()))
+      (cleanFrom.includes(kFrom) || kFrom.includes(cleanFrom)) &&
+      (cleanTo.includes(kTo) || kTo.includes(cleanTo))
     ) {
       return dist;
     }
   }
 
-  // 2. Coordinate-based distance calculation
+  // 3. Coordinate-based distance calculation
   const c1 = fromCoords || findCoordsByName(cleanFrom);
   const c2 = toCoords || findCoordsByName(cleanTo);
 
-  if (c1 && c2) {
+  if (c1 && c2 && c1.lat && c2.lat) {
     const R = 6371; // Earth radius in km
     const lat1 = toRad(parseFloat(c1.lat));
     const lat2 = toRad(parseFloat(c2.lat));

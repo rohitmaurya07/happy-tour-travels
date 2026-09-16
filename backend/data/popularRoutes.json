@@ -1,8 +1,7 @@
 [
   {
     "id": "jalandhar-routes",
-    "emoji": "??",
-    "title": "Jalandhar ? Popular Routes",
+    "title": "Jalandhar - Popular Routes",
     "origin": "Jalandhar",
     "tag": "Most Active Hub",
     "routes": [
@@ -110,8 +109,7 @@
   },
   {
     "id": "amritsar-routes",
-    "emoji": "??",
-    "title": "Amritsar ? Popular Routes",
+    "title": "Amritsar - Popular Routes",
     "origin": "Amritsar",
     "tag": "Heritage & Airport Hub",
     "routes": [
@@ -214,8 +212,7 @@
   },
   {
     "id": "ludhiana-routes",
-    "emoji": "??",
-    "title": "Ludhiana ? Popular Routes",
+    "title": "Ludhiana - Popular Routes",
     "origin": "Ludhiana",
     "tag": "Industrial Capital Hub",
     "routes": [
@@ -313,8 +310,7 @@
   },
   {
     "id": "delhi-airport-punjab-routes",
-    "emoji": "??",
-    "title": "Delhi Airport ? Punjab",
+    "title": "Delhi Airport - Punjab",
     "origin": "Delhi Airport",
     "tag": "Terminal Pickup Express",
     "routes": [
@@ -372,8 +368,7 @@
   },
   {
     "id": "delhi-airport-himachal-routes",
-    "emoji": "???",
-    "title": "Delhi Airport ? Himachal",
+    "title": "Delhi Airport - Himachal",
     "origin": "Delhi Airport",
     "tag": "Scenic Hill Tours",
     "routes": [
@@ -426,8 +421,7 @@
   },
   {
     "id": "chandigarh-himachal-routes",
-    "emoji": "???",
-    "title": "Chandigarh ? Himachal",
+    "title": "Chandigarh - Himachal",
     "origin": "Chandigarh",
     "tag": "Himachal Gateway Express",
     "routes": [

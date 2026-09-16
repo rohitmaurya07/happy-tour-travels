@@ -1,4 +1,4 @@
-﻿// Frontend API Client for Happy Tour & Travels
+// Frontend API Client for Happy Tour & Travels
 
 export const API_BASE = import.meta.env.VITE_API_BASE || '';
 
@@ -7,89 +7,109 @@ const getAuthHeaders = () => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
+/**
+ * Robust JSON fetch helper that safely handles non-JSON responses,
+ * network errors, and returns user-friendly error messages.
+ */
+async function requestJson(endpoint, options = {}) {
+  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint}`;
+  
+  let res;
+  try {
+    res = await fetch(url, options);
+  } catch (netErr) {
+    console.error(`Network fetch failure for ${url}:`, netErr);
+    throw new Error('Unable to connect to backend server. Please verify the backend API server is running on port 5000.');
+  }
+
+  const rawText = await res.text();
+  let data = null;
+
+  if (rawText && rawText.trim().length > 0) {
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      // Non-JSON response (e.g. HTML 404 or proxy error)
+      if (res.status === 401) {
+        throw new Error('Unauthorized: Invalid credentials or session expired.');
+      }
+      if (res.status === 404) {
+        throw new Error(`Endpoint not found: ${endpoint}`);
+      }
+      if (res.status >= 500) {
+        throw new Error(`Backend server error (${res.status} ${res.statusText || 'Server Error'}). Please check server logs.`);
+      }
+      throw new Error(`Invalid server response (${res.status}). Expected JSON.`);
+    }
+  }
+
+  if (!res.ok || (data && data.success === false)) {
+    const errorMsg = data?.message || data?.error || `Request failed with status ${res.status} (${res.statusText || 'Error'})`;
+    throw new Error(errorMsg);
+  }
+
+  return data;
+}
+
 // 1. Public Site Data
 export const fetchPublicSiteData = async () => {
-  const res = await fetch(`${API_BASE}/api/site-data`);
-  if (!res.ok) throw new Error('Failed to fetch site data');
-  const data = await res.json();
-  return data.data;
+  const data = await requestJson('/api/site-data');
+  return data?.data;
 };
 
 // 2. Authoritative Fare Calculation APIs
 export const calculateFareApi = async (payload) => {
-  const res = await fetch(`${API_BASE}/api/fare/calculate`, {
+  const data = await requestJson('/api/fare/calculate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Failed to calculate fare');
-  }
   return data.fare;
 };
 
 export const calculateAllFaresApi = async (payload) => {
-  const res = await fetch(`${API_BASE}/api/fare/calculate-all`, {
+  const data = await requestJson('/api/fare/calculate-all', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Failed to calculate fares');
-  }
   return data;
 };
 
 // 3. Bookings APIs
 export const createBookingApi = async (payload) => {
-  const res = await fetch(`${API_BASE}/api/bookings`, {
+  const data = await requestJson('/api/bookings', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Failed to create booking');
-  }
   return data.booking;
 };
 
 export const getBookingApi = async (id) => {
-  const res = await fetch(`${API_BASE}/api/bookings/${encodeURIComponent(id)}`);
-  const data = await res.json();
-  if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Failed to retrieve booking');
-  }
+  const data = await requestJson(`/api/bookings/${encodeURIComponent(id)}`);
   return data.booking;
 };
 
 // 4. Admin Authentication
 export const adminLogin = async (username, password) => {
-  const res = await fetch(`${API_BASE}/api/admin/login`, {
+  const data = await requestJson('/api/admin/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Login failed');
-  }
   return data;
 };
 
 export const adminVerify = async () => {
-  const res = await fetch(`${API_BASE}/api/admin/me`, {
+  const data = await requestJson('/api/admin/me', {
     headers: { ...getAuthHeaders() }
   });
-  if (!res.ok) throw new Error('Unauthorized');
-  const data = await res.json();
-  return data.user;
+  return data?.user;
 };
 
 export const adminChangePassword = async ({ currentPassword, newUsername, newPassword }) => {
-  const res = await fetch(`${API_BASE}/api/admin/change-password`, {
+  const data = await requestJson('/api/admin/change-password', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -97,10 +117,6 @@ export const adminChangePassword = async ({ currentPassword, newUsername, newPas
     },
     body: JSON.stringify({ currentPassword, newUsername, newPassword })
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Failed to update password');
-  }
   return data;
 };
 
@@ -109,23 +125,19 @@ export const uploadMediaFile = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
 
-  const res = await fetch(`${API_BASE}/api/admin/upload`, {
+  const data = await requestJson('/api/admin/upload', {
     method: 'POST',
     headers: {
       ...getAuthHeaders()
     },
     body: formData
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Upload failed');
-  }
   return data.url;
 };
 
 // 6. Site Config & Settings
 export const updateSiteConfig = async (config) => {
-  const res = await fetch(`${API_BASE}/api/admin/site-config`, {
+  const data = await requestJson('/api/admin/site-config', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -133,13 +145,11 @@ export const updateSiteConfig = async (config) => {
     },
     body: JSON.stringify(config)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update site config');
   return data.data;
 };
 
 export const updatePricingSettings = async (settings) => {
-  const res = await fetch(`${API_BASE}/api/admin/pricing-settings`, {
+  const data = await requestJson('/api/admin/pricing-settings', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -147,13 +157,11 @@ export const updatePricingSettings = async (settings) => {
     },
     body: JSON.stringify(settings)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update pricing');
   return data.data;
 };
 
 export const updateMediaSettings = async (settings) => {
-  const res = await fetch(`${API_BASE}/api/admin/media-settings`, {
+  const data = await requestJson('/api/admin/media-settings', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -161,14 +169,12 @@ export const updateMediaSettings = async (settings) => {
     },
     body: JSON.stringify(settings)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update media settings');
   return data.data;
 };
 
 // 7. Fleet Operations
 export const addFleetVehicle = async (vehicle) => {
-  const res = await fetch(`${API_BASE}/api/admin/fleet`, {
+  const data = await requestJson('/api/admin/fleet', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -176,13 +182,11 @@ export const addFleetVehicle = async (vehicle) => {
     },
     body: JSON.stringify(vehicle)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to add vehicle');
   return data.data;
 };
 
 export const updateFleetVehicle = async (id, vehicle) => {
-  const res = await fetch(`${API_BASE}/api/admin/fleet/${encodeURIComponent(id)}`, {
+  const data = await requestJson(`/api/admin/fleet/${encodeURIComponent(id)}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -190,33 +194,51 @@ export const updateFleetVehicle = async (id, vehicle) => {
     },
     body: JSON.stringify(vehicle)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update vehicle');
   return data.data;
 };
 
 export const deleteFleetVehicle = async (id) => {
-  const res = await fetch(`${API_BASE}/api/admin/fleet/${encodeURIComponent(id)}`, {
+  await requestJson(`/api/admin/fleet/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     headers: { ...getAuthHeaders() }
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to delete vehicle');
   return true;
+};
+
+export const updateAllVehiclePricing = async (fleetList) => {
+  const data = await requestJson('/api/admin/vehicle-pricing-all', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders()
+    },
+    body: JSON.stringify({ fleetList })
+  });
+  return data.data;
+};
+
+export const previewFareAdminApi = async (payload) => {
+  const data = await requestJson('/api/admin/preview-fare', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders()
+    },
+    body: JSON.stringify(payload)
+  });
+  return data.fare;
 };
 
 // 8. Pricing Routes Management (Fixed Fares & Classifications)
 export const fetchPricingRoutes = async () => {
-  const res = await fetch(`${API_BASE}/api/admin/pricing-routes`, {
+  const data = await requestJson('/api/admin/pricing-routes', {
     headers: { ...getAuthHeaders() }
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to fetch pricing routes');
   return data.data;
 };
 
 export const addPricingRoute = async (route) => {
-  const res = await fetch(`${API_BASE}/api/admin/pricing-routes`, {
+  const data = await requestJson('/api/admin/pricing-routes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -224,13 +246,11 @@ export const addPricingRoute = async (route) => {
     },
     body: JSON.stringify(route)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to add pricing route');
   return data.data;
 };
 
 export const updatePricingRoute = async (id, route) => {
-  const res = await fetch(`${API_BASE}/api/admin/pricing-routes/${encodeURIComponent(id)}`, {
+  const data = await requestJson(`/api/admin/pricing-routes/${encodeURIComponent(id)}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -238,33 +258,27 @@ export const updatePricingRoute = async (id, route) => {
     },
     body: JSON.stringify(route)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update pricing route');
   return data.data;
 };
 
 export const deletePricingRoute = async (id) => {
-  const res = await fetch(`${API_BASE}/api/admin/pricing-routes/${encodeURIComponent(id)}`, {
+  await requestJson(`/api/admin/pricing-routes/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     headers: { ...getAuthHeaders() }
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to delete pricing route');
   return true;
 };
 
 // 9. Admin Bookings Inspection
 export const fetchAdminBookings = async () => {
-  const res = await fetch(`${API_BASE}/api/admin/bookings`, {
+  const data = await requestJson('/api/admin/bookings', {
     headers: { ...getAuthHeaders() }
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to fetch bookings');
   return data.data;
 };
 
 export const updateBookingStatus = async (id, status) => {
-  const res = await fetch(`${API_BASE}/api/admin/bookings/${encodeURIComponent(id)}/status`, {
+  const data = await requestJson(`/api/admin/bookings/${encodeURIComponent(id)}/status`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -272,14 +286,12 @@ export const updateBookingStatus = async (id, status) => {
     },
     body: JSON.stringify({ status })
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update booking status');
   return data.data;
 };
 
 // 10. Packages Operations
 export const addPackage = async (pkg) => {
-  const res = await fetch(`${API_BASE}/api/admin/packages`, {
+  const data = await requestJson('/api/admin/packages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -287,13 +299,11 @@ export const addPackage = async (pkg) => {
     },
     body: JSON.stringify(pkg)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to add package');
   return data.data;
 };
 
 export const updatePackage = async (id, pkg) => {
-  const res = await fetch(`${API_BASE}/api/admin/packages/${encodeURIComponent(id)}`, {
+  const data = await requestJson(`/api/admin/packages/${encodeURIComponent(id)}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -301,24 +311,20 @@ export const updatePackage = async (id, pkg) => {
     },
     body: JSON.stringify(pkg)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update package');
   return data.data;
 };
 
 export const deletePackage = async (id) => {
-  const res = await fetch(`${API_BASE}/api/admin/packages/${encodeURIComponent(id)}`, {
+  await requestJson(`/api/admin/packages/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     headers: { ...getAuthHeaders() }
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to delete package');
   return true;
 };
 
 // 11. Services Operations
 export const addService = async (service) => {
-  const res = await fetch(`${API_BASE}/api/admin/services`, {
+  const data = await requestJson('/api/admin/services', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -326,13 +332,11 @@ export const addService = async (service) => {
     },
     body: JSON.stringify(service)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to add service');
   return data.data;
 };
 
 export const updateService = async (id, service) => {
-  const res = await fetch(`${API_BASE}/api/admin/services/${encodeURIComponent(id)}`, {
+  const data = await requestJson(`/api/admin/services/${encodeURIComponent(id)}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -340,24 +344,20 @@ export const updateService = async (id, service) => {
     },
     body: JSON.stringify(service)
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update service');
   return data.data;
 };
 
 export const deleteService = async (id) => {
-  const res = await fetch(`${API_BASE}/api/admin/services/${encodeURIComponent(id)}`, {
+  await requestJson(`/api/admin/services/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     headers: { ...getAuthHeaders() }
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to delete service');
   return true;
 };
 
 // 12. Routes & Locations Operations
 export const updatePopularRoutes = async (popularRoutes) => {
-  const res = await fetch(`${API_BASE}/api/admin/routes`, {
+  const data = await requestJson('/api/admin/routes', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -365,13 +365,11 @@ export const updatePopularRoutes = async (popularRoutes) => {
     },
     body: JSON.stringify({ popularRoutes })
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update routes');
   return data.data;
 };
 
 export const updatePopularLocations = async (popularLocations) => {
-  const res = await fetch(`${API_BASE}/api/admin/locations`, {
+  const data = await requestJson('/api/admin/locations', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -379,7 +377,5 @@ export const updatePopularLocations = async (popularLocations) => {
     },
     body: JSON.stringify({ popularLocations })
   });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update locations');
   return data.data;
 };

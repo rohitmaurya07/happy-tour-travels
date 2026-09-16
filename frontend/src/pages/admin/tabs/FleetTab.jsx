@@ -24,17 +24,31 @@ export default function FleetTab() {
     tag: '',
     rank: (fleet || []).length + 1,
     description: '',
+    minBookingKm: 20,
+    slabs: [
+      { minKm: 20, maxKm: 35, price: 900 },
+      { minKm: 35, maxKm: 55, price: 1100 },
+      { minKm: 55, maxKm: 75, price: 1300 },
+      { minKm: 75, maxKm: 95, price: 1500 }
+    ],
+    longDistance: {
+      startAfterKm: 95,
+      baseFare: 1700,
+      additionalKmRate: 12
+    },
+    oneWayRate: 12,
+    roundTripRate: 11,
+    packages: {
+      fourHours: { price: 1000, includedKm: 40 },
+      eightHours: { price: 1500, includedKm: 80 }
+    },
+    airportBasePrice: 2499,
     plainRatePerKm: 10,
     hillRatePerKm: 12,
     minimumKm: 250,
     extraKmRate: 11,
     driverAllowance: 300,
-    active: true,
-    oneWayRate: 10,
-    roundTripRate: 10,
-    localPackages: { fourHours: 1000, eightHours: 1500 },
-    hourlyRate: 1500,
-    airportFixedRate: 2499
+    active: true
   };
 
   const [formData, setFormData] = useState(initialFormState);
@@ -53,13 +67,29 @@ export default function FleetTab() {
     setEditingVehicle(vehicle);
     setFormData({
       ...vehicle,
-      plainRatePerKm: vehicle.plainRatePerKm !== undefined ? vehicle.plainRatePerKm : (vehicle.oneWayRate || 10),
-      hillRatePerKm: vehicle.hillRatePerKm !== undefined ? vehicle.hillRatePerKm : (vehicle.roundTripRate || 12),
-      minimumKm: vehicle.minimumKm !== undefined ? vehicle.minimumKm : 250,
-      extraKmRate: vehicle.extraKmRate !== undefined ? vehicle.extraKmRate : (vehicle.plainRatePerKm || 10),
-      driverAllowance: vehicle.driverAllowance !== undefined ? vehicle.driverAllowance : 300,
-      active: vehicle.active !== false,
-      localPackages: vehicle.localPackages || { fourHours: 1000, eightHours: 1500 }
+      minBookingKm: vehicle.minBookingKm !== undefined ? Number(vehicle.minBookingKm) : 20,
+      slabs: Array.isArray(vehicle.slabs) ? vehicle.slabs : [
+        { minKm: 20, maxKm: 35, price: 900 },
+        { minKm: 35, maxKm: 55, price: 1100 },
+        { minKm: 55, maxKm: 75, price: 1300 },
+        { minKm: 75, maxKm: 95, price: 1500 }
+      ],
+      longDistance: vehicle.longDistance || {
+        startAfterKm: 95,
+        baseFare: 1700,
+        additionalKmRate: Number(vehicle.plainRatePerKm) || 12
+      },
+      packages: vehicle.packages || {
+        fourHours: { price: 1000, includedKm: 40 },
+        eightHours: { price: 1500, includedKm: 80 }
+      },
+      airportBasePrice: vehicle.airportBasePrice !== undefined ? Number(vehicle.airportBasePrice) : 2499,
+      plainRatePerKm: vehicle.plainRatePerKm !== undefined ? Number(vehicle.plainRatePerKm) : (vehicle.oneWayRate || 10),
+      hillRatePerKm: vehicle.hillRatePerKm !== undefined ? Number(vehicle.hillRatePerKm) : (vehicle.roundTripRate || 12),
+      minimumKm: vehicle.minimumKm !== undefined ? Number(vehicle.minimumKm) : 250,
+      extraKmRate: vehicle.extraKmRate !== undefined ? Number(vehicle.extraKmRate) : (vehicle.plainRatePerKm || 10),
+      driverAllowance: vehicle.driverAllowance !== undefined ? Number(vehicle.driverAllowance) : 300,
+      active: vehicle.active !== false
     });
     setModalOpen(true);
   };
@@ -81,18 +111,21 @@ export default function FleetTab() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name.trim()) return;
+    if (!formData.name?.trim()) return;
     try {
       setIsSaving(true);
       const payload = {
         ...formData,
+        name: formData.name.trim(),
+        minBookingKm: Number(formData.minBookingKm) || 20,
         plainRatePerKm: Number(formData.plainRatePerKm) || 10,
         hillRatePerKm: Number(formData.hillRatePerKm) || 12,
         minimumKm: Number(formData.minimumKm) || 250,
         extraKmRate: Number(formData.extraKmRate) || (Number(formData.plainRatePerKm) || 10),
         driverAllowance: Number(formData.driverAllowance) || 300,
+        airportBasePrice: Number(formData.airportBasePrice) || 2499,
         active: Boolean(formData.active),
-        ratesHint: '₹' + formData.plainRatePerKm + '/km Plain • ₹' + formData.hillRatePerKm + '/km Hill • Min ' + formData.minimumKm + ' KM'
+        ratesHint: '₹' + formData.plainRatePerKm + '/km Plain • ₹' + formData.hillRatePerKm + '/km Hill • Min ' + formData.minBookingKm + ' KM'
       };
       if (editingVehicle) {
         await updateFleetVehicle(editingVehicle.id, payload);

@@ -19,7 +19,6 @@ export default function RoutesTab() {
   const [newCatTitle, setNewCatTitle] = useState('');
   const [newCatOrigin, setNewCatOrigin] = useState('');
   const [newCatTag, setNewCatTag] = useState('');
-  const [newCatEmoji, setNewCatEmoji] = useState('??');
 
   // New Location State
   const [newLocName, setNewLocName] = useState('');
@@ -66,7 +65,6 @@ export default function RoutesTab() {
     if (!newCatTitle.trim() || !newCatOrigin.trim()) return;
     const newCat = {
       id: `route-cat-${Date.now()}`,
-      emoji: newCatEmoji || '??',
       title: newCatTitle.trim(),
       origin: newCatOrigin.trim(),
       tag: newCatTag.trim() || 'Popular Route Hub',
@@ -208,7 +206,6 @@ export default function RoutesTab() {
                     }`}
                   >
                     <div className="flex items-center space-x-2.5">
-                      <span className="text-lg">{cat.emoji || '??'}</span>
                       <div>
                         <p className="text-xs font-bold">{cat.title}</p>
                         <p className="text-[10px] text-gray-500">{cat.routes?.length || 0} Routes</p>
@@ -233,20 +230,13 @@ export default function RoutesTab() {
               {/* Add New Category Box */}
               <div className="pt-4 border-t border-gray-100 space-y-2">
                 <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">Add New Category</span>
-                <div className="grid grid-cols-4 gap-2">
-                  <input
-                    type="text"
-                    value={newCatEmoji}
-                    onChange={(e) => setNewCatEmoji(e.target.value)}
-                    placeholder="??"
-                    className="col-span-1 p-2 bg-gray-50 border border-gray-200 rounded-xl text-center text-xs"
-                  />
+                <div>
                   <input
                     type="text"
                     value={newCatTitle}
                     onChange={(e) => setNewCatTitle(e.target.value)}
                     placeholder="Title: e.g. Patiala Routes"
-                    className="col-span-3 p-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold"
+                    className="w-full p-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-semibold"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -285,11 +275,10 @@ export default function RoutesTab() {
                   <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-4">
                     <div>
                       <h2 className="text-lg font-bold font-nexa text-slate-900 flex items-center space-x-2">
-                        <span>{currentCategory.emoji}</span>
                         <span>{currentCategory.title}</span>
                       </h2>
                       <span className="text-xs text-gray-500 font-medium">
-                        Origin: <strong>{currentCategory.origin}</strong> � Tag: {currentCategory.tag}
+                        Origin: <strong>{currentCategory.origin}</strong> - Tag: {currentCategory.tag}
                       </span>
                     </div>
                     <span className="text-xs font-bold text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full">

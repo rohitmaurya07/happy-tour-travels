@@ -63,13 +63,7 @@ export default function AdminLoginPage() {
           
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-yellow-400/15 text-yellow-400 mb-4 border border-yellow-400/30 shadow-yellow-glow">
-              <Lock className="w-8 h-8 stroke-[2.2]" />
-            </div>
-            <div className="inline-flex items-center space-x-1.5 bg-yellow-400/10 border border-yellow-400/20 px-3 py-1 rounded-full text-yellow-400 text-xs font-bold uppercase tracking-wider mb-2">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Admin Control Center</span>
-            </div>
+                    
             <h1 className="text-2xl sm:text-3xl font-nexa font-extrabold text-white">
               Happy Tour & Travels
             </h1>
@@ -110,7 +104,6 @@ export default function AdminLoginPage() {
                   <Lock className="w-3.5 h-3.5 mr-1.5 text-yellow-400" />
                   Password
                 </span>
-                <span className="text-[11px] text-gray-400">Protected Auth</span>
               </label>
               <div className="relative">
                 <input
@@ -142,18 +135,7 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          {/* Security Credentials Notice */}
-          <div className="mt-8 p-4 bg-slate-950/70 border border-slate-800 rounded-2xl text-[11px] text-gray-400 space-y-1">
-            <div className="flex items-center space-x-1.5 text-yellow-400 font-bold">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Initial Master Credentials:</span>
-            </div>
-            <p className="text-gray-300 font-mono">User: <strong className="text-white">admin</strong></p>
-            <p className="text-gray-300 font-mono">Pass: <strong className="text-white">HappyTravels@2026!</strong></p>
-            <p className="text-[10px] text-gray-500 pt-1">
-              *You can update your username and password anytime in the Admin Security settings.
-            </p>
-          </div>
+        
 
         </div>
 

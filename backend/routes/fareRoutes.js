@@ -1,4 +1,4 @@
-﻿import express from 'express';
+import express from 'express';
 import { calculateFare, calculateAllFares, resolveRouteDetails, calculateDistance } from '../utils/pricingEngine.js';
 
 const router = express.Router();
@@ -18,7 +18,8 @@ router.post('/calculate', (req, res) => {
       pickupTime,
       hourlyPackage,
       fromCoords,
-      toCoords
+      toCoords,
+      distanceKm
     } = req.body;
 
     if (!pickup || !destination) {
@@ -44,7 +45,8 @@ router.post('/calculate', (req, res) => {
       pickupTime: pickupTime || '09:00',
       hourlyPackage: hourlyPackage || '8h',
       fromCoords,
-      toCoords
+      toCoords,
+      distanceKm: Number(distanceKm) > 0 ? Number(distanceKm) : null
     });
 
     return res.json({
@@ -75,7 +77,8 @@ router.post('/calculate-all', (req, res) => {
       pickupTime,
       hourlyPackage,
       fromCoords,
-      toCoords
+      toCoords,
+      distanceKm
     } = req.body;
 
     if (!pickup || !destination) {
@@ -93,7 +96,8 @@ router.post('/calculate-all', (req, res) => {
       pickupTime: pickupTime || '09:00',
       hourlyPackage: hourlyPackage || '8h',
       fromCoords,
-      toCoords
+      toCoords,
+      distanceKm: Number(distanceKm) > 0 ? Number(distanceKm) : null
     });
 
     return res.json({

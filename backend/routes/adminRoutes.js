@@ -1,9 +1,10 @@
-﻿import fs from 'fs';
+import fs from 'fs';
 import express from 'express';
 import path from 'path';
 import multer from 'multer';
 import { readJson, writeJson } from '../utils/storage.js';
 import { authMiddleware } from '../middleware/auth.js';
+import { validateVehiclePricing, calculateFare } from '../utils/pricingEngine.js';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -97,27 +98,51 @@ router.put('/media-settings', (req, res) => {
   res.json({ success: true, message: 'Media settings updated successfully', data: updated });
 });
 
-// --- FLEET MANAGEMENT (CRUD with Plain/Hill rates & Minimum KM) ---
+// --- FLEET MANAGEMENT (CRUD with Full Pricing Configuration & Validation) ---
 router.get('/fleet', (req, res) => {
   res.json({ success: true, data: readJson('fleet') || [] });
 });
 
 router.post('/fleet', (req, res) => {
+  const validation = validateVehiclePricing(req.body);
+  if (!validation.valid) {
+    return res.status(400).json({ success: false, message: validation.message });
+  }
+
   const fleet = readJson('fleet') || [];
+  const id = req.body.id || `car-${Date.now()}`;
+
   const newVehicle = {
-    id: req.body.id || `car-${Date.now()}`,
     ...req.body,
+    id,
+    name: req.body.name?.trim(),
+    minBookingKm: req.body.minBookingKm !== undefined ? Number(req.body.minBookingKm) : 20,
+    slabs: Array.isArray(req.body.slabs) ? req.body.slabs : [],
+    longDistance: req.body.longDistance || {
+      startAfterKm: 95,
+      baseFare: 1700,
+      additionalKmRate: Number(req.body.plainRatePerKm) || 12
+    },
+    oneWayRate: Number(req.body.oneWayRate) || 12,
+    roundTripRate: Number(req.body.roundTripRate) || 11,
+    packages: req.body.packages || {
+      fourHours: { price: 1000, includedKm: 40 },
+      eightHours: { price: 1500, includedKm: 80 }
+    },
+    airportBasePrice: Number(req.body.airportBasePrice) || 2499,
     plainRatePerKm: Number(req.body.plainRatePerKm) || 10,
     hillRatePerKm: Number(req.body.hillRatePerKm) || 12,
     minimumKm: Number(req.body.minimumKm) || 250,
     extraKmRate: Number(req.body.extraKmRate) || (Number(req.body.plainRatePerKm) || 10),
     driverAllowance: Number(req.body.driverAllowance) || 300,
     active: req.body.active !== undefined ? Boolean(req.body.active) : true,
-    rank: Number(req.body.rank) || fleet.length + 1
+    rank: Number(req.body.rank) || fleet.length + 1,
+    ratesHint: `₹${req.body.plainRatePerKm || 10}/km Plain • ₹${req.body.hillRatePerKm || 12}/km Hill • Min ${req.body.minBookingKm || 20} KM`
   };
+
   fleet.push(newVehicle);
   writeJson('fleet', fleet);
-  res.json({ success: true, message: 'Vehicle added to fleet', data: newVehicle });
+  res.json({ success: true, message: 'Vehicle added to fleet successfully', data: newVehicle });
 });
 
 router.put('/fleet/:id', (req, res) => {
@@ -126,19 +151,107 @@ router.put('/fleet/:id', (req, res) => {
   if (index === -1) {
     return res.status(404).json({ success: false, message: 'Vehicle not found' });
   }
-  fleet[index] = {
+
+  const merged = {
     ...fleet[index],
     ...req.body,
-    id: req.params.id,
-    plainRatePerKm: req.body.plainRatePerKm !== undefined ? Number(req.body.plainRatePerKm) : fleet[index].plainRatePerKm,
-    hillRatePerKm: req.body.hillRatePerKm !== undefined ? Number(req.body.hillRatePerKm) : fleet[index].hillRatePerKm,
-    minimumKm: req.body.minimumKm !== undefined ? Number(req.body.minimumKm) : fleet[index].minimumKm,
-    extraKmRate: req.body.extraKmRate !== undefined ? Number(req.body.extraKmRate) : fleet[index].extraKmRate,
-    driverAllowance: req.body.driverAllowance !== undefined ? Number(req.body.driverAllowance) : fleet[index].driverAllowance,
-    active: req.body.active !== undefined ? Boolean(req.body.active) : fleet[index].active !== false
+    id: req.params.id
   };
+
+  const validation = validateVehiclePricing(merged);
+  if (!validation.valid) {
+    return res.status(400).json({ success: false, message: validation.message });
+  }
+
+  fleet[index] = {
+    ...merged,
+    name: merged.name?.trim(),
+    minBookingKm: merged.minBookingKm !== undefined ? Number(merged.minBookingKm) : 20,
+    slabs: Array.isArray(merged.slabs) ? merged.slabs : (fleet[index].slabs || []),
+    longDistance: merged.longDistance || fleet[index].longDistance || {
+      startAfterKm: 95,
+      baseFare: 1700,
+      additionalKmRate: 12
+    },
+    oneWayRate: merged.oneWayRate !== undefined ? Number(merged.oneWayRate) : fleet[index].oneWayRate,
+    roundTripRate: merged.roundTripRate !== undefined ? Number(merged.roundTripRate) : fleet[index].roundTripRate,
+    packages: merged.packages || fleet[index].packages || {
+      fourHours: { price: 1000, includedKm: 40 },
+      eightHours: { price: 1500, includedKm: 80 }
+    },
+    airportBasePrice: merged.airportBasePrice !== undefined ? Number(merged.airportBasePrice) : fleet[index].airportBasePrice,
+    plainRatePerKm: merged.plainRatePerKm !== undefined ? Number(merged.plainRatePerKm) : fleet[index].plainRatePerKm,
+    hillRatePerKm: merged.hillRatePerKm !== undefined ? Number(merged.hillRatePerKm) : fleet[index].hillRatePerKm,
+    minimumKm: merged.minimumKm !== undefined ? Number(merged.minimumKm) : fleet[index].minimumKm,
+    extraKmRate: merged.extraKmRate !== undefined ? Number(merged.extraKmRate) : fleet[index].extraKmRate,
+    driverAllowance: merged.driverAllowance !== undefined ? Number(merged.driverAllowance) : fleet[index].driverAllowance,
+    active: merged.active !== undefined ? Boolean(merged.active) : (fleet[index].active !== false),
+    ratesHint: `₹${merged.plainRatePerKm || 10}/km Plain • ₹${merged.hillRatePerKm || 12}/km Hill • Min ${merged.minBookingKm || 20} KM`
+  };
+
   writeJson('fleet', fleet);
-  res.json({ success: true, message: 'Vehicle updated successfully', data: fleet[index] });
+  res.json({ success: true, message: 'Vehicle pricing updated successfully', data: fleet[index] });
+});
+
+router.put('/vehicle-pricing-all', (req, res) => {
+  const { fleetList } = req.body;
+  if (!Array.isArray(fleetList)) {
+    return res.status(400).json({ success: false, message: 'Invalid vehicle list format.' });
+  }
+
+  for (let i = 0; i < fleetList.length; i++) {
+    const v = fleetList[i];
+    const validation = validateVehiclePricing(v);
+    if (!validation.valid) {
+      return res.status(400).json({ success: false, message: `Vehicle "${v.name || '#' + (i + 1)}": ${validation.message}` });
+    }
+  }
+
+  let fleet = readJson('fleet') || [];
+  const updatedFleet = fleetList.map(item => {
+    const existing = fleet.find(f => f.id === item.id) || {};
+    return {
+      ...existing,
+      ...item,
+      ratesHint: `₹${item.plainRatePerKm || 10}/km Plain • ₹${item.hillRatePerKm || 12}/km Hill • Min ${item.minBookingKm || 20} KM`
+    };
+  });
+
+  writeJson('fleet', updatedFleet);
+  res.json({ success: true, message: 'All vehicle pricing configurations saved successfully', data: updatedFleet });
+});
+
+// --- ADMIN PREVIEW / TEST FARE CALCULATOR ---
+router.post('/preview-fare', (req, res) => {
+  try {
+    const {
+      vehicleId,
+      distanceKm,
+      pickup,
+      destination,
+      tripType,
+      pickupTime,
+      hourlyPackage
+    } = req.body;
+
+    if (!vehicleId) {
+      return res.status(400).json({ success: false, message: 'Vehicle ID is required.' });
+    }
+
+    const fare = calculateFare({
+      pickup: pickup || 'Jalandhar',
+      destination: destination || (distanceKm ? `${distanceKm} km Test Route` : 'Delhi'),
+      vehicleId,
+      tripType: tripType || 'One Way',
+      pickupTime: pickupTime || '09:00',
+      hourlyPackage: hourlyPackage || '8h',
+      distanceKm: distanceKm ? Number(distanceKm) : null
+    });
+
+    return res.json({ success: true, fare });
+  } catch (err) {
+    return res.status(400).json({ success: false, message: err.message });
+  }
 });
 
 router.put('/fleet-reorder', (req, res) => {

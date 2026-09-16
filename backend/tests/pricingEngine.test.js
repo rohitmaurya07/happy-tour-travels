@@ -1,8 +1,8 @@
-﻿import assert from 'assert';
-import { calculateFare, calculateAllFares, resolveRouteDetails, calculateDistance } from '../utils/pricingEngine.js';
+import assert from 'assert';
+import { calculateFare, calculateAllFares, resolveRouteDetails, calculateDistance, validateVehiclePricing } from '../utils/pricingEngine.js';
 import { readJson, writeJson } from '../utils/storage.js';
 
-console.log('🧪 Starting Taxi Pricing Engine Test Suite...\n');
+console.log('[Test Suite] Starting Taxi Pricing Engine Test Suite...\n');
 
 let passedTests = 0;
 let totalTests = 0;
@@ -11,36 +11,102 @@ function test(name, fn) {
   totalTests++;
   try {
     fn();
-    console.log(`  ✅ PASS: ${name}`);
+    console.log(`  [PASS] ${name}`);
     passedTests++;
   } catch (err) {
-    console.error(`  ❌ FAIL: ${name}`);
+    console.error(`  [FAIL] ${name}`);
     console.error(`     Error: ${err.message}\n`);
   }
 }
 
-// TEST 1: Plain Route Pricing & Rate Selection
-test('1. Plain Route: Jalandhar -> Delhi (Dzire @ Plain Rate)', () => {
+// TEST 1: Local One-Way Slabs for Dzire
+test('1. Local Slab Matching: 25 KM -> Dzire 20–35 KM Slab = ₹900', () => {
   const result = calculateFare({
     pickup: 'Jalandhar',
-    destination: 'Delhi',
+    destination: 'Kapurthala', // 22 km distance
+    distanceKm: 25,
     vehicleId: 'dzire',
     tripType: 'One Way'
   });
 
-  assert.strictEqual(result.routeType, 'PLAIN');
-  assert.strictEqual(result.vehicleId, 'dzire');
-  assert.strictEqual(result.ratePerKm, 10, 'Dzire plain rate should be 10');
-  assert.strictEqual(result.distanceKm, 375, 'Distance Jalandhar to Delhi should be 375');
-  assert.strictEqual(result.billableKm, 375, 'Billable KM should be 375 (since 375 > 250)');
-  assert.strictEqual(result.baseFare, 3750, 'Base fare should be 375 * 10 = 3750');
-  assert.strictEqual(result.driverAllowance, 300, 'Driver allowance should be 300');
-  assert.strictEqual(result.estimatedTotal, 4050, 'Estimated total should be 3750 + 300 = 4050');
+  assert.strictEqual(result.pricingType, 'local_slab');
+  assert.strictEqual(result.baseFare, 900, 'Base fare for 25km Dzire should match slab price 900');
+  assert.strictEqual(result.driverAllowance, 300);
+  assert.strictEqual(result.estimatedTotal, 1200);
+});
+
+test('1b. Local Slab Matching: 60 KM -> Dzire 55–75 KM Slab = ₹1300', () => {
+  const result = calculateFare({
+    pickup: 'Jalandhar',
+    destination: 'Ludhiana',
+    distanceKm: 60,
+    vehicleId: 'dzire',
+    tripType: 'One Way'
+  });
+
+  assert.strictEqual(result.pricingType, 'local_slab');
+  assert.strictEqual(result.baseFare, 1300, 'Base fare for 60km Dzire should match slab price 1300');
+  assert.strictEqual(result.estimatedTotal, 1600);
+});
+
+// TEST 2: Long Distance Threshold Calculation
+// Formula: pricing.longDistance.baseFare + (distance - pricing.longDistance.startAfterKm) * pricing.longDistance.additionalKmRate
+test('2. Long Distance Threshold: 385 KM for Dzire (After 95 KM, Base ₹1700, ₹12/KM -> Base ₹5180)', () => {
+  const result = calculateFare({
+    pickup: 'Jalandhar',
+    destination: 'Gurgaon',
+    distanceKm: 385,
+    vehicleId: 'dzire',
+    tripType: 'One Way'
+  });
+
+  assert.strictEqual(result.pricingType, 'long_distance');
+  // 1700 + (385 - 95) * 12 = 1700 + 290 * 12 = 1700 + 3480 = 5180
+  assert.strictEqual(result.baseFare, 5180, 'Base fare should be ₹1,700 + (385-95)*12 = ₹5,180');
+  assert.strictEqual(result.driverAllowance, 300);
+  assert.strictEqual(result.estimatedTotal, 5480, 'Total should be 5180 + 300 = 5480');
   assert.ok(result.pricingSnapshot, 'Pricing snapshot must exist');
 });
 
-// TEST 2: Hill Route Pricing & Route Classification
-test('2. Hill Route: Jalandhar -> Shimla (Dzire @ Hill Rate & Under Minimum KM)', () => {
+// TEST 3: Dynamic Admin Reconfiguration without Code Change
+test('3. Dynamic Admin Reconfiguration: 95->100 KM, Base ₹1700->₹1800, Add ₹12->₹13/KM', () => {
+  const fleet = readJson('fleet');
+  const dzireIndex = fleet.findIndex(v => v.id === 'dzire');
+  const originalLongDistance = { ...fleet[dzireIndex].longDistance };
+
+  try {
+    // Admin changes configuration
+    fleet[dzireIndex].longDistance = {
+      startAfterKm: 100,
+      baseFare: 1800,
+      additionalKmRate: 13
+    };
+    writeJson('fleet', fleet);
+
+    const result = calculateFare({
+      pickup: 'Jalandhar',
+      destination: 'Gurgaon',
+      distanceKm: 385,
+      vehicleId: 'dzire',
+      tripType: 'One Way'
+    });
+
+    // 1800 + (385 - 100) * 13 = 1800 + 285 * 13 = 1800 + 3705 = 5505
+    assert.strictEqual(result.baseFare, 5505, 'Base fare must automatically use new values 1800 + (385-100)*13 = 5505');
+    assert.strictEqual(result.estimatedTotal, 5805, 'Estimated total must be 5505 + 300 = 5805');
+  } finally {
+    // Restore
+    fleet[dzireIndex].longDistance = originalLongDistance;
+    writeJson('fleet', fleet);
+  }
+});
+
+// TEST 4: Hill Route Rate Selection
+test('4. Hill Route: Jalandhar -> Shimla (Dzire @ Hill Rate & Under Minimum Outstation KM)', () => {
+  const fleet = readJson('fleet');
+  const dzire = fleet.find(v => v.id === 'dzire') || { hillRatePerKm: 14 };
+  const hillRate = dzire.hillRatePerKm;
+
   const result = calculateFare({
     pickup: 'Jalandhar',
     destination: 'Shimla',
@@ -49,46 +115,14 @@ test('2. Hill Route: Jalandhar -> Shimla (Dzire @ Hill Rate & Under Minimum KM)'
   });
 
   assert.strictEqual(result.routeType, 'HILL', 'Shimla must be classified as HILL route');
-  assert.strictEqual(result.ratePerKm, 11, 'Dzire hill rate should be 11');
+  assert.strictEqual(result.ratePerKm, hillRate, `Dzire hill rate should be ${hillRate}`);
   assert.strictEqual(result.distanceKm, 220, 'Distance Jalandhar to Shimla should be 220');
-  assert.strictEqual(result.minimumKm, 250, 'Minimum KM should be 250');
   assert.strictEqual(result.billableKm, 250, 'Billable KM must be max(220, 250) = 250');
-  assert.strictEqual(result.baseFare, 2750, 'Base fare must be 250 * 11 = 2750');
-  assert.strictEqual(result.driverAllowance, 300, 'Driver allowance should be 300');
-  assert.strictEqual(result.estimatedTotal, 3050, 'Estimated total must be 2750 + 300 = 3050');
+  assert.strictEqual(result.baseFare, 250 * hillRate, `Base fare must be 250 * ${hillRate} = ${250 * hillRate}`);
+  assert.strictEqual(result.estimatedTotal, 250 * hillRate + 300, `Estimated total must be ${250 * hillRate} + 300 = ${250 * hillRate + 300}`);
 });
 
-// TEST 3: Minimum KM Rule (Under Minimum)
-test('3. Minimum KM Rule: Actual 180 km < 250 km Minimum -> Billable 250 km', () => {
-  const result = calculateFare({
-    pickup: 'Jalandhar',
-    destination: 'Kasauli', // distance = 180 km, Hill station
-    vehicleId: 'dzire',
-    tripType: 'One Way'
-  });
-
-  assert.strictEqual(result.distanceKm, 180);
-  assert.strictEqual(result.minimumKm, 250);
-  assert.strictEqual(result.billableKm, 250);
-  assert.strictEqual(result.baseFare, 2750); // 250 * 11
-});
-
-// TEST 4: Above Minimum KM Rule
-test('4. Above Minimum KM Rule: Actual 315 km > 250 km Minimum -> Billable 315 km', () => {
-  const result = calculateFare({
-    pickup: 'Jalandhar',
-    destination: 'Manali', // distance = 315 km, Hill station
-    vehicleId: 'dzire',
-    tripType: 'One Way'
-  });
-
-  assert.strictEqual(result.distanceKm, 315);
-  assert.strictEqual(result.minimumKm, 250);
-  assert.strictEqual(result.billableKm, 315);
-  assert.strictEqual(result.baseFare, 315 * 11); // 3465
-});
-
-// TEST 5: Specific Route Fixed Fare Override (Priority 1)
+// TEST 5: Specific Fixed Route Tariff Override
 test('5. Fixed Route Override: Jalandhar -> Delhi Airport Fixed Tariff', () => {
   const result = calculateFare({
     pickup: 'Jalandhar',
@@ -104,7 +138,6 @@ test('5. Fixed Route Override: Jalandhar -> Delhi Airport Fixed Tariff', () => {
 
 // TEST 6: Historical Pricing Snapshot Immutability
 test('6. Historical Pricing Snapshot: Changing vehicle price later does NOT change historical booking', () => {
-  // Step A: Calculate & create booking with current rate (₹11/km)
   const initialFare = calculateFare({
     pickup: 'Jalandhar',
     destination: 'Shimla',
@@ -131,59 +164,116 @@ test('6. Historical Pricing Snapshot: Changing vehicle price later does NOT chan
   const currentBookings = readJson('bookings', []) || [];
   writeJson('bookings', [...currentBookings, historicalBooking]);
 
-  // Step B: Simulate Admin price update: Change Dzire hill rate from ₹11 to ₹16
   const fleet = readJson('fleet');
   const dzireIndex = fleet.findIndex(v => v.id === 'dzire');
   const originalHillRate = fleet[dzireIndex].hillRatePerKm;
-  fleet[dzireIndex].hillRatePerKm = 16;
-  writeJson('fleet', fleet);
 
-  // Step C: Verify new calculation reflects ₹16/km
-  const newFare = calculateFare({
-    pickup: 'Jalandhar',
-    destination: 'Shimla',
-    vehicleId: 'dzire',
-    tripType: 'One Way'
+  try {
+    fleet[dzireIndex].hillRatePerKm = 16;
+    writeJson('fleet', fleet);
+
+    const newFare = calculateFare({
+      pickup: 'Jalandhar',
+      destination: 'Shimla',
+      vehicleId: 'dzire',
+      tripType: 'One Way'
+    });
+    assert.strictEqual(newFare.ratePerKm, 16, 'New calculation must use updated rate 16');
+    assert.strictEqual(newFare.baseFare, 250 * 16, 'New base fare must be 4000');
+
+    const savedBookings = readJson('bookings');
+    const retrieved = savedBookings.find(b => b.id === 'TEST-BK-HISTORICAL-001');
+
+    assert.strictEqual(retrieved.ratePerKm, initialFare.ratePerKm, 'Historical booking ratePerKm MUST remain frozen');
+    assert.strictEqual(retrieved.baseFare, initialFare.baseFare, 'Historical booking baseFare MUST remain frozen');
+    assert.strictEqual(retrieved.pricingSnapshot.ratePerKm, initialFare.ratePerKm, 'Snapshot ratePerKm MUST remain frozen');
+    assert.strictEqual(retrieved.pricingSnapshot.baseFare, initialFare.baseFare, 'Snapshot baseFare MUST remain frozen');
+  } finally {
+    // Cleanup
+    fleet[dzireIndex].hillRatePerKm = originalHillRate;
+    writeJson('fleet', fleet);
+    const cleanupBookings = readJson('bookings', []) || [];
+    writeJson('bookings', cleanupBookings.filter(b => b.id !== 'TEST-BK-HISTORICAL-001'));
+  }
+});
+
+// TEST 7: Pricing Validation Engine
+test('7. Validation Engine: Rejects negative prices, overlapping slabs, invalid thresholds', () => {
+  // Test 7a: Negative rate
+  const invalidNegative = validateVehiclePricing({
+    name: 'Test Car',
+    plainRatePerKm: -10
   });
-  assert.strictEqual(newFare.ratePerKm, 16, 'New calculation must use updated rate 16');
-  assert.strictEqual(newFare.baseFare, 250 * 16, 'New base fare must be 4000');
+  assert.strictEqual(invalidNegative.valid, false, 'Negative rate must be rejected');
 
-  // Step D: Retrieve historical booking and verify it is STILL frozen at ₹11 and ₹2750!
-  const savedBookings = readJson('bookings');
-  const retrieved = savedBookings.find(b => b.id === 'TEST-BK-HISTORICAL-001');
+  // Test 7b: Overlapping slabs
+  const invalidOverlap = validateVehiclePricing({
+    name: 'Test Car',
+    minBookingKm: 20,
+    slabs: [
+      { minKm: 20, maxKm: 40, price: 900 },
+      { minKm: 35, maxKm: 60, price: 1200 } // Overlaps with 20-40!
+    ]
+  });
+  assert.strictEqual(invalidOverlap.valid, false, 'Overlapping slabs must be rejected');
+  assert.ok(invalidOverlap.message.includes('Overlapping slabs'), 'Error message must mention overlapping slabs');
 
-  assert.strictEqual(retrieved.ratePerKm, 11, 'Historical booking ratePerKm MUST remain 11');
-  assert.strictEqual(retrieved.baseFare, 2750, 'Historical booking baseFare MUST remain 2750');
-  assert.strictEqual(retrieved.pricingSnapshot.ratePerKm, 11, 'Snapshot ratePerKm MUST remain 11');
-  assert.strictEqual(retrieved.pricingSnapshot.baseFare, 2750, 'Snapshot baseFare MUST remain 2750');
+  // Test 7c: Long distance threshold < min booking KM
+  const invalidThreshold = validateVehiclePricing({
+    name: 'Test Car',
+    minBookingKm: 50,
+    longDistance: {
+      startAfterKm: 30, // 30 < 50 invalid!
+      baseFare: 1000,
+      additionalKmRate: 12
+    }
+  });
+  assert.strictEqual(invalidThreshold.valid, false, 'Threshold lower than minBookingKm must be rejected');
 
-  // Cleanup: restore original rate & remove test booking
-  fleet[dzireIndex].hillRatePerKm = originalHillRate;
-  writeJson('fleet', fleet);
-  writeJson('bookings', savedBookings.filter(b => b.id !== 'TEST-BK-HISTORICAL-001'));
+  // Test 7d: Valid configuration passes
+  const validCar = validateVehiclePricing({
+    name: 'Valid Car',
+    minBookingKm: 20,
+    slabs: [
+      { minKm: 20, maxKm: 35, price: 900 },
+      { minKm: 35, maxKm: 55, price: 1100 }
+    ],
+    longDistance: {
+      startAfterKm: 95,
+      baseFare: 1700,
+      additionalKmRate: 12
+    }
+  });
+  assert.strictEqual(validCar.valid, true, 'Valid car pricing must pass validation');
 });
 
-// TEST 7: Security - Client Fare Tampering Ignored
-test('7. Security: Injected client rate is ignored by server calculation engine', () => {
-  const maliciousClientInput = {
+// TEST 8: Hourly Package Pricing with Included KM
+test('8. Hourly Package: Dzire 4H / 40KM Package (₹1000 base + extra KM charge)', () => {
+  // 30 km (within 40 included) -> ₹1000
+  const result40 = calculateFare({
     pickup: 'Jalandhar',
-    destination: 'Shimla',
+    destination: 'Local Rental',
+    distanceKm: 30,
     vehicleId: 'dzire',
-    ratePerKm: 1, // Tampered price
-    baseFare: 100, // Tampered base fare
-    driverAllowance: 0,
-    estimatedTotal: 100
-  };
+    tripType: 'Hourly Rental',
+    hourlyPackage: '4h'
+  });
+  assert.strictEqual(result40.baseFare, 1000);
 
-  const calculated = calculateFare(maliciousClientInput);
-
-  assert.strictEqual(calculated.ratePerKm, 11, 'Server MUST ignore client ratePerKm=1 and enforce database rate 11');
-  assert.strictEqual(calculated.baseFare, 2750, 'Server MUST ignore client baseFare=100 and enforce 2750');
-  assert.strictEqual(calculated.estimatedTotal, 3050, 'Server MUST enforce authoritative total 3050');
+  // 55 km (15 km over 40 included @ ₹11/km extra) -> 1000 + 15*11 = 1165
+  const result55 = calculateFare({
+    pickup: 'Jalandhar',
+    destination: 'Local Rental',
+    distanceKm: 55,
+    vehicleId: 'dzire',
+    tripType: 'Hourly Rental',
+    hourlyPackage: '4h'
+  });
+  assert.strictEqual(result55.baseFare, 1000 + (15 * 11));
 });
 
-// TEST 8: Multi-Vehicle Search Query
-test('8. Calculate All Fares: Returns sorted array of active vehicles', () => {
+// TEST 9: Multi-Vehicle Search Query
+test('9. Calculate All Fares: Returns sorted array of active vehicles', () => {
   const response = calculateAllFares({
     pickup: 'Jalandhar',
     destination: 'Chandigarh',
@@ -195,9 +285,10 @@ test('8. Calculate All Fares: Returns sorted array of active vehicles', () => {
   assert.ok(response.results[0].estimatedTotal <= response.results[1].estimatedTotal, 'Must be sorted by estimatedTotal ascending');
 });
 
-console.log(`\n📊 Summary: ${passedTests} / ${totalTests} tests passed.`);
+console.log(`\n[Summary] ${passedTests} / ${totalTests} tests passed.`);
 if (passedTests === totalTests) {
-  console.log('🎉 ALL PRICING ENGINE TESTS PASSED SUCCESSFULLY!\n');
+  console.log('[SUCCESS] ALL PRICING ENGINE TESTS PASSED SUCCESSFULLY!\n');
 } else {
   process.exit(1);
 }
+

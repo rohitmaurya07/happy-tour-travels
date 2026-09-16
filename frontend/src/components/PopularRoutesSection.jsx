@@ -130,7 +130,6 @@ export default function PopularRoutesSection({ onSelectRoute }) {
                         {category.tag}
                       </span>
                       <h3 className="text-lg font-bold font-nexa text-white mt-1.5 flex items-center space-x-1.5">
-                        <span className="text-base">{category.emoji}</span>
                         <span>{category.title}</span>
                       </h3>
                     </div>

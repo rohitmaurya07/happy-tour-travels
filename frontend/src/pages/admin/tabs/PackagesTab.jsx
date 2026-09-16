@@ -16,7 +16,7 @@ export default function PackagesTab() {
     id: '',
     title: '',
     category: 'Himachal Tours',
-    duration: '3 Nights / 4 Days',
+    duration: 'Custom Days / Multi-Day Tour',
     highlights: [],
     image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80',
     altText: '',
@@ -281,7 +281,7 @@ export default function PackagesTab() {
                     type="text"
                     value={formData.duration}
                     onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                    placeholder="e.g. 4 Nights / 5 Days"
+                    placeholder="e.g. Custom Days / Flexible Tour"
                     className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl font-bold text-slate-900 text-xs focus:outline-none focus:border-brand-yellow"
                   />
                 </div>

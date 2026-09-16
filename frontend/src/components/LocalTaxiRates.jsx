@@ -10,7 +10,7 @@ export default function LocalTaxiRates() {
   const localTaxiVehicles = (fleet || []).map((car, idx) => ({
     id: car.id,
     name: car.name.toUpperCase(),
-    rankBadge: (car.badgeEmoji ? car.badgeEmoji + ' ' : '') + (car.rank || idx + 1),
+    rankBadge: car.rank || idx + 1,
     seats: car.seats,
     features: car.ac + ' • ' + car.category,
     type: car.category,
@@ -26,7 +26,7 @@ export default function LocalTaxiRates() {
   const handleBookLocalTaxi = (vehicle, duration = '8 Hours / 80 KM') => {
     const fare = duration === '4 Hours / 40 KM' ? vehicle.rate4h : vehicle.rate8h;
     const msg = 'Hello ' + (siteConfig?.businessName || 'Happy Tour & Travels') + ', I want to book Local Taxi Rental.\n\n' +
-      '🚖 *Local Taxi Booking Details:*\n' +
+      '*Local Taxi Booking Details:*\n' +
       '• *Vehicle:* ' + vehicle.name + '\n' +
       '• *Seating:* ' + vehicle.seats + '\n' +
       '• *Package:* ' + duration + '\n' +
@@ -189,7 +189,7 @@ export default function LocalTaxiRates() {
                   className="w-full yellow-gradient-btn py-3 rounded-2xl text-slate-950 font-nexa text-xs font-bold flex items-center justify-center space-x-2 shadow-md group-hover:shadow-lg transition-all"
                 >
                   <MessageCircle className="w-4 h-4 fill-slate-950 stroke-none" />
-                  <span>💬 Book Now on WhatsApp</span>
+                  <span>Book Now on WhatsApp</span>
                 </button>
               </div>
 

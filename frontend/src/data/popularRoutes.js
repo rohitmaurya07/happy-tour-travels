@@ -1,7 +1,6 @@
 export const popularRouteCategories = [
   {
     id: "jalandhar-routes",
-    emoji: "📍",
     title: "Jalandhar – Popular Routes",
     origin: "Jalandhar",
     tag: "Most Active Hub",
@@ -30,7 +29,6 @@ export const popularRouteCategories = [
   },
   {
     id: "amritsar-routes",
-    emoji: "📍",
     title: "Amritsar – Popular Routes",
     origin: "Amritsar",
     tag: "Heritage & Airport Hub",
@@ -41,6 +39,7 @@ export const popularRouteCategories = [
       { from: "Amritsar", to: "Chandigarh Airport", type: "Airport" },
       { from: "Amritsar", to: "Jalandhar", type: "One Way" },
       { from: "Amritsar", to: "Ludhiana", type: "One Way" },
+      
       { from: "Amritsar", to: "Amritsar Airport", type: "Airport" },
       { from: "Amritsar", to: "Shimla", type: "One Way" },
       { from: "Amritsar", to: "Manali", type: "One Way" },
@@ -58,7 +57,6 @@ export const popularRouteCategories = [
   },
   {
     id: "ludhiana-routes",
-    emoji: "📍",
     title: "Ludhiana – Popular Routes",
     origin: "Ludhiana",
     tag: "Industrial Capital Hub",
@@ -85,7 +83,6 @@ export const popularRouteCategories = [
   },
   {
     id: "delhi-airport-punjab-routes",
-    emoji: "✈️",
     title: "Delhi Airport → Punjab",
     origin: "Delhi Airport",
     tag: "Terminal Pickup Express",
@@ -104,7 +101,6 @@ export const popularRouteCategories = [
   },
   {
     id: "delhi-airport-himachal-routes",
-    emoji: "🏔️",
     title: "Delhi Airport → Himachal",
     origin: "Delhi Airport",
     tag: "Scenic Hill Tours",
@@ -122,7 +118,6 @@ export const popularRouteCategories = [
   },
   {
     id: "delhi-airport-haryana-ncr-routes",
-    emoji: "📍",
     title: "Delhi Airport → Haryana / NCR",
     origin: "Delhi Airport",
     tag: "NCR & Highway Drops",
@@ -140,7 +135,6 @@ export const popularRouteCategories = [
   },
   {
     id: "chandigarh-himachal-routes",
-    emoji: "🏔️",
     title: "Chandigarh → Himachal",
     origin: "Chandigarh",
     tag: "Himachal Gateway Express",
@@ -159,7 +153,6 @@ export const popularRouteCategories = [
   },
   {
     id: "chandigarh-punjab-routes",
-    emoji: "📍",
     title: "Chandigarh → Punjab",
     origin: "Chandigarh",
     tag: "Intercity State Connect",
@@ -178,7 +171,6 @@ export const popularRouteCategories = [
   },
   {
     id: "chandigarh-delhi-ncr-routes",
-    emoji: "✈️",
     title: "Chandigarh → Delhi / NCR",
     origin: "Chandigarh",
     tag: "NH44 Highway Direct",

@@ -1,20 +1,17 @@
-﻿import { readJson } from './storage.js';
+import { readJson } from './storage.js';
 
 const ROAD_FACTOR = 1.28;
 
-const KNOWN_DISTANCES = {
+export const KNOWN_DISTANCES = {
+  // From Jalandhar
   "jalandhar|amritsar": 82,
   "jalandhar|amritsar airport": 95,
   "jalandhar|sri guru ram dass jee airport (atq)": 95,
   "jalandhar|chandigarh": 148,
   "jalandhar|chandigarh airport": 155,
   "jalandhar|shaheed bhagat singh airport (ixc)": 155,
-  "jalandhar|delhi": 375,
-  "jalandhar|delhi airport": 385,
-  "jalandhar|indira gandhi international airport (del)": 385,
-  "jalandhar|gurgaon": 395,
-  "jalandhar|gurgaon / gurugram": 395,
-  "jalandhar|noida": 410,
+  "jalandhar|mohali": 142,
+  "jalandhar|zirakpur": 152,
   "jalandhar|ludhiana": 61,
   "jalandhar|phagwara": 22,
   "jalandhar|hoshiarpur": 42,
@@ -23,6 +20,13 @@ const KNOWN_DISTANCES = {
   "jalandhar|bathinda": 165,
   "jalandhar|moga": 70,
   "jalandhar|kapurthala": 22,
+  "jalandhar|delhi": 375,
+  "jalandhar|delhi airport": 385,
+  "jalandhar|indira gandhi international airport (del)": 385,
+  "jalandhar|gurgaon": 395,
+  "jalandhar|gurgaon / gurugram": 395,
+  "jalandhar|noida": 410,
+  "jalandhar|faridabad": 415,
   "jalandhar|shimla": 220,
   "jalandhar|manali": 315,
   "jalandhar|dharamshala": 165,
@@ -37,43 +41,144 @@ const KNOWN_DISTANCES = {
   "jalandhar|palampur": 190,
   "jalandhar|jammu": 215,
   "jalandhar|katra": 260,
+  "jalandhar|katra (vaishno devi)": 260,
+  "jalandhar|srinagar": 480,
   "jalandhar|haridwar": 330,
   "jalandhar|rishikesh": 350,
   "jalandhar|dehradun": 310,
   "jalandhar|mussoorie": 340,
   "jalandhar|jaipur": 620,
+  "jalandhar|agra (taj mahal)": 590,
 
+  // From Amritsar
   "amritsar|delhi": 450,
   "amritsar|delhi airport": 460,
+  "amritsar|indira gandhi international airport (del)": 460,
   "amritsar|chandigarh": 230,
+  "amritsar|chandigarh airport": 238,
   "amritsar|jalandhar": 82,
   "amritsar|ludhiana": 142,
+  "amritsar|amritsar airport": 14,
+  "amritsar|sri guru ram dass jee airport (atq)": 14,
   "amritsar|shimla": 300,
   "amritsar|manali": 395,
+  "amritsar|kullu": 360,
   "amritsar|dharamshala": 200,
   "amritsar|dalhousie": 190,
+  "amritsar|pathankot": 110,
+  "amritsar|jammu": 215,
   "amritsar|katra": 260,
+  "amritsar|hoshiarpur": 120,
+  "amritsar|patiala": 230,
+  "amritsar|mohali": 225,
+  "amritsar|dehradun": 390,
+  "amritsar|bathinda": 185,
 
+  // From Ludhiana
   "ludhiana|delhi": 315,
   "ludhiana|delhi airport": 325,
+  "ludhiana|indira gandhi international airport (del)": 325,
   "ludhiana|chandigarh": 105,
+  "ludhiana|chandigarh airport": 112,
   "ludhiana|amritsar": 142,
+  "ludhiana|amritsar airport": 154,
   "ludhiana|jalandhar": 61,
   "ludhiana|shimla": 225,
   "ludhiana|manali": 335,
+  "ludhiana|kullu": 295,
   "ludhiana|dharamshala": 215,
+  "ludhiana|dalhousie": 245,
+  "ludhiana|pathankot": 170,
+  "ludhiana|patiala": 95,
+  "ludhiana|mohali": 98,
+  "ludhiana|zirakpur": 108,
+  "ludhiana|dehradun": 255,
+  "ludhiana|jaipur": 560,
+  "ludhiana|bathinda": 135,
+  "ludhiana|hoshiarpur": 75,
+  "ludhiana|moga": 70,
 
+  // From Delhi / Delhi Airport
+  "delhi airport|jalandhar": 385,
+  "delhi airport|amritsar": 460,
+  "delhi airport|ludhiana": 325,
+  "delhi airport|chandigarh": 260,
+  "delhi airport|patiala": 255,
+  "delhi airport|bathinda": 320,
+  "delhi airport|hoshiarpur": 405,
+  "delhi airport|moga": 375,
+  "delhi airport|kapurthala": 398,
+  "delhi airport|pathankot": 490,
+  "delhi airport|shimla": 355,
+  "delhi airport|manali": 540,
+  "delhi airport|kullu": 500,
+  "delhi airport|dharamshala": 485,
+  "delhi airport|dalhousie": 570,
+  "delhi airport|kasauli": 305,
+  "delhi airport|solan": 315,
+  "delhi airport|mandi": 440,
+  "delhi airport|palampur": 505,
+  "delhi airport|gurgaon / gurugram": 18,
+  "delhi airport|gurgaon": 18,
+  "delhi airport|faridabad": 38,
+  "delhi airport|panipat": 105,
+  "delhi airport|karnal": 140,
+  "delhi airport|rohtak": 82,
+  "delhi airport|hisar": 175,
+  "delhi airport|sonipat": 65,
+  "delhi airport|ambala": 220,
+  "delhi airport|panchkula": 265,
+  "delhi airport|dehradun": 255,
+  "delhi airport|haridwar": 235,
+  "delhi airport|rishikesh": 255,
+  "delhi airport|jaipur": 260,
+
+  // From Delhi City
+  "delhi|jalandhar": 375,
+  "delhi|amritsar": 450,
+  "delhi|ludhiana": 315,
+  "delhi|chandigarh": 250,
+  "delhi|patiala": 245,
+  "delhi|bathinda": 310,
+  "delhi|hoshiarpur": 395,
+  "delhi|shimla": 345,
+  "delhi|manali": 530,
+  "delhi|dharamshala": 475,
+  "delhi|dalhousie": 560,
+
+  // From Chandigarh / Chandigarh Airport
   "chandigarh|shimla": 110,
   "chandigarh|manali": 270,
   "chandigarh|kullu": 230,
   "chandigarh|dharamshala": 240,
   "chandigarh|dalhousie": 310,
   "chandigarh|kasauli": 55,
+  "chandigarh|solan": 68,
+  "chandigarh|mandi": 185,
+  "chandigarh|palampur": 255,
+  "chandigarh|chail": 105,
+  "chandigarh|jalandhar": 148,
+  "chandigarh|amritsar": 230,
+  "chandigarh|ludhiana": 105,
+  "chandigarh|patiala": 70,
+  "chandigarh|mohali": 10,
+  "chandigarh|zirakpur": 12,
+  "chandigarh|bathinda": 225,
+  "chandigarh|hoshiarpur": 140,
+  "chandigarh|pathankot": 245,
+  "chandigarh|moga": 175,
   "chandigarh|delhi": 250,
   "chandigarh|delhi airport": 260,
-  "chandigarh|jalandhar": 148,
-  "chandigarh|ludhiana": 105,
-  "chandigarh|amritsar": 230
+  "chandigarh|gurgaon / gurugram": 280,
+  "chandigarh|gurgaon": 280,
+  "chandigarh|noida": 275,
+  "chandigarh|faridabad": 290,
+  "chandigarh|ghaziabad": 265,
+  "chandigarh|dehradun": 170,
+  "chandigarh|haridwar": 205,
+  "chandigarh|rishikesh": 225,
+  "chandigarh|mussoorie": 200,
+  "chandigarh|jaipur": 490
 };
 
 const toRad = (deg) => (deg * Math.PI) / 180;
@@ -89,11 +194,13 @@ export const calculateDistance = (from, to, fromCoords = null, toCoords = null) 
   const cleanFrom = normalizeLocation(from);
   const cleanTo = normalizeLocation(to);
 
+  // 1. Direct exact pair lookup
   const key1 = `${cleanFrom}|${cleanTo}`;
   const key2 = `${cleanTo}|${cleanFrom}`;
   if (KNOWN_DISTANCES[key1]) return KNOWN_DISTANCES[key1];
   if (KNOWN_DISTANCES[key2]) return KNOWN_DISTANCES[key2];
 
+  // 2. Substring matching in known distances
   for (const [k, dist] of Object.entries(KNOWN_DISTANCES)) {
     const [kFrom, kTo] = k.split('|');
     if (
@@ -104,6 +211,7 @@ export const calculateDistance = (from, to, fromCoords = null, toCoords = null) 
     }
   }
 
+  // 3. Coordinate-based distance calculation using popularLocations
   const locations = readJson('popularLocations') || [];
   const findCoords = (name) => {
     const clean = normalizeLocation(name);
@@ -136,6 +244,115 @@ export const calculateDistance = (from, to, fromCoords = null, toCoords = null) 
 
   return 120;
 };
+
+export const validateVehiclePricing = (vehicle) => {
+  if (!vehicle || typeof vehicle !== 'object') {
+    return { valid: false, message: 'Vehicle configuration object is required.' };
+  }
+
+  if (!vehicle.name || !vehicle.name.trim()) {
+    return { valid: false, message: 'Vehicle name is required.' };
+  }
+
+  const numericFields = [
+    { key: 'plainRatePerKm', label: 'Plain rate (₹/km)' },
+    { key: 'hillRatePerKm', label: 'Hill rate (₹/km)' },
+    { key: 'oneWayRate', label: 'One-way rate (₹/km)' },
+    { key: 'roundTripRate', label: 'Round-trip rate (₹/km)' },
+    { key: 'extraKmRate', label: 'Extra KM rate (₹/km)' },
+    { key: 'minBookingKm', label: 'Minimum booking KM' },
+    { key: 'airportBasePrice', label: 'Airport base price' },
+    { key: 'driverAllowance', label: 'Driver allowance' }
+  ];
+
+  for (const field of numericFields) {
+    if (vehicle[field.key] !== undefined && vehicle[field.key] !== null && vehicle[field.key] !== '') {
+      const val = Number(vehicle[field.key]);
+      if (isNaN(val) || val < 0) {
+        return { valid: false, message: `${field.label} cannot be negative or invalid.` };
+      }
+    }
+  }
+
+  // Long distance validation
+  if (vehicle.longDistance) {
+    const startAfterKm = Number(vehicle.longDistance.startAfterKm);
+    const baseFare = Number(vehicle.longDistance.baseFare);
+    const additionalKmRate = Number(vehicle.longDistance.additionalKmRate);
+    const minBookingKm = Number(vehicle.minBookingKm) || 0;
+
+    if (isNaN(startAfterKm) || startAfterKm < 0) {
+      return { valid: false, message: 'Long distance threshold KM must be a non-negative number.' };
+    }
+    if (isNaN(baseFare) || baseFare < 0) {
+      return { valid: false, message: 'Long distance base fare cannot be negative.' };
+    }
+    if (isNaN(additionalKmRate) || additionalKmRate < 0) {
+      return { valid: false, message: 'Long distance additional KM rate cannot be negative.' };
+    }
+    if (startAfterKm < minBookingKm) {
+      return { valid: false, message: `Long distance threshold (${startAfterKm} km) cannot be lower than minimum booking distance (${minBookingKm} km).` };
+    }
+  }
+
+  // Local slabs validation (overlapping / duplicate / negative check)
+  if (Array.isArray(vehicle.slabs) && vehicle.slabs.length > 0) {
+    const sorted = [...vehicle.slabs].sort((a, b) => Number(a.minKm) - Number(b.minKm));
+    for (let i = 0; i < sorted.length; i++) {
+      const s = sorted[i];
+      const minKm = Number(s.minKm);
+      const maxKm = Number(s.maxKm);
+      const price = Number(s.price);
+
+      if (isNaN(minKm) || minKm < 0) {
+        return { valid: false, message: `Slab #${i + 1} starting KM must be non-negative.` };
+      }
+      if (isNaN(maxKm) || maxKm <= minKm) {
+        return { valid: false, message: `Slab #${i + 1} ending KM (${maxKm}) must be greater than starting KM (${minKm}).` };
+      }
+      if (isNaN(price) || price < 0) {
+        return { valid: false, message: `Slab #${i + 1} price cannot be negative.` };
+      }
+
+      if (i > 0) {
+        const prev = sorted[i - 1];
+        const prevMin = Number(prev.minKm);
+        const prevMax = Number(prev.maxKm);
+        if (minKm === prevMin && maxKm === prevMax) {
+          return { valid: false, message: `Duplicate slab range detected: ${minKm}–${maxKm} KM.` };
+        }
+        if (minKm < prevMax) {
+          return { valid: false, message: `Overlapping slabs detected: Slab ${prevMin}–${prevMax} KM overlaps with ${minKm}–${maxKm} KM.` };
+        }
+      }
+    }
+  }
+
+  // Hourly packages validation
+  if (vehicle.packages) {
+    if (vehicle.packages.fourHours) {
+      const p4 = Number(vehicle.packages.fourHours.price);
+      const k4 = Number(vehicle.packages.fourHours.includedKm);
+      if (isNaN(p4) || p4 < 0) return { valid: false, message: '4-hour package price cannot be negative.' };
+      if (isNaN(k4) || k4 <= 0) return { valid: false, message: '4-hour package included KM must be greater than 0.' };
+    }
+    if (vehicle.packages.eightHours) {
+      const p8 = Number(vehicle.packages.eightHours.price);
+      const k8 = Number(vehicle.packages.eightHours.includedKm);
+      if (isNaN(p8) || p8 < 0) return { valid: false, message: '8-hour package price cannot be negative.' };
+      if (isNaN(k8) || k8 <= 0) return { valid: false, message: '8-hour package included KM must be greater than 0.' };
+    }
+  }
+
+  return { valid: true };
+};
+
+const HILL_KEYWORDS = [
+  'shimla', 'manali', 'dharamshala', 'dalhousie', 'kullu', 'kasol', 'kasauli',
+  'solan', 'mandi', 'palampur', 'chail', 'mussoorie', 'rishikesh', 'dehradun',
+  'nainital', 'kufri', 'mcleod ganj', 'khajjiar', 'tosh', 'rohtang', 'atal tunnel',
+  'spiti', 'kinnaur', 'leh', 'lahaul', 'jibhi', 'tirthan', 'haridwar'
+];
 
 export const resolveRouteDetails = (pickup, destination) => {
   const cleanFrom = normalizeLocation(pickup);
@@ -179,7 +396,9 @@ export const resolveRouteDetails = (pickup, destination) => {
   const fromRegion = (locFrom?.regionType || '').toUpperCase();
   const toRegion = (locTo?.regionType || '').toUpperCase();
 
-  if (toRegion === 'HILL' || fromRegion === 'HILL') {
+  const isHillKeyword = HILL_KEYWORDS.some(k => cleanTo.includes(k) || cleanFrom.includes(k));
+
+  if (toRegion === 'HILL' || fromRegion === 'HILL' || isHillKeyword) {
     routeType = 'HILL';
   } else if (toRegion === 'MIXED' || fromRegion === 'MIXED') {
     routeType = 'MIXED';
@@ -218,7 +437,8 @@ export const calculateFare = ({
   pickupTime = '09:00',
   hourlyPackage = '8h',
   fromCoords = null,
-  toCoords = null
+  toCoords = null,
+  distanceKm = null
 }) => {
   if (!pickup || !destination) {
     throw new Error('Pickup and Destination locations are required.');
@@ -244,41 +464,47 @@ export const calculateFare = ({
   const routeDetails = resolveRouteDetails(pickup, destination);
   const routeType = routeDetails.routeType;
 
-  let actualDistance = routeDetails.customDistance || calculateDistance(pickup, destination, fromCoords, toCoords);
+  let actualDistance = Number(distanceKm) > 0 ? Number(distanceKm) : (routeDetails.customDistance || calculateDistance(pickup, destination, fromCoords, toCoords));
   if (actualDistance <= 0) actualDistance = 50;
 
   const isHourly = tripType === 'Hourly Rental';
   const isRoundTrip = tripType === 'Round Trip';
   const isAirport = tripType === 'Airport';
 
-  let billableKm = 0;
+  let billableKm = actualDistance;
   let ratePerKm = 0;
   let baseFare = 0;
   let pricingType = 'per_km';
-  let pricingRuleApplied = 'Per-KM Vehicle Rate';
-  let minimumKm = vehicle.minimumKm !== undefined ? Number(vehicle.minimumKm) : 250;
-  let extraKmRate = vehicle.extraKmRate !== undefined ? Number(vehicle.extraKmRate) : (vehicle.plainRatePerKm || 10);
-  let driverAllowance = vehicle.driverAllowance !== undefined ? Number(vehicle.driverAllowance) : (pricingSettings.driverAllowance || 300);
+  let pricingRuleApplied = 'Authoritative Database Pricing';
+  let appliedSlab = null;
+
+  const minBookingKm = vehicle.minBookingKm !== undefined ? Number(vehicle.minBookingKm) : (vehicle.slabs?.[0]?.minKm || 20);
+  const outstationMinKm = vehicle.minimumKm !== undefined ? Number(vehicle.minimumKm) : 250;
+  const extraKmRate = vehicle.extraKmRate !== undefined ? Number(vehicle.extraKmRate) : (vehicle.plainRatePerKm || 11);
+  const driverAllowance = vehicle.driverAllowance !== undefined ? Number(vehicle.driverAllowance) : (pricingSettings.driverAllowance ?? 300);
 
   // 1. Hourly Rental Package
   if (isHourly) {
     pricingType = 'hourly_package';
-    if (hourlyPackage === '4h') {
-      billableKm = 40;
-      baseFare = vehicle.localPackages?.fourHours || Math.round(40 * (vehicle.plainRatePerKm || 10));
-      pricingRuleApplied = '4 Hours / 40 KM Local Package';
-    } else {
-      billableKm = 80;
-      baseFare = vehicle.localPackages?.eightHours || vehicle.hourlyRate || Math.round(80 * (vehicle.plainRatePerKm || 10));
-      pricingRuleApplied = '8 Hours / 80 KM Local Package';
-    }
-    ratePerKm = vehicle.plainRatePerKm || vehicle.oneWayRate || 10;
+    const pkg = hourlyPackage === '4h'
+      ? (vehicle.packages?.fourHours || { price: vehicle.localPackages?.fourHours || 1000, includedKm: 40 })
+      : (vehicle.packages?.eightHours || { price: vehicle.localPackages?.eightHours || vehicle.hourlyRate || 1500, includedKm: 80 });
+
+    const pkgPrice = Number(pkg.price) || 0;
+    const includedKm = Number(pkg.includedKm) || (hourlyPackage === '4h' ? 40 : 80);
+    const extraKm = Math.max(0, actualDistance - includedKm);
+    const extraCharges = extraKm * extraKmRate;
+
+    baseFare = pkgPrice + extraCharges;
+    billableKm = includedKm + extraKm;
+    ratePerKm = extraKmRate;
+    pricingRuleApplied = `${hourlyPackage === '4h' ? '4 Hours / ' + includedKm + ' KM' : '8 Hours / ' + includedKm + ' KM'} Package (₹${pkgPrice}${extraKm > 0 ? ` + ₹${extraCharges} for ${extraKm} extra km` : ''})`;
   }
-  // 2. Specific Route Fixed Price (Priority 1)
+  // 2. Specific Route Fixed Tariff (Priority 1)
   else if (
     routeDetails.pricingType === 'fixed' &&
     routeDetails.fixedPrices &&
-    routeDetails.fixedPrices[vehicle.id] > 0
+    Number(routeDetails.fixedPrices[vehicle.id]) > 0
   ) {
     pricingType = 'fixed_route';
     baseFare = Number(routeDetails.fixedPrices[vehicle.id]);
@@ -286,45 +512,106 @@ export const calculateFare = ({
     ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
     pricingRuleApplied = `Fixed Route Tariff (${routeDetails.route?.pickup || pickup} → ${routeDetails.route?.destination || destination})`;
   }
-  // 3. Airport Fixed Override Check (Priority 2)
-  else if (isAirport && Array.isArray(pricingSettings.airportOverrides)) {
-    const cleanDest = normalizeLocation(destination);
-    const cleanOrig = normalizeLocation(pickup);
-    const airportOverride = pricingSettings.airportOverrides.find((override) => {
-      const kw = normalizeLocation(override.routeKeyword || override.name || '');
-      return kw && (cleanDest.includes(kw) || cleanOrig.includes(kw));
-    });
-
-    if (airportOverride && airportOverride.rates && airportOverride.rates[vehicle.id] > 0) {
-      pricingType = 'fixed_airport';
-      baseFare = Number(airportOverride.rates[vehicle.id]);
-      billableKm = actualDistance;
-      ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
-      pricingRuleApplied = `Airport Override (${airportOverride.name})`;
-    }
+  // 3. Short Local Airport Drop / Transfer (Priority 2 - Local Only <= 35 KM)
+  else if (
+    (isAirport || normalizeLocation(destination).includes('airport') || normalizeLocation(pickup).includes('airport')) &&
+    actualDistance <= 35 &&
+    vehicle.airportBasePrice &&
+    Number(vehicle.airportBasePrice) > 0
+  ) {
+    pricingType = 'fixed_airport';
+    baseFare = Number(vehicle.airportBasePrice);
+    billableKm = actualDistance;
+    ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
+    pricingRuleApplied = `Local Airport Drop Tariff (₹${vehicle.airportBasePrice})`;
   }
 
-  // 4. Standard Distance / Per-KM Calculation (Priority 3 & 4)
+  // 4. Standard Distance / Long Distance / Hill / Round Trip / Local Slab Calculation
   if (baseFare === 0) {
-    let effectiveDist = actualDistance;
     if (isRoundTrip) {
-      effectiveDist = actualDistance * 2;
-    }
-
-    if (routeType === 'HILL' || routeType === 'MIXED') {
-      ratePerKm = vehicle.hillRatePerKm || vehicle.plainRatePerKm || vehicle.oneWayRate || 11;
-      pricingRuleApplied = isRoundTrip ? `Hill Area Round-Trip Rate (₹${ratePerKm}/km)` : `Hill Area Rate (₹${ratePerKm}/km)`;
+      const effectiveDist = actualDistance * 2;
+      const effectiveMinKm = outstationMinKm * 2;
+      billableKm = Math.max(effectiveDist, effectiveMinKm);
+      ratePerKm = Number(vehicle.roundTripRate) || (routeType === 'HILL' ? Number(vehicle.hillRatePerKm) : Number(vehicle.plainRatePerKm)) || 11;
+      baseFare = Math.round(billableKm * ratePerKm);
+      pricingType = 'round_trip';
+      pricingRuleApplied = `Round-Trip Tariff (₹${ratePerKm}/km, ${billableKm} billable km)`;
+    } else if (routeType === 'HILL' || routeType === 'MIXED') {
+      billableKm = Math.max(actualDistance, outstationMinKm);
+      ratePerKm = Number(vehicle.hillRatePerKm) || Number(vehicle.plainRatePerKm) || 14;
+      baseFare = Math.round(billableKm * ratePerKm);
+      pricingType = 'per_km';
+      pricingRuleApplied = `Hill Area Rate (₹${ratePerKm}/km, ${billableKm} billable km)`;
     } else {
-      ratePerKm = vehicle.plainRatePerKm || vehicle.oneWayRate || 10;
-      pricingRuleApplied = isRoundTrip ? `Plain Area Round-Trip Rate (₹${ratePerKm}/km)` : `Plain Area Rate (₹${ratePerKm}/km)`;
-    }
+      // Plain Area Calculation with Database-Configured Long Distance & Local Slabs
+      const longDistance = vehicle.longDistance || {
+        startAfterKm: 95,
+        baseFare: 1700,
+        additionalKmRate: vehicle.oneWayRate || vehicle.plainRatePerKm || 12
+      };
 
-    // Billable KM = max(actual distance, minimum KM)
-    const effectiveMinKm = isRoundTrip ? minimumKm * 2 : minimumKm;
-    billableKm = Math.max(effectiveDist, effectiveMinKm);
-    baseFare = Math.round(billableKm * ratePerKm);
+      const startAfterKm = Number(longDistance.startAfterKm) || 95;
+      const ldBaseFare = Number(longDistance.baseFare) || 1700;
+      const ldAdditionalKmRate = Number(longDistance.additionalKmRate) || (vehicle.oneWayRate || vehicle.plainRatePerKm || 12);
+
+      if (actualDistance > startAfterKm) {
+        // Long distance formula: baseFare + (actualDistance - startAfterKm) * additionalKmRate
+        const extraKm = actualDistance - startAfterKm;
+        baseFare = Math.round(ldBaseFare + extraKm * ldAdditionalKmRate);
+        billableKm = actualDistance;
+        ratePerKm = ldAdditionalKmRate;
+        pricingType = 'long_distance';
+        pricingRuleApplied = `Long Distance: Base ₹${ldBaseFare} (first ${startAfterKm} km) + ₹${ldAdditionalKmRate}/km for extra ${extraKm} km`;
+      } else {
+        // Local Slab Matching
+        const effectiveKm = Math.max(actualDistance, minBookingKm);
+        billableKm = effectiveKm;
+        const slabs = Array.isArray(vehicle.slabs) ? vehicle.slabs : [];
+
+        // Find slab matching effectiveKm
+        const matchedSlab = slabs.find((s) => {
+          const min = Number(s.minKm);
+          const max = Number(s.maxKm);
+          return effectiveKm >= min && effectiveKm <= max;
+        });
+
+        if (matchedSlab && Number(matchedSlab.price) > 0) {
+          baseFare = Number(matchedSlab.price);
+          appliedSlab = `${matchedSlab.minKm}–${matchedSlab.maxKm} KM`;
+          ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
+          pricingType = 'local_slab';
+          pricingRuleApplied = `Local Slab (${appliedSlab}: ₹${baseFare})`;
+        } else if (slabs.length > 0) {
+          // If below smallest slab, use smallest slab
+          const sortedSlabs = [...slabs].sort((a, b) => Number(a.minKm) - Number(b.minKm));
+          if (effectiveKm < Number(sortedSlabs[0].minKm)) {
+            const firstSlab = sortedSlabs[0];
+            baseFare = Number(firstSlab.price);
+            appliedSlab = `${firstSlab.minKm}–${firstSlab.maxKm} KM (Min Booking)`;
+            ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
+            pricingType = 'local_slab';
+            pricingRuleApplied = `Minimum Local Booking Slab (${firstSlab.minKm}–${firstSlab.maxKm} KM: ₹${baseFare})`;
+          } else {
+            // Above largest slab but <= startAfterKm
+            const lastSlab = sortedSlabs[sortedSlabs.length - 1];
+            baseFare = Number(lastSlab.price);
+            appliedSlab = `${lastSlab.minKm}–${lastSlab.maxKm} KM`;
+            ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
+            pricingType = 'local_slab';
+            pricingRuleApplied = `Local Slab (${appliedSlab}: ₹${baseFare})`;
+          }
+        } else {
+          // Fallback if no slabs configured: plainRatePerKm * billableKm
+          ratePerKm = Number(vehicle.oneWayRate || vehicle.plainRatePerKm) || 12;
+          baseFare = Math.round(billableKm * ratePerKm);
+          pricingType = 'per_km';
+          pricingRuleApplied = `Standard Plain Rate (₹${ratePerKm}/km)`;
+        }
+      }
+    }
   }
 
+  // 5. Night Charges
   let nightCharges = 0;
   if (isNightHour(pickupTime, pricingSettings.nightChargeStartHour ?? 23, pricingSettings.nightChargeEndHour ?? 5)) {
     nightCharges = pricingSettings.nightChargesAmount ?? 250;
@@ -356,13 +643,16 @@ export const calculateFare = ({
     routeType,
     pricingRuleApplied,
     distanceKm: actualDistance,
-    minimumKm,
+    minBookingKm,
+    minimumKm: outstationMinKm,
     billableKm,
     ratePerKm,
     extraKmRate,
     baseFare,
     driverAllowance,
     nightCharges,
+    appliedSlab,
+    longDistanceConfig: vehicle.longDistance,
     tollPolicy: additionalCharges.toll,
     parkingPolicy: additionalCharges.parking,
     stateTaxPolicy: additionalCharges.stateTax,
@@ -383,7 +673,8 @@ export const calculateFare = ({
     pricingType,
     pricingRuleApplied,
     distanceKm: actualDistance,
-    minimumKm,
+    minBookingKm,
+    minimumKm: outstationMinKm,
     billableKm,
     ratePerKm,
     extraKmRate,
@@ -393,6 +684,7 @@ export const calculateFare = ({
     additionalCharges,
     estimatedTotal,
     inclusions,
+    appliedSlab,
     pricingSnapshot
   };
 };
@@ -416,10 +708,8 @@ export const calculateAllFares = (params) => {
   results.sort((a, b) => a.estimatedTotal - b.estimatedTotal);
 
   return {
-    pickup: params.pickup,
-    destination: params.destination,
-    tripType: params.tripType || 'One Way',
     results,
+    count: results.length,
     errors
   };
 };

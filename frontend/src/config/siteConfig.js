@@ -1,8 +1,3 @@
-/**
- * Site Configuration & Centralized Business Info
- * Edit business details here without changing components.
- */
-
 export const siteConfig = {
   // Business Identity
   businessName: "Happy Tour & Travels",

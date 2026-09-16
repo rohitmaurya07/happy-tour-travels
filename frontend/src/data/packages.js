@@ -89,7 +89,7 @@ export const packagesData = [
     id: "dharamshala-dalhousie-escape",
     title: "Dharamshala, Dalhousie & Khajjiar Tour",
     category: "Himachal Tours",
-    duration: "4 Nights / 5 Days",
+    duration: "Custom Days / Multi-Day Tour",
     highlights: [
       "McLeod Ganj & Dalai Lama Temple",
       "Dalhousie & Mini Switzerland (Khajjiar)",
