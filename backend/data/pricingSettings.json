@@ -1,6 +1,11 @@
 {
-  "tollIncluded": true,
-  "stateTaxIncluded": true,
+  "toll": "actual",
+  "parking": "actual",
+  "stateTax": "actual",
+  "permit": "actual",
+  "driverAllowance": 300,
+  "tollIncluded": false,
+  "stateTaxIncluded": false,
   "driverAllowanceIncluded": true,
   "fuelIncluded": true,
   "nightChargesAmount": 250,
@@ -8,7 +13,7 @@
   "nightChargeEndHour": 5,
   "gstPercent": 0,
   "gstIncluded": true,
-  "termsAndConditions": "All outstation round-trip and one-way estimates include State Taxes, Highway Toll Taxes, Driver Allowance and Fuel. Toll & parking on local rentals as per actual.",
+  "termsAndConditions": "Base fare includes Highway Fuel and Chauffeur services. Toll taxes, Parking charges, State border taxes & Permits are payable as per actual receipts.",
   "airportOverrides": [
     {
       "id": "delhi-airport",
@@ -50,5 +55,5 @@
       }
     }
   ],
-  "updatedAt": "2026-09-15T19:01:56.651Z"
+  "updatedAt": "2026-09-16T11:53:11.731Z"
 }

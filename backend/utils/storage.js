@@ -1,4 +1,4 @@
-import fs from 'fs';
+﻿import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
@@ -56,7 +56,7 @@ export const initDb = async () => {
       name: 'Happy Tour & Travels Admin',
       updatedAt: new Date().toISOString()
     });
-    console.log('? Admin user initialized: username=admin');
+    console.log('✓ Admin user initialized: username=admin');
   }
 
   // 2. Site Config
@@ -81,10 +81,16 @@ export const initDb = async () => {
   }
 
   // 3. Pricing & Charges Settings
-  if (!readJson('pricingSettings')) {
+  const currentPricing = readJson('pricingSettings');
+  if (!currentPricing || currentPricing.driverAllowance === undefined) {
     writeJson('pricingSettings', {
-      tollIncluded: true,
-      stateTaxIncluded: true,
+      toll: 'actual',
+      parking: 'actual',
+      stateTax: 'actual',
+      permit: 'actual',
+      driverAllowance: 300,
+      tollIncluded: false,
+      stateTaxIncluded: false,
       driverAllowanceIncluded: true,
       fuelIncluded: true,
       nightChargesAmount: 250,
@@ -92,7 +98,27 @@ export const initDb = async () => {
       nightChargeEndHour: 5,
       gstPercent: 0,
       gstIncluded: true,
-      termsAndConditions: 'All outstation round-trip and one-way estimates include State Taxes, Highway Toll Taxes, Driver Allowance and Fuel. Toll & parking on local rentals as per actual.',
+      termsAndConditions: 'Base fare includes Highway Fuel and Chauffeur services. Toll taxes, Parking charges, State border taxes & Permits are payable as per actual receipts.',
+      airportOverrides: [
+        {
+          id: 'delhi-airport',
+          name: 'Delhi Airport (DEL)',
+          routeKeyword: 'Delhi Airport',
+          rates: { dzire: 5180, verna: 5580, ertiga: 6000, innova: 7500, fortuner: 10500, tempo: 9500 }
+        },
+        {
+          id: 'amritsar-airport',
+          name: 'Amritsar Airport (ATQ)',
+          routeKeyword: 'Amritsar Airport',
+          rates: { dzire: 1900, verna: 2300, ertiga: 2400, innova: 3500, fortuner: 5500, tempo: 5000 }
+        },
+        {
+          id: 'chandigarh-airport',
+          name: 'Chandigarh Airport (IXC)',
+          routeKeyword: 'Chandigarh Airport',
+          rates: { dzire: 2500, verna: 2900, ertiga: 3000, innova: 4500, fortuner: 7000, tempo: 6000 }
+        }
+      ],
       updatedAt: new Date().toISOString()
     });
   }
@@ -110,9 +136,10 @@ export const initDb = async () => {
     });
   }
 
-  // 5. Fleet Data
-  if (!readJson('fleet')) {
-    writeJson('fleet', [
+  // 5. Fleet Data with Plain/Hill Rates, Minimum KM, Driver Allowance & Active status
+  let fleet = readJson('fleet');
+  if (!fleet || !fleet.some(v => v.plainRatePerKm !== undefined)) {
+    const defaultFleet = [
       {
         id: 'dzire',
         name: 'Maruti Suzuki Dzire',
@@ -126,15 +153,30 @@ export const initDb = async () => {
         tag: 'Budget Sedan',
         rank: 5,
         description: 'Comfortable and economic 4-seater sedan ideal for city commutes, airport transfers, and one-way outstation trips.',
-        ratesHint: '?12/km One Way ? ?11/km Round Trip',
-        oneWayRate: 12,
-        roundTripRate: 11,
+        ratesHint: '₹10/km Plain • ₹11/km Hill • Min 250 KM',
+        plainRatePerKm: 10,
+        hillRatePerKm: 11,
+        minimumKm: 250,
+        extraKmRate: 11,
+        driverAllowance: 300,
+        active: true,
+        oneWayRate: 10,
+        roundTripRate: 10,
         localPackages: {
           fourHours: 1000,
           eightHours: 1500
         },
         hourlyRate: 1500,
-        airportFixedRate: 2499
+        airportFixedRate: 2499,
+        slabs: {
+          minKm: 20,
+          slab20_35: 900,
+          slab35_55: 1100,
+          slab55_75: 1300,
+          slab75_95: 1500,
+          slab95Base: 1700,
+          post95Rate: 10
+        }
       },
       {
         id: 'verna',
@@ -149,87 +191,147 @@ export const initDb = async () => {
         tag: 'Comfortable Sedan',
         rank: 4,
         description: 'Stylish 4-seater executive sedan offering plush interiors, smooth highway suspension, and superior comfort for business & VIP travel.',
-        ratesHint: '?13/km One Way ? ?12/km Round Trip',
-        oneWayRate: 13,
+        ratesHint: '₹12/km Plain • ₹14/km Hill • Min 250 KM',
+        plainRatePerKm: 12,
+        hillRatePerKm: 14,
+        minimumKm: 250,
+        extraKmRate: 13,
+        driverAllowance: 300,
+        active: true,
+        oneWayRate: 12,
         roundTripRate: 12,
         localPackages: {
           fourHours: 1200,
           eightHours: 2000
         },
         hourlyRate: 2000,
-        airportFixedRate: 2999
+        airportFixedRate: 2999,
+        slabs: {
+          minKm: 20,
+          slab20_35: 1300,
+          slab35_55: 1500,
+          slab55_75: 1700,
+          slab75_95: 1900,
+          slab95Base: 2100,
+          post95Rate: 12
+        }
       },
       {
         id: 'ertiga',
         name: 'Maruti Suzuki Ertiga',
         category: 'Family Car',
-        seats: '6?7 Seater',
+        seats: '6–7 Seater',
         luggage: '3-4 Bags',
         ac: 'Front & Rear AC Vents',
         fuel: 'Petrol/CNG',
         image: '/assets/images/ertiga.png',
         altText: 'Maruti Ertiga 6-7 seater family taxi service in North India',
-        tag: '?? Family Choice',
+        tag: '⭐ Family Choice',
         rank: 3,
-        badgeEmoji: '??',
-        description: 'Spacious 6?7 seater family car perfectly suited for family trips, outstation tours to Himachal Pradesh, and airport group travel.',
-        ratesHint: '?15/km One Way ? ?14/km Round Trip',
-        oneWayRate: 15,
+        badgeEmoji: '⭐',
+        description: 'Spacious 6–7 seater family car perfectly suited for family trips, outstation tours to Himachal Pradesh, and airport group travel.',
+        ratesHint: '₹14/km Plain • ₹16/km Hill • Min 250 KM',
+        plainRatePerKm: 14,
+        hillRatePerKm: 16,
+        minimumKm: 250,
+        extraKmRate: 15,
+        driverAllowance: 300,
+        active: true,
+        oneWayRate: 14,
         roundTripRate: 14,
         localPackages: {
           fourHours: 1500,
           eightHours: 2300
         },
         hourlyRate: 2300,
-        airportFixedRate: 3499
+        airportFixedRate: 3499,
+        slabs: {
+          minKm: 20,
+          slab20_35: 1400,
+          slab35_55: 1600,
+          slab55_75: 1800,
+          slab75_95: 2000,
+          slab95Base: 2200,
+          post95Rate: 14
+        }
       },
       {
         id: 'innova',
         name: 'Toyota Innova Crysta',
         category: 'Premium Family Car',
-        seats: '7?8 Seater',
+        seats: '7–8 Seater',
         luggage: '4-5 Bags',
         ac: 'Triple Zone AC',
         fuel: 'Diesel',
         image: '/assets/images/innova.png',
         altText: 'Toyota Innova Crysta 7-8 seater premium cab across North India',
-        tag: '?? Premium Family',
+        tag: '👑 Premium Family',
         rank: 2,
-        badgeEmoji: '??',
-        description: 'The gold standard for highway comfort and mountain tours. 7?8 seater with unmatched legroom, plush captain seats, and exceptional ride stability.',
-        ratesHint: '?20/km One Way ? ?17.50/km Round Trip',
-        oneWayRate: 20,
+        badgeEmoji: '👑',
+        description: 'The gold standard for highway comfort and mountain tours. 7–8 seater with unmatched legroom, plush captain seats, and exceptional ride stability.',
+        ratesHint: '₹18/km Plain • ₹20/km Hill • Min 250 KM',
+        plainRatePerKm: 18,
+        hillRatePerKm: 20,
+        minimumKm: 250,
+        extraKmRate: 19,
+        driverAllowance: 400,
+        active: true,
+        oneWayRate: 18,
         roundTripRate: 17.5,
         localPackages: {
           fourHours: 1800,
           eightHours: 3000
         },
         hourlyRate: 3000,
-        airportFixedRate: 4999
+        airportFixedRate: 4999,
+        slabs: {
+          minKm: 20,
+          slab20_35: 1800,
+          slab35_55: 2200,
+          slab55_75: 2600,
+          slab75_95: 3000,
+          slab95Base: 3300,
+          post95Rate: 18
+        }
       },
       {
         id: 'fortuner',
         name: 'Toyota Fortuner Automatic',
         category: 'Premium SUV',
-        seats: '6?7 Seater',
+        seats: '6–7 Seater',
         luggage: '4-5 Bags',
         ac: 'Dual Zone Automatic AC',
         fuel: 'Diesel Automatic',
         image: '/assets/images/fortuner.png',
         altText: 'Toyota Fortuner Automatic premium luxury SUV taxi in North India',
-        tag: '?? Premium SUV',
+        tag: '🔥 Premium SUV',
         rank: 1,
-        badgeEmoji: '??',
-        description: 'Commanding 6?7 seater premium SUV with automatic transmission. Luxurious interiors, supreme road presence, and ultimate highway capability.',
-        ratesHint: '?28/km One Way ? ?25/km Round Trip',
-        oneWayRate: 28,
+        badgeEmoji: '🔥',
+        description: 'Commanding 6–7 seater premium SUV with automatic transmission. Luxurious interiors, supreme road presence, and ultimate highway capability.',
+        ratesHint: '₹26/km Plain • ₹30/km Hill • Min 250 KM',
+        plainRatePerKm: 26,
+        hillRatePerKm: 30,
+        minimumKm: 250,
+        extraKmRate: 28,
+        driverAllowance: 500,
+        active: true,
+        oneWayRate: 26,
         roundTripRate: 25,
         localPackages: {
           fourHours: 2000,
           eightHours: 5000
         },
         hourlyRate: 5000,
-        airportFixedRate: 6499
+        airportFixedRate: 6499,
+        slabs: {
+          minKm: 20,
+          slab20_35: 2400,
+          slab35_55: 3000,
+          slab55_75: 3600,
+          slab75_95: 4200,
+          slab95Base: 4600,
+          post95Rate: 26
+        }
       },
       {
         id: 'tempo',
@@ -244,379 +346,183 @@ export const initDb = async () => {
         tag: 'Group Special',
         rank: 6,
         description: 'Spacious vehicle with pushback seats, individual charging points, and music system. Designed for large family reunions & wedding groups.',
-        ratesHint: '?25/km One Way ? ?24/km Round Trip',
-        oneWayRate: 25,
+        ratesHint: '₹24/km Plain • ₹28/km Hill • Min 250 KM',
+        plainRatePerKm: 24,
+        hillRatePerKm: 28,
+        minimumKm: 250,
+        extraKmRate: 25,
+        driverAllowance: 500,
+        active: true,
+        oneWayRate: 24,
         roundTripRate: 24,
         localPackages: {
           fourHours: 3500,
           eightHours: 5500
         },
         hourlyRate: 5500,
-        airportFixedRate: 6999
+        airportFixedRate: 6999,
+        slabs: {
+          minKm: 20,
+          slab20_35: 2800,
+          slab35_55: 3500,
+          slab55_75: 4200,
+          slab75_95: 4900,
+          slab95Base: 5500,
+          post95Rate: 24
+        }
+      }
+    ];
+    writeJson('fleet', defaultFleet);
+  }
+
+  // 6. Pricing Routes Data (Specific Routes, Fixed/Per-Km & Plain/Hill Classifications)
+  if (!readJson('pricingRoutes')) {
+    writeJson('pricingRoutes', [
+      {
+        id: 'jalandhar-delhi-airport',
+        pickup: 'Jalandhar',
+        destination: 'Delhi Airport',
+        routeType: 'PLAIN',
+        pricingType: 'fixed',
+        vehiclePrices: {
+          dzire: 3500,
+          verna: 4000,
+          ertiga: 4500,
+          innova: 5500,
+          fortuner: 8500,
+          tempo: 7500
+        },
+        distanceKm: 385,
+        active: true
+      },
+      {
+        id: 'jalandhar-chandigarh',
+        pickup: 'Jalandhar',
+        destination: 'Chandigarh',
+        routeType: 'PLAIN',
+        pricingType: 'fixed',
+        vehiclePrices: {
+          dzire: 2200,
+          verna: 2600,
+          ertiga: 2800,
+          innova: 3800,
+          fortuner: 5800,
+          tempo: 5200
+        },
+        distanceKm: 148,
+        active: true
+      },
+      {
+        id: 'jalandhar-shimla',
+        pickup: 'Jalandhar',
+        destination: 'Shimla',
+        routeType: 'HILL',
+        pricingType: 'per_km',
+        vehiclePrices: {
+          dzire: 0,
+          verna: 0,
+          ertiga: 0,
+          innova: 0,
+          fortuner: 0,
+          tempo: 0
+        },
+        distanceKm: 220,
+        active: true
+      },
+      {
+        id: 'jalandhar-manali',
+        pickup: 'Jalandhar',
+        destination: 'Manali',
+        routeType: 'HILL',
+        pricingType: 'per_km',
+        vehiclePrices: {
+          dzire: 0,
+          verna: 0,
+          ertiga: 0,
+          innova: 0,
+          fortuner: 0,
+          tempo: 0
+        },
+        distanceKm: 315,
+        active: true
+      },
+      {
+        id: 'jalandhar-dharamshala',
+        pickup: 'Jalandhar',
+        destination: 'Dharamshala',
+        routeType: 'HILL',
+        pricingType: 'per_km',
+        vehiclePrices: {
+          dzire: 0,
+          verna: 0,
+          ertiga: 0,
+          innova: 0,
+          fortuner: 0,
+          tempo: 0
+        },
+        distanceKm: 165,
+        active: true
+      },
+      {
+        id: 'amritsar-delhi-airport',
+        pickup: 'Amritsar',
+        destination: 'Delhi Airport',
+        routeType: 'PLAIN',
+        pricingType: 'fixed',
+        vehiclePrices: {
+          dzire: 4800,
+          verna: 5300,
+          ertiga: 5800,
+          innova: 7200,
+          fortuner: 11000,
+          tempo: 9800
+        },
+        distanceKm: 460,
+        active: true
       }
     ]);
   }
 
-  // 6. Packages Data
-  if (!readJson('packages')) {
-    writeJson('packages', [
-      {
-        id: 'delhi-airport-himachal',
-        title: 'Delhi Airport to Chandigarh, Shimla, Manali & Kasol',
-        category: 'Himachal Tours',
-        duration: 'Custom Days / Multi-Day Tour',
-        highlights: [
-          'Delhi IGI Airport Terminal Pickup',
-          'Chandigarh Break / Stay',
-          'Shimla & Kufri Views',
-          'Manali, Solang Valley & Atal Tunnel',
-          'Kasol, Manikaran & Tosh Valley',
-          'All Himachal Destinations Covered'
-        ],
-        image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80',
-        altText: 'Delhi airport to Chandigarh Shimla Manali Kasol all Himachal taxi service',
-        description: 'Direct pickup from Delhi IGI Airport to Chandigarh and scenic Himachal hill stations. Expert mountain chauffeurs with clean AC sedans, Innova Crysta, and Tempo Travellers.',
-        badge: 'Top Bestseller'
-      },
-      {
-        id: 'delhi-airport-punjab-direct',
-        title: 'Delhi Airport to Ludhiana, Jalandhar, Amritsar & All Punjab',
-        category: 'Airport Transfer',
-        duration: 'Direct Doorstep Drop',
-        highlights: [
-          'Delhi Airport (T1, T2, T3) 24/7 Pickup',
-          'Drop to Ludhiana, Jalandhar, Amritsar',
-          'Phagwara, Hoshiarpur, Bathinda, Moga',
-          'All Punjab Cities & Villages Covered',
-          'Highway Tolls & State Taxes Included'
-        ],
-        image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80',
-        altText: 'Delhi airport to Ludhiana Jalandhar Amritsar all Punjab taxi service',
-        description: 'Hassle-free direct taxi service from Delhi Airport to any city, town, or village in Punjab. Safe night travel, luggage assistance, and punctual flight tracking.',
-        badge: 'Direct Express'
-      },
-      {
-        id: 'chandigarh-airport-punjab-himachal',
-        title: 'Chandigarh Airport to All Punjab & Himachal',
-        category: 'Airport Transfer',
-        duration: 'Instant Airport Transfer',
-        highlights: [
-          'Chandigarh Airport (IXC) Doorstep Pickup',
-          'To All Punjab (Jalandhar, Ludhiana, Amritsar)',
-          'To Himachal (Shimla, Manali, Dharamshala, Solan)',
-          'Kasauli, Kullu, Mandi & Bilaspur',
-          'Clean AC Fleet Ready at Terminal'
-        ],
-        image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80',
-        altText: 'Chandigarh Airport to all Punjab and Himachal taxi service',
-        description: 'Connect seamlessly from your flight at Chandigarh Airport to any destination across Punjab or hill stations in Himachal Pradesh with verified drivers.',
-        badge: 'Fast Connection'
-      },
-      {
-        id: 'all-punjab-to-delhi',
-        title: 'All Punjab to Delhi (One Way & Round Trip)',
-        category: 'One Way Taxi',
-        duration: 'Daily Highway Express',
-        highlights: [
-          'Door Pickup from Any Location in Punjab',
-          'Drop Anywhere in Delhi NCR / Airport / Stations',
-          'Pay Only One-Way (No Return Charge)',
-          'Dzire, Verna, Ertiga, Innova Crysta & Tempo',
-          'Smooth NH44 Highway Ride'
-        ],
-        image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-        altText: 'All Punjab to Delhi taxi one way and round trip',
-        description: 'Affordable one-way and round-trip intercity taxi service from Jalandhar, Ludhiana, Amritsar, Patiala, Bathinda, and all of Punjab directly to Delhi.',
-        badge: 'Budget Friendly'
-      },
-      {
-        id: 'all-punjab-to-airports',
-        title: 'All Punjab to Amritsar & Chandigarh Airports',
-        category: 'Airport Transfer',
-        duration: '24/7 Airport Drops',
-        highlights: [
-          'To Sri Guru Ram Dass Jee Airport (ATQ)',
-          'To Shaheed Bhagat Singh Airport (IXC)',
-          'Punctual Flight-Time Pickups',
-          'Luggage Space for Overseas Travellers',
-          'Zero Delay Guarantee'
-        ],
-        image: 'https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=800&q=80',
-        altText: 'All Punjab to Amritsar airport and Chandigarh airport taxi',
-        description: 'Reliable, round-the-clock taxi service from any corner of Punjab to Amritsar and Chandigarh International Airports for domestic and NRI international departures.',
-        badge: 'NRI Choice'
-      },
-      {
-        id: 'dharamshala-dalhousie-escape',
-        title: 'Dharamshala, Dalhousie & Khajjiar Tour',
-        category: 'Himachal Tours',
-        duration: '4 Nights / 5 Days',
-        highlights: [
-          'McLeod Ganj & Dalai Lama Temple',
-          'Dalhousie & Mini Switzerland (Khajjiar)',
-          'Bhagsunag Falls & St. John Church',
-          'Pickups from All Punjab & Delhi/Chandigarh'
-        ],
-        image: 'https://images.unsplash.com/photo-1597074866923-dc0589150358?auto=format&fit=crop&w=800&q=80',
-        altText: 'Dharamshala and Dalhousie outstation tour taxi package',
-        description: 'Serene hill holiday package covering Little Lhasa and Khajjiar. Customized itineraries with hill driving specialists and well-maintained cabs.',
-        badge: 'Scenic Escape'
+  // 7. Popular Locations with regionType classification
+  let locations = readJson('popularLocations');
+  if (locations && !locations[0]?.regionType) {
+    const enrichedLocations = locations.map(loc => {
+      let regionType = 'PLAIN';
+      const name = (loc.name || '').toLowerCase();
+      const state = (loc.state || '').toLowerCase();
+      const type = (loc.type || '').toLowerCase();
+
+      if (
+        state.includes('himachal') ||
+        state.includes('uttarakhand') ||
+        type.includes('hill') ||
+        name.includes('shimla') ||
+        name.includes('manali') ||
+        name.includes('dharamshala') ||
+        name.includes('dalhousie') ||
+        name.includes('kullu') ||
+        name.includes('kasol') ||
+        name.includes('kasauli') ||
+        name.includes('solan') ||
+        name.includes('mussoorie') ||
+        name.includes('rishikesh') ||
+        name.includes('nainital')
+      ) {
+        regionType = 'HILL';
+      } else if (name.includes('katra') || name.includes('jammu')) {
+        regionType = 'MIXED';
       }
-    ]);
+
+      return {
+        ...loc,
+        regionType
+      };
+    });
+    writeJson('popularLocations', enrichedLocations);
   }
 
-  // 7. Services Data
-  if (!readJson('services')) {
-    writeJson('services', [
-      {
-        id: 'airport-transfers',
-        title: 'Airport Transfer Services',
-        tagline: 'Punjab ? Delhi ? Chandigarh',
-        description: 'Specialized 24/7 airport pickup and drop services connecting all regions. Flight tracking, terminal doorstep pickup, and fixed upfront fares.',
-        iconName: 'Plane',
-        popularRoutes: [
-          'All Punjab ? Delhi IGI Airport (DEL)',
-          'All Punjab ? Amritsar Airport (ATQ)',
-          'All Punjab ? Chandigarh Airport (IXC)',
-          'Delhi Airport ? Ludhiana, Jalandhar & Amritsar',
-          'Chandigarh Airport ? All Punjab & Himachal'
-        ],
-        badge: '24/7 Airport Cab',
-        defaultMessage: 'Hello Happy Tour & Travels, I want to book an Airport Transfer taxi. Please share fare and cab availability.'
-      },
-      {
-        id: 'delhi-airport-himachal',
-        title: 'Delhi Airport to Himachal Tours',
-        tagline: 'Scenic Hill Transfers',
-        description: 'Direct pickup from Delhi IGI Airport Terminal 1, 2 & 3 to all Himachal hill stations with expert mountain drivers and comfortable AC sedans/SUVs.',
-        iconName: 'Compass',
-        popularRoutes: [
-          'Delhi Airport ? Chandigarh',
-          'Delhi Airport ? Shimla & Kufri',
-          'Delhi Airport ? Manali & Solang',
-          'Delhi Airport ? Kasol & Tosh',
-          'Delhi Airport ? All Himachal Destinations'
-        ],
-        badge: 'Hill Station Special',
-        defaultMessage: 'Hello Happy Tour & Travels, I want to book a taxi from Delhi Airport to Himachal Pradesh (Shimla / Manali / Kasol). Please share tariff.'
-      },
-      {
-        id: 'chandigarh-airport-gateway',
-        title: 'Chandigarh Airport to Punjab & Himachal',
-        tagline: 'Instant Airport Connections',
-        description: 'Punctual pickup from Shaheed Bhagat Singh International Airport (IXC) Chandigarh to every city in Punjab and hill stations across Himachal Pradesh.',
-        iconName: 'Navigation',
-        popularRoutes: [
-          'Chandigarh Airport ? Jalandhar & Ludhiana',
-          'Chandigarh Airport ? Amritsar & Bathinda',
-          'Chandigarh Airport ? Shimla & Kasauli',
-          'Chandigarh Airport ? Manali & Dharamshala',
-          'Chandigarh Airport ? All Punjab & Himachal'
-        ],
-        badge: 'Fast Pickup',
-        defaultMessage: 'Hello Happy Tour & Travels, I need a taxi from Chandigarh Airport to Punjab / Himachal. Please share available cabs.'
-      },
-      {
-        id: 'punjab-to-delhi-intercity',
-        title: 'All Punjab to Delhi One-Way & Round Trip',
-        tagline: 'Doorstep Pickup Across Punjab',
-        description: 'Comfortable highway cab service on NH44 connecting every district of Punjab (Jalandhar, Ludhiana, Amritsar, Bathinda, Patiala, Phagwara, Hoshiarpur) to Delhi NCR.',
-        iconName: 'Car',
-        popularRoutes: [
-          'All Punjab ? Delhi NCR',
-          'Delhi Airport ? Ludhiana, Jalandhar, Amritsar',
-          'Jalandhar ? Delhi One Way / Round Trip',
-          'Amritsar ? Delhi One Way / Round Trip',
-          'Ludhiana ? Delhi One Way / Round Trip'
-        ],
-        badge: 'Most Popular',
-        defaultMessage: 'Hello Happy Tour & Travels, I would like to book a taxi from Punjab to Delhi / Delhi Airport. Please share rates.'
-      }
-    ]);
-  }
-
-  // 8. Popular Routes Data
-  if (!readJson('popularRoutes')) {
-    writeJson('popularRoutes', [
-      {
-        id: 'jalandhar-routes',
-        emoji: '??',
-        title: 'Jalandhar ? Popular Routes',
-        origin: 'Jalandhar',
-        tag: 'Most Active Hub',
-        routes: [
-          { from: 'Jalandhar', to: 'Delhi Airport', type: 'Airport' },
-          { from: 'Jalandhar', to: 'Delhi', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Chandigarh', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Chandigarh Airport', type: 'Airport' },
-          { from: 'Jalandhar', to: 'Amritsar', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Amritsar Airport', type: 'Airport' },
-          { from: 'Jalandhar', to: 'Ludhiana', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Shimla', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Manali', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Kullu', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Dharamshala', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Dalhousie', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Pathankot', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Jammu', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Katra', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Hoshiarpur', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Patiala', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Mohali', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Zirakpur', type: 'One Way' },
-          { from: 'Jalandhar', to: 'Dehradun', type: 'One Way' }
-        ]
-      },
-      {
-        id: 'amritsar-routes',
-        emoji: '??',
-        title: 'Amritsar ? Popular Routes',
-        origin: 'Amritsar',
-        tag: 'Heritage & Airport Hub',
-        routes: [
-          { from: 'Amritsar', to: 'Delhi Airport', type: 'Airport' },
-          { from: 'Amritsar', to: 'Delhi', type: 'One Way' },
-          { from: 'Amritsar', to: 'Chandigarh', type: 'One Way' },
-          { from: 'Amritsar', to: 'Chandigarh Airport', type: 'Airport' },
-          { from: 'Amritsar', to: 'Jalandhar', type: 'One Way' },
-          { from: 'Amritsar', to: 'Ludhiana', type: 'One Way' },
-          { from: 'Amritsar', to: 'Amritsar Airport', type: 'Airport' },
-          { from: 'Amritsar', to: 'Shimla', type: 'One Way' },
-          { from: 'Amritsar', to: 'Manali', type: 'One Way' },
-          { from: 'Amritsar', to: 'Kullu', type: 'One Way' },
-          { from: 'Amritsar', to: 'Dharamshala', type: 'One Way' },
-          { from: 'Amritsar', to: 'Dalhousie', type: 'One Way' },
-          { from: 'Amritsar', to: 'Pathankot', type: 'One Way' },
-          { from: 'Amritsar', to: 'Jammu', type: 'One Way' },
-          { from: 'Amritsar', to: 'Katra', type: 'One Way' },
-          { from: 'Amritsar', to: 'Hoshiarpur', type: 'One Way' },
-          { from: 'Amritsar', to: 'Patiala', type: 'One Way' },
-          { from: 'Amritsar', to: 'Mohali', type: 'One Way' },
-          { from: 'Amritsar', to: 'Dehradun', type: 'One Way' }
-        ]
-      },
-      {
-        id: 'ludhiana-routes',
-        emoji: '??',
-        title: 'Ludhiana ? Popular Routes',
-        origin: 'Ludhiana',
-        tag: 'Industrial Capital Hub',
-        routes: [
-          { from: 'Ludhiana', to: 'Delhi Airport', type: 'Airport' },
-          { from: 'Ludhiana', to: 'Delhi', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Chandigarh', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Chandigarh Airport', type: 'Airport' },
-          { from: 'Ludhiana', to: 'Amritsar', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Amritsar Airport', type: 'Airport' },
-          { from: 'Ludhiana', to: 'Jalandhar', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Shimla', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Manali', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Kullu', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Dharamshala', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Dalhousie', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Pathankot', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Patiala', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Mohali', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Zirakpur', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Dehradun', type: 'One Way' },
-          { from: 'Ludhiana', to: 'Jaipur', type: 'One Way' }
-        ]
-      },
-      {
-        id: 'delhi-airport-punjab-routes',
-        emoji: '??',
-        title: 'Delhi Airport ? Punjab',
-        origin: 'Delhi Airport',
-        tag: 'Terminal Pickup Express',
-        routes: [
-          { from: 'Delhi Airport', to: 'Jalandhar', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Amritsar', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Ludhiana', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Chandigarh', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Patiala', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Bathinda', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Hoshiarpur', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Moga', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Kapurthala', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Pathankot', type: 'Airport' }
-        ]
-      },
-      {
-        id: 'delhi-airport-himachal-routes',
-        emoji: '???',
-        title: 'Delhi Airport ? Himachal',
-        origin: 'Delhi Airport',
-        tag: 'Scenic Hill Tours',
-        routes: [
-          { from: 'Delhi Airport', to: 'Shimla', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Manali', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Kullu', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Dharamshala', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Dalhousie', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Kasauli', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Solan', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Mandi', type: 'Airport' },
-          { from: 'Delhi Airport', to: 'Palampur', type: 'Airport' }
-        ]
-      },
-      {
-        id: 'chandigarh-himachal-routes',
-        emoji: '???',
-        title: 'Chandigarh ? Himachal',
-        origin: 'Chandigarh',
-        tag: 'Himachal Gateway Express',
-        routes: [
-          { from: 'Chandigarh', to: 'Shimla', type: 'One Way' },
-          { from: 'Chandigarh', to: 'Manali', type: 'One Way' },
-          { from: 'Chandigarh', to: 'Kullu', type: 'One Way' },
-          { from: 'Chandigarh', to: 'Dharamshala', type: 'One Way' },
-          { from: 'Chandigarh', to: 'Dalhousie', type: 'One Way' },
-          { from: 'Chandigarh', to: 'Kasauli', type: 'One Way' },
-          { from: 'Chandigarh', to: 'Solan', type: 'One Way' },
-          { from: 'Chandigarh', to: 'Mandi', type: 'One Way' },
-          { from: 'Chandigarh', to: 'Palampur', type: 'One Way' },
-          { from: 'Chandigarh', to: 'Chail', type: 'One Way' }
-        ]
-      }
-    ]);
-  }
-
-  // 9. Popular Locations Data
-  if (!readJson('popularLocations')) {
-    writeJson('popularLocations', [
-      { name: 'Jalandhar', state: 'Punjab', type: 'City', lat: 31.3260, lon: 75.5762 },
-      { name: 'Amritsar', state: 'Punjab', type: 'City & Heritage', lat: 31.6340, lon: 74.8723 },
-      { name: 'Amritsar Airport', state: 'Punjab', type: 'Airport', lat: 31.7096, lon: 74.7973 },
-      { name: 'Sri Guru Ram Dass Jee Airport (ATQ)', state: 'Punjab', type: 'Airport', lat: 31.7096, lon: 74.7973 },
-      { name: 'Ludhiana', state: 'Punjab', type: 'City', lat: 30.9010, lon: 75.8573 },
-      { name: 'Chandigarh', state: 'UT', type: 'Capital & Hub', lat: 30.7333, lon: 76.7794 },
-      { name: 'Chandigarh Airport', state: 'Chandigarh', type: 'Airport', lat: 30.6735, lon: 76.7885 },
-      { name: 'Shaheed Bhagat Singh Airport (IXC)', state: 'Chandigarh', type: 'Airport', lat: 30.6735, lon: 76.7885 },
-      { name: 'Mohali', state: 'Punjab', type: 'City', lat: 30.7046, lon: 76.7179 },
-      { name: 'Zirakpur', state: 'Punjab', type: 'City', lat: 30.6425, lon: 76.8173 },
-      { name: 'Phagwara', state: 'Punjab', type: 'City', lat: 31.2240, lon: 75.7708 },
-      { name: 'Hoshiarpur', state: 'Punjab', type: 'City', lat: 31.5273, lon: 75.9149 },
-      { name: 'Patiala', state: 'Punjab', type: 'City', lat: 30.3398, lon: 76.3869 },
-      { name: 'Bathinda', state: 'Punjab', type: 'City', lat: 30.2110, lon: 74.9455 },
-      { name: 'Pathankot', state: 'Punjab', type: 'City & Gateway', lat: 32.2689, lon: 75.6499 },
-      { name: 'Kapurthala', state: 'Punjab', type: 'City', lat: 31.3800, lon: 75.3800 },
-      { name: 'Nawanshahr (SBS Nagar)', state: 'Punjab', type: 'City', lat: 31.1256, lon: 76.1189 },
-      { name: 'Moga', state: 'Punjab', type: 'City', lat: 30.8165, lon: 75.1717 },
-      { name: 'Delhi', state: 'Delhi', type: 'Capital', lat: 28.6139, lon: 77.2090 },
-      { name: 'Delhi Airport', state: 'Delhi', type: 'Airport', lat: 28.5562, lon: 77.1000 },
-      { name: 'Indira Gandhi International Airport (DEL)', state: 'Delhi', type: 'Airport', lat: 28.5562, lon: 77.1000 },
-      { name: 'Gurgaon / Gurugram', state: 'Haryana', type: 'NCR Hub', lat: 28.4595, lon: 77.0266 },
-      { name: 'Noida', state: 'Uttar Pradesh', type: 'NCR Hub', lat: 28.5355, lon: 77.3910 },
-      { name: 'Shimla', state: 'Himachal Pradesh', type: 'Hill Station', lat: 31.1048, lon: 77.1734 },
-      { name: 'Manali', state: 'Himachal Pradesh', type: 'Hill Station', lat: 32.2432, lon: 77.1892 },
-      { name: 'Kullu', state: 'Himachal Pradesh', type: 'Valley', lat: 31.9579, lon: 77.1095 },
-      { name: 'Dharamshala', state: 'Himachal Pradesh', type: 'Hill Station', lat: 32.2190, lon: 76.3234 },
-      { name: 'Dalhousie', state: 'Himachal Pradesh', type: 'Hill Station', lat: 32.5387, lon: 75.9710 },
-      { name: 'Kasol', state: 'Himachal Pradesh', type: 'Hill Station', lat: 32.0100, lon: 77.3150 },
-      { name: 'Jammu', state: 'Jammu & Kashmir', type: 'City', lat: 32.7266, lon: 74.8570 },
-      { name: 'Katra', state: 'Jammu & Kashmir', type: 'Pilgrimage', lat: 32.9926, lon: 74.9317 },
-      { name: 'Dehradun', state: 'Uttarakhand', type: 'Capital', lat: 30.3165, lon: 78.0322 },
-      { name: 'Haridwar', state: 'Uttarakhand', type: 'Pilgrimage', lat: 29.9457, lon: 78.1642 }
-    ]);
+  // 8. Bookings collection
+  if (!readJson('bookings')) {
+    writeJson('bookings', []);
   }
 };

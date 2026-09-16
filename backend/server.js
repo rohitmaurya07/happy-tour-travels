@@ -1,4 +1,4 @@
-import express from 'express';
+﻿import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
@@ -7,6 +7,8 @@ import { initDb } from './utils/storage.js';
 import authRoutes from './routes/authRoutes.js';
 import siteDataRoutes from './routes/siteDataRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import fareRoutes from './routes/fareRoutes.js';
+import bookingRoutes from './routes/bookingRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,10 +29,14 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// API Routes
+// Public & Dynamic API Routes
+app.use('/api/fare', fareRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/site-data', siteDataRoutes);
+
+// Admin Protected Routes
 app.use('/api/admin', authRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/site-data', siteDataRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -53,6 +59,8 @@ if (fs.existsSync(frontendDistPath)) {
 initDb().then(() => {
   app.listen(PORT, () => {
     console.log('🚀 Happy Tour & Travels API Server running on port ' + PORT);
+    console.log('🚖 Fare Calculation API: http://localhost:' + PORT + '/api/fare/calculate');
+    console.log('📋 Bookings API: http://localhost:' + PORT + '/api/bookings');
     console.log('🌐 Public Site Data: http://localhost:' + PORT + '/api/site-data');
     console.log('🔒 Admin Auth: http://localhost:' + PORT + '/api/admin/login');
   });

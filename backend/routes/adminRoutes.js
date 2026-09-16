@@ -1,3 +1,4 @@
+﻿import fs from 'fs';
 import express from 'express';
 import path from 'path';
 import multer from 'multer';
@@ -16,7 +17,9 @@ router.use(authMiddleware);
 // Multer Storage Configuration for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'uploads'));
+    const uploadDir = path.join(__dirname, '..', 'uploads');
+    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -27,7 +30,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max limit for video & images
+  limits: { fileSize: 100 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = /jpeg|jpg|png|webp|svg|gif|mp4|webm|mov|ogg/;
     const ext = path.extname(file.originalname).toLowerCase().replace('.', '');
@@ -45,7 +48,9 @@ router.post('/upload', upload.single('file'), (req, res) => {
     return res.status(400).json({ success: false, message: 'No file uploaded.' });
   }
 
-  const fileUrl = `/uploads/${req.file.filename}`;
+  const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
+  const host = req.get('host');
+  const fileUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
   return res.json({
     success: true,
     message: 'File uploaded successfully',
@@ -80,7 +85,7 @@ router.put('/pricing-settings', (req, res) => {
   res.json({ success: true, message: 'Pricing and extra charges updated successfully', data: updated });
 });
 
-// --- MEDIA SETTINGS (HERO VIDEO, BANNERS, LOGOS) ---
+// --- MEDIA SETTINGS ---
 router.get('/media-settings', (req, res) => {
   res.json({ success: true, data: readJson('mediaSettings') });
 });
@@ -89,10 +94,10 @@ router.put('/media-settings', (req, res) => {
   const current = readJson('mediaSettings') || {};
   const updated = { ...current, ...req.body, updatedAt: new Date().toISOString() };
   writeJson('mediaSettings', updated);
-  res.json({ success: true, message: 'Media settings and hero video updated successfully', data: updated });
+  res.json({ success: true, message: 'Media settings updated successfully', data: updated });
 });
 
-// --- FLEET MANAGEMENT (CRUD) ---
+// --- FLEET MANAGEMENT (CRUD with Plain/Hill rates & Minimum KM) ---
 router.get('/fleet', (req, res) => {
   res.json({ success: true, data: readJson('fleet') || [] });
 });
@@ -102,6 +107,12 @@ router.post('/fleet', (req, res) => {
   const newVehicle = {
     id: req.body.id || `car-${Date.now()}`,
     ...req.body,
+    plainRatePerKm: Number(req.body.plainRatePerKm) || 10,
+    hillRatePerKm: Number(req.body.hillRatePerKm) || 12,
+    minimumKm: Number(req.body.minimumKm) || 250,
+    extraKmRate: Number(req.body.extraKmRate) || (Number(req.body.plainRatePerKm) || 10),
+    driverAllowance: Number(req.body.driverAllowance) || 300,
+    active: req.body.active !== undefined ? Boolean(req.body.active) : true,
     rank: Number(req.body.rank) || fleet.length + 1
   };
   fleet.push(newVehicle);
@@ -115,7 +126,17 @@ router.put('/fleet/:id', (req, res) => {
   if (index === -1) {
     return res.status(404).json({ success: false, message: 'Vehicle not found' });
   }
-  fleet[index] = { ...fleet[index], ...req.body, id: req.params.id };
+  fleet[index] = {
+    ...fleet[index],
+    ...req.body,
+    id: req.params.id,
+    plainRatePerKm: req.body.plainRatePerKm !== undefined ? Number(req.body.plainRatePerKm) : fleet[index].plainRatePerKm,
+    hillRatePerKm: req.body.hillRatePerKm !== undefined ? Number(req.body.hillRatePerKm) : fleet[index].hillRatePerKm,
+    minimumKm: req.body.minimumKm !== undefined ? Number(req.body.minimumKm) : fleet[index].minimumKm,
+    extraKmRate: req.body.extraKmRate !== undefined ? Number(req.body.extraKmRate) : fleet[index].extraKmRate,
+    driverAllowance: req.body.driverAllowance !== undefined ? Number(req.body.driverAllowance) : fleet[index].driverAllowance,
+    active: req.body.active !== undefined ? Boolean(req.body.active) : fleet[index].active !== false
+  };
   writeJson('fleet', fleet);
   res.json({ success: true, message: 'Vehicle updated successfully', data: fleet[index] });
 });
@@ -134,6 +155,84 @@ router.delete('/fleet/:id', (req, res) => {
   const filtered = fleet.filter(item => item.id !== req.params.id);
   writeJson('fleet', filtered);
   res.json({ success: true, message: 'Vehicle removed from fleet' });
+});
+
+// --- PRICING ROUTES MANAGEMENT (CRUD) ---
+router.get('/pricing-routes', (req, res) => {
+  res.json({ success: true, data: readJson('pricingRoutes') || [] });
+});
+
+router.post('/pricing-routes', (req, res) => {
+  const routes = readJson('pricingRoutes') || [];
+  const { pickup, destination, routeType, pricingType, vehiclePrices, distanceKm, active } = req.body;
+
+  if (!pickup || !destination) {
+    return res.status(400).json({ success: false, message: 'Pickup and destination are required' });
+  }
+
+  const id = `${pickup.toLowerCase().replace(/[^a-z0-9]/g, '-')}-to-${destination.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${Date.now()}`;
+  const newRoute = {
+    id,
+    pickup,
+    destination,
+    routeType: (routeType || 'PLAIN').toUpperCase(),
+    pricingType: pricingType || 'per_km',
+    vehiclePrices: vehiclePrices || {},
+    distanceKm: distanceKm ? Number(distanceKm) : null,
+    active: active !== undefined ? Boolean(active) : true,
+    updatedAt: new Date().toISOString()
+  };
+
+  routes.push(newRoute);
+  writeJson('pricingRoutes', routes);
+  res.json({ success: true, message: 'Pricing route added successfully', data: newRoute });
+});
+
+router.put('/pricing-routes/:id', (req, res) => {
+  let routes = readJson('pricingRoutes') || [];
+  const index = routes.findIndex(r => r.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ success: false, message: 'Pricing route not found' });
+  }
+
+  routes[index] = {
+    ...routes[index],
+    ...req.body,
+    id: req.params.id,
+    routeType: (req.body.routeType || routes[index].routeType || 'PLAIN').toUpperCase(),
+    active: req.body.active !== undefined ? Boolean(req.body.active) : routes[index].active !== false,
+    updatedAt: new Date().toISOString()
+  };
+
+  writeJson('pricingRoutes', routes);
+  res.json({ success: true, message: 'Pricing route updated successfully', data: routes[index] });
+});
+
+router.delete('/pricing-routes/:id', (req, res) => {
+  let routes = readJson('pricingRoutes') || [];
+  const filtered = routes.filter(r => r.id !== req.params.id);
+  writeJson('pricingRoutes', filtered);
+  res.json({ success: true, message: 'Pricing route deleted successfully' });
+});
+
+// --- BOOKINGS MANAGEMENT (Admin inspection of historical snapshots) ---
+router.get('/bookings', (req, res) => {
+  const bookings = readJson('bookings') || [];
+  res.json({ success: true, data: bookings });
+});
+
+router.put('/bookings/:id/status', (req, res) => {
+  const { status } = req.body;
+  let bookings = readJson('bookings') || [];
+  const index = bookings.findIndex(b => b.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ success: false, message: 'Booking not found' });
+  }
+
+  bookings[index].status = status || bookings[index].status;
+  bookings[index].statusUpdatedAt = new Date().toISOString();
+  writeJson('bookings', bookings);
+  res.json({ success: true, message: 'Booking status updated', data: bookings[index] });
 });
 
 // --- PACKAGES MANAGEMENT (CRUD) ---
@@ -204,7 +303,7 @@ router.delete('/services/:id', (req, res) => {
   res.json({ success: true, message: 'Service removed successfully' });
 });
 
-// --- ROUTES MANAGEMENT ---
+// --- POPULAR ROUTES DISPLAY LIST ---
 router.get('/routes', (req, res) => {
   res.json({ success: true, data: readJson('popularRoutes') || [] });
 });
@@ -218,7 +317,7 @@ router.put('/routes', (req, res) => {
   res.status(400).json({ success: false, message: 'Invalid routes format' });
 });
 
-// --- LOCATIONS MANAGEMENT ---
+// --- LOCATIONS MANAGEMENT WITH REGION TYPE (PLAIN / HILL / MIXED) ---
 router.get('/locations', (req, res) => {
   res.json({ success: true, data: readJson('popularLocations') || [] });
 });

@@ -1,6 +1,6 @@
-// Frontend API Client for Happy Tour & Travels
+﻿// Frontend API Client for Happy Tour & Travels
 
-const API_BASE = import.meta.env.VITE_API_BASE || '';
+export const API_BASE = import.meta.env.VITE_API_BASE || '';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('happy_admin_token');
@@ -15,7 +15,57 @@ export const fetchPublicSiteData = async () => {
   return data.data;
 };
 
-// 2. Admin Authentication
+// 2. Authoritative Fare Calculation APIs
+export const calculateFareApi = async (payload) => {
+  const res = await fetch(`${API_BASE}/api/fare/calculate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) {
+    throw new Error(data.message || 'Failed to calculate fare');
+  }
+  return data.fare;
+};
+
+export const calculateAllFaresApi = async (payload) => {
+  const res = await fetch(`${API_BASE}/api/fare/calculate-all`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) {
+    throw new Error(data.message || 'Failed to calculate fares');
+  }
+  return data;
+};
+
+// 3. Bookings APIs
+export const createBookingApi = async (payload) => {
+  const res = await fetch(`${API_BASE}/api/bookings`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) {
+    throw new Error(data.message || 'Failed to create booking');
+  }
+  return data.booking;
+};
+
+export const getBookingApi = async (id) => {
+  const res = await fetch(`${API_BASE}/api/bookings/${encodeURIComponent(id)}`);
+  const data = await res.json();
+  if (!res.ok || !data.success) {
+    throw new Error(data.message || 'Failed to retrieve booking');
+  }
+  return data.booking;
+};
+
+// 4. Admin Authentication
 export const adminLogin = async (username, password) => {
   const res = await fetch(`${API_BASE}/api/admin/login`, {
     method: 'POST',
@@ -54,7 +104,7 @@ export const adminChangePassword = async ({ currentPassword, newUsername, newPas
   return data;
 };
 
-// 3. File Uploads (Images/Videos)
+// 5. File Uploads
 export const uploadMediaFile = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
@@ -73,7 +123,7 @@ export const uploadMediaFile = async (file) => {
   return data.url;
 };
 
-// 4. Update Site Config & Contact
+// 6. Site Config & Settings
 export const updateSiteConfig = async (config) => {
   const res = await fetch(`${API_BASE}/api/admin/site-config`, {
     method: 'PUT',
@@ -88,7 +138,6 @@ export const updateSiteConfig = async (config) => {
   return data.data;
 };
 
-// 5. Update Pricing & Extra Charges
 export const updatePricingSettings = async (settings) => {
   const res = await fetch(`${API_BASE}/api/admin/pricing-settings`, {
     method: 'PUT',
@@ -103,7 +152,6 @@ export const updatePricingSettings = async (settings) => {
   return data.data;
 };
 
-// 6. Update Media Settings (Hero Video, Banner text, Logo)
 export const updateMediaSettings = async (settings) => {
   const res = await fetch(`${API_BASE}/api/admin/media-settings`, {
     method: 'PUT',
@@ -157,7 +205,79 @@ export const deleteFleetVehicle = async (id) => {
   return true;
 };
 
-// 8. Packages Operations
+// 8. Pricing Routes Management (Fixed Fares & Classifications)
+export const fetchPricingRoutes = async () => {
+  const res = await fetch(`${API_BASE}/api/admin/pricing-routes`, {
+    headers: { ...getAuthHeaders() }
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to fetch pricing routes');
+  return data.data;
+};
+
+export const addPricingRoute = async (route) => {
+  const res = await fetch(`${API_BASE}/api/admin/pricing-routes`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders()
+    },
+    body: JSON.stringify(route)
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to add pricing route');
+  return data.data;
+};
+
+export const updatePricingRoute = async (id, route) => {
+  const res = await fetch(`${API_BASE}/api/admin/pricing-routes/${encodeURIComponent(id)}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders()
+    },
+    body: JSON.stringify(route)
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update pricing route');
+  return data.data;
+};
+
+export const deletePricingRoute = async (id) => {
+  const res = await fetch(`${API_BASE}/api/admin/pricing-routes/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: { ...getAuthHeaders() }
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to delete pricing route');
+  return true;
+};
+
+// 9. Admin Bookings Inspection
+export const fetchAdminBookings = async () => {
+  const res = await fetch(`${API_BASE}/api/admin/bookings`, {
+    headers: { ...getAuthHeaders() }
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to fetch bookings');
+  return data.data;
+};
+
+export const updateBookingStatus = async (id, status) => {
+  const res = await fetch(`${API_BASE}/api/admin/bookings/${encodeURIComponent(id)}/status`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders()
+    },
+    body: JSON.stringify({ status })
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update booking status');
+  return data.data;
+};
+
+// 10. Packages Operations
 export const addPackage = async (pkg) => {
   const res = await fetch(`${API_BASE}/api/admin/packages`, {
     method: 'POST',
@@ -196,7 +316,7 @@ export const deletePackage = async (id) => {
   return true;
 };
 
-// 9. Services Operations
+// 11. Services Operations
 export const addService = async (service) => {
   const res = await fetch(`${API_BASE}/api/admin/services`, {
     method: 'POST',
@@ -235,7 +355,7 @@ export const deleteService = async (id) => {
   return true;
 };
 
-// 10. Routes & Locations Operations
+// 12. Routes & Locations Operations
 export const updatePopularRoutes = async (popularRoutes) => {
   const res = await fetch(`${API_BASE}/api/admin/routes`, {
     method: 'PUT',

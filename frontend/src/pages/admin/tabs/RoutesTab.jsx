@@ -25,6 +25,7 @@ export default function RoutesTab() {
   const [newLocName, setNewLocName] = useState('');
   const [newLocState, setNewLocState] = useState('Punjab');
   const [newLocType, setNewLocType] = useState('City');
+  const [newLocRegionType, setNewLocRegionType] = useState('PLAIN');
   const [newLocLat, setNewLocLat] = useState('');
   const [newLocLon, setNewLocLon] = useState('');
 
@@ -288,7 +289,7 @@ export default function RoutesTab() {
                         <span>{currentCategory.title}</span>
                       </h2>
                       <span className="text-xs text-gray-500 font-medium">
-                        Origin: <strong>{currentCategory.origin}</strong> • Tag: {currentCategory.tag}
+                        Origin: <strong>{currentCategory.origin}</strong> ï¿½ Tag: {currentCategory.tag}
                       </span>
                     </div>
                     <span className="text-xs font-bold text-yellow-700 bg-yellow-100 px-3 py-1 rounded-full">
@@ -405,6 +406,15 @@ export default function RoutesTab() {
                 placeholder="Type (City/Airport/Hill Station)"
                 className="sm:col-span-1 p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold text-slate-900"
               />
+              <select
+                value={newLocRegionType}
+                onChange={(e) => setNewLocRegionType(e.target.value)}
+                className="sm:col-span-1 p-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold text-slate-900"
+              >
+                <option value="PLAIN">PLAIN</option>
+                <option value="HILL">HILL</option>
+                <option value="MIXED">MIXED</option>
+              </select>
               <input
                 type="number"
                 step="0.0001"
@@ -431,6 +441,7 @@ export default function RoutesTab() {
                   <th className="p-3">Location Name</th>
                   <th className="p-3">State</th>
                   <th className="p-3">Type</th>
+                  <th className="p-3">Terrain (Plain / Hill)</th>
                   <th className="p-3">Coordinates (Lat, Lon)</th>
                   <th className="p-3 text-right">Action</th>
                 </tr>
@@ -445,6 +456,22 @@ export default function RoutesTab() {
                     <td className="p-3 text-gray-600 font-medium">{loc.state}</td>
                     <td className="p-3">
                       <span className="bg-gray-100 text-slate-700 px-2 py-0.5 rounded text-[10px] font-bold">{loc.type || 'City'}</span>
+                    </td>
+                    <td className="p-3">
+                      <select
+                        value={loc.regionType || 'PLAIN'}
+                        onChange={(e) => {
+                          const updated = locationsList.map((item, idx) => idx === i ? { ...item, regionType: e.target.value } : item);
+                          setLocationsList(updated);
+                        }}
+                        className={`text-[10px] font-bold px-2 py-1 rounded-lg border outline-none ${
+                          (loc.regionType || 'PLAIN') === 'HILL' ? 'bg-emerald-50 text-emerald-800 border-emerald-300' : (loc.regionType === 'MIXED' ? 'bg-purple-50 text-purple-800 border-purple-300' : 'bg-blue-50 text-blue-800 border-blue-300')
+                        }`}
+                      >
+                        <option value="PLAIN">PLAIN TERRAIN</option>
+                        <option value="HILL">HILL TERRAIN</option>
+                        <option value="MIXED">MIXED TERRAIN</option>
+                      </select>
                     </td>
                     <td className="p-3 font-mono text-gray-500 text-[11px]">
                       {loc.lat?.toFixed(4)}, {loc.lon?.toFixed(4)}

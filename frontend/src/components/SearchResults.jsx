@@ -1,154 +1,104 @@
-﻿import React, { useState } from 'react';
-import { Users, Luggage, Wind, Fuel, CheckCircle, ArrowRight, ShieldCheck, Calendar, Clock, Sparkles, CircleCheck, Tag } from 'lucide-react';
+﻿import React, { useState, useEffect } from 'react';
+import { 
+  Users, Luggage, Wind, Fuel, CheckCircle, ArrowRight, ShieldCheck, 
+  Calendar, Clock, Sparkles, CircleCheck, Tag, Mountain, Navigation, 
+  HelpCircle, Receipt, AlertCircle, PhoneCall
+} from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
+import { calculateAllFaresApi, createBookingApi } from '../services/api';
 
 export default function SearchResults({ searchParams, onModifySearch }) {
   const { fleet, pricingSettings, siteConfig } = useSiteData();
-  const fleetData = fleet || [];
+  const [hourlyPackage, setHourlyPackage] = useState('8h'); // '4h' | '8h'
+  const [calculatedFares, setCalculatedFares] = useState([]);
+  const [isLoadingFares, setIsLoadingFares] = useState(true);
+  const [bookingSuccessModal, setBookingSuccessModal] = useState(null);
+  const [isSubmittingBooking, setIsSubmittingBooking] = useState(false);
 
   if (!searchParams) return null;
 
   const { tripType, fromLocation, toLocation, departureDate, pickupTime, distanceKm } = searchParams;
-
-  const [hourlyPackage, setHourlyPackage] = useState('8h'); // '4h' (40km) | '8h' (80km)
-
   const isRoundTrip = tripType === 'Round Trip';
   const isHourly = tripType === 'Hourly Rental';
-  const isAirport = tripType === 'Airport';
 
-  // Determine effective billable KMs based on trip type
-  let effectiveDistance = 0;
-  if (isHourly) {
-    effectiveDistance = hourlyPackage === '4h' ? 40 : 80;
-  } else if (isRoundTrip) {
-    effectiveDistance = Math.round((distanceKm || 50) * 2);
-  } else {
-    // One Way or Airport
-    effectiveDistance = Math.round(distanceKm || 50);
-  }
+  // Fetch server-authoritative calculations
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoadingFares(true);
 
-  // Check if this route matches an Airport Override
-  const findAirportOverride = () => {
-    if (!pricingSettings?.airportOverrides || !Array.isArray(pricingSettings.airportOverrides)) return null;
-    const dest = (toLocation || '').toLowerCase();
-    const orig = (fromLocation || '').toLowerCase();
+    const fetchServerFares = async () => {
+      try {
+        const response = await calculateAllFaresApi({
+          pickup: fromLocation,
+          destination: toLocation,
+          tripType,
+          departureDate,
+          pickupTime,
+          hourlyPackage
+        });
 
-    return pricingSettings.airportOverrides.find(override => {
-      const kw = (override.routeKeyword || override.name || '').toLowerCase();
-      if (!kw) return false;
-      return dest.includes(kw) || orig.includes(kw);
-    });
-  };
-
-  const matchedAirportOverride = findAirportOverride();
-
-  // Calculate pricing strictly based on rates for each vehicle
-  const getVehiclePricing = (vehicle) => {
-    let ratePerKm = isRoundTrip ? vehicle.roundTripRate : vehicle.oneWayRate;
-    let baseFare = 0;
-    let postKmRateStr = '';
-    let distanceDisplay = '';
-    let slabBadge = null;
-    let isOverrideApplied = false;
-    let inclusionsText = pricingSettings?.termsAndConditions || 'State Taxes, Toll Taxes, Fuel & Driver Allowance Included';
-
-    const slabs = vehicle.slabs || {
-      minKm: 20,
-      slab20_35: vehicle.oneWayRate * 35,
-      slab35_55: vehicle.oneWayRate * 55,
-      slab55_75: vehicle.oneWayRate * 75,
-      slab75_95: vehicle.oneWayRate * 95,
-      slab95Base: vehicle.oneWayRate * 95,
-      post95Rate: vehicle.oneWayRate
-    };
-
-    if (isHourly) {
-      if (hourlyPackage === '4h') {
-        baseFare = vehicle.localPackages?.fourHours || Math.round(40 * vehicle.oneWayRate);
-        postKmRateStr = `₹${vehicle.oneWayRate}/km post 40 km`;
-        distanceDisplay = '40 KMs (4 Hrs Local Package)';
-        slabBadge = '4 Hrs / 40 KM Local';
-      } else {
-        baseFare = vehicle.localPackages?.eightHours || (vehicle.hourlyRate || Math.round(80 * vehicle.oneWayRate));
-        postKmRateStr = `₹${vehicle.oneWayRate}/km post 80 km`;
-        distanceDisplay = '80 KMs (8 Hrs Local Package)';
-        slabBadge = '8 Hrs / 80 KM Local';
-      }
-      inclusionsText = 'Chauffeur Allowance & Fuel Included. Toll & Parking as actual.';
-    } else if (isRoundTrip) {
-      // Round Trip based strictly on round-trip per-km rate & total 2-way distance
-      baseFare = Math.round(effectiveDistance * vehicle.roundTripRate);
-      postKmRateStr = `₹${vehicle.roundTripRate}/km for extra kms`;
-      distanceDisplay = `${effectiveDistance} KMs Total (${distanceKm || 0} km × 2 sides)`;
-      slabBadge = `Round Trip @ ₹${vehicle.roundTripRate}/km`;
-      inclusionsText = 'State Taxes, Toll Taxes, Driver Allowance & Fuel Included';
-    } else {
-      // Check Airport Override first if destination or origin is an airport
-      if (matchedAirportOverride && matchedAirportOverride.rates && matchedAirportOverride.rates[vehicle.id]) {
-        baseFare = Number(matchedAirportOverride.rates[vehicle.id]);
-        postKmRateStr = `₹${slabs.post95Rate || vehicle.oneWayRate}/km for route detour`;
-        distanceDisplay = `${effectiveDistance} KMs (${matchedAirportOverride.name || 'Airport'} Direct Transfer)`;
-        slabBadge = 'Special Airport Rate';
-        isOverrideApplied = true;
-        inclusionsText = 'Airport Toll Taxes, State Taxes, Fuel & Driver Allowance Included';
-      } else {
-        // Multi-tiered distance slab pricing for One Way and Airport routes
-        const d = effectiveDistance;
-        const postRate = slabs.post95Rate || vehicle.oneWayRate;
-
-        if (d < 20) {
-          baseFare = slabs.slab20_35;
-          distanceDisplay = `${d} KMs (Below 20 km Min. Charge)`;
-          postKmRateStr = `₹${postRate}/km post slab`;
-          slabBadge = 'Below 20 km (Min Rate)';
-        } else if (d >= 20 && d < 35) {
-          baseFare = slabs.slab20_35;
-          distanceDisplay = `${d} KMs (20–35 KM Slab)`;
-          postKmRateStr = `₹${postRate}/km post slab`;
-          slabBadge = '20–35 KM Slab';
-        } else if (d >= 35 && d < 55) {
-          baseFare = slabs.slab35_55;
-          distanceDisplay = `${d} KMs (35–55 KM Slab)`;
-          postKmRateStr = `₹${postRate}/km post slab`;
-          slabBadge = '35–55 KM Slab';
-        } else if (d >= 55 && d < 75) {
-          baseFare = slabs.slab55_75;
-          distanceDisplay = `${d} KMs (55–75 KM Slab)`;
-          postKmRateStr = `₹${postRate}/km post slab`;
-          slabBadge = '55–75 KM Slab';
-        } else if (d >= 75 && d < 95) {
-          baseFare = slabs.slab75_95;
-          distanceDisplay = `${d} KMs (75–95 KM Slab)`;
-          postKmRateStr = `₹${postRate}/km post slab`;
-          slabBadge = '75–95 KM Slab';
-        } else {
-          // 95 km and above
-          const extraKm = Math.max(0, d - 95);
-          baseFare = slabs.slab95Base + (extraKm * postRate);
-          distanceDisplay = `${d} KMs (₹${slabs.slab95Base.toLocaleString('en-IN')} base 95km + ${extraKm} km × ₹${postRate}/km)`;
-          postKmRateStr = `₹${postRate}/km additional`;
-          slabBadge = `Above 95 km (+₹${postRate}/km)`;
+        if (isMounted && response?.results) {
+          setCalculatedFares(response.results);
         }
-
-        inclusionsText = isAirport 
-          ? 'Airport Toll Taxes, State Taxes, Fuel & Driver Allowance Included'
-          : 'State Taxes, Toll Taxes, Driver Allowance & Fuel Included';
+      } catch (err) {
+        console.warn('Could not fetch server fares, falling back to dynamic fleet preview:', err.message);
+        // Fallback local calculations if server unreachable
+        if (isMounted && fleet) {
+          const fallback = fleet.filter(v => v.active !== false).map(v => {
+            const isHill = ['shimla', 'manali', 'dharamshala', 'dalhousie', 'kullu', 'kasol', 'kasauli'].some(h => 
+              (toLocation || '').toLowerCase().includes(h)
+            );
+            const routeType = isHill ? 'HILL' : 'PLAIN';
+            const rate = isHill ? (v.hillRatePerKm || 11) : (v.plainRatePerKm || 10);
+            const dist = distanceKm || 100;
+            const minKm = v.minimumKm || 250;
+            const effDist = isRoundTrip ? dist * 2 : dist;
+            const billable = Math.max(effDist, isRoundTrip ? minKm * 2 : minKm);
+            const baseFare = billable * rate;
+            const driverAllowance = v.driverAllowance || 300;
+            return {
+              vehicle: v.name,
+              vehicleId: v.id,
+              category: v.category,
+              seats: v.seats,
+              image: v.image,
+              pickup: fromLocation,
+              destination: toLocation,
+              tripType,
+              routeType,
+              pricingType: 'per_km',
+              pricingRuleApplied: `${routeType} Area Rate (₹${rate}/km)`,
+              distanceKm: dist,
+              minimumKm: minKm,
+              billableKm: billable,
+              ratePerKm: rate,
+              baseFare,
+              driverAllowance,
+              nightCharges: 0,
+              additionalCharges: {
+                driverAllowance,
+                toll: 'actual',
+                parking: 'actual',
+                stateTax: 'actual'
+              },
+              estimatedTotal: baseFare + driverAllowance,
+              inclusions: ['Driver Allowance Included', 'Highway Fuel Included', 'Toll & Parking at actuals']
+            };
+          });
+          setCalculatedFares(fallback);
+        }
+      } finally {
+        if (isMounted) setIsLoadingFares(false);
       }
-    }
-
-    return {
-      baseFare,
-      ratePerKm,
-      effectiveDistance,
-      postKmRateStr,
-      distanceDisplay,
-      slabBadge,
-      isOverrideApplied,
-      inclusionsText,
-      formattedFare: `₹${baseFare.toLocaleString('en-IN')}`,
     };
-  };
+
+    fetchServerFares();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [fromLocation, toLocation, tripType, departureDate, pickupTime, hourlyPackage, distanceKm, fleet]);
 
   const formattedDate = departureDate ? new Date(departureDate).toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -156,28 +106,54 @@ export default function SearchResults({ searchParams, onModifySearch }) {
     year: 'numeric'
   }) : 'Today';
 
-  const handleBookVehicle = (vehicle) => {
-    const pricing = getVehiclePricing(vehicle);
+  const handleWhatsAppBooking = (fareItem) => {
     const destination = isHourly ? `Local City Rental (${hourlyPackage === '4h' ? '4 Hrs / 40 Kms' : '8 Hrs / 80 Kms'})` : toLocation;
 
-    const message = `Hello ${siteConfig?.businessName || 'Happy Tour & Travels'}, I want to book a taxi.
+    const message = `Hello ${siteConfig?.businessName || 'Happy Tour & Travels'}, I would like to book a taxi.
 
-🚖 *Booking Request Details:*
-• *Trip Type:* ${tripType} ${isHourly ? `(${hourlyPackage === '4h' ? '4 Hrs / 40 KM' : '8 Hrs / 80 KM'})` : ''}
+🚖 *Booking Details:*
 • *From:* ${fromLocation}
 • *To:* ${destination}
+• *Trip Type:* ${tripType}
+• *Route Type:* ${fareItem.routeType || 'PLAIN'} Area
 • *Schedule:* ${formattedDate} at ${pickupTime}
-• *Total Distance / Package:* ${pricing.distanceDisplay}
+• *Actual Distance:* ${fareItem.distanceKm} KM
+• *Billable Distance:* ${fareItem.billableKm} KM (Min: ${fareItem.minimumKm} KM)
 
-🚘 *Selected Cab:* ${vehicle.name} (${vehicle.category})
-💰 *Estimated Fare:* ${pricing.formattedFare}
-⚡ *Tariff Details:* ${pricing.slabBadge ? pricing.slabBadge + ' • ' : ''}${pricing.postKmRateStr}
-✅ *Inclusions:* ${pricing.inclusionsText}
+🚘 *Selected Vehicle:* ${fareItem.vehicle} (${fareItem.category})
+💰 *Rate per KM:* ₹${fareItem.ratePerKm}/km
+💵 *Base Fare:* ₹${fareItem.baseFare.toLocaleString('en-IN')}
+👨‍✈️ *Driver Allowance:* ₹${fareItem.driverAllowance}
+🏷️ *Estimated Total:* ₹${fareItem.estimatedTotal.toLocaleString('en-IN')}
+ℹ️ *Tolls & Parking:* Payable at actuals
 
 Please confirm cab availability and driver assignment.`;
 
     bookOnWhatsApp(message, siteConfig?.whatsappNumber);
   };
+
+  const handleInstantBooking = async (fareItem) => {
+    setIsSubmittingBooking(true);
+    try {
+      const booking = await createBookingApi({
+        customerName: 'Online Guest',
+        pickup: fromLocation,
+        destination: toLocation,
+        vehicleId: fareItem.vehicleId,
+        tripType,
+        departureDate,
+        pickupTime,
+        hourlyPackage: isHourly ? hourlyPackage : undefined
+      });
+      setBookingSuccessModal(booking);
+    } catch (err) {
+      alert(`Booking error: ${err.message}`);
+    } finally {
+      setIsSubmittingBooking(false);
+    }
+  };
+
+  const primaryRouteType = calculatedFares[0]?.routeType || 'PLAIN';
 
   return (
     <div id="search-results" className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 animate-fadeIn">
@@ -190,7 +166,7 @@ Please confirm cab availability and driver assignment.`;
           <div>
             <div className="inline-flex items-center space-x-2 bg-yellow-400/10 border border-yellow-400/30 px-3 py-1 rounded-full text-yellow-400 text-xs font-bold uppercase tracking-wider mb-2.5">
               <CheckCircle className="w-3.5 h-3.5 text-brand-yellow" />
-              <span>Available Cabs & Guaranteed Rates</span>
+              <span>Transparent Data-Driven Pricing Engine</span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-nexa font-heading text-white flex flex-wrap items-center gap-2">
@@ -203,193 +179,295 @@ Please confirm cab availability and driver assignment.`;
               )}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-300 font-medium mt-2">
-              <span className="bg-slate-900 px-3 py-1 rounded-full border border-slate-700 text-yellow-400 font-bold">
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 text-xs sm:text-sm text-gray-300 mt-3">
+              <span className="bg-slate-900 border border-slate-700 px-3 py-1 rounded-lg font-medium flex items-center">
+                <Tag className="w-3.5 h-3.5 mr-1.5 text-brand-yellow" />
                 {tripType}
               </span>
-              <span className="flex items-center">
-                <Calendar className="w-3.5 h-3.5 mr-1 text-blue-400" />
+
+              {/* Route Classification Badge */}
+              <span className={`px-3 py-1 rounded-lg font-bold flex items-center border ${
+                primaryRouteType === 'HILL' 
+                  ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40' 
+                  : primaryRouteType === 'MIXED'
+                  ? 'bg-purple-950/80 text-purple-300 border-purple-500/40'
+                  : 'bg-blue-950/80 text-blue-300 border-blue-500/40'
+              }`}>
+                <Mountain className="w-3.5 h-3.5 mr-1.5" />
+                {primaryRouteType} TERRAIN
+              </span>
+
+              <span className="bg-slate-900 border border-slate-700 px-3 py-1 rounded-lg font-medium flex items-center">
+                <Calendar className="w-3.5 h-3.5 mr-1.5 text-brand-yellow" />
                 {formattedDate}
               </span>
-              <span className="flex items-center">
-                <Clock className="w-3.5 h-3.5 mr-1 text-amber-400" />
+              <span className="bg-slate-900 border border-slate-700 px-3 py-1 rounded-lg font-medium flex items-center">
+                <Clock className="w-3.5 h-3.5 mr-1.5 text-brand-yellow" />
                 {pickupTime}
               </span>
-              {effectiveDistance > 0 && !isHourly && (
-                <span className="bg-emerald-950/80 text-emerald-400 font-bold px-3 py-1 rounded-full border border-emerald-800/80 flex items-center">
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  Total: {effectiveDistance} KMs
+              
+              {!isHourly && (
+                <span className="bg-yellow-400/10 border border-yellow-400/30 text-yellow-300 font-bold px-3 py-1 rounded-lg">
+                  Distance: {calculatedFares[0]?.distanceKm || distanceKm || 0} KM
                 </span>
               )}
             </div>
-
-            {/* If Hourly Rental: Package Selection Switcher */}
-            {isHourly && (
-              <div className="mt-4 flex items-center space-x-2">
-                <span className="text-xs font-bold text-gray-300">Local Package:</span>
-                <div className="inline-flex p-1 bg-slate-900 rounded-xl border border-slate-700">
-                  <button
-                    onClick={() => setHourlyPackage('4h')}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                      hourlyPackage === '4h' ? 'bg-yellow-400 text-slate-950 shadow' : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    4 Hours / 40 KM
-                  </button>
-                  <button
-                    onClick={() => setHourlyPackage('8h')}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                      hourlyPackage === '8h' ? 'bg-yellow-400 text-slate-950 shadow' : 'text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    8 Hours / 80 KM (Full Day)
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
 
-          {onModifySearch && (
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+            {isHourly && (
+              <div className="bg-slate-900 border border-slate-700 p-1 rounded-xl flex items-center">
+                <button
+                  type="button"
+                  onClick={() => setHourlyPackage('4h')}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    hourlyPackage === '4h' ? 'bg-yellow-400 text-slate-950' : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  4 Hrs / 40 KM
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setHourlyPackage('8h')}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    hourlyPackage === '8h' ? 'bg-yellow-400 text-slate-950' : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  8 Hrs / 80 KM
+                </button>
+              </div>
+            )}
+
             <button
               onClick={onModifySearch}
-              className="bg-slate-800 hover:bg-slate-700 text-yellow-400 px-5 py-2.5 rounded-full text-xs font-bold transition-all border border-slate-700 whitespace-nowrap shadow-md self-stretch sm:self-auto text-center"
+              className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold text-xs transition-colors flex items-center justify-center space-x-1.5"
             >
-              Modify Search
+              <span>Modify Route</span>
             </button>
-          )}
+          </div>
         </div>
       </div>
 
-      {/* Tax & Toll Guaranteed Banner */}
-      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-3.5 sm:p-4 mb-8 flex items-center space-x-3 text-emerald-900">
-        <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-        <p className="text-xs sm:text-sm font-bold leading-tight">
-          Transparent Guaranteed Fares: All quotes below <span className="text-emerald-700 underline font-extrabold">{isHourly ? 'include Chauffeur Allowance & Fuel' : 'include State Taxes, Highway Toll Taxes & Driver Allowance'}</span>. No hidden surprises!
-        </p>
-      </div>
+      {/* Cabs List Grid */}
+      {isLoadingFares ? (
+        <div className="bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-sm">
+          <div className="w-10 h-10 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm font-bold text-slate-700">Calculating authoritative pricing & terrain rates...</p>
+        </div>
+      ) : calculatedFares.length === 0 ? (
+        <div className="bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-sm">
+          <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+          <h3 className="text-lg font-bold text-slate-800">No Cabs Available</h3>
+          <p className="text-xs text-gray-500 mt-1">Please try modifying your pickup or destination.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {calculatedFares.map((fare) => {
+            const isMinKmApplied = fare.billableKm > fare.distanceKm;
 
-      {/* Vehicle Cards List */}
-      <div className="space-y-6 lg:space-y-8">
-        {fleetData.map((vehicle) => {
-          const pricing = getVehiclePricing(vehicle);
-
-          return (
-            <div
-              key={vehicle.id}
-              className="bg-white rounded-3xl overflow-hidden border border-gray-200/90 shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col"
-            >
-              {/* TOP SECTION: Big Car Image on Left + Main Information & Price on Right */}
-              <div className="flex flex-row items-center p-3 sm:p-6 gap-3 sm:gap-6 border-b border-gray-100">
-                
-                {/* Left: BIG Vehicle Image Box */}
-                <div className="w-1/2 sm:w-5/12 md:w-80 lg:w-96 bg-gradient-to-b from-gray-100/90 to-gray-50/70 p-2 sm:p-4 rounded-2xl flex flex-col items-center justify-center relative flex-shrink-0 min-h-[140px] sm:min-h-[190px] md:min-h-[220px]">
-                  <span className="absolute top-2 left-2 bg-slate-950 text-yellow-400 font-extrabold text-[8px] sm:text-[10px] uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-sm z-10">
-                    {vehicle.tag}
-                  </span>
-                  
-                  <img
-                    src={vehicle.image}
-                    alt={vehicle.altText}
-                    loading="lazy"
-                    className="w-full h-auto max-h-32 sm:max-h-44 md:max-h-52 object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md py-1"
-                  />
-
-                  <span className="text-[10px] text-gray-500 font-bold mt-1 text-center hidden sm:block">
-                    {vehicle.category}
-                  </span>
-                </div>
-
-                {/* Right: Main Information, Fare & WhatsApp Button */}
-                <div className="w-1/2 sm:w-7/12 md:flex-grow flex flex-col justify-between py-1">
-                  <div>
-                    <div className="flex items-center justify-between gap-1">
-                      <span className="text-[10px] sm:text-xs text-amber-700 font-bold uppercase tracking-wider block">
-                        {vehicle.category}
-                      </span>
-                      {pricing.slabBadge && (
-                        <span className="bg-yellow-100 text-yellow-900 border border-yellow-300 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center space-x-1">
-                          <Tag className="w-3 h-3 text-yellow-700 mr-1 inline" />
-                          <span>{pricing.slabBadge}</span>
+            return (
+              <div 
+                key={fare.vehicleId}
+                className="bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+              >
+                <div>
+                  {/* Card Header & Vehicle Image */}
+                  <div className="p-5 pb-3 bg-gradient-to-b from-gray-50 to-white relative">
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <div>
+                        <span className="inline-block px-2.5 py-0.5 bg-slate-900 text-yellow-400 text-[10px] font-bold uppercase rounded-md tracking-wider">
+                          {fare.category}
                         </span>
-                      )}
+                        <h3 className="text-lg font-bold text-slate-900 font-nexa mt-1">
+                          {fare.vehicle}
+                        </h3>
+                      </div>
+
+                      <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${
+                        fare.routeType === 'HILL'
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                          : 'bg-blue-50 text-blue-700 border-blue-200'
+                      }`}>
+                        {fare.routeType} RATE
+                      </span>
                     </div>
 
-                    <h2 className="text-base sm:text-2xl md:text-3xl font-extrabold font-heading text-slate-900 leading-tight mt-0.5">
-                      {vehicle.name}
-                    </h2>
+                    <div className="h-36 w-full flex items-center justify-center my-2 overflow-hidden rounded-2xl bg-white p-2">
+                      <img 
+                        src={fare.image || '/assets/images/dzire.jpg'} 
+                        alt={fare.vehicle}
+                        className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => { e.target.src = '/assets/images/dzire.jpg'; }}
+                      />
+                    </div>
 
                     {/* Specs Pills */}
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2 sm:mt-3 text-[10px] sm:text-xs font-semibold text-slate-700">
-                      <span className="bg-gray-100 px-2 sm:px-2.5 py-1 rounded-lg flex items-center">
-                        <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 text-yellow-600 flex-shrink-0" />
-                        {vehicle.seats}
+                    <div className="flex items-center gap-3 text-xs text-gray-600 pt-2 border-t border-gray-100">
+                      <span className="flex items-center">
+                        <Users className="w-3.5 h-3.5 mr-1 text-slate-400" />
+                        {fare.seats || '4 Seater'}
                       </span>
-                      <span className="bg-gray-100 px-2 sm:px-2.5 py-1 rounded-lg flex items-center">
-                        <Luggage className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 text-yellow-600 flex-shrink-0" />
-                        {vehicle.luggage}
-                      </span>
-                      <span className="bg-gray-100 px-2 sm:px-2.5 py-1 rounded-lg hidden sm:flex items-center">
-                        <Wind className="w-3.5 h-3.5 mr-1 text-blue-500 flex-shrink-0" />
-                        {vehicle.ac}
-                      </span>
-                      <span className="bg-gray-100 px-2 sm:px-2.5 py-1 rounded-lg hidden sm:flex items-center">
-                        <Fuel className="w-3.5 h-3.5 mr-1 text-amber-500 flex-shrink-0" />
-                        {vehicle.fuel}
+                      <span className="flex items-center">
+                        <Fuel className="w-3.5 h-3.5 mr-1 text-slate-400" />
+                        AC Cab
                       </span>
                     </div>
+                  </div>
 
-                    {/* Price Block */}
-                    <div className="mt-3 sm:mt-4">
-                      <div className="text-xl sm:text-3xl md:text-4xl font-extrabold text-slate-950 font-heading leading-tight">
-                        {pricing.formattedFare}
+                  {/* Fare Breakdown Table Section */}
+                  <div className="p-5 pt-3 space-y-2.5 text-xs">
+                    
+                    {/* Rate per KM & Billable KM */}
+                    <div className="bg-slate-50 p-3 rounded-xl border border-gray-100 space-y-1.5">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-500 font-medium">Applicable Rate:</span>
+                        <span className="font-bold text-slate-900">
+                          {fare.pricingType === 'fixed_route' ? 'Fixed Route Fare' : `₹${fare.ratePerKm}/km`}
+                        </span>
                       </div>
-                      <span className="text-[10px] sm:text-xs text-gray-500 font-semibold block">
-                        Estimated Total Price ({pricing.distanceDisplay})
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-500 font-medium">Distance:</span>
+                        <span className="font-bold text-slate-700">{fare.distanceKm} km</span>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-500 font-medium">Billable Distance:</span>
+                        <span className="font-bold text-slate-900">
+                          {fare.billableKm} km {isMinKmApplied && <span className="text-[10px] text-amber-600 font-normal">(Min. {fare.minimumKm} km)</span>}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Detailed Fare Calculation Elements */}
+                    <div className="space-y-1 pt-1 px-1">
+                      <div className="flex justify-between text-gray-600">
+                        <span>Base Fare ({fare.billableKm} km × ₹{fare.ratePerKm})</span>
+                        <span className="font-bold text-slate-800">₹{fare.baseFare.toLocaleString('en-IN')}</span>
+                      </div>
+
+                      {fare.driverAllowance > 0 && (
+                        <div className="flex justify-between text-gray-600">
+                          <span>Driver Allowance</span>
+                          <span className="font-bold text-slate-800">₹{fare.driverAllowance}</span>
+                        </div>
+                      )}
+
+                      {fare.nightCharges > 0 && (
+                        <div className="flex justify-between text-indigo-600 font-medium">
+                          <span>Night Surcharge (23:00–05:00)</span>
+                          <span className="font-bold">₹{fare.nightCharges}</span>
+                        </div>
+                      )}
+
+                      <div className="flex justify-between text-gray-500 text-[11px] pt-1">
+                        <span>Toll & State Tax:</span>
+                        <span className="font-semibold text-emerald-700">Actual Receipts</span>
+                      </div>
+
+                      <div className="flex justify-between text-gray-500 text-[11px]">
+                        <span>Parking:</span>
+                        <span className="font-semibold text-emerald-700">Actual Receipts</span>
+                      </div>
+                    </div>
+
+                    {/* Total Estimated Price Highlight */}
+                    <div className="pt-3 border-t border-gray-200 flex items-baseline justify-between">
+                      <div>
+                        <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Estimated Fare</span>
+                        <div className="text-2xl font-black font-nexa text-slate-950">
+                          ₹{fare.estimatedTotal.toLocaleString('en-IN')}
+                          <span className="text-xs font-medium text-gray-500 ml-1">+ Actuals</span>
+                        </div>
+                      </div>
+
+                      <span className="text-[10px] bg-emerald-50 text-emerald-800 px-2 py-1 rounded font-bold border border-emerald-200">
+                        Fuel Included
                       </span>
                     </div>
-                  </div>
 
-                  {/* Primary WhatsApp Action */}
-                  <div className="mt-3 sm:mt-4">
-                    <button
-                      onClick={() => handleBookVehicle(vehicle)}
-                      className="w-full sm:w-auto yellow-gradient-btn px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-md hover:shadow-lg transition-all"
-                    >
-                      <span>🟢 Book Now</span>
-                      <CircleCheck className="w-4 h-4" />
-                    </button>
                   </div>
+                </div>
+
+                {/* Actions: WhatsApp + Instant Booking */}
+                <div className="p-5 pt-0 grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleWhatsAppBooking(fare)}
+                    className="w-full py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors flex items-center justify-center space-x-1.5 shadow-sm"
+                  >
+                    <span>WhatsApp</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={isSubmittingBooking}
+                    onClick={() => handleInstantBooking(fare)}
+                    className="w-full py-2.5 px-3 rounded-xl bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-black text-xs transition-colors flex items-center justify-center space-x-1.5 shadow-sm"
+                  >
+                    <span>Instant Book</span>
+                  </button>
                 </div>
 
               </div>
+            );
+          })}
+        </div>
+      )}
 
-              {/* BOTTOM SECTION: Extra Information (Full Width) */}
-              <div className="bg-gray-50/80 px-4 sm:px-6 py-3 sm:py-3.5 border-t border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-2.5 text-xs">
-                
-                {/* Distance & Extra KMS Rate */}
-                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-slate-700">
-                  <div className="font-medium">
-                    <strong className="text-slate-900">Tariff Structure:</strong> {pricing.distanceDisplay}
-                  </div>
-                  <span className="text-gray-300 hidden sm:inline">•</span>
-                  <div className="font-medium">
-                    <strong className="text-slate-900">Post Limit Rate:</strong>{' '}
-                    <span className="text-amber-700 font-bold">{pricing.postKmRateStr}</span>
-                  </div>
-                </div>
-
-                {/* Inclusions Badge */}
-                <div className="text-[11px] sm:text-xs font-bold text-emerald-700 flex items-center space-x-1.5 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-100">
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
-                  <span>{pricing.inclusionsText}</span>
-                </div>
-
-              </div>
-
+      {/* Booking Confirmation Modal */}
+      {bookingSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-100 text-center relative">
+            <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-10 h-10" />
             </div>
-          );
-        })}
-      </div>
+
+            <h3 className="text-2xl font-black font-nexa text-slate-900">Booking Confirmed!</h3>
+            <p className="text-xs text-gray-500 mt-1">Reference: <strong className="text-slate-900">{bookingSuccessModal.id}</strong></p>
+
+            <div className="bg-gray-50 p-4 rounded-2xl text-left my-5 text-xs space-y-2 border border-gray-200">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Route:</span>
+                <span className="font-bold text-slate-900">{bookingSuccessModal.pickup} → {bookingSuccessModal.destination}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Vehicle:</span>
+                <span className="font-bold text-slate-900">{bookingSuccessModal.vehicleName} ({bookingSuccessModal.vehicleCategory})</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Terrain:</span>
+                <span className="font-bold text-slate-900">{bookingSuccessModal.routeType} Area</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Billable Distance:</span>
+                <span className="font-bold text-slate-900">{bookingSuccessModal.billableKm} KM</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Rate:</span>
+                <span className="font-bold text-slate-900">₹{bookingSuccessModal.ratePerKm}/km</span>
+              </div>
+              <div className="flex justify-between pt-2 border-t border-gray-200 text-sm">
+                <span className="font-bold text-slate-700">Estimated Total:</span>
+                <span className="font-black text-slate-950">₹{bookingSuccessModal.estimatedTotal.toLocaleString('en-IN')}</span>
+              </div>
+            </div>
+
+            <p className="text-[11px] text-gray-500 mb-6">
+              Our dispatch team has received your booking and will assign your chauffeur shortly.
+            </p>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setBookingSuccessModal(null)}
+                className="w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

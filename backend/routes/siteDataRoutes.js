@@ -1,4 +1,4 @@
-import express from 'express';
+﻿import express from 'express';
 import { readJson } from '../utils/storage.js';
 
 const router = express.Router();
@@ -12,6 +12,7 @@ router.get('/', (req, res) => {
     const services = readJson('services') || [];
     const popularRoutes = readJson('popularRoutes') || [];
     const popularLocations = readJson('popularLocations') || [];
+    const pricingRoutes = readJson('pricingRoutes') || [];
     const pricingSettings = readJson('pricingSettings') || {};
     const mediaSettings = readJson('mediaSettings') || {};
 
@@ -25,6 +26,7 @@ router.get('/', (req, res) => {
         services,
         popularRoutes,
         popularLocations,
+        pricingRoutes,
         pricingSettings,
         mediaSettings
       }

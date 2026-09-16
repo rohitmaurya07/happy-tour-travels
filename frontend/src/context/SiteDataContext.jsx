@@ -5,6 +5,15 @@ import { packagesData as defaultPackages } from '../data/packages';
 import { servicesData as defaultServices } from '../data/services';
 import { popularRouteCategories as defaultRoutes } from '../data/popularRoutes';
 import { popularLocations as defaultLocations } from '../data/popularLocations';
+import { API_BASE } from '../services/api';
+
+const normalizeUrl = (url) => {
+  if (!url || typeof url !== 'string') return url;
+  if (url.startsWith('/uploads/')) {
+    return API_BASE ? `${API_BASE}${url}` : url;
+  }
+  return url;
+};
 import {
   fetchPublicSiteData,
   adminLogin as apiAdminLogin,
@@ -60,8 +69,16 @@ export const SiteDataProvider = ({ children }) => {
       if (data) {
         if (data.siteConfig) setSiteConfig(data.siteConfig);
         if (data.pricingSettings) setPricingSettings(data.pricingSettings);
-        if (data.mediaSettings) setMediaSettings(data.mediaSettings);
-        if (data.fleet && data.fleet.length > 0) setFleet(data.fleet);
+        if (data.mediaSettings) {
+          setMediaSettings({
+            ...data.mediaSettings,
+            heroVideoUrl: normalizeUrl(data.mediaSettings.heroVideoUrl),
+            logoUrl: normalizeUrl(data.mediaSettings.logoUrl)
+          });
+        }
+        if (data.fleet && data.fleet.length > 0) {
+          setFleet(data.fleet.map(car => ({ ...car, image: normalizeUrl(car.image) })));
+        }
         if (data.packages && data.packages.length > 0) setPackages(data.packages);
         if (data.services && data.services.length > 0) setServices(data.services);
         if (data.popularRoutes && data.popularRoutes.length > 0) setPopularRoutes(data.popularRoutes);
