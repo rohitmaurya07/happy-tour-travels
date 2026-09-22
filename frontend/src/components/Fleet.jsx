@@ -11,8 +11,8 @@ export default function Fleet() {
 
 Vehicle: ${vehicle.name} (${vehicle.category})
 Seating Capacity: ${vehicle.seats}
-Local 4h/40km: ₹${vehicle.localPackages ? vehicle.localPackages.fourHours.toLocaleString('en-IN') : '1000'}
-Local 8h/80km: ₹${vehicle.localPackages ? vehicle.localPackages.eightHours.toLocaleString('en-IN') : '1500'}
+Local 4h/40km: ₹${(vehicle.packages?.fourHours?.price || vehicle.localPackages?.fourHours || 1000).toLocaleString('en-IN')}
+Local 8h/80km: ₹${(vehicle.packages?.eightHours?.price || vehicle.localPackages?.eightHours || 1500).toLocaleString('en-IN')}
 Outstation Rate: ${vehicle.ratesHint}
 
 Please share availability and booking details.`;
@@ -78,18 +78,16 @@ Please share availability and booking details.`;
                   </p>
 
                   {/* Local Taxi Packages Pill Box */}
-                  {vehicle.localPackages && (
-                    <div className="bg-yellow-50/80 rounded-2xl p-3 border border-yellow-200/80 mb-4 text-xs">
-                      <span className="font-bold text-slate-900 block mb-1 flex items-center">
-                        <Clock className="w-3.5 h-3.5 mr-1 text-amber-600" />
-                        Local Taxi Packages:
-                      </span>
-                      <div className="flex justify-between items-center text-slate-800 font-semibold pt-1">
-                        <span>4 Hrs / 40 KM: <strong className="text-slate-950 font-bold">₹{vehicle.localPackages.fourHours.toLocaleString('en-IN')}</strong></span>
-                        <span>8 Hrs / 80 KM: <strong className="text-slate-950 font-bold">₹{vehicle.localPackages.eightHours.toLocaleString('en-IN')}</strong></span>
-                      </div>
+                  <div className="bg-yellow-50/80 rounded-2xl p-3 border border-yellow-200/80 mb-4 text-xs">
+                    <span className="font-bold text-slate-900 block mb-1 flex items-center">
+                      <Clock className="w-3.5 h-3.5 mr-1 text-amber-600" />
+                      Local Taxi Packages:
+                    </span>
+                    <div className="flex justify-between items-center text-slate-800 font-semibold pt-1">
+                      <span>4 Hrs / 40 KM: <strong className="text-slate-950 font-bold">₹{(vehicle.packages?.fourHours?.price || vehicle.localPackages?.fourHours || 1000).toLocaleString('en-IN')}</strong></span>
+                      <span>8 Hrs / 80 KM: <strong className="text-slate-950 font-bold">₹{(vehicle.packages?.eightHours?.price || vehicle.localPackages?.eightHours || 1500).toLocaleString('en-IN')}</strong></span>
                     </div>
-                  )}
+                  </div>
 
                   {/* Specs Grid */}
                   <div className="grid grid-cols-2 gap-3 pt-3 border-t border-gray-100 text-xs font-semibold text-slate-700 mb-6">

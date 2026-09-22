@@ -147,23 +147,23 @@ export default function SearchResults({ searchParams, onModifySearch }) {
     if (isHourly) {
       const inc = hourlyPackage === '4h' ? 40 : 80;
       const rate = fare.extraKmRate || fare.ratePerKm || 12;
-      return `₹${rate}/km `;
+      return `₹${rate}/km after ${inc} km`;
     }
     if (fare.pricingType === 'long_distance') {
       const startKm = fare.pricingSnapshot?.longDistanceConfig?.startAfterKm || 95;
-      return `₹${fare.ratePerKm}/km `;
+      return `₹${fare.ratePerKm}/km after ${startKm} km`;
     }
     if (fare.pricingType === 'local_slab') {
       const rate = fare.extraKmRate || fare.ratePerKm || 12;
-      return `₹${rate}/km `;
+      return `₹${rate}/km after 95 km`;
     }
     if (fare.pricingType === 'round_trip') {
-      return `₹${fare.ratePerKm}/km extra`;
+      return `₹${fare.ratePerKm}/km`;
     }
     if (fare.pricingType === 'fixed_route') {
       return `₹${fare.extraKmRate || fare.ratePerKm}/km extra`;
     }
-    return `₹${fare.ratePerKm}/km extra`;
+    return `₹${fare.ratePerKm}/km`;
   };
 
   const handleWhatsAppBooking = (fareItem) => {

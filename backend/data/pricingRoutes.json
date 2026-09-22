@@ -1,39 +1,5 @@
 [
   {
-    "id": "jalandhar-delhi-airport",
-    "pickup": "Jalandhar",
-    "destination": "Delhi Airport",
-    "routeType": "PLAIN",
-    "pricingType": "fixed",
-    "vehiclePrices": {
-      "dzire": 3500,
-      "verna": 4000,
-      "ertiga": 4500,
-      "innova": 5500,
-      "fortuner": 8500,
-      "tempo": 7500
-    },
-    "distanceKm": 385,
-    "active": true
-  },
-  {
-    "id": "jalandhar-chandigarh",
-    "pickup": "Jalandhar",
-    "destination": "Chandigarh",
-    "routeType": "PLAIN",
-    "pricingType": "fixed",
-    "vehiclePrices": {
-      "dzire": 2200,
-      "verna": 2600,
-      "ertiga": 2800,
-      "innova": 3800,
-      "fortuner": 5800,
-      "tempo": 5200
-    },
-    "distanceKm": 148,
-    "active": true
-  },
-  {
     "id": "jalandhar-shimla",
     "pickup": "Jalandhar",
     "destination": "Shimla",
@@ -82,23 +48,6 @@
       "tempo": 0
     },
     "distanceKm": 165,
-    "active": true
-  },
-  {
-    "id": "amritsar-delhi-airport",
-    "pickup": "Amritsar",
-    "destination": "Delhi Airport",
-    "routeType": "PLAIN",
-    "pricingType": "fixed",
-    "vehiclePrices": {
-      "dzire": 4800,
-      "verna": 5300,
-      "ertiga": 5800,
-      "innova": 7200,
-      "fortuner": 11000,
-      "tempo": 9800
-    },
-    "distanceKm": 460,
     "active": true
   }
 ]

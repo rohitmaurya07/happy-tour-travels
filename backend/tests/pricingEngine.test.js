@@ -51,7 +51,11 @@ test('1b. Local Slab Matching: 60 KM -> Dzire 55–75 KM Slab = ₹1300', () => 
 
 // TEST 2: Long Distance Threshold Calculation
 // Formula: pricing.longDistance.baseFare + (distance - pricing.longDistance.startAfterKm) * pricing.longDistance.additionalKmRate
-test('2. Long Distance Threshold: 385 KM for Dzire (After 95 KM, Base ₹1700, ₹12/KM -> Base ₹5180)', () => {
+test('2. Long Distance Threshold: 385 KM for Dzire (~₹5,000 benchmark for Jalandhar to Delhi)', () => {
+  const fleet = readJson('fleet');
+  const dzire = fleet.find(v => v.id === 'dzire');
+  const ld = dzire.longDistance;
+
   const result = calculateFare({
     pickup: 'Jalandhar',
     destination: 'Gurgaon',
@@ -60,16 +64,54 @@ test('2. Long Distance Threshold: 385 KM for Dzire (After 95 KM, Base ₹1700, �
     tripType: 'One Way'
   });
 
+  const expectedBaseFare = ld.baseFare + ((385 - ld.startAfterKm) * ld.additionalKmRate);
   assert.strictEqual(result.pricingType, 'long_distance');
-  // 1700 + (385 - 95) * 12 = 1700 + 290 * 12 = 1700 + 3480 = 5180
-  assert.strictEqual(result.baseFare, 5180, 'Base fare should be ₹1,700 + (385-95)*12 = ₹5,180');
+  assert.strictEqual(result.baseFare, expectedBaseFare, `Base fare should match formula: ₹${ld.baseFare} + (385-${ld.startAfterKm})*${ld.additionalKmRate} = ₹${expectedBaseFare}`);
   assert.strictEqual(result.driverAllowance, 300);
-  assert.strictEqual(result.estimatedTotal, 5480, 'Total should be 5180 + 300 = 5480');
+  assert.strictEqual(result.estimatedTotal, expectedBaseFare + 300);
   assert.ok(result.pricingSnapshot, 'Pricing snapshot must exist');
 });
 
+test('2b. Benchmark Vehicle Rates for 385 KM (One Way & Round Trip)', () => {
+  // Dzire Pure Per-KM ~ ₹5,005 (385 * 13.0) | Round Trip 770 KM @ 11.70 = 9009
+  const dzireRt = calculateFare({
+    pickup: 'Jalandhar',
+    destination: 'Gurgaon',
+    distanceKm: 385,
+    vehicleId: 'dzire',
+    tripType: 'Round Trip'
+  });
+  assert.strictEqual(dzireRt.billableKm, 770);
+  assert.strictEqual(dzireRt.ratePerKm, 11.7);
+  assert.strictEqual(dzireRt.baseFare, 9009);
+
+  // Verna One-Way (385 * 14.30 = 5505.5 -> ~5506) | Round Trip 770 KM @ 14.00 = 10780
+  const vernaRt = calculateFare({
+    pickup: 'Jalandhar',
+    destination: 'Gurgaon',
+    distanceKm: 385,
+    vehicleId: 'verna',
+    tripType: 'Round Trip'
+  });
+  assert.strictEqual(vernaRt.billableKm, 770);
+  assert.strictEqual(vernaRt.ratePerKm, 14.0);
+  assert.strictEqual(vernaRt.baseFare, 10780);
+
+  // Innova One-Way (385 * 20.70 = 7969.5 -> ~7970) | Round Trip 770 KM @ 18.20 = 14014
+  const innovaRt = calculateFare({
+    pickup: 'Jalandhar',
+    destination: 'Gurgaon',
+    distanceKm: 385,
+    vehicleId: 'innova',
+    tripType: 'Round Trip'
+  });
+  assert.strictEqual(innovaRt.billableKm, 770);
+  assert.strictEqual(innovaRt.ratePerKm, 18.2);
+  assert.strictEqual(innovaRt.baseFare, 14014);
+});
+
 // TEST 3: Dynamic Admin Reconfiguration without Code Change
-test('3. Dynamic Admin Reconfiguration: 95->100 KM, Base ₹1700->₹1800, Add ₹12->₹13/KM', () => {
+test('3. Dynamic Admin Reconfiguration: 95->100 KM, Base ₹1700->₹1800, Add ₹13->₹14/KM', () => {
   const fleet = readJson('fleet');
   const dzireIndex = fleet.findIndex(v => v.id === 'dzire');
   const originalLongDistance = { ...fleet[dzireIndex].longDistance };
@@ -79,7 +121,7 @@ test('3. Dynamic Admin Reconfiguration: 95->100 KM, Base ₹1700->₹1800, Add �
     fleet[dzireIndex].longDistance = {
       startAfterKm: 100,
       baseFare: 1800,
-      additionalKmRate: 13
+      additionalKmRate: 14
     };
     writeJson('fleet', fleet);
 
@@ -91,9 +133,9 @@ test('3. Dynamic Admin Reconfiguration: 95->100 KM, Base ₹1700->₹1800, Add �
       tripType: 'One Way'
     });
 
-    // 1800 + (385 - 100) * 13 = 1800 + 285 * 13 = 1800 + 3705 = 5505
-    assert.strictEqual(result.baseFare, 5505, 'Base fare must automatically use new values 1800 + (385-100)*13 = 5505');
-    assert.strictEqual(result.estimatedTotal, 5805, 'Estimated total must be 5505 + 300 = 5805');
+    // 1800 + (385 - 100) * 14 = 1800 + 285 * 14 = 1800 + 3990 = 5790
+    assert.strictEqual(result.baseFare, 5790, 'Base fare must automatically use new values 1800 + (385-100)*14 = 5790');
+    assert.strictEqual(result.estimatedTotal, 6090, 'Estimated total must be 5790 + 300 = 6090');
   } finally {
     // Restore
     fleet[dzireIndex].longDistance = originalLongDistance;
@@ -104,7 +146,7 @@ test('3. Dynamic Admin Reconfiguration: 95->100 KM, Base ₹1700->₹1800, Add �
 // TEST 4: Hill Route Rate Selection
 test('4. Hill Route: Jalandhar -> Shimla (Dzire @ Hill Rate & Under Minimum Outstation KM)', () => {
   const fleet = readJson('fleet');
-  const dzire = fleet.find(v => v.id === 'dzire') || { hillRatePerKm: 14 };
+  const dzire = fleet.find(v => v.id === 'dzire') || { hillRatePerKm: 15.5 };
   const hillRate = dzire.hillRatePerKm;
 
   const result = calculateFare({
@@ -132,8 +174,8 @@ test('5. Fixed Route Override: Jalandhar -> Delhi Airport Fixed Tariff', () => {
   });
 
   assert.strictEqual(result.pricingType, 'fixed_route');
-  assert.strictEqual(result.baseFare, 3500, 'Fixed fare for Dzire on Jalandhar -> Delhi Airport should be 3500');
-  assert.strictEqual(result.estimatedTotal, 3800, 'Estimated total should be 3500 + 300 driver allowance = 3800');
+  assert.strictEqual(result.baseFare, 5000, 'Fixed fare for Dzire on Jalandhar -> Delhi Airport should be 5000');
+  assert.strictEqual(result.estimatedTotal, 5300, 'Estimated total should be 5000 + 300 driver allowance = 5300');
 });
 
 // TEST 6: Historical Pricing Snapshot Immutability
@@ -249,6 +291,10 @@ test('7. Validation Engine: Rejects negative prices, overlapping slabs, invalid 
 
 // TEST 8: Hourly Package Pricing with Included KM
 test('8. Hourly Package: Dzire 4H / 40KM Package (₹1000 base + extra KM charge)', () => {
+  const fleet = readJson('fleet');
+  const dzire = fleet.find(v => v.id === 'dzire');
+  const extraRate = dzire.extraKmRate || 12;
+
   // 30 km (within 40 included) -> ₹1000
   const result40 = calculateFare({
     pickup: 'Jalandhar',
@@ -260,7 +306,7 @@ test('8. Hourly Package: Dzire 4H / 40KM Package (₹1000 base + extra KM charge
   });
   assert.strictEqual(result40.baseFare, 1000);
 
-  // 55 km (15 km over 40 included @ ₹11/km extra) -> 1000 + 15*11 = 1165
+  // 55 km (15 km over 40 included @ dzire.extraKmRate extra) -> 1000 + 15 * extraRate
   const result55 = calculateFare({
     pickup: 'Jalandhar',
     destination: 'Local Rental',
@@ -269,7 +315,7 @@ test('8. Hourly Package: Dzire 4H / 40KM Package (₹1000 base + extra KM charge
     tripType: 'Hourly Rental',
     hourlyPackage: '4h'
   });
-  assert.strictEqual(result55.baseFare, 1000 + (15 * 11));
+  assert.strictEqual(result55.baseFare, 1000 + (15 * extraRate));
 });
 
 // TEST 9: Multi-Vehicle Search Query

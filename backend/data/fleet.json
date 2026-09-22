@@ -12,37 +12,16 @@
     "tag": "Budget Sedan",
     "rank": 5,
     "description": "Comfortable and economic 4-seater sedan ideal for city commutes, airport transfers, and one-way outstation trips.",
-    "ratesHint": "₹12/km Plain • ₹14/km Hill • Min 20 KM",
+    "ratesHint": "₹13/km Plain • ₹15/km Hill • Min 20 KM",
     "minBookingKm": 20,
-    "slabs": [
-      {
-        "minKm": 20,
-        "maxKm": 35,
-        "price": 900
-      },
-      {
-        "minKm": 35,
-        "maxKm": 55,
-        "price": 1100
-      },
-      {
-        "minKm": 55,
-        "maxKm": 75,
-        "price": 1300
-      },
-      {
-        "minKm": 75,
-        "maxKm": 95,
-        "price": 1500
-      }
-    ],
+    "slabs": [],
     "longDistance": {
-      "startAfterKm": 95,
-      "baseFare": 1700,
+      "startAfterKm": 20,
+      "baseFare": 260,
       "additionalKmRate": 12
     },
-    "oneWayRate": 12,
-    "roundTripRate": 11,
+    "oneWayRate": 12.6,
+    "roundTripRate": 12,
     "packages": {
       "fourHours": {
         "price": 1000,
@@ -54,12 +33,13 @@
       }
     },
     "airportBasePrice": 2499,
-    "plainRatePerKm": 12,
-    "hillRatePerKm": 14,
+    "plainRatePerKm": 13,
+    "hillRatePerKm": 15,
     "minimumKm": 250,
     "extraKmRate": 11,
     "driverAllowance": 300,
     "active": true,
+    "pricingMode": "per_km",
     "localPackages": {
       "fourHours": 1000,
       "eightHours": 1500
@@ -80,7 +60,7 @@
     "tag": "Comfortable Sedan",
     "rank": 4,
     "description": "Stylish 4-seater executive sedan offering plush interiors, smooth highway suspension, and superior comfort for business & VIP travel.",
-    "ratesHint": "₹14/km Plain • ₹16/km Hill • Min 20 KM",
+    "ratesHint": "₹14.3/km Plain • ₹17/km Hill • Min 20 KM",
     "minBookingKm": 20,
     "slabs": [
       {
@@ -106,11 +86,11 @@
     ],
     "longDistance": {
       "startAfterKm": 95,
-      "baseFare": 2100,
-      "additionalKmRate": 14
+      "baseFare": 1358.5,
+      "additionalKmRate": 14.3
     },
-    "oneWayRate": 14,
-    "roundTripRate": 13,
+    "oneWayRate": 14.3,
+    "roundTripRate": 14,
     "packages": {
       "fourHours": {
         "price": 1200,
@@ -122,12 +102,13 @@
       }
     },
     "airportBasePrice": 2999,
-    "plainRatePerKm": 14,
-    "hillRatePerKm": 16,
+    "plainRatePerKm": 14.3,
+    "hillRatePerKm": 17,
     "minimumKm": 250,
     "extraKmRate": 13,
     "driverAllowance": 300,
     "active": true,
+    "pricingMode": "per_km",
     "localPackages": {
       "fourHours": 1200,
       "eightHours": 2000
@@ -148,7 +129,7 @@
     "tag": "Family Choice",
     "rank": 3,
     "description": "Spacious 6–7 seater family car perfectly suited for family trips, outstation tours to Himachal Pradesh, and airport group travel.",
-    "ratesHint": "₹16/km Plain • ₹18/km Hill • Min 250 KM",
+    "ratesHint": "₹16.5/km Plain • ₹19.5/km Hill • Min 20 KM",
     "minBookingKm": 20,
     "slabs": [
       {
@@ -174,11 +155,11 @@
     ],
     "longDistance": {
       "startAfterKm": 95,
-      "baseFare": 2200,
-      "additionalKmRate": 16
+      "baseFare": 1567.5,
+      "additionalKmRate": 16.5
     },
-    "oneWayRate": 14,
-    "roundTripRate": 14,
+    "oneWayRate": 16.5,
+    "roundTripRate": 15,
     "packages": {
       "fourHours": {
         "price": 1500,
@@ -190,12 +171,13 @@
       }
     },
     "airportBasePrice": 3499,
-    "plainRatePerKm": 16,
-    "hillRatePerKm": 18,
+    "plainRatePerKm": 16.5,
+    "hillRatePerKm": 19.5,
     "minimumKm": 250,
     "extraKmRate": 15,
     "driverAllowance": 300,
     "active": true,
+    "pricingMode": "hybrid",
     "localPackages": {
       "fourHours": 1500,
       "eightHours": 2300
@@ -216,7 +198,7 @@
     "tag": "Premium Family",
     "rank": 2,
     "description": "The gold standard for highway comfort and mountain tours. 7–8 seater with unmatched legroom, plush captain seats, and exceptional ride stability.",
-    "ratesHint": "₹20/km Plain • ₹22/km Hill • Min 250 KM",
+    "ratesHint": "₹20.7/km Plain • ₹23.5/km Hill • Min 20 KM",
     "minBookingKm": 20,
     "slabs": [
       {
@@ -242,11 +224,11 @@
     ],
     "longDistance": {
       "startAfterKm": 95,
-      "baseFare": 3300,
-      "additionalKmRate": 20
+      "baseFare": 1966.5,
+      "additionalKmRate": 20.7
     },
-    "oneWayRate": 18,
-    "roundTripRate": 17.5,
+    "oneWayRate": 20.7,
+    "roundTripRate": 18.2,
     "packages": {
       "fourHours": {
         "price": 1800,
@@ -258,12 +240,13 @@
       }
     },
     "airportBasePrice": 4999,
-    "plainRatePerKm": 20,
-    "hillRatePerKm": 22,
+    "plainRatePerKm": 20.7,
+    "hillRatePerKm": 23.5,
     "minimumKm": 250,
-    "extraKmRate": 19,
+    "extraKmRate": 18,
     "driverAllowance": 400,
     "active": true,
+    "pricingMode": "hybrid",
     "localPackages": {
       "fourHours": 1800,
       "eightHours": 3000
@@ -284,7 +267,7 @@
     "tag": "Premium SUV",
     "rank": 1,
     "description": "Commanding 6–7 seater premium SUV with automatic transmission. Luxurious interiors, supreme road presence, and ultimate highway capability.",
-    "ratesHint": "₹30/km Plain • ₹32/km Hill • Min 250 KM",
+    "ratesHint": "₹30/km Plain • ₹33/km Hill • Min 20 KM",
     "minBookingKm": 20,
     "slabs": [
       {
@@ -310,11 +293,11 @@
     ],
     "longDistance": {
       "startAfterKm": 95,
-      "baseFare": 4600,
+      "baseFare": 2850,
       "additionalKmRate": 30
     },
-    "oneWayRate": 26,
-    "roundTripRate": 25,
+    "oneWayRate": 30,
+    "roundTripRate": 27,
     "packages": {
       "fourHours": {
         "price": 2000,
@@ -327,11 +310,12 @@
     },
     "airportBasePrice": 6499,
     "plainRatePerKm": 30,
-    "hillRatePerKm": 32,
+    "hillRatePerKm": 33,
     "minimumKm": 250,
-    "extraKmRate": 28,
+    "extraKmRate": 25,
     "driverAllowance": 500,
     "active": true,
+    "pricingMode": "hybrid",
     "localPackages": {
       "fourHours": 2000,
       "eightHours": 5000
@@ -352,7 +336,7 @@
     "tag": "Group Special",
     "rank": 6,
     "description": "Spacious vehicle with pushback seats, individual charging points, and music system. Designed for large family reunions & wedding groups.",
-    "ratesHint": "₹28/km Plain • ₹30/km Hill • Min 250 KM",
+    "ratesHint": "₹26/km Plain • ₹29/km Hill • Min 20 KM",
     "minBookingKm": 20,
     "slabs": [
       {
@@ -378,10 +362,10 @@
     ],
     "longDistance": {
       "startAfterKm": 95,
-      "baseFare": 5500,
-      "additionalKmRate": 28
+      "baseFare": 2470,
+      "additionalKmRate": 26
     },
-    "oneWayRate": 24,
+    "oneWayRate": 26,
     "roundTripRate": 24,
     "packages": {
       "fourHours": {
@@ -394,12 +378,13 @@
       }
     },
     "airportBasePrice": 6999,
-    "plainRatePerKm": 28,
-    "hillRatePerKm": 30,
+    "plainRatePerKm": 26,
+    "hillRatePerKm": 29,
     "minimumKm": 250,
-    "extraKmRate": 25,
+    "extraKmRate": 22,
     "driverAllowance": 500,
     "active": true,
+    "pricingMode": "hybrid",
     "localPackages": {
       "fourHours": 3500,
       "eightHours": 5500

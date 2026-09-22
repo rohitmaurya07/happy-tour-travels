@@ -528,36 +528,45 @@ export const calculateFare = ({
 
   // 4. Standard Distance / Long Distance / Hill / Round Trip / Local Slab Calculation
   if (baseFare === 0) {
+    const pricingMode = vehicle.pricingMode || 'hybrid'; // 'hybrid' | 'per_km' | 'slabs_only'
+
     if (isRoundTrip) {
       const effectiveDist = actualDistance * 2;
       const effectiveMinKm = outstationMinKm * 2;
       billableKm = Math.max(effectiveDist, effectiveMinKm);
-      ratePerKm = Number(vehicle.roundTripRate) || (routeType === 'HILL' ? Number(vehicle.hillRatePerKm) : Number(vehicle.plainRatePerKm)) || 11;
+      ratePerKm = Number(vehicle.roundTripRate) || (routeType === 'HILL' ? Number(vehicle.hillRatePerKm) : Number(vehicle.plainRatePerKm)) || 11.7;
       baseFare = Math.round(billableKm * ratePerKm);
       pricingType = 'round_trip';
       pricingRuleApplied = `Round-Trip Tariff (₹${ratePerKm}/km, ${billableKm} billable km)`;
     } else if (routeType === 'HILL' || routeType === 'MIXED') {
       billableKm = Math.max(actualDistance, outstationMinKm);
-      ratePerKm = Number(vehicle.hillRatePerKm) || Number(vehicle.plainRatePerKm) || 14;
+      ratePerKm = Number(vehicle.hillRatePerKm) || (Number(vehicle.plainRatePerKm) ? Number(vehicle.plainRatePerKm) + 2.5 : 15.5);
       baseFare = Math.round(billableKm * ratePerKm);
       pricingType = 'per_km';
-      pricingRuleApplied = `Hill Area Rate (₹${ratePerKm}/km, ${billableKm} billable km)`;
+      pricingRuleApplied = `Hill Terrain Rate (₹${ratePerKm}/km, ${billableKm} billable km)`;
+    } else if (pricingMode === 'per_km') {
+      // Pure Per-KM Pricing Mode
+      billableKm = Math.max(actualDistance, minBookingKm);
+      ratePerKm = Number(vehicle.oneWayRate) || Number(vehicle.plainRatePerKm) || 13;
+      baseFare = Math.round(billableKm * ratePerKm);
+      pricingType = 'per_km';
+      pricingRuleApplied = `Per-KM Rate (₹${ratePerKm}/km, ${billableKm} billable km)`;
     } else {
-      // Plain Area Calculation with Database-Configured Long Distance & Local Slabs
+      // Hybrid or Slabs-Only Mode
       const longDistance = vehicle.longDistance || {
         startAfterKm: 95,
         baseFare: 1700,
-        additionalKmRate: vehicle.oneWayRate || vehicle.plainRatePerKm || 12
+        additionalKmRate: Number(vehicle.oneWayRate) || Number(vehicle.plainRatePerKm) || 12
       };
 
       const startAfterKm = Number(longDistance.startAfterKm) || 95;
       const ldBaseFare = Number(longDistance.baseFare) || 1700;
-      const ldAdditionalKmRate = Number(longDistance.additionalKmRate) || (vehicle.oneWayRate || vehicle.plainRatePerKm || 12);
+      const ldAdditionalKmRate = Number(longDistance.additionalKmRate) || (Number(vehicle.oneWayRate) || Number(vehicle.plainRatePerKm) || 12);
 
-      if (actualDistance > startAfterKm) {
-        // Long distance formula: baseFare + (actualDistance - startAfterKm) * additionalKmRate
+      if (pricingMode !== 'slabs_only' && actualDistance > startAfterKm) {
+        // Long distance threshold formula: baseFare + (actualDistance - startAfterKm) * additionalKmRate
         const extraKm = actualDistance - startAfterKm;
-        baseFare = Math.round(ldBaseFare + extraKm * ldAdditionalKmRate);
+        baseFare = Math.round(ldBaseFare + (extraKm * ldAdditionalKmRate));
         billableKm = actualDistance;
         ratePerKm = ldAdditionalKmRate;
         pricingType = 'long_distance';
@@ -582,7 +591,6 @@ export const calculateFare = ({
           pricingType = 'local_slab';
           pricingRuleApplied = `Local Slab (${appliedSlab}: ₹${baseFare})`;
         } else if (slabs.length > 0) {
-          // If below smallest slab, use smallest slab
           const sortedSlabs = [...slabs].sort((a, b) => Number(a.minKm) - Number(b.minKm));
           if (effectiveKm < Number(sortedSlabs[0].minKm)) {
             const firstSlab = sortedSlabs[0];
@@ -592,7 +600,6 @@ export const calculateFare = ({
             pricingType = 'local_slab';
             pricingRuleApplied = `Minimum Local Booking Slab (${firstSlab.minKm}–${firstSlab.maxKm} KM: ₹${baseFare})`;
           } else {
-            // Above largest slab but <= startAfterKm
             const lastSlab = sortedSlabs[sortedSlabs.length - 1];
             baseFare = Number(lastSlab.price);
             appliedSlab = `${lastSlab.minKm}–${lastSlab.maxKm} KM`;
@@ -602,7 +609,7 @@ export const calculateFare = ({
           }
         } else {
           // Fallback if no slabs configured: plainRatePerKm * billableKm
-          ratePerKm = Number(vehicle.oneWayRate || vehicle.plainRatePerKm) || 12;
+          ratePerKm = Number(vehicle.oneWayRate) || Number(vehicle.plainRatePerKm) || 13;
           baseFare = Math.round(billableKm * ratePerKm);
           pricingType = 'per_km';
           pricingRuleApplied = `Standard Plain Rate (₹${ratePerKm}/km)`;
@@ -639,6 +646,7 @@ export const calculateFare = ({
     vehicleId: vehicle.id,
     vehicleName: vehicle.name,
     vehicleCategory: vehicle.category,
+    pricingMode: vehicle.pricingMode || 'hybrid',
     pricingType,
     routeType,
     pricingRuleApplied,
@@ -664,6 +672,7 @@ export const calculateFare = ({
     vehicle: vehicle.name,
     vehicleId: vehicle.id,
     category: vehicle.category,
+    pricingMode: vehicle.pricingMode || 'hybrid',
     seats: vehicle.seats,
     image: vehicle.image,
     pickup,

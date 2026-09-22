@@ -166,6 +166,7 @@ router.put('/fleet/:id', (req, res) => {
   fleet[index] = {
     ...merged,
     name: merged.name?.trim(),
+    pricingMode: merged.pricingMode || fleet[index].pricingMode || 'hybrid',
     minBookingKm: merged.minBookingKm !== undefined ? Number(merged.minBookingKm) : 20,
     slabs: Array.isArray(merged.slabs) ? merged.slabs : (fleet[index].slabs || []),
     longDistance: merged.longDistance || fleet[index].longDistance || {
@@ -186,6 +187,12 @@ router.put('/fleet/:id', (req, res) => {
     extraKmRate: merged.extraKmRate !== undefined ? Number(merged.extraKmRate) : fleet[index].extraKmRate,
     driverAllowance: merged.driverAllowance !== undefined ? Number(merged.driverAllowance) : fleet[index].driverAllowance,
     active: merged.active !== undefined ? Boolean(merged.active) : (fleet[index].active !== false),
+    localPackages: {
+      fourHours: Number(merged.packages?.fourHours?.price) || Number(merged.localPackages?.fourHours) || 1000,
+      eightHours: Number(merged.packages?.eightHours?.price) || Number(merged.localPackages?.eightHours) || 1500
+    },
+    hourlyRate: Number(merged.packages?.eightHours?.price) || Number(merged.hourlyRate) || 1500,
+    airportFixedRate: Number(merged.airportBasePrice) || Number(merged.airportFixedRate) || 2499,
     ratesHint: `₹${merged.plainRatePerKm || 10}/km Plain • ₹${merged.hillRatePerKm || 12}/km Hill • Min ${merged.minBookingKm || 20} KM`
   };
 
@@ -210,9 +217,20 @@ router.put('/vehicle-pricing-all', (req, res) => {
   let fleet = readJson('fleet') || [];
   const updatedFleet = fleetList.map(item => {
     const existing = fleet.find(f => f.id === item.id) || {};
+    const p4 = item.packages?.fourHours?.price !== undefined ? Number(item.packages.fourHours.price) : (item.localPackages?.fourHours || 1000);
+    const p8 = item.packages?.eightHours?.price !== undefined ? Number(item.packages.eightHours.price) : (item.localPackages?.eightHours || 1500);
+    const airportPrice = item.airportBasePrice !== undefined ? Number(item.airportBasePrice) : (item.airportFixedRate || 2499);
+
     return {
       ...existing,
       ...item,
+      pricingMode: item.pricingMode || existing.pricingMode || 'hybrid',
+      localPackages: {
+        fourHours: p4,
+        eightHours: p8
+      },
+      hourlyRate: p8,
+      airportFixedRate: airportPrice,
       ratesHint: `₹${item.plainRatePerKm || 10}/km Plain • ₹${item.hillRatePerKm || 12}/km Hill • Min ${item.minBookingKm || 20} KM`
     };
   });

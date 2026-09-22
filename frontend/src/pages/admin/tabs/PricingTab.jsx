@@ -26,6 +26,7 @@ export default function PricingTab() {
     if (fleet && fleet.length > 0) {
       const formatted = fleet.map(car => ({
         ...car,
+        pricingMode: car.pricingMode || 'hybrid',
         minBookingKm: car.minBookingKm !== undefined ? Number(car.minBookingKm) : 20,
         slabs: Array.isArray(car.slabs) ? car.slabs : [
           { minKm: 20, maxKm: 35, price: 900 },
@@ -36,19 +37,19 @@ export default function PricingTab() {
         longDistance: car.longDistance || {
           startAfterKm: 95,
           baseFare: 1700,
-          additionalKmRate: car.oneWayRate || car.plainRatePerKm || 12
+          additionalKmRate: car.oneWayRate || car.plainRatePerKm || 13
         },
-        oneWayRate: car.oneWayRate !== undefined ? Number(car.oneWayRate) : 12,
-        roundTripRate: car.roundTripRate !== undefined ? Number(car.roundTripRate) : 11,
+        oneWayRate: car.oneWayRate !== undefined ? Number(car.oneWayRate) : 13,
+        roundTripRate: car.roundTripRate !== undefined ? Number(car.roundTripRate) : 11.7,
         packages: car.packages || {
           fourHours: { price: car.localPackages?.fourHours || 1000, includedKm: 40 },
           eightHours: { price: car.localPackages?.eightHours || car.hourlyRate || 1500, includedKm: 80 }
         },
         airportBasePrice: car.airportBasePrice !== undefined ? Number(car.airportBasePrice) : (car.airportFixedRate || 2499),
-        plainRatePerKm: car.plainRatePerKm !== undefined ? Number(car.plainRatePerKm) : 10,
-        hillRatePerKm: car.hillRatePerKm !== undefined ? Number(car.hillRatePerKm) : 11,
+        plainRatePerKm: car.plainRatePerKm !== undefined ? Number(car.plainRatePerKm) : 13,
+        hillRatePerKm: car.hillRatePerKm !== undefined ? Number(car.hillRatePerKm) : 15.5,
         minimumKm: car.minimumKm !== undefined ? Number(car.minimumKm) : 250,
-        extraKmRate: car.extraKmRate !== undefined ? Number(car.extraKmRate) : 11,
+        extraKmRate: car.extraKmRate !== undefined ? Number(car.extraKmRate) : 13,
         driverAllowance: car.driverAllowance !== undefined ? Number(car.driverAllowance) : 300,
         active: car.active !== false
       }));
@@ -106,6 +107,168 @@ export default function PricingTab() {
       }
       return v;
     }));
+  };
+
+  // Recommended Presets Handler (Dzire ~5000/9000, Verna ~5500/10780, Innova ~8000/14014, etc.)
+  const applyRecommendedBenchmarks = () => {
+    const presets = {
+      dzire: {
+        pricingMode: 'hybrid',
+        oneWayRate: 13.0,
+        roundTripRate: 11.7,
+        plainRatePerKm: 13.0,
+        hillRatePerKm: 15.5,
+        extraKmRate: 13.0,
+        minBookingKm: 20,
+        minimumKm: 250,
+        driverAllowance: 300,
+        airportBasePrice: 2499,
+        longDistance: { startAfterKm: 95, baseFare: 1700, additionalKmRate: 13.0 },
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 900 },
+          { minKm: 35, maxKm: 55, price: 1100 },
+          { minKm: 55, maxKm: 75, price: 1300 },
+          { minKm: 75, maxKm: 95, price: 1500 }
+        ],
+        packages: {
+          fourHours: { price: 1000, includedKm: 40 },
+          eightHours: { price: 1500, includedKm: 80 }
+        }
+      },
+      verna: {
+        pricingMode: 'hybrid',
+        oneWayRate: 14.3,
+        roundTripRate: 14.0,
+        plainRatePerKm: 14.3,
+        hillRatePerKm: 17.0,
+        extraKmRate: 14.3,
+        minBookingKm: 20,
+        minimumKm: 250,
+        driverAllowance: 300,
+        airportBasePrice: 2999,
+        longDistance: { startAfterKm: 95, baseFare: 1900, additionalKmRate: 14.3 },
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 1050 },
+          { minKm: 35, maxKm: 55, price: 1300 },
+          { minKm: 55, maxKm: 75, price: 1550 },
+          { minKm: 75, maxKm: 95, price: 1800 }
+        ],
+        packages: {
+          fourHours: { price: 1200, includedKm: 40 },
+          eightHours: { price: 1800, includedKm: 80 }
+        }
+      },
+      ertiga: {
+        pricingMode: 'hybrid',
+        oneWayRate: 16.5,
+        roundTripRate: 15.0,
+        plainRatePerKm: 16.5,
+        hillRatePerKm: 19.5,
+        extraKmRate: 16.5,
+        minBookingKm: 20,
+        minimumKm: 250,
+        driverAllowance: 300,
+        airportBasePrice: 3499,
+        longDistance: { startAfterKm: 95, baseFare: 2100, additionalKmRate: 16.5 },
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 1200 },
+          { minKm: 35, maxKm: 55, price: 1500 },
+          { minKm: 55, maxKm: 75, price: 1800 },
+          { minKm: 75, maxKm: 95, price: 2100 }
+        ],
+        packages: {
+          fourHours: { price: 1400, includedKm: 40 },
+          eightHours: { price: 2100, includedKm: 80 }
+        }
+      },
+      innova: {
+        pricingMode: 'hybrid',
+        oneWayRate: 20.7,
+        roundTripRate: 18.2,
+        plainRatePerKm: 20.7,
+        hillRatePerKm: 23.5,
+        extraKmRate: 20.7,
+        minBookingKm: 20,
+        minimumKm: 250,
+        driverAllowance: 300,
+        airportBasePrice: 3999,
+        longDistance: { startAfterKm: 95, baseFare: 2600, additionalKmRate: 20.7 },
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 1500 },
+          { minKm: 35, maxKm: 55, price: 1900 },
+          { minKm: 55, maxKm: 75, price: 2300 },
+          { minKm: 75, maxKm: 95, price: 2700 }
+        ],
+        packages: {
+          fourHours: { price: 1800, includedKm: 40 },
+          eightHours: { price: 2800, includedKm: 80 }
+        }
+      },
+      fortuner: {
+        pricingMode: 'hybrid',
+        oneWayRate: 30.0,
+        roundTripRate: 27.0,
+        plainRatePerKm: 30.0,
+        hillRatePerKm: 33.0,
+        extraKmRate: 30.0,
+        minBookingKm: 20,
+        minimumKm: 250,
+        driverAllowance: 400,
+        airportBasePrice: 5999,
+        longDistance: { startAfterKm: 95, baseFare: 3800, additionalKmRate: 30.0 },
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 2200 },
+          { minKm: 35, maxKm: 55, price: 2800 },
+          { minKm: 55, maxKm: 75, price: 3400 },
+          { minKm: 75, maxKm: 95, price: 4000 }
+        ],
+        packages: {
+          fourHours: { price: 2800, includedKm: 40 },
+          eightHours: { price: 4500, includedKm: 80 }
+        }
+      },
+      tempo: {
+        pricingMode: 'hybrid',
+        oneWayRate: 26.0,
+        roundTripRate: 24.0,
+        plainRatePerKm: 26.0,
+        hillRatePerKm: 29.0,
+        extraKmRate: 26.0,
+        minBookingKm: 20,
+        minimumKm: 250,
+        driverAllowance: 500,
+        airportBasePrice: 4999,
+        longDistance: { startAfterKm: 95, baseFare: 3300, additionalKmRate: 26.0 },
+        slabs: [
+          { minKm: 20, maxKm: 35, price: 2000 },
+          { minKm: 35, maxKm: 55, price: 2500 },
+          { minKm: 55, maxKm: 75, price: 3000 },
+          { minKm: 75, maxKm: 95, price: 3500 }
+        ],
+        packages: {
+          fourHours: { price: 2500, includedKm: 40 },
+          eightHours: { price: 4000, includedKm: 80 }
+        }
+      }
+    };
+
+    setVehiclesList(prev => prev.map(car => {
+      const preset = presets[car.id];
+      if (preset) {
+        return {
+          ...car,
+          ...preset,
+          longDistance: { ...car.longDistance, ...preset.longDistance },
+          slabs: preset.slabs ? [...preset.slabs] : car.slabs,
+          packages: {
+            ...car.packages,
+            ...preset.packages
+          }
+        };
+      }
+      return car;
+    }));
+    setStatusMsg({ type: 'success', text: 'Loaded recommended pricing benchmarks (Dzire ~₹5,000/₹9,000, Verna ~₹5,500, Innova ~₹8,000, Hilly +₹2.5-3/km). Click "Save All Vehicles" to apply permanently.' });
   };
 
   const handleSlabChange = (index, field, val) => {
@@ -517,14 +680,25 @@ export default function PricingTab() {
               <span className="text-xs font-bold uppercase tracking-wider text-gray-400">
                 Select Vehicle to Configure:
               </span>
-              <button
-                onClick={handleSaveAllVehicles}
-                disabled={isSaving}
-                className="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-black text-xs rounded-xl shadow-sm transition-all flex items-center space-x-1.5"
-              >
-                <Save className="w-3.5 h-3.5" />
-                <span>Save All Vehicles</span>
-              </button>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={applyRecommendedBenchmarks}
+                  className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-yellow-400 font-bold text-xs rounded-xl shadow-sm transition-all flex items-center space-x-1.5"
+                  title="Preset Dzire (~5000/9000), Verna (~5500), Innova (~8000), Hilly +2.5-3/km"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+                  <span>Load Benchmark Rates</span>
+                </button>
+                <button
+                  onClick={handleSaveAllVehicles}
+                  disabled={isSaving}
+                  className="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-black text-xs rounded-xl shadow-sm transition-all flex items-center space-x-1.5"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Save All Vehicles</span>
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
@@ -543,9 +717,12 @@ export default function PricingTab() {
                     <span className={`w-2 h-2 rounded-full ${v.active ? 'bg-emerald-400' : 'bg-gray-400'}`} />
                   </div>
                   <h4 className="text-xs font-black font-nexa mt-1 truncate">{v.name}</h4>
-                  <p className="text-[11px] font-bold text-brand-yellow mt-1">
-                    ₹{v.longDistance?.additionalKmRate || v.plainRatePerKm || 12}/km
-                  </p>
+                  <div className="flex items-center justify-between mt-1 text-[11px] font-bold">
+                    <span className="text-brand-yellow">₹{v.oneWayRate || v.longDistance?.additionalKmRate || v.plainRatePerKm || 13}/km</span>
+                    <span className="text-[9px] uppercase px-1.5 py-0.2 bg-slate-800 text-gray-300 rounded">
+                      {v.pricingMode === 'per_km' ? 'KM' : v.pricingMode === 'slabs_only' ? 'Slab' : 'Hybrid'}
+                    </span>
+                  </div>
                 </button>
               ))}
             </div>
@@ -555,7 +732,7 @@ export default function PricingTab() {
           {selectedVehicle && (
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm space-y-8 animate-fadeIn">
               
-              {/* Header with Name and Status */}
+              {/* Header with Name, Mode & Status */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-gray-100 gap-4">
                 <div>
                   <span className="inline-block px-2.5 py-0.5 bg-slate-900 text-yellow-400 text-[10px] font-bold uppercase rounded-md tracking-wider mb-1">
@@ -585,6 +762,156 @@ export default function PricingTab() {
                     <Save className="w-4 h-4" />
                     <span>{isSaving ? 'Saving...' : `Save ${selectedVehicle.name}`}</span>
                   </button>
+                </div>
+              </div>
+
+              {/* PRICING MODE SWITCHER */}
+              <div className="bg-gradient-to-r from-slate-900 to-slate-800 p-5 rounded-3xl text-white space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h3 className="text-sm font-black font-nexa text-yellow-400 flex items-center">
+                      <Layers className="w-4 h-4 mr-2" />
+                      Vehicle Pricing Engine Mode
+                    </h3>
+                    <p className="text-[11px] text-gray-300 mt-0.5">
+                      Choose how fares are computed for this vehicle. Switch anytime without changing code.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => updateSelectedVehicleField('pricingMode', 'hybrid')}
+                    className={`p-3.5 rounded-2xl border text-left transition-all ${
+                      (selectedVehicle.pricingMode || 'hybrid') === 'hybrid'
+                        ? 'bg-yellow-400 text-slate-950 border-yellow-400 font-bold shadow-md'
+                        : 'bg-slate-800/80 hover:bg-slate-800 text-gray-300 border-slate-700'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-black uppercase">Hybrid Mode</span>
+                      {(selectedVehicle.pricingMode || 'hybrid') === 'hybrid' && <Check className="w-4 h-4 text-slate-950 font-black" />}
+                    </div>
+                    <p className="text-[11px] opacity-90 leading-tight">
+                      Slabs for local trips (&le; 95 km) + Per-KM long-distance dynamic rate.
+                    </p>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => updateSelectedVehicleField('pricingMode', 'per_km')}
+                    className={`p-3.5 rounded-2xl border text-left transition-all ${
+                      selectedVehicle.pricingMode === 'per_km'
+                        ? 'bg-yellow-400 text-slate-950 border-yellow-400 font-bold shadow-md'
+                        : 'bg-slate-800/80 hover:bg-slate-800 text-gray-300 border-slate-700'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-black uppercase">Pure Per-KM Mode</span>
+                      {selectedVehicle.pricingMode === 'per_km' && <Check className="w-4 h-4 text-slate-950 font-black" />}
+                    </div>
+                    <p className="text-[11px] opacity-90 leading-tight">
+                      Calculates direct distance &times; rate/km for all rides without slab lookup.
+                    </p>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => updateSelectedVehicleField('pricingMode', 'slabs_only')}
+                    className={`p-3.5 rounded-2xl border text-left transition-all ${
+                      selectedVehicle.pricingMode === 'slabs_only'
+                        ? 'bg-yellow-400 text-slate-950 border-yellow-400 font-bold shadow-md'
+                        : 'bg-slate-800/80 hover:bg-slate-800 text-gray-300 border-slate-700'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-black uppercase">Pure Slabs Mode</span>
+                      {selectedVehicle.pricingMode === 'slabs_only' && <Check className="w-4 h-4 text-slate-950 font-black" />}
+                    </div>
+                    <p className="text-[11px] opacity-90 leading-tight">
+                      Strict distance tier lookup only.
+                    </p>
+                  </button>
+                </div>
+              </div>
+
+              {/* LIVE BENCHMARK ESTIMATION WIDGET FOR SELECTED CAR */}
+              <div className="bg-slate-50 border border-gray-200 p-5 rounded-3xl space-y-3">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center">
+                    <Eye className="w-4 h-4 mr-1.5 text-blue-600" />
+                    Live Route Quote Preview for {selectedVehicle.name}
+                  </h3>
+                  <span className="text-[10px] text-gray-400 font-bold">Driver Allowance ₹{selectedVehicle.driverAllowance || 300} Included</span>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                  {/* Route 1: Delhi Airport One Way */}
+                  {(() => {
+                    const dist = 385;
+                    const ld = selectedVehicle.longDistance || { startAfterKm: 95, baseFare: 1700, additionalKmRate: selectedVehicle.oneWayRate || 13 };
+                    const rate = Number(selectedVehicle.oneWayRate) || 13;
+                    let fare = 0;
+                    if (selectedVehicle.pricingMode === 'per_km') {
+                      fare = Math.round(dist * rate);
+                    } else {
+                      fare = dist > (ld.startAfterKm || 95)
+                        ? Math.round((ld.baseFare || 1700) + (dist - (ld.startAfterKm || 95)) * (ld.additionalKmRate || rate))
+                        : Math.round(dist * rate);
+                    }
+                    const total = fare + (Number(selectedVehicle.driverAllowance) || 300);
+                    return (
+                      <div className="bg-white p-3.5 rounded-2xl border border-gray-200">
+                        <span className="text-[10px] text-gray-400 font-bold uppercase block truncate">Jalandhar &rarr; Delhi (385 km)</span>
+                        <div className="text-base font-black text-slate-900 mt-1">₹{total.toLocaleString('en-IN')}</div>
+                        <span className="text-[10px] text-gray-500 font-medium">One-Way Fare</span>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Route 2: Delhi Airport Round Trip */}
+                  {(() => {
+                    const totalKm = 770;
+                    const rtRate = Number(selectedVehicle.roundTripRate) || 11.7;
+                    const total = Math.round(totalKm * rtRate) + ((Number(selectedVehicle.driverAllowance) || 300) * 2);
+                    return (
+                      <div className="bg-white p-3.5 rounded-2xl border border-gray-200">
+                        <span className="text-[10px] text-gray-400 font-bold uppercase block truncate">Delhi Round-Trip (770 km)</span>
+                        <div className="text-base font-black text-slate-900 mt-1">₹{total.toLocaleString('en-IN')}</div>
+                        <span className="text-[10px] text-gray-500 font-medium">2-Day Round Trip</span>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Route 3: Local City Run */}
+                  {(() => {
+                    const slab = (selectedVehicle.slabs || []).find(s => 25 >= s.minKm && 25 <= s.maxKm) || (selectedVehicle.slabs || [])[0];
+                    const fare = slab ? slab.price : Math.round(25 * (Number(selectedVehicle.oneWayRate) || 13));
+                    const total = fare + (Number(selectedVehicle.driverAllowance) || 300);
+                    return (
+                      <div className="bg-white p-3.5 rounded-2xl border border-gray-200">
+                        <span className="text-[10px] text-gray-400 font-bold uppercase block truncate">Local City Run (25 km)</span>
+                        <div className="text-base font-black text-slate-900 mt-1">₹{total.toLocaleString('en-IN')}</div>
+                        <span className="text-[10px] text-gray-500 font-medium">Local Slab</span>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Route 4: Hill Station Route */}
+                  {(() => {
+                    const dist = 220;
+                    const billableKm = Math.max(dist, Number(selectedVehicle.minimumKm) || 250);
+                    const hillRate = Number(selectedVehicle.hillRatePerKm) || 15.5;
+                    const total = Math.round(billableKm * hillRate) + (Number(selectedVehicle.driverAllowance) || 300);
+                    return (
+                      <div className="bg-white p-3.5 rounded-2xl border border-gray-200">
+                        <span className="text-[10px] text-gray-400 font-bold uppercase block truncate">Shimla Hill Route (220 km)</span>
+                        <div className="text-base font-black text-emerald-700 mt-1">₹{total.toLocaleString('en-IN')}</div>
+                        <span className="text-[10px] text-gray-500 font-medium">Hill Terrain (+₹2-3/km)</span>
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
 
@@ -727,7 +1054,8 @@ export default function PricingTab() {
                         <span className="text-xs text-yellow-400 font-bold">₹</span>
                         <input
                           type="number"
-                          value={selectedVehicle.longDistance?.additionalKmRate ?? 12}
+                          step="0.10"
+                          value={selectedVehicle.longDistance?.additionalKmRate ?? 13}
                           onChange={e => updateLongDistanceField('additionalKmRate', e.target.value)}
                           className="w-full bg-transparent text-lg font-black text-white outline-none border-b border-slate-600 focus:border-yellow-400"
                         />
@@ -741,10 +1069,10 @@ export default function PricingTab() {
                     <p className="font-bold text-yellow-300 text-[11px] uppercase tracking-wider">Formula Preview:</p>
                     <p className="font-mono text-[11px] text-white">
                       if (distance &gt; {selectedVehicle.longDistance?.startAfterKm || 95} km):<br />
-                      &nbsp;&nbsp;fare = ₹{selectedVehicle.longDistance?.baseFare || 1700} + (distance - {selectedVehicle.longDistance?.startAfterKm || 95}) × ₹{selectedVehicle.longDistance?.additionalKmRate || 12}/km
+                      &nbsp;&nbsp;fare = ₹{selectedVehicle.longDistance?.baseFare || 1700} + (distance - {selectedVehicle.longDistance?.startAfterKm || 95}) &times; ₹{selectedVehicle.longDistance?.additionalKmRate || 13}/km
                     </p>
                     <p className="text-[10px] text-gray-400 pt-1">
-                      Example: 385 km = ₹{selectedVehicle.longDistance?.baseFare || 1700} + ({385 - (selectedVehicle.longDistance?.startAfterKm || 95)}) × ₹{selectedVehicle.longDistance?.additionalKmRate || 12} = ₹{((selectedVehicle.longDistance?.baseFare || 1700) + (385 - (selectedVehicle.longDistance?.startAfterKm || 95)) * (selectedVehicle.longDistance?.additionalKmRate || 12)).toLocaleString('en-IN')}
+                      Example: 385 km = ₹{selectedVehicle.longDistance?.baseFare || 1700} + ({385 - (selectedVehicle.longDistance?.startAfterKm || 95)}) &times; ₹{selectedVehicle.longDistance?.additionalKmRate || 13} = ₹{((selectedVehicle.longDistance?.baseFare || 1700) + (385 - (selectedVehicle.longDistance?.startAfterKm || 95)) * (selectedVehicle.longDistance?.additionalKmRate || 13)).toLocaleString('en-IN')}
                     </p>
                   </div>
                 </div>
@@ -766,7 +1094,8 @@ export default function PricingTab() {
                       <span className="text-gray-400 font-bold">₹</span>
                       <input
                         type="number"
-                        value={selectedVehicle.oneWayRate ?? 12}
+                        step="0.10"
+                        value={selectedVehicle.oneWayRate ?? 13}
                         onChange={e => updateSelectedVehicleField('oneWayRate', e.target.value)}
                         className="w-full bg-white px-3 py-2 border border-gray-200 rounded-xl font-bold text-slate-900 outline-none"
                       />
@@ -778,7 +1107,8 @@ export default function PricingTab() {
                       <span className="text-gray-400 font-bold">₹</span>
                       <input
                         type="number"
-                        value={selectedVehicle.roundTripRate ?? 11}
+                        step="0.10"
+                        value={selectedVehicle.roundTripRate ?? 11.7}
                         onChange={e => updateSelectedVehicleField('roundTripRate', e.target.value)}
                         className="w-full bg-white px-3 py-2 border border-gray-200 rounded-xl font-bold text-slate-900 outline-none"
                       />
@@ -850,7 +1180,8 @@ export default function PricingTab() {
                     <label className="block text-gray-500 font-medium mb-1">Extra KM Rate (₹/km)</label>
                     <input
                       type="number"
-                      value={selectedVehicle.extraKmRate ?? 11}
+                      step="0.10"
+                      value={selectedVehicle.extraKmRate ?? 13}
                       onChange={e => updateSelectedVehicleField('extraKmRate', e.target.value)}
                       className="w-full bg-white px-3 py-2 border border-gray-200 rounded-xl font-bold text-slate-900 outline-none"
                     />
@@ -868,7 +1199,8 @@ export default function PricingTab() {
                       <label className="block text-[11px] text-gray-500 font-medium mb-1">Plain Rate (₹/km)</label>
                       <input
                         type="number"
-                        value={selectedVehicle.plainRatePerKm ?? 10}
+                        step="0.10"
+                        value={selectedVehicle.plainRatePerKm ?? 13}
                         onChange={e => updateSelectedVehicleField('plainRatePerKm', e.target.value)}
                         className="w-full bg-white px-3 py-2 border border-gray-200 rounded-xl font-bold text-slate-900 outline-none"
                       />
@@ -877,7 +1209,8 @@ export default function PricingTab() {
                       <label className="block text-[11px] text-gray-500 font-medium mb-1">Hill Rate (₹/km)</label>
                       <input
                         type="number"
-                        value={selectedVehicle.hillRatePerKm ?? 11}
+                        step="0.10"
+                        value={selectedVehicle.hillRatePerKm ?? 15.5}
                         onChange={e => updateSelectedVehicleField('hillRatePerKm', e.target.value)}
                         className="w-full bg-white px-3 py-2 border border-gray-200 rounded-xl font-bold text-slate-900 outline-none"
                       />
