@@ -259,6 +259,32 @@ export const findLocationCoords = (name, locationsList = null) => {
   return null;
 };
 
+const HILL_KEYWORDS = [
+  'shimla', 'manali', 'dharamshala', 'dalhousie', 'kullu', 'kasol', 'kasauli',
+  'solan', 'mandi', 'palampur', 'chail', 'mussoorie', 'rishikesh', 'dehradun',
+  'nainital', 'kufri', 'mcleod ganj', 'khajjiar', 'tosh', 'rohtang', 'atal tunnel',
+  'spiti', 'kinnaur', 'leh', 'ladakh', 'lahaul', 'jibhi', 'tirthan', 'dhanaulti', 'patnitop'
+];
+
+export const getRoadFactor = (from, to, c1 = null, c2 = null) => {
+  const f = (from || '').toLowerCase();
+  const t = (to || '').toLowerCase();
+
+  const isHighMountain = ['manali', 'kullu', 'kasol', 'tosh', 'rohtang', 'spiti', 'leh', 'ladakh', 'lahaul'].some(
+    k => f.includes(k) || t.includes(k)
+  );
+  if (isHighMountain) return 1.50;
+
+  const isHill =
+    HILL_KEYWORDS.some(k => f.includes(k) || t.includes(k)) ||
+    (c1?.regionType === 'HILL' || c2?.regionType === 'HILL') ||
+    (c1?.state && ['himachal pradesh', 'uttarakhand', 'ladakh'].includes(c1.state.toLowerCase())) ||
+    (c2?.state && ['himachal pradesh', 'uttarakhand', 'ladakh'].includes(c2.state.toLowerCase()));
+  if (isHill) return 1.38;
+
+  return 1.145;
+};
+
 export const calculateDistance = (from, to, fromCoords = null, toCoords = null) => {
   if (!from || !to) return 50;
 
@@ -288,7 +314,9 @@ export const calculateDistance = (from, to, fromCoords = null, toCoords = null) 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const straightDist = R * c;
 
-    const roadDist = Math.round(straightDist * ROAD_FACTOR);
+    // Apply dynamic terrain-aware road curvature multiplier
+    const factor = getRoadFactor(from, to, c1, c2);
+    const roadDist = Math.round(straightDist * factor);
     return Math.max(roadDist, 5);
   }
 
@@ -305,6 +333,7 @@ export const calculateDistance = (from, to, fromCoords = null, toCoords = null) 
 
   return 60;
 };
+
 
 
 export const validateVehiclePricing = (vehicle) => {
@@ -409,12 +438,7 @@ export const validateVehiclePricing = (vehicle) => {
   return { valid: true };
 };
 
-const HILL_KEYWORDS = [
-  'shimla', 'manali', 'dharamshala', 'dalhousie', 'kullu', 'kasol', 'kasauli',
-  'solan', 'mandi', 'palampur', 'chail', 'mussoorie', 'rishikesh', 'dehradun',
-  'nainital', 'kufri', 'mcleod ganj', 'khajjiar', 'tosh', 'rohtang', 'atal tunnel',
-  'spiti', 'kinnaur', 'leh', 'lahaul', 'jibhi', 'tirthan', 'haridwar'
-];
+
 
 export const resolveRouteDetails = (pickup, destination) => {
   const cleanFrom = normalizeLocation(pickup);

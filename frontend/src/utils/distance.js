@@ -279,6 +279,44 @@ export const findCoordsByName = (name, locationsList = popularLocations) => {
  * 3. Uses coordinate-based geodesic formula (Haversine * ROAD_FACTOR).
  * 4. Returns null if coordinates cannot be resolved (so caller can fetch live OSM coords).
  */
+const HILL_KEYWORDS = [
+  'shimla', 'manali', 'dharamshala', 'dalhousie', 'kullu', 'kasol', 'kasauli',
+  'solan', 'mandi', 'palampur', 'chail', 'mussoorie', 'rishikesh', 'dehradun',
+  'nainital', 'kufri', 'mcleod ganj', 'khajjiar', 'tosh', 'rohtang', 'atal tunnel',
+  'spiti', 'kinnaur', 'leh', 'ladakh', 'lahaul', 'jibhi', 'tirthan', 'dhanaulti', 'patnitop'
+];
+
+/**
+ * Calculates realistic road curvature multiplier based on geographical terrain.
+ * - Indian Plains & National Highways (NH44 / GT Road): 1.145x geodesic distance.
+ * - Hill Stations & Mountain passes: 1.38x - 1.50x geodesic distance.
+ */
+export const getRoadFactor = (from, to, c1 = null, c2 = null) => {
+  const f = (from || '').toLowerCase();
+  const t = (to || '').toLowerCase();
+
+  const isHighMountain = ['manali', 'kullu', 'kasol', 'tosh', 'rohtang', 'spiti', 'leh', 'ladakh', 'lahaul'].some(
+    k => f.includes(k) || t.includes(k)
+  );
+  if (isHighMountain) return 1.50;
+
+  const isHill =
+    HILL_KEYWORDS.some(k => f.includes(k) || t.includes(k)) ||
+    (c1?.regionType === 'HILL' || c2?.regionType === 'HILL') ||
+    (c1?.state && ['himachal pradesh', 'uttarakhand', 'ladakh'].includes(c1.state.toLowerCase())) ||
+    (c2?.state && ['himachal pradesh', 'uttarakhand', 'ladakh'].includes(c2.state.toLowerCase()));
+  if (isHill) return 1.38;
+
+  return 1.145;
+};
+
+/**
+ * Compute distance between two points.
+ * 1. Checks exact pair in distance dictionary.
+ * 2. Uses coordinate-based geodesic formula with dynamic terrain road curvature.
+ * 3. Checks substring match in distance dictionary as fallback.
+ * 4. Returns null if coordinates cannot be resolved (so caller can fetch live OSM coords).
+ */
 export const getDistanceKm = (from, to, fromCoords = null, toCoords = null) => {
   if (!from || !to) return 50;
 
@@ -308,8 +346,9 @@ export const getDistanceKm = (from, to, fromCoords = null, toCoords = null) => {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const straightDist = R * c;
 
-    // Apply road curvature multiplier
-    const roadDist = Math.round(straightDist * ROAD_FACTOR);
+    // Apply dynamic terrain-aware road curvature multiplier
+    const factor = getRoadFactor(from, to, c1, c2);
+    const roadDist = Math.round(straightDist * factor);
     return Math.max(roadDist, 5);
   }
 
@@ -326,5 +365,6 @@ export const getDistanceKm = (from, to, fromCoords = null, toCoords = null) => {
 
   return null;
 };
+
 
 

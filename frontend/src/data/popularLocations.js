@@ -201,6 +201,30 @@ export const popularLocations = [
     "regionType": "PLAIN"
   },
   {
+    "name": "Begowal",
+    "state": "Punjab",
+    "type": "Town",
+    "lat": 31.611,
+    "lon": 75.5209,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Bhulath",
+    "state": "Punjab",
+    "type": "Town",
+    "lat": 31.545,
+    "lon": 75.602,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Nadala",
+    "state": "Punjab",
+    "type": "Town",
+    "lat": 31.551,
+    "lon": 75.512,
+    "regionType": "PLAIN"
+  },
+  {
     "name": "Sultanpur Lodhi",
     "state": "Punjab",
     "type": "Pilgrimage & Town",
