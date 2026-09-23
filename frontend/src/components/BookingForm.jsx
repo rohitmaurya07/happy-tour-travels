@@ -1,6 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Calendar, Clock, ArrowRight, Search, AlertCircle, Plane, Sparkles, X } from 'lucide-react';
+import { 
+  MapPin, Calendar, Clock, ArrowRight, Search, AlertCircle, 
+  Plane, Sparkles, X, Train, Mountain, Navigation, Crosshair, 
+  Check, Building2, Map, ShieldCheck
+} from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 
 export default function BookingForm({ onSearch, initialTripType = 'One Way', compact = false }) {
@@ -24,29 +28,192 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
   const [errorMsg, setErrorMsg] = useState('');
 
   // Suggestions state
-  const [suggestionsFrom, setSuggestionsFrom] = useState([]);
-  const [suggestionsTo, setSuggestionsTo] = useState([]);
   const [activeInput, setActiveInput] = useState(null); // 'from' | 'to' | null
+  const [selectedCategory, setSelectedCategory] = useState('all'); // 'all' | 'local' | 'airport' | 'hill' | 'major'
+  const [osmResults, setOsmResults] = useState([]);
+  const [isLocating, setIsLocating] = useState(false);
 
   const fromRef = useRef(null);
   const toRef = useRef(null);
+  const debounceTimerRef = useRef(null);
 
   const tripTypes = ['Airport', 'One Way', 'Round Trip', 'Hourly Rental'];
 
-  // Search locations matching query
-  const searchLocations = (query) => {
-    const list = popularLocations || [];
-    if (!query || !query.trim()) {
-      return list.slice(0, 10);
+  const categoryTabs = [
+    { id: 'all', label: 'All Places' },
+    { id: 'local', label: '📍 Local & Punjab' },
+    { id: 'airport', label: '✈️ Airports' },
+    { id: 'hill', label: '🏔️ Hill Stations' },
+    { id: 'major', label: '🏙️ Major Cities' },
+  ];
+
+  // Helper to determine badge and icon type for a location
+  const getLocationMeta = (item) => {
+    const name = (item.name || item.title || '').toLowerCase();
+    const state = (item.state || '').toLowerCase();
+    const type = (item.type || item.subtitle || '').toLowerCase();
+
+    if (item.isOsm) {
+      return { badge: 'Live Map', icon: 'map', color: 'text-emerald-600 bg-emerald-50 border-emerald-200' };
     }
-    const cleanQ = query.trim().toLowerCase();
-    return list.filter(
-      (loc) =>
-        loc.name.toLowerCase().includes(cleanQ) ||
-        loc.state.toLowerCase().includes(cleanQ) ||
-        (loc.type && loc.type.toLowerCase().includes(cleanQ))
-    );
+    if (type.includes('airport') || name.includes('airport')) {
+      return { badge: 'Airport', icon: 'plane', color: 'text-sky-600 bg-sky-50 border-sky-200' };
+    }
+    if (type.includes('railway') || type.includes('station') || name.includes('station') || name.includes('isbt')) {
+      return { badge: 'Station / ISBT', icon: 'train', color: 'text-amber-600 bg-amber-50 border-amber-200' };
+    }
+    if (
+      type.includes('hill') || 
+      state.includes('himachal') || 
+      state.includes('uttarakhand') || 
+      name.includes('shimla') || 
+      name.includes('manali') || 
+      name.includes('dharamshala') || 
+      name.includes('dalhousie') || 
+      name.includes('kasol') || 
+      name.includes('mussoorie') || 
+      name.includes('nainital')
+    ) {
+      return { badge: 'Hill Station', icon: 'mountain', color: 'text-cyan-600 bg-cyan-50 border-cyan-200' };
+    }
+    if (type.includes('pilgrimage') || name.includes('golden temple') || name.includes('vaishno') || name.includes('katra') || name.includes('haridwar') || name.includes('rishikesh')) {
+      return { badge: 'Pilgrimage', icon: 'pin', color: 'text-purple-600 bg-purple-50 border-purple-200' };
+    }
+    if (
+      state.includes('punjab') || 
+      name.includes('jalandhar') || 
+      name.includes('phagwara') || 
+      name.includes('kapurthala') || 
+      name.includes('ludhiana') || 
+      name.includes('amritsar') || 
+      name.includes('adampur') || 
+      name.includes('nakodar') || 
+      name.includes('hoshiarpur') || 
+      name.includes('mohali') || 
+      name.includes('zirakpur')
+    ) {
+      return { badge: 'Local Area / Punjab', icon: 'pin', color: 'text-emerald-700 bg-emerald-50 border-emerald-200' };
+    }
+    return { badge: 'City / Hub', icon: 'building', color: 'text-slate-600 bg-slate-100 border-slate-200' };
   };
+
+  // Filter local dataset by query and category
+  const getFilteredSuggestions = (query, category) => {
+    const list = popularLocations || [];
+    const cleanQ = (query || '').trim().toLowerCase();
+
+    let filtered = list;
+
+    // Apply category filter if not 'all'
+    if (category === 'local') {
+      filtered = filtered.filter(l => {
+        const s = (l.state || '').toLowerCase();
+        const t = (l.type || '').toLowerCase();
+        const n = (l.name || '').toLowerCase();
+        return s.includes('punjab') || s.includes('chandigarh') || t.includes('local') || n.includes('jalandhar') || n.includes('phagwara') || n.includes('ludhiana') || n.includes('amritsar');
+      });
+    } else if (category === 'airport') {
+      filtered = filtered.filter(l => (l.type || '').toLowerCase().includes('airport') || (l.name || '').toLowerCase().includes('airport'));
+    } else if (category === 'hill') {
+      filtered = filtered.filter(l => {
+        const s = (l.state || '').toLowerCase();
+        const t = (l.type || '').toLowerCase();
+        const r = (l.regionType || '').toLowerCase();
+        return t.includes('hill') || s.includes('himachal') || s.includes('uttarakhand') || r === 'hill';
+      });
+    } else if (category === 'major') {
+      filtered = filtered.filter(l => {
+        const t = (l.type || '').toLowerCase();
+        return t.includes('city') || t.includes('capital') || t.includes('hub');
+      });
+    }
+
+    // Apply text search query
+    if (cleanQ) {
+      filtered = filtered.filter((loc) => {
+        const name = (loc.name || '').toLowerCase();
+        const state = (loc.state || '').toLowerCase();
+        const type = (loc.type || '').toLowerCase();
+        return name.includes(cleanQ) || state.includes(cleanQ) || type.includes(cleanQ);
+      });
+    }
+
+    return filtered.map((item) => ({
+      title: item.name,
+      subtitle: `${item.state} • ${item.type || 'City'}`,
+      lat: item.lat,
+      lon: item.lon,
+      isAirport: (item.type || '').toLowerCase().includes('airport') || item.name.toLowerCase().includes('airport'),
+      state: item.state,
+      type: item.type,
+      regionType: item.regionType,
+      isOsm: false,
+    }));
+  };
+
+  // Fetch OpenStreetMap Nominatim results
+  const fetchNominatim = (query) => {
+    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+
+    if (!query || query.trim().length < 3) {
+      setOsmResults([]);
+      return;
+    }
+
+    debounceTimerRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+            query.trim()
+          )}&countrycodes=in&addressdetails=1&limit=6`
+        );
+        if (!res.ok) return;
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          const parsed = data.map((item) => {
+            const parts = item.display_name.split(',');
+            const mainTitle = parts[0].trim();
+            const subTitle = parts.slice(1, 4).join(',').trim();
+            return {
+              title: mainTitle,
+              subtitle: subTitle || 'India',
+              lat: parseFloat(item.lat),
+              lon: parseFloat(item.lon),
+              isAirport: mainTitle.toLowerCase().includes('airport'),
+              state: parts.length > 2 ? parts[parts.length - 2].trim() : 'India',
+              type: 'Live Location',
+              isOsm: true,
+            };
+          });
+          setOsmResults(parsed);
+        }
+      } catch (e) {
+        // Fallback silently if offline or throttled
+      }
+    }, 300);
+  };
+
+  // Current query based on active input
+  const currentQuery = activeInput === 'from' ? fromLocation : activeInput === 'to' ? toLocation : '';
+
+  // Calculate final combined suggestions list
+  const currentSuggestions = useMemo(() => {
+    if (!activeInput) return [];
+    const localMatches = getFilteredSuggestions(currentQuery, selectedCategory);
+
+    // Merge OSM results without duplicating exact names
+    if (osmResults.length > 0 && currentQuery.trim().length >= 3) {
+      const combined = [...localMatches];
+      osmResults.forEach((osm) => {
+        if (!combined.some((c) => c.title.toLowerCase() === osm.title.toLowerCase())) {
+          combined.push(osm);
+        }
+      });
+      return combined;
+    }
+
+    return localMatches;
+  }, [activeInput, currentQuery, selectedCategory, popularLocations, osmResults]);
 
   // Listen for mobile bottom bar trip type selection
   useEffect(() => {
@@ -84,7 +251,7 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Update suggestions from popularLocations + Nominatim
+  // Handle input text changes
   const handleLocationInputChange = (val, type) => {
     if (type === 'from') {
       setFromLocation(val);
@@ -93,79 +260,64 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
       setToLocation(val);
       setActiveInput('to');
     }
-
-    // 1. Instant local matching
-    const localMatches = searchLocations(val).slice(0, 6).map((item) => ({
-      title: item.name,
-      subtitle: `${item.state} • ${item.type || 'City'}`,
-      isAirport: item.type === 'Airport',
-      lat: item.lat,
-      lon: item.lon,
-    }));
-
-    if (type === 'from') {
-      setSuggestionsFrom(localMatches);
-    } else {
-      setSuggestionsTo(localMatches);
-    }
-
-    // 2. Fetch Nominatim in background if user typed 3+ chars
-    if (val.trim().length >= 3) {
-      fetchNominatim(val, type, localMatches);
-    }
-  };
-
-  const fetchNominatim = async (query, type, currentList) => {
-    try {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          query
-        )}&countrycodes=in&addressdetails=1&limit=4`
-      );
-      if (!res.ok) return;
-      const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) {
-        const osmResults = data.map((item) => {
-          const parts = item.display_name.split(',');
-          const mainTitle = parts[0].trim();
-          const subTitle = parts.slice(1, 3).join(',').trim();
-          return {
-            title: mainTitle,
-            subtitle: subTitle || 'India',
-            isAirport: mainTitle.toLowerCase().includes('airport'),
-            lat: parseFloat(item.lat),
-            lon: parseFloat(item.lon),
-          };
-        });
-
-        // Merge without duplicates
-        const combined = [...currentList];
-        osmResults.forEach((osm) => {
-          if (!combined.some((c) => c.title.toLowerCase() === osm.title.toLowerCase())) {
-            combined.push(osm);
-          }
-        });
-
-        if (type === 'from') {
-          setSuggestionsFrom(combined.slice(0, 8));
-        } else {
-          setSuggestionsTo(combined.slice(0, 8));
-        }
-      }
-    } catch (e) {
-      // Ignore network errors; fallback local list is already visible
-    }
+    fetchNominatim(val);
   };
 
   const selectSuggestion = (item, type) => {
     if (type === 'from') {
       setFromLocation(item.title);
-      setSuggestionsFrom([]);
     } else {
       setToLocation(item.title);
-      setSuggestionsTo([]);
     }
     setActiveInput(null);
+    setOsmResults([]);
+  };
+
+  // Geolocation trigger to pick user's local city
+  const handleDetectLocation = (type) => {
+    if (!navigator.geolocation) {
+      setErrorMsg('Geolocation is not supported by your browser.');
+      return;
+    }
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const { latitude, longitude } = pos.coords;
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          if (res.ok) {
+            const data = await res.json();
+            const city =
+              data.address?.city ||
+              data.address?.town ||
+              data.address?.village ||
+              data.address?.suburb ||
+              data.address?.county ||
+              'Jalandhar';
+            if (type === 'from') {
+              setFromLocation(city);
+            } else {
+              setToLocation(city);
+            }
+            setActiveInput(null);
+          }
+        } catch (e) {
+          if (type === 'from') setFromLocation('Jalandhar');
+          setActiveInput(null);
+        } finally {
+          setIsLocating(false);
+        }
+      },
+      (err) => {
+        setIsLocating(false);
+        // Fallback default
+        if (type === 'from') setFromLocation('Jalandhar');
+        setActiveInput(null);
+      },
+      { timeout: 8000 }
+    );
   };
 
   const handleSubmitSearch = (e) => {
@@ -201,7 +353,6 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
     if (onSearch) {
       onSearch(searchParams);
     } else {
-      // Navigate to dedicated search results page
       const q = new URLSearchParams({
         tripType: searchParams.tripType,
         from: searchParams.fromLocation,
@@ -213,8 +364,145 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
     }
   };
 
+  // Helper to highlight matching text in search results
+  const highlightMatch = (text, query) => {
+    if (!query || !query.trim() || !text) return text;
+    const q = query.trim().toLowerCase();
+    const idx = text.toLowerCase().indexOf(q);
+    if (idx === -1) return text;
+    return (
+      <>
+        {text.slice(0, idx)}
+        <span className="bg-yellow-300 text-slate-950 px-0.5 rounded font-black">{text.slice(idx, idx + q.length)}</span>
+        {text.slice(idx + q.length)}
+      </>
+    );
+  };
+
+  // Reusable Suggestions Dropdown Component
+  const renderSuggestionsDropdown = (type) => {
+    if (activeInput !== type) return null;
+
+    const isFrom = type === 'from';
+
+    return (
+      <div 
+        className={`absolute top-full  mt-2 w-full sm:w-[380px] md:w-[420px] max-w-[calc(100vw-32px)] bg-white rounded-2xl shadow-2xl border-2 border-slate-200/90 z-[200] overflow-hidden animate-fadeIn text-left ${
+          isFrom ? 'left-0' : 'left-0 sm:left-auto sm:right-0 md:left-0'
+        }`}
+      >
+        {/* Header with Title and Location Count */}
+        <div className="p-3 bg-gradient-to-r from-slate-900 via-slate-850 to-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+          <div className="flex items-center space-x-2">
+            <Sparkles className="w-4 h-4 text-brand-yellow flex-shrink-0" />
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-100">
+              {type === 'from' ? 'Pickup Locations & Local Hubs' : 'Suggested Destinations'}
+            </span>
+          </div>
+          <span className="text-[10px] bg-yellow-400/20 text-yellow-300 border border-yellow-400/30 px-2 py-0.5 rounded-full font-bold">
+            {currentSuggestions.length} Places
+          </span>
+        </div>
+
+        {/* GPS Use Current Location Quick Action */}
+        <div className="p-2 bg-amber-50/90 border-b border-amber-200/60 flex items-center justify-between">
+          <button
+            type="button"
+            onMouseDown={() => handleDetectLocation(type)}
+            className="flex items-center space-x-2 text-xs font-bold text-amber-950 hover:text-amber-900 transition-colors w-full px-2.5 py-1.5 rounded-xl hover:bg-amber-100 border border-amber-200/70 shadow-sm"
+          >
+            <Crosshair className={`w-3.5 h-3.5 text-amber-600 flex-shrink-0 ${isLocating ? 'animate-spin' : ''}`} />
+            <span className="truncate">{isLocating ? 'Detecting your GPS location...' : '📍 Auto-Detect Current City (GPS)'}</span>
+          </button>
+        </div>
+
+        {/* Category Filter Chips */}
+        <div className="p-2 bg-slate-100/90 border-b border-slate-200 flex items-center space-x-1.5 overflow-x-auto no-scrollbar">
+          {categoryTabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                setSelectedCategory(tab.id);
+              }}
+              className={`px-2.5 py-1.5 rounded-xl text-[11px] font-bold whitespace-nowrap transition-all ${
+                selectedCategory === tab.id
+                  ? 'bg-slate-900 text-white shadow-md ring-1 ring-slate-950'
+                  : 'bg-white text-slate-700 hover:bg-slate-200 hover:text-slate-900 border border-slate-200/90'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Scrollable Suggestions List */}
+        <div className="max-h-52 sm:max-h-60 overflow-y-auto divide-y divide-gray-100 bg-white">
+          {currentSuggestions.length > 0 ? (
+            currentSuggestions.map((item, idx) => {
+              const meta = getLocationMeta(item);
+              return (
+                <div
+                  key={idx}
+                  onMouseDown={() => selectSuggestion(item, type)}
+                  className="px-3.5 py-2 hover:bg-amber-50/80 cursor-pointer flex items-center justify-between transition-colors group"
+                >
+                  <div className="flex items-center space-x-2.5 min-w-0 pr-2">
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 border ${meta.color} shadow-xs`}>
+                      {meta.icon === 'plane' ? (
+                        <Plane className="w-3.5 h-3.5" />
+                      ) : meta.icon === 'train' ? (
+                        <Train className="w-3.5 h-3.5" />
+                      ) : meta.icon === 'mountain' ? (
+                        <Mountain className="w-3.5 h-3.5" />
+                      ) : meta.icon === 'map' ? (
+                        <Map className="w-3.5 h-3.5" />
+                      ) : (
+                        <MapPin className="w-3.5 h-3.5" />
+                      )}
+                    </div>
+                    <div className="min-w-0 text-left">
+                      <p className="text-xs font-bold text-slate-900 group-hover:text-amber-950 truncate">
+                        {highlightMatch(item.title, currentQuery)}
+                      </p>
+                      <p className="text-[10px] text-gray-500 font-medium truncate">
+                        {item.subtitle}
+                      </p>
+                    </div>
+                  </div>
+
+                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md flex-shrink-0 border ${meta.color} whitespace-nowrap`}>
+                    {meta.badge}
+                  </span>
+                </div>
+              );
+            })
+          ) : (
+            <div className="p-6 text-center text-gray-400">
+              <Search className="w-6 h-6 mx-auto mb-2 text-gray-300" />
+              <p className="text-xs font-bold text-slate-700">No matching locations found</p>
+              <p className="text-[10px] text-gray-500 mt-1">
+                Type 3+ letters to search live map anywhere in India
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Footer info notice */}
+        <div className="p-2 bg-slate-50 text-center border-t border-slate-200">
+          <p className="text-[10px] text-slate-500 font-semibold flex items-center justify-center space-x-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 inline flex-shrink-0" />
+            <span>Local Punjab Cabs • Pan-India Outstation • 24x7 Support</span>
+          </p>
+        </div>
+      </div>
+    );
+  };
+
+
   return (
-    <div className={`w-full ${compact ? 'p-4' : 'max-w-5xl mx-auto p-6 sm:p-8'} bg-white/95 backdrop-blur-xl rounded-3xl shadow-floating border border-gray-100/80`}>
+    <div className={`w-full ${compact ? 'p-4' : 'max-w-5xl mx-auto p-6 sm:p-8'} bg-white/95  backdrop-blur-xl rounded-3xl shadow-floating border border-gray-100/80`}>
       
       {/* Trip Type Selector (Hidden on mobile where bottom bar is visible) */}
       <div className="hidden md:flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-5 mb-6">
@@ -252,7 +540,12 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
       <form onSubmit={handleSubmitSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         {/* From (Pickup) Field with rich autocomplete */}
-        <div ref={fromRef} className="relative bg-gray-50/90 hover:bg-gray-50 p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all">
+        <div 
+          ref={fromRef} 
+          className={`relative bg-gray-50/90 hover:bg-gray-50 p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all ${
+            activeInput === 'from' ? 'z-40 ring-2 ring-brand-yellow border-brand-yellow bg-white' : 'z-20'
+          }`}
+        >
           <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center justify-between">
             <span className="flex items-center">
               <MapPin className="w-3.5 h-3.5 mr-1 text-brand-yellow" />
@@ -276,49 +569,26 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
             value={fromLocation}
             onFocus={() => {
               setActiveInput('from');
-              if (suggestionsFrom.length === 0) {
-                handleLocationInputChange(fromLocation, 'from');
-              }
+              setSelectedCategory('all');
             }}
             onChange={(e) => handleLocationInputChange(e.target.value, 'from')}
-            placeholder="Enter pickup city / airport..."
+            placeholder="Search local pickup, city, airport..."
             className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder-gray-400"
             required
             autoComplete="off"
           />
 
           {/* Autocomplete Dropdown */}
-          {activeInput === 'from' && suggestionsFrom.length > 0 && (
-            <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden max-h-60 overflow-y-auto animate-fadeIn">
-              <div className="p-2 bg-gray-50 text-[10px] font-bold uppercase tracking-wider text-gray-400 border-b border-gray-100 flex items-center justify-between">
-                <span>Suggested Pickup Locations</span>
-                <Sparkles className="w-3 h-3 text-yellow-500" />
-              </div>
-              {suggestionsFrom.map((item, idx) => (
-                <div
-                  key={idx}
-                  onMouseDown={() => selectSuggestion(item, 'from')}
-                  className="px-4 py-2.5 hover:bg-yellow-50/70 cursor-pointer flex items-center justify-between border-b border-gray-50 transition-colors"
-                >
-                  <div className="flex items-center space-x-2.5">
-                    {item.isAirport ? (
-                      <Plane className="w-4 h-4 text-sky-500 flex-shrink-0" />
-                    ) : (
-                      <MapPin className="w-4 h-4 text-brand-yellow flex-shrink-0" />
-                    )}
-                    <div>
-                      <p className="text-xs font-bold text-slate-900">{item.title}</p>
-                      <p className="text-[10px] text-gray-500 font-medium">{item.subtitle}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          {renderSuggestionsDropdown('from')}
         </div>
 
         {/* To (Destination) Field with rich autocomplete */}
-        <div ref={toRef} className="relative bg-gray-50/90 hover:bg-gray-50 p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all">
+        <div 
+          ref={toRef} 
+          className={`relative bg-gray-50/90 hover:bg-gray-50 p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all ${
+            activeInput === 'to' ? 'z-40 ring-2 ring-brand-yellow border-brand-yellow bg-white' : 'z-10'
+          }`}
+        >
           <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center justify-between">
             <span className="flex items-center">
               <MapPin className="w-3.5 h-3.5 mr-1 text-red-500" />
@@ -344,50 +614,22 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
             onFocus={() => {
               if (tripType !== 'Hourly Rental') {
                 setActiveInput('to');
-                if (suggestionsTo.length === 0) {
-                  handleLocationInputChange(toLocation, 'to');
-                }
+                setSelectedCategory('all');
               }
             }}
             onChange={(e) => handleLocationInputChange(e.target.value, 'to')}
-            placeholder={tripType === 'Hourly Rental' ? 'Local Rental' : 'e.g. Delhi, Shimla, Manali...'}
+            placeholder={tripType === 'Hourly Rental' ? 'Local Rental' : 'Search destination, hill station, city...'}
             className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder-gray-400 disabled:opacity-60"
             required={tripType !== 'Hourly Rental'}
             autoComplete="off"
           />
 
           {/* Autocomplete Dropdown */}
-          {activeInput === 'to' && tripType !== 'Hourly Rental' && suggestionsTo.length > 0 && (
-            <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden max-h-60 overflow-y-auto animate-fadeIn">
-              <div className="p-2 bg-gray-50 text-[10px] font-bold uppercase tracking-wider text-gray-400 border-b border-gray-100 flex items-center justify-between">
-                <span>Suggested Destinations</span>
-                <Sparkles className="w-3 h-3 text-yellow-500" />
-              </div>
-              {suggestionsTo.map((item, idx) => (
-                <div
-                  key={idx}
-                  onMouseDown={() => selectSuggestion(item, 'to')}
-                  className="px-4 py-2.5 hover:bg-yellow-50/70 cursor-pointer flex items-center justify-between border-b border-gray-50 transition-colors"
-                >
-                  <div className="flex items-center space-x-2.5">
-                    {item.isAirport ? (
-                      <Plane className="w-4 h-4 text-sky-500 flex-shrink-0" />
-                    ) : (
-                      <MapPin className="w-4 h-4 text-red-500 flex-shrink-0" />
-                    )}
-                    <div>
-                      <p className="text-xs font-bold text-slate-900">{item.title}</p>
-                      <p className="text-[10px] text-gray-500 font-medium">{item.subtitle}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          {tripType !== 'Hourly Rental' && renderSuggestionsDropdown('to')}
         </div>
 
         {/* COMBINED Departure Date and Pickup Time Field */}
-        <div className="bg-gray-50/90 hover:bg-gray-50 p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all">
+        <div className="relative z-0 bg-gray-50/90 hover:bg-gray-50 p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all">
           <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center">
             <Calendar className="w-3.5 h-3.5 mr-1 text-blue-500" />
             <span>Departure Date & Pickup Time</span>
@@ -416,7 +658,7 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
         </div>
 
         {/* Search Submit Button */}
-        <div className="md:col-span-3 mt-2">
+        <div className="md:col-span-3 mt-2 relative z-0">
           <button
             type="submit"
             className="w-full yellow-gradient-btn py-4 rounded-2xl text-slate-950 font-bold text-base sm:text-lg flex items-center justify-center space-x-3 shadow-yellow-glow group hover:scale-[1.01] transition-transform"
@@ -430,3 +672,5 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
     </div>
   );
 }
+
+

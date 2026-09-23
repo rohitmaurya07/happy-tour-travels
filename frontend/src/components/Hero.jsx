@@ -28,10 +28,10 @@ export default function Hero({ onSearch }) {
   };
 
   return (
-    <section id="home" className="relative min-h-screen pt-24 pb-12 flex flex-col justify-center items-center overflow-hidden bg-slate-950 text-white">
+    <section id="home" className="relative min-h-screen pt-24 pb-12 flex flex-col justify-center items-center bg-slate-950 text-white">
       
       {/* Hero Background Video & Dark Overlay */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <video
           key={heroVideo}
           autoPlay

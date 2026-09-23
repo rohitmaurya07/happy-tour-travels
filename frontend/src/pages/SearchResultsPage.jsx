@@ -28,7 +28,14 @@ export default function SearchResultsPage() {
         return;
       }
 
-      // Helper to fetch coordinates if needed
+      // 1. Direct check in known distances and coordinates database
+      const dist = getDistanceKm(fromLocation, toLocation);
+      if (dist && dist > 0) {
+        setDistanceKm(dist);
+        return;
+      }
+
+      // 2. Fetch live coordinates from OpenStreetMap if not in local dataset
       const fetchCoords = async (query) => {
         try {
           const res = await fetch(
@@ -45,14 +52,15 @@ export default function SearchResultsPage() {
         return null;
       };
 
-      const dist = getDistanceKm(fromLocation, toLocation);
-      if (dist && dist > 0) {
-        setDistanceKm(dist);
-      } else {
-        const fromCoords = await fetchCoords(fromLocation);
-        const toCoords = await fetchCoords(toLocation);
+      try {
+        const [fromCoords, toCoords] = await Promise.all([
+          fetchCoords(fromLocation),
+          fetchCoords(toLocation),
+        ]);
         const calculated = getDistanceKm(fromLocation, toLocation, fromCoords, toCoords);
-        setDistanceKm(calculated || 120);
+        setDistanceKm(calculated && calculated > 0 ? calculated : 60);
+      } catch (err) {
+        setDistanceKm(60);
       }
     };
 

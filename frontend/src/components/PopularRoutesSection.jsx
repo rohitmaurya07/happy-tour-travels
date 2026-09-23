@@ -67,7 +67,7 @@ export default function PopularRoutesSection({ onSelectRoute }) {
   }).filter((cat) => cat.routes.length > 0);
 
   return (
-    <section id="popular-routes" className="py-20 bg-slate-900 text-white relative overflow-hidden">
+    <section id="popular-routes" className="py-20 z-[1] bg-slate-900 text-white relative overflow-hidden">
       {/* Glow Effects */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />

@@ -178,14 +178,85 @@ export const KNOWN_DISTANCES = {
   "chandigarh|haridwar": 205,
   "chandigarh|rishikesh": 225,
   "chandigarh|mussoorie": 200,
-  "chandigarh|jaipur": 490
+  "chandigarh|jaipur": 490,
+
+  // Local routes in Punjab
+  "jalandhar|nakodar": 26,
+  "jalandhar|adampur": 19,
+  "jalandhar|adampur airport": 25,
+  "jalandhar|adampur airport (aip)": 25,
+  "jalandhar|shahkot": 38,
+  "jalandhar|kartarpur": 15,
+  "jalandhar|goraya": 32,
+  "jalandhar|phillaur": 44,
+  "jalandhar|nurmahal": 33,
+  "jalandhar|bhogpur": 28,
+  "jalandhar|beas": 45,
+  "jalandhar|sultanpur lodhi": 40,
+  "jalandhar|nawanshahr (sbs nagar)": 58,
+  "jalandhar|banga": 46,
+  "jalandhar|dasuya": 56,
+  "jalandhar|mukerian": 68,
+  "jalandhar|tanda urmar": 38,
+  "phagwara|ludhiana": 40,
+  "phagwara|chandigarh": 128,
+  "phagwara|delhi": 355,
+  "phagwara|amritsar": 104,
+  "kapurthala|amritsar": 68,
+  "kapurthala|ludhiana": 80,
+  "hoshiarpur|chandigarh": 140,
+  "hoshiarpur|delhi": 395
 };
 
 const toRad = (deg) => (deg * Math.PI) / 180;
 
 export const normalizeLocation = (str) => {
   if (!str || typeof str !== 'string') return '';
-  return str.split(',')[0].trim().toLowerCase();
+  return str.replace(/[(),.\-]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+};
+
+export const findLocationCoords = (name, locationsList = null) => {
+  if (!name || typeof name !== 'string') return null;
+  const raw = name.trim().toLowerCase();
+  if (!raw) return null;
+
+  const locations = locationsList || readJson('popularLocations') || [];
+
+  // 1. Direct exact match
+  let match = locations.find((l) => (l.name || '').toLowerCase() === raw);
+  if (match && match.lat && match.lon) return { lat: parseFloat(match.lat), lon: parseFloat(match.lon) };
+
+  // 2. Normalized alphanumeric match
+  const cleanRaw = normalizeLocation(raw);
+  match = locations.find((l) => {
+    const locClean = normalizeLocation(l.name);
+    return locClean === cleanRaw;
+  });
+  if (match && match.lat && match.lon) return { lat: parseFloat(match.lat), lon: parseFloat(match.lon) };
+
+  // 3. Substring match against full name (prioritize longer name matches)
+  const candidates = locations.filter((l) => {
+    const locClean = normalizeLocation(l.name);
+    return cleanRaw.includes(locClean) || locClean.includes(cleanRaw);
+  }).sort((a, b) => (b.name || '').length - (a.name || '').length);
+
+  if (candidates.length > 0 && candidates[0].lat && candidates[0].lon) {
+    return { lat: parseFloat(candidates[0].lat), lon: parseFloat(candidates[0].lon) };
+  }
+
+  // 4. Split comma-separated tokens (e.g. "Model Town, Jalandhar")
+  const parts = raw.split(',').map((p) => normalizeLocation(p)).filter(Boolean);
+  for (const part of parts) {
+    const partMatch = locations.find((l) => {
+      const locClean = normalizeLocation(l.name);
+      return locClean === part || locClean.includes(part) || part.includes(locClean);
+    });
+    if (partMatch && partMatch.lat && partMatch.lon) {
+      return { lat: parseFloat(partMatch.lat), lon: parseFloat(partMatch.lon) };
+    }
+  }
+
+  return null;
 };
 
 export const calculateDistance = (from, to, fromCoords = null, toCoords = null) => {
@@ -200,30 +271,9 @@ export const calculateDistance = (from, to, fromCoords = null, toCoords = null) 
   if (KNOWN_DISTANCES[key1]) return KNOWN_DISTANCES[key1];
   if (KNOWN_DISTANCES[key2]) return KNOWN_DISTANCES[key2];
 
-  // 2. Substring matching in known distances
-  for (const [k, dist] of Object.entries(KNOWN_DISTANCES)) {
-    const [kFrom, kTo] = k.split('|');
-    if (
-      (cleanFrom.includes(kFrom) || kFrom.includes(cleanFrom)) &&
-      (cleanTo.includes(kTo) || kTo.includes(cleanTo))
-    ) {
-      return dist;
-    }
-  }
-
-  // 3. Coordinate-based distance calculation using popularLocations
-  const locations = readJson('popularLocations') || [];
-  const findCoords = (name) => {
-    const clean = normalizeLocation(name);
-    const match = locations.find((l) => {
-      const locName = (l.name || '').toLowerCase();
-      return locName === clean || clean.includes(locName) || locName.includes(clean);
-    });
-    return match && match.lat && match.lon ? { lat: match.lat, lon: match.lon } : null;
-  };
-
-  const c1 = fromCoords || findCoords(cleanFrom);
-  const c2 = toCoords || findCoords(cleanTo);
+  // 2. High-precision coordinate-based calculation using popularLocations
+  const c1 = fromCoords || findLocationCoords(from);
+  const c2 = toCoords || findLocationCoords(to);
 
   if (c1 && c2 && c1.lat && c2.lat) {
     const R = 6371;
@@ -239,11 +289,23 @@ export const calculateDistance = (from, to, fromCoords = null, toCoords = null) 
     const straightDist = R * c;
 
     const roadDist = Math.round(straightDist * ROAD_FACTOR);
-    return Math.max(roadDist, 30);
+    return Math.max(roadDist, 5);
   }
 
-  return 120;
+  // 3. Substring matching in known distances as fallback
+  for (const [k, dist] of Object.entries(KNOWN_DISTANCES)) {
+    const [kFrom, kTo] = k.split('|');
+    if (
+      (cleanFrom === kFrom || cleanFrom.startsWith(kFrom + ' ') || cleanFrom.endsWith(' ' + kFrom)) &&
+      (cleanTo === kTo || cleanTo.startsWith(kTo + ' ') || cleanTo.endsWith(' ' + kTo))
+    ) {
+      return dist;
+    }
+  }
+
+  return 60;
 };
+
 
 export const validateVehiclePricing = (vehicle) => {
   if (!vehicle || typeof vehicle !== 'object') {

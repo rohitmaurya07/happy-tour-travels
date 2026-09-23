@@ -1,5 +1,5 @@
 // src/utils/distance.js
-import { popularLocations } from '../data/popularLocations';
+import { popularLocations } from '../data/popularLocations.js';
 
 // Helper to convert degrees to radians
 const toRad = (deg) => (deg * Math.PI) / 180;
@@ -189,35 +189,95 @@ export const knownDistances = {
   "chandigarh|haridwar": 205,
   "chandigarh|rishikesh": 225,
   "chandigarh|mussoorie": 200,
-  "chandigarh|jaipur": 490
+  "chandigarh|jaipur": 490,
+
+  // Local routes in Punjab
+  "jalandhar|nakodar": 26,
+  "jalandhar|adampur": 19,
+  "jalandhar|adampur airport": 25,
+  "jalandhar|adampur airport (aip)": 25,
+  "jalandhar|shahkot": 38,
+  "jalandhar|kartarpur": 15,
+  "jalandhar|goraya": 32,
+  "jalandhar|phillaur": 44,
+  "jalandhar|nurmahal": 33,
+  "jalandhar|bhogpur": 28,
+  "jalandhar|beas": 45,
+  "jalandhar|sultanpur lodhi": 40,
+  "jalandhar|nawanshahr (sbs nagar)": 58,
+  "jalandhar|banga": 46,
+  "jalandhar|dasuya": 56,
+  "jalandhar|mukerian": 68,
+  "jalandhar|tanda urmar": 38,
+  "phagwara|ludhiana": 40,
+  "phagwara|chandigarh": 128,
+  "phagwara|delhi": 355,
+  "phagwara|amritsar": 104,
+  "kapurthala|amritsar": 68,
+  "kapurthala|ludhiana": 80,
+  "hoshiarpur|chandigarh": 140,
+  "hoshiarpur|delhi": 395
 };
 
 /**
- * Normalizes city string for lookups
+ * Normalizes location string for lookups
  */
-const normalizeCity = (str) => {
+export const normalizeCity = (str) => {
   if (!str || typeof str !== 'string') return '';
-  return str.split(',')[0].trim().toLowerCase();
+  return str.replace(/[(),.\-]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
 };
 
 /**
- * Find coordinates for a city name from pre-defined dataset
+ * Find coordinates for a city/area name using multiple fallback strategies
  */
-export const findCoordsByName = (name) => {
-  if (!name) return null;
-  const clean = normalizeCity(name);
-  const match = popularLocations.find((l) => {
-    const locName = (l.name || '').toLowerCase();
-    return locName === clean || clean.includes(locName) || locName.includes(clean);
+export const findCoordsByName = (name, locationsList = popularLocations) => {
+  if (!name || typeof name !== 'string') return null;
+  const raw = name.trim().toLowerCase();
+  if (!raw) return null;
+
+  // 1. Direct exact name match
+  let match = locationsList.find((l) => (l.name || '').toLowerCase() === raw);
+  if (match && match.lat && match.lon) return { lat: parseFloat(match.lat), lon: parseFloat(match.lon) };
+
+  // 2. Normalized alphanumeric match
+  const cleanRaw = normalizeCity(raw);
+  match = locationsList.find((l) => {
+    const locClean = normalizeCity(l.name);
+    return locClean === cleanRaw;
   });
-  return match && match.lat && match.lon ? { lat: match.lat, lon: match.lon } : null;
+  if (match && match.lat && match.lon) return { lat: parseFloat(match.lat), lon: parseFloat(match.lon) };
+
+  // 3. Substring match against full name (prioritize longer name matches)
+  const candidates = locationsList.filter((l) => {
+    const locClean = normalizeCity(l.name);
+    return cleanRaw.includes(locClean) || locClean.includes(cleanRaw);
+  }).sort((a, b) => (b.name || '').length - (a.name || '').length);
+
+  if (candidates.length > 0 && candidates[0].lat && candidates[0].lon) {
+    return { lat: parseFloat(candidates[0].lat), lon: parseFloat(candidates[0].lon) };
+  }
+
+  // 4. Split comma-separated tokens (e.g. "Rama Mandi, Jalandhar" -> check "Rama Mandi", then "Jalandhar")
+  const parts = raw.split(',').map((p) => normalizeCity(p)).filter(Boolean);
+  for (const part of parts) {
+    const partMatch = locationsList.find((l) => {
+      const locClean = normalizeCity(l.name);
+      return locClean === part || locClean.includes(part) || part.includes(locClean);
+    });
+    if (partMatch && partMatch.lat && partMatch.lon) {
+      return { lat: parseFloat(partMatch.lat), lon: parseFloat(partMatch.lon) };
+    }
+  }
+
+  return null;
 };
 
 /**
  * Compute distance between two points.
  * 1. Checks exact pair in distance dictionary.
- * 2. If coordinates are provided or found, uses Great Circle (Haversine) * road curvature factor.
- * 3. Fallback minimum 50 km.
+ * 2. Checks substring match in distance dictionary.
+ * 3. Uses coordinate-based geodesic formula (Haversine * ROAD_FACTOR).
+ * 4. Returns null if coordinates cannot be resolved (so caller can fetch live OSM coords).
  */
 export const getDistanceKm = (from, to, fromCoords = null, toCoords = null) => {
   if (!from || !to) return 50;
@@ -231,20 +291,9 @@ export const getDistanceKm = (from, to, fromCoords = null, toCoords = null) => {
   if (knownDistances[key1]) return knownDistances[key1];
   if (knownDistances[key2]) return knownDistances[key2];
 
-  // 2. Substring matches in keys
-  for (const [k, dist] of Object.entries(knownDistances)) {
-    const [kFrom, kTo] = k.split('|');
-    if (
-      (cleanFrom.includes(kFrom) || kFrom.includes(cleanFrom)) &&
-      (cleanTo.includes(kTo) || kTo.includes(cleanTo))
-    ) {
-      return dist;
-    }
-  }
-
-  // 3. Coordinate-based distance calculation
-  const c1 = fromCoords || findCoordsByName(cleanFrom);
-  const c2 = toCoords || findCoordsByName(cleanTo);
+  // 2. High-precision coordinate-based calculation
+  const c1 = fromCoords || findCoordsByName(from);
+  const c2 = toCoords || findCoordsByName(to);
 
   if (c1 && c2 && c1.lat && c2.lat) {
     const R = 6371; // Earth radius in km
@@ -261,9 +310,21 @@ export const getDistanceKm = (from, to, fromCoords = null, toCoords = null) => {
 
     // Apply road curvature multiplier
     const roadDist = Math.round(straightDist * ROAD_FACTOR);
-    return Math.max(roadDist, 30);
+    return Math.max(roadDist, 5);
   }
 
-  // Default fallback estimate
-  return 120;
+  // 3. Substring matches in dictionary only if coordinates could not be resolved
+  for (const [k, dist] of Object.entries(knownDistances)) {
+    const [kFrom, kTo] = k.split('|');
+    if (
+      (cleanFrom === kFrom || cleanFrom.startsWith(kFrom + ' ') || cleanFrom.endsWith(' ' + kFrom)) &&
+      (cleanTo === kTo || cleanTo.startsWith(kTo + ' ') || cleanTo.endsWith(' ' + kTo))
+    ) {
+      return dist;
+    }
+  }
+
+  return null;
 };
+
+
