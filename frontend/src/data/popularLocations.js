@@ -1,4 +1,4 @@
-// Comprehensive database of North India and Pan-India cities, airports, hill stations, pilgrimage destinations & local areas
+// src/data/popularLocations.js
 export const popularLocations = [
   {
     "name": "Jalandhar",
@@ -499,7 +499,7 @@ export const popularLocations = [
   {
     "name": "Jagraon",
     "state": "Punjab",
-    "type": "Town",
+    "type": "City",
     "lat": 30.7855,
     "lon": 75.4785,
     "regionType": "PLAIN"
@@ -731,9 +731,9 @@ export const popularLocations = [
   {
     "name": "Faridkot",
     "state": "Punjab",
-    "type": "Heritage City",
-    "lat": 30.6765,
-    "lon": 74.758,
+    "type": "City",
+    "lat": 30.6769,
+    "lon": 74.7583,
     "regionType": "PLAIN"
   },
   {
@@ -788,8 +788,8 @@ export const popularLocations = [
     "name": "Mansa",
     "state": "Punjab",
     "type": "City",
-    "lat": 29.998,
-    "lon": 75.3955,
+    "lat": 29.9984,
+    "lon": 75.3934,
     "regionType": "PLAIN"
   },
   {
@@ -860,8 +860,8 @@ export const popularLocations = [
     "name": "Narkanda",
     "state": "Himachal Pradesh",
     "type": "Hill Station",
-    "lat": 31.2585,
-    "lon": 77.458,
+    "lat": 31.2584,
+    "lon": 77.4589,
     "regionType": "HILL"
   },
   {
@@ -931,9 +931,9 @@ export const popularLocations = [
   {
     "name": "Solang Valley",
     "state": "Himachal Pradesh",
-    "type": "Adventure & Snow",
-    "lat": 32.3165,
-    "lon": 77.1575,
+    "type": "Hill Station",
+    "lat": 32.3166,
+    "lon": 77.1578,
     "regionType": "HILL"
   },
   {
@@ -1011,9 +1011,9 @@ export const popularLocations = [
   {
     "name": "Bir Billing",
     "state": "Himachal Pradesh",
-    "type": "Adventure & Paragliding",
-    "lat": 32.04,
-    "lon": 76.7167,
+    "type": "Hill Station",
+    "lat": 32.0425,
+    "lon": 76.717,
     "regionType": "HILL"
   },
   {
@@ -1028,7 +1028,7 @@ export const popularLocations = [
     "name": "Khajjiar",
     "state": "Himachal Pradesh",
     "type": "Hill Station",
-    "lat": 32.551,
+    "lat": 32.5513,
     "lon": 76.0601,
     "regionType": "HILL"
   },
@@ -1511,21 +1511,117 @@ export const popularLocations = [
     "lat": 26.8467,
     "lon": 80.9462,
     "regionType": "PLAIN"
+  },
+  {
+    "name": "Hariana",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 31.6425,
+    "lon": 75.845,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Gardhiwala",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 31.7485,
+    "lon": 75.7825,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Rupnagar",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.9664,
+    "lon": 76.5331,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Ropar",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.9664,
+    "lon": 76.5331,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Samrala",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.8402,
+    "lon": 76.1925,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Sirhind",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.6415,
+    "lon": 76.398,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Fatehgarh Sahib",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.655,
+    "lon": 76.386,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Thanesar",
+    "state": "Haryana",
+    "type": "City",
+    "lat": 29.97,
+    "lon": 76.82,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Yamunanagar",
+    "state": "Haryana",
+    "type": "City",
+    "lat": 30.129,
+    "lon": 77.2674,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Muzaffarnagar",
+    "state": "Uttar Pradesh",
+    "type": "City",
+    "lat": 29.4727,
+    "lon": 77.7085,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Bir",
+    "state": "Himachal Pradesh",
+    "type": "Hill Station",
+    "lat": 32.0425,
+    "lon": 76.717,
+    "regionType": "HILL"
+  },
+  {
+    "name": "Jibhi",
+    "state": "Himachal Pradesh",
+    "type": "Hill Station",
+    "lat": 31.6369,
+    "lon": 77.3496,
+    "regionType": "HILL"
+  },
+  {
+    "name": "Zira",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.9734,
+    "lon": 74.9892,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Manikaran",
+    "state": "Himachal Pradesh",
+    "type": "Hill Station",
+    "lat": 32.0276,
+    "lon": 77.3487,
+    "regionType": "HILL"
   }
 ];
-
-/**
- * Filter popular locations by matching text (name, state, type, or region)
- */
-export const searchPopularLocations = (query) => {
-  if (!query || !query.trim()) {
-    return popularLocations;
-  }
-  const cleanQ = query.trim().toLowerCase();
-  return popularLocations.filter(
-    (loc) =>
-      loc.name.toLowerCase().includes(cleanQ) ||
-      loc.state.toLowerCase().includes(cleanQ) ||
-      (loc.type && loc.type.toLowerCase().includes(cleanQ))
-  );
-};

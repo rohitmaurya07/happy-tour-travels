@@ -1,53 +1,2059 @@
 [
   {
-    "id": "jalandhar-shimla",
+    "id": "jalandhar-begowal",
     "pickup": "Jalandhar",
-    "destination": "Shimla",
-    "routeType": "HILL",
-    "pricingType": "per_km",
+    "destination": "Begowal",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 0,
-      "verna": 0,
-      "ertiga": 0,
-      "innova": 0,
-      "fortuner": 0,
-      "tempo": 0
+      "dzire": 999,
+      "verna": 1099,
+      "ertiga": 1190,
+      "innova": 1990,
+      "fortuner": 2886,
+      "tempo": 3184
     },
-    "distanceKm": 220,
+    "distanceKm": 42,
     "active": true
   },
   {
-    "id": "jalandhar-manali",
+    "id": "jalandhar-shahkot",
     "pickup": "Jalandhar",
-    "destination": "Manali",
-    "routeType": "HILL",
-    "pricingType": "per_km",
+    "destination": "Shahkot",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 0,
-      "verna": 0,
-      "ertiga": 0,
-      "innova": 0,
-      "fortuner": 0,
-      "tempo": 0
+      "dzire": 999,
+      "verna": 1099,
+      "ertiga": 1190,
+      "innova": 1990,
+      "fortuner": 2886,
+      "tempo": 3184
+    },
+    "distanceKm": 38,
+    "active": true
+  },
+  {
+    "id": "jalandhar-sultanpur-lodhi",
+    "pickup": "Jalandhar",
+    "destination": "Sultanpur Lodhi",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 999,
+      "verna": 1099,
+      "ertiga": 1190,
+      "innova": 1990,
+      "fortuner": 2886,
+      "tempo": 3184
+    },
+    "distanceKm": 40,
+    "active": true
+  },
+  {
+    "id": "jalandhar-phillaur",
+    "pickup": "Jalandhar",
+    "destination": "Phillaur",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 999,
+      "verna": 1099,
+      "ertiga": 1190,
+      "innova": 1990,
+      "fortuner": 2886,
+      "tempo": 3184
+    },
+    "distanceKm": 44,
+    "active": true
+  },
+  {
+    "id": "jalandhar-hoshiarpur",
+    "pickup": "Jalandhar",
+    "destination": "Hoshiarpur",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 999,
+      "verna": 1099,
+      "ertiga": 1190,
+      "innova": 1990,
+      "fortuner": 2886,
+      "tempo": 3184
+    },
+    "distanceKm": 42,
+    "active": true
+  },
+  {
+    "id": "jalandhar-banga",
+    "pickup": "Jalandhar",
+    "destination": "Banga",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 999,
+      "verna": 1099,
+      "ertiga": 1190,
+      "innova": 1990,
+      "fortuner": 2886,
+      "tempo": 3184
+    },
+    "distanceKm": 46,
+    "active": true
+  },
+  {
+    "id": "jalandhar-hariana",
+    "pickup": "Jalandhar",
+    "destination": "Hariana",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 999,
+      "verna": 1099,
+      "ertiga": 1190,
+      "innova": 1990,
+      "fortuner": 2886,
+      "tempo": 3184
+    },
+    "distanceKm": 54,
+    "active": true
+  },
+  {
+    "id": "jalandhar-gardhiwala",
+    "pickup": "Jalandhar",
+    "destination": "Gardhiwala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 999,
+      "verna": 1099,
+      "ertiga": 1190,
+      "innova": 1990,
+      "fortuner": 2886,
+      "tempo": 3184
+    },
+    "distanceKm": 62,
+    "active": true
+  },
+  {
+    "id": "jalandhar-ludhiana",
+    "pickup": "Jalandhar",
+    "destination": "Ludhiana",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 999,
+      "verna": 1099,
+      "ertiga": 1190,
+      "innova": 1990,
+      "fortuner": 2886,
+      "tempo": 3184
+    },
+    "distanceKm": 61,
+    "active": true
+  },
+  {
+    "id": "jalandhar-nawanshahr",
+    "pickup": "Jalandhar",
+    "destination": "Nawanshahr",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 999,
+      "verna": 1099,
+      "ertiga": 1190,
+      "innova": 1990,
+      "fortuner": 2886,
+      "tempo": 3184
+    },
+    "distanceKm": 58,
+    "active": true
+  },
+  {
+    "id": "jalandhar-amritsar",
+    "pickup": "Jalandhar",
+    "destination": "Amritsar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1490,
+      "verna": 1639,
+      "ertiga": 1790,
+      "innova": 3390,
+      "fortuner": 4916,
+      "tempo": 5424
+    },
+    "distanceKm": 82,
+    "active": true
+  },
+  {
+    "id": "jalandhar-amritsar-airport",
+    "pickup": "Jalandhar",
+    "destination": "Amritsar Airport",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1490,
+      "verna": 1639,
+      "ertiga": 1790,
+      "innova": 3390,
+      "fortuner": 4916,
+      "tempo": 5424
+    },
+    "distanceKm": 95,
+    "active": true
+  },
+  {
+    "id": "jalandhar-batala",
+    "pickup": "Jalandhar",
+    "destination": "Batala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1490,
+      "verna": 1639,
+      "ertiga": 1790,
+      "innova": 3390,
+      "fortuner": 4916,
+      "tempo": 5424
+    },
+    "distanceKm": 78,
+    "active": true
+  },
+  {
+    "id": "jalandhar-moga",
+    "pickup": "Jalandhar",
+    "destination": "Moga",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1490,
+      "verna": 1639,
+      "ertiga": 1790,
+      "innova": 3390,
+      "fortuner": 4916,
+      "tempo": 5424
+    },
+    "distanceKm": 70,
+    "active": true
+  },
+  {
+    "id": "jalandhar-jagraon",
+    "pickup": "Jalandhar",
+    "destination": "Jagraon",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1490,
+      "verna": 1639,
+      "ertiga": 1790,
+      "innova": 3390,
+      "fortuner": 4916,
+      "tempo": 5424
+    },
+    "distanceKm": 76,
+    "active": true
+  },
+  {
+    "id": "jalandhar-khanna",
+    "pickup": "Jalandhar",
+    "destination": "Khanna",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1330,
+      "verna": 1463,
+      "ertiga": 1615,
+      "innova": 2850,
+      "fortuner": 4133,
+      "tempo": 4560
+    },
+    "distanceKm": 95,
+    "active": true
+  },
+  {
+    "id": "jalandhar-samrala",
+    "pickup": "Jalandhar",
+    "destination": "Samrala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1400,
+      "verna": 1540,
+      "ertiga": 1700,
+      "innova": 3000,
+      "fortuner": 4350,
+      "tempo": 4800
+    },
+    "distanceKm": 100,
+    "active": true
+  },
+  {
+    "id": "jalandhar-rajpura",
+    "pickup": "Jalandhar",
+    "destination": "Rajpura",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2030,
+      "verna": 2233,
+      "ertiga": 2465,
+      "innova": 4350,
+      "fortuner": 6308,
+      "tempo": 6960
+    },
+    "distanceKm": 145,
+    "active": true
+  },
+  {
+    "id": "jalandhar-mandi-gobindgarh",
+    "pickup": "Jalandhar",
+    "destination": "Mandi Gobindgarh",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1610,
+      "verna": 1771,
+      "ertiga": 1955,
+      "innova": 3450,
+      "fortuner": 5003,
+      "tempo": 5520
+    },
+    "distanceKm": 115,
+    "active": true
+  },
+  {
+    "id": "jalandhar-sirhind",
+    "pickup": "Jalandhar",
+    "destination": "Sirhind",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1750,
+      "verna": 1925,
+      "ertiga": 2125,
+      "innova": 3750,
+      "fortuner": 5438,
+      "tempo": 6000
+    },
+    "distanceKm": 125,
+    "active": true
+  },
+  {
+    "id": "jalandhar-fatehgarh-sahib",
+    "pickup": "Jalandhar",
+    "destination": "Fatehgarh Sahib",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1750,
+      "verna": 1925,
+      "ertiga": 2125,
+      "innova": 3750,
+      "fortuner": 5438,
+      "tempo": 6000
+    },
+    "distanceKm": 125,
+    "active": true
+  },
+  {
+    "id": "jalandhar-rupnagar",
+    "pickup": "Jalandhar",
+    "destination": "Rupnagar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1750,
+      "verna": 1925,
+      "ertiga": 2125,
+      "innova": 3750,
+      "fortuner": 5438,
+      "tempo": 6000
+    },
+    "distanceKm": 125,
+    "active": true
+  },
+  {
+    "id": "jalandhar-pathankot",
+    "pickup": "Jalandhar",
+    "destination": "Pathankot",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1610,
+      "verna": 1771,
+      "ertiga": 1955,
+      "innova": 3450,
+      "fortuner": 5003,
+      "tempo": 5520
+    },
+    "distanceKm": 112,
+    "active": true
+  },
+  {
+    "id": "jalandhar-gurdaspur",
+    "pickup": "Jalandhar",
+    "destination": "Gurdaspur",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1470,
+      "verna": 1617,
+      "ertiga": 1785,
+      "innova": 3150,
+      "fortuner": 4568,
+      "tempo": 5040
+    },
+    "distanceKm": 105,
+    "active": true
+  },
+  {
+    "id": "jalandhar-tarn-taran",
+    "pickup": "Jalandhar",
+    "destination": "Tarn Taran",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1470,
+      "verna": 1617,
+      "ertiga": 1785,
+      "innova": 3150,
+      "fortuner": 4568,
+      "tempo": 5040
+    },
+    "distanceKm": 105,
+    "active": true
+  },
+  {
+    "id": "jalandhar-barnala",
+    "pickup": "Jalandhar",
+    "destination": "Barnala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1680,
+      "verna": 1848,
+      "ertiga": 2040,
+      "innova": 3600,
+      "fortuner": 5220,
+      "tempo": 5760
+    },
+    "distanceKm": 120,
+    "active": true
+  },
+  {
+    "id": "jalandhar-sangrur",
+    "pickup": "Jalandhar",
+    "destination": "Sangrur",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1890,
+      "verna": 2079,
+      "ertiga": 2295,
+      "innova": 4050,
+      "fortuner": 5873,
+      "tempo": 6480
+    },
+    "distanceKm": 135,
+    "active": true
+  },
+  {
+    "id": "jalandhar-malerkotla",
+    "pickup": "Jalandhar",
+    "destination": "Malerkotla",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1680,
+      "verna": 1848,
+      "ertiga": 2040,
+      "innova": 3600,
+      "fortuner": 5220,
+      "tempo": 5760
+    },
+    "distanceKm": 120,
+    "active": true
+  },
+  {
+    "id": "jalandhar-nabha",
+    "pickup": "Jalandhar",
+    "destination": "Nabha",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1960,
+      "verna": 2156,
+      "ertiga": 2380,
+      "innova": 4200,
+      "fortuner": 6090,
+      "tempo": 6720
+    },
+    "distanceKm": 140,
+    "active": true
+  },
+  {
+    "id": "jalandhar-firozpur",
+    "pickup": "Jalandhar",
+    "destination": "Firozpur",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2114,
+      "verna": 2325,
+      "ertiga": 2567,
+      "innova": 3095.5,
+      "fortuner": 4488,
+      "tempo": 4953
+    },
+    "distanceKm": 151,
+    "active": true
+  },
+  {
+    "id": "jalandhar-patiala",
+    "pickup": "Jalandhar",
+    "destination": "Patiala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2100,
+      "verna": 2310,
+      "ertiga": 2550,
+      "innova": 3177.5,
+      "fortuner": 4607,
+      "tempo": 5084
+    },
+    "distanceKm": 150,
+    "active": true
+  },
+  {
+    "id": "jalandhar-bathinda",
+    "pickup": "Jalandhar",
+    "destination": "Bathinda",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2576,
+      "verna": 2834,
+      "ertiga": 3128,
+      "innova": 3362,
+      "fortuner": 4875,
+      "tempo": 5379
+    },
+    "distanceKm": 184,
+    "active": true
+  },
+  {
+    "id": "jalandhar-chandigarh",
+    "pickup": "Jalandhar",
+    "destination": "Chandigarh",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2170,
+      "verna": 2387,
+      "ertiga": 2635,
+      "innova": 3034,
+      "fortuner": 4399,
+      "tempo": 4854
+    },
+    "distanceKm": 148,
+    "active": true
+  },
+  {
+    "id": "jalandhar-chandigarh-airport",
+    "pickup": "Jalandhar",
+    "destination": "Chandigarh Airport",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2170,
+      "verna": 2387,
+      "ertiga": 2635,
+      "innova": 3116,
+      "fortuner": 4518,
+      "tempo": 4986
+    },
+    "distanceKm": 155,
+    "active": true
+  },
+  {
+    "id": "jalandhar-mohali",
+    "pickup": "Jalandhar",
+    "destination": "Mohali",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2240,
+      "verna": 2464,
+      "ertiga": 2720,
+      "innova": 3300.5,
+      "fortuner": 4786,
+      "tempo": 5281
+    },
+    "distanceKm": 142,
+    "active": true
+  },
+  {
+    "id": "jalandhar-ambala",
+    "pickup": "Jalandhar",
+    "destination": "Ambala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2394,
+      "verna": 2633,
+      "ertiga": 2907,
+      "innova": 3505.5,
+      "fortuner": 5083,
+      "tempo": 5609
+    },
+    "distanceKm": 171,
+    "active": true
+  },
+  {
+    "id": "jalandhar-kurukshetra",
+    "pickup": "Jalandhar",
+    "destination": "Kurukshetra",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2800,
+      "verna": 3080,
+      "ertiga": 3400,
+      "innova": 4469,
+      "fortuner": 6480,
+      "tempo": 7150
+    },
+    "distanceKm": 200,
+    "active": true
+  },
+  {
+    "id": "jalandhar-thanesar",
+    "pickup": "Jalandhar",
+    "destination": "Thanesar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2800,
+      "verna": 3080,
+      "ertiga": 3400,
+      "innova": 4469,
+      "fortuner": 6480,
+      "tempo": 7150
+    },
+    "distanceKm": 200,
+    "active": true
+  },
+  {
+    "id": "jalandhar-karnal",
+    "pickup": "Jalandhar",
+    "destination": "Karnal",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3290,
+      "verna": 3619,
+      "ertiga": 3995,
+      "innova": 5104.5,
+      "fortuner": 7402,
+      "tempo": 8167
+    },
+    "distanceKm": 235,
+    "active": true
+  },
+  {
+    "id": "jalandhar-panipat",
+    "pickup": "Jalandhar",
+    "destination": "Panipat",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3780,
+      "verna": 4158,
+      "ertiga": 4590,
+      "innova": 5945,
+      "fortuner": 8620,
+      "tempo": 9512
+    },
+    "distanceKm": 270,
+    "active": true
+  },
+  {
+    "id": "jalandhar-yamunanagar",
+    "pickup": "Jalandhar",
+    "destination": "Yamunanagar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3500,
+      "verna": 3850,
+      "ertiga": 4250,
+      "innova": 4674,
+      "fortuner": 6777,
+      "tempo": 7478
+    },
+    "distanceKm": 250,
+    "active": true
+  },
+  {
+    "id": "jalandhar-dehradun",
+    "pickup": "Jalandhar",
+    "destination": "Dehradun",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4410,
+      "verna": 4851,
+      "ertiga": 5355,
+      "innova": 6457.5,
+      "fortuner": 9363,
+      "tempo": 10332
+    },
+    "distanceKm": 310,
+    "active": true
+  },
+  {
+    "id": "jalandhar-muzaffarnagar",
+    "pickup": "Jalandhar",
+    "destination": "Muzaffarnagar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4508,
+      "verna": 4959,
+      "ertiga": 5474,
+      "innova": 6601,
+      "fortuner": 9571,
+      "tempo": 10562
+    },
+    "distanceKm": 322,
+    "active": true
+  },
+  {
+    "id": "jalandhar-meerut",
+    "pickup": "Jalandhar",
+    "destination": "Meerut",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5152,
+      "verna": 5667,
+      "ertiga": 6256,
+      "innova": 7544,
+      "fortuner": 10939,
+      "tempo": 12070
+    },
+    "distanceKm": 368,
+    "active": true
+  },
+  {
+    "id": "jalandhar-delhi",
+    "pickup": "Jalandhar",
+    "destination": "Delhi",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5334,
+      "verna": 5867,
+      "ertiga": 6256,
+      "innova": 7810.5,
+      "fortuner": 11325,
+      "tempo": 12497
+    },
+    "distanceKm": 375,
+    "active": true
+  },
+  {
+    "id": "jalandhar-delhi-airport",
+    "pickup": "Jalandhar",
+    "destination": "Delhi Airport",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5460,
+      "verna": 6006,
+      "ertiga": 6630,
+      "innova": 7995,
+      "fortuner": 11593,
+      "tempo": 12792
+    },
+    "distanceKm": 385,
+    "active": true
+  },
+  {
+    "id": "jalandhar-gurugram",
+    "pickup": "Jalandhar",
+    "destination": "Gurugram",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5194,
+      "verna": 5713,
+      "ertiga": 6307,
+      "innova": 7605.5,
+      "fortuner": 11028,
+      "tempo": 12169
+    },
+    "distanceKm": 395,
+    "active": true
+  },
+  {
+    "id": "jalandhar-noida",
+    "pickup": "Jalandhar",
+    "destination": "Noida",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5348,
+      "verna": 5883,
+      "ertiga": 6494,
+      "innova": 7831,
+      "fortuner": 11355,
+      "tempo": 12530
+    },
+    "distanceKm": 410,
+    "active": true
+  },
+  {
+    "id": "jalandhar-faridabad",
+    "pickup": "Jalandhar",
+    "destination": "Faridabad",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5698,
+      "verna": 6268,
+      "ertiga": 6919,
+      "innova": 8343.5,
+      "fortuner": 12098,
+      "tempo": 13350
+    },
+    "distanceKm": 415,
+    "active": true
+  },
+  {
+    "id": "jalandhar-ghaziabad",
+    "pickup": "Jalandhar",
+    "destination": "Ghaziabad",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5516,
+      "verna": 6068,
+      "ertiga": 6698,
+      "innova": 8077,
+      "fortuner": 11712,
+      "tempo": 12923
+    },
+    "distanceKm": 394,
+    "active": true
+  },
+  {
+    "id": "delhi-dehradun",
+    "pickup": "Delhi",
+    "destination": "Dehradun",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3500,
+      "verna": 3850,
+      "ertiga": 4250,
+      "innova": 5375,
+      "fortuner": 7794,
+      "tempo": 8600
+    },
+    "distanceKm": 250,
+    "active": true
+  },
+  {
+    "id": "delhi-ambala",
+    "pickup": "Delhi",
+    "destination": "Ambala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3388,
+      "verna": 3727,
+      "ertiga": 4114,
+      "innova": 5203,
+      "fortuner": 7544,
+      "tempo": 8325
+    },
+    "distanceKm": 242,
+    "active": true
+  },
+  {
+    "id": "delhi-bathinda",
+    "pickup": "Delhi",
+    "destination": "Bathinda",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4407,
+      "verna": 4848,
+      "ertiga": 5352,
+      "innova": 6773,
+      "fortuner": 9821,
+      "tempo": 10837
     },
     "distanceKm": 315,
     "active": true
   },
   {
-    "id": "jalandhar-dharamshala",
-    "pickup": "Jalandhar",
+    "id": "delhi-chandigarh",
+    "pickup": "Delhi",
+    "destination": "Chandigarh",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3640,
+      "verna": 4004,
+      "ertiga": 4420,
+      "innova": 5590,
+      "fortuner": 8106,
+      "tempo": 8944
+    },
+    "distanceKm": 260,
+    "active": true
+  },
+  {
+    "id": "delhi-mohali",
+    "pickup": "Delhi",
+    "destination": "Mohali",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3455,
+      "verna": 3801,
+      "ertiga": 4196,
+      "innova": 5311,
+      "fortuner": 7701,
+      "tempo": 8498
+    },
+    "distanceKm": 247,
+    "active": true
+  },
+  {
+    "id": "delhi-firozpur",
+    "pickup": "Delhi",
+    "destination": "Firozpur",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 6082,
+      "verna": 6690,
+      "ertiga": 7385,
+      "innova": 9331,
+      "fortuner": 13530,
+      "tempo": 14930
+    },
+    "distanceKm": 435,
+    "active": true
+  },
+  {
+    "id": "delhi-patiala",
+    "pickup": "Delhi",
+    "destination": "Patiala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3518,
+      "verna": 3870,
+      "ertiga": 4272,
+      "innova": 5397,
+      "fortuner": 7826,
+      "tempo": 8635
+    },
+    "distanceKm": 251,
+    "active": true
+  },
+  {
+    "id": "delhi-malerkotla",
+    "pickup": "Delhi",
+    "destination": "Malerkotla",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4382,
+      "verna": 4820,
+      "ertiga": 5321,
+      "innova": 6730,
+      "fortuner": 9759,
+      "tempo": 10768
+    },
+    "distanceKm": 313,
+    "active": true
+  },
+  {
+    "id": "delhi-gurdaspur",
+    "pickup": "Delhi",
+    "destination": "Gurdaspur",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 6490,
+      "verna": 7139,
+      "ertiga": 7881,
+      "innova": 9976,
+      "fortuner": 14465,
+      "tempo": 15962
+    },
+    "distanceKm": 465,
+    "active": true
+  },
+  {
+    "id": "delhi-ropar",
+    "pickup": "Delhi",
+    "destination": "Ropar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3865,
+      "verna": 4252,
+      "ertiga": 4694,
+      "innova": 5934,
+      "fortuner": 8604,
+      "tempo": 9494
+    },
+    "distanceKm": 276,
+    "active": true
+  },
+  {
+    "id": "delhi-rupnagar",
+    "pickup": "Delhi",
+    "destination": "Rupnagar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3865,
+      "verna": 4252,
+      "ertiga": 4694,
+      "innova": 5934,
+      "fortuner": 8604,
+      "tempo": 9494
+    },
+    "distanceKm": 276,
+    "active": true
+  },
+  {
+    "id": "delhi-rajpura",
+    "pickup": "Delhi",
+    "destination": "Rajpura",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3157,
+      "verna": 3473,
+      "ertiga": 3834,
+      "innova": 4859,
+      "fortuner": 7046,
+      "tempo": 7774
+    },
+    "distanceKm": 225,
+    "active": true
+  },
+  {
+    "id": "delhi-khanna",
+    "pickup": "Delhi",
+    "destination": "Khanna",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3766,
+      "verna": 4143,
+      "ertiga": 4573,
+      "innova": 5784,
+      "fortuner": 8387,
+      "tempo": 9254
+    },
+    "distanceKm": 270,
+    "active": true
+  },
+  {
+    "id": "delhi-amritsar",
+    "pickup": "Delhi",
+    "destination": "Amritsar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 6320,
+      "verna": 6952,
+      "ertiga": 7674,
+      "innova": 9697,
+      "fortuner": 14061,
+      "tempo": 15515
+    },
+    "distanceKm": 450,
+    "active": true
+  },
+  {
+    "id": "delhi-batala",
+    "pickup": "Delhi",
+    "destination": "Batala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 6224,
+      "verna": 6846,
+      "ertiga": 7558,
+      "innova": 9568,
+      "fortuner": 13874,
+      "tempo": 15309
+    },
+    "distanceKm": 445,
+    "active": true
+  },
+  {
+    "id": "delhi-phagwara",
+    "pickup": "Delhi",
+    "destination": "Phagwara",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4866,
+      "verna": 5353,
+      "ertiga": 5909,
+      "innova": 7482,
+      "fortuner": 10849,
+      "tempo": 11971
+    },
+    "distanceKm": 348,
+    "active": true
+  },
+  {
+    "id": "delhi-jalandhar",
+    "pickup": "Delhi",
+    "destination": "Jalandhar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5174,
+      "verna": 5691,
+      "ertiga": 6283,
+      "innova": 7955,
+      "fortuner": 11535,
+      "tempo": 12728
+    },
+    "distanceKm": 370,
+    "active": true
+  },
+  {
+    "id": "delhi-ludhiana",
+    "pickup": "Delhi",
+    "destination": "Ludhiana",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4330,
+      "verna": 4763,
+      "ertiga": 5258,
+      "innova": 6644,
+      "fortuner": 9634,
+      "tempo": 10630
+    },
+    "distanceKm": 310,
+    "active": true
+  },
+  {
+    "id": "delhi-moga",
+    "pickup": "Delhi",
+    "destination": "Moga",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5289,
+      "verna": 5818,
+      "ertiga": 6423,
+      "innova": 8127,
+      "fortuner": 11784,
+      "tempo": 13003
+    },
+    "distanceKm": 378,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-shimla",
+    "pickup": "Delhi Airport",
+    "destination": "Shimla",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5655,
+      "verna": 6221,
+      "ertiga": 6409,
+      "innova": 8482.5,
+      "fortuner": 12300,
+      "tempo": 13572
+    },
+    "distanceKm": 377,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-kasauli",
+    "pickup": "Delhi Airport",
+    "destination": "Kasauli",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4800,
+      "verna": 5280,
+      "ertiga": 5440,
+      "innova": 7200,
+      "fortuner": 10440,
+      "tempo": 11520
+    },
+    "distanceKm": 320,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-solan",
+    "pickup": "Delhi Airport",
+    "destination": "Solan",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4950,
+      "verna": 5445,
+      "ertiga": 5610,
+      "innova": 7425,
+      "fortuner": 10766,
+      "tempo": 11880
+    },
+    "distanceKm": 330,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-chail",
+    "pickup": "Delhi Airport",
+    "destination": "Chail",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 6000,
+      "verna": 6600,
+      "ertiga": 6800,
+      "innova": 9000,
+      "fortuner": 13050,
+      "tempo": 14400
+    },
+    "distanceKm": 400,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-mandi",
+    "pickup": "Delhi Airport",
+    "destination": "Mandi",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 7200,
+      "verna": 7920,
+      "ertiga": 8160,
+      "innova": 10800,
+      "fortuner": 15660,
+      "tempo": 17280
+    },
+    "distanceKm": 480,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-kullu",
+    "pickup": "Delhi Airport",
+    "destination": "Kullu",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 7500,
+      "verna": 8250,
+      "ertiga": 8500,
+      "innova": 11250,
+      "fortuner": 16313,
+      "tempo": 18000
+    },
+    "distanceKm": 500,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-kasol",
+    "pickup": "Delhi Airport",
+    "destination": "Kasol",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 7800,
+      "verna": 8580,
+      "ertiga": 8840,
+      "innova": 11700,
+      "fortuner": 16965,
+      "tempo": 18720
+    },
+    "distanceKm": 520,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-dharamshala",
+    "pickup": "Delhi Airport",
     "destination": "Dharamshala",
     "routeType": "HILL",
-    "pricingType": "per_km",
+    "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 0,
-      "verna": 0,
-      "ertiga": 0,
-      "innova": 0,
-      "fortuner": 0,
-      "tempo": 0
+      "dzire": 7650,
+      "verna": 8415,
+      "ertiga": 8670,
+      "innova": 11475,
+      "fortuner": 16639,
+      "tempo": 18360
     },
-    "distanceKm": 165,
+    "distanceKm": 510,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-mcleod-ganj",
+    "pickup": "Delhi Airport",
+    "destination": "McLeod Ganj",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 7725,
+      "verna": 8498,
+      "ertiga": 8755,
+      "innova": 11587.5,
+      "fortuner": 16802,
+      "tempo": 18540
+    },
+    "distanceKm": 515,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-palampur",
+    "pickup": "Delhi Airport",
+    "destination": "Palampur",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 7350,
+      "verna": 8085,
+      "ertiga": 8330,
+      "innova": 11025,
+      "fortuner": 15986,
+      "tempo": 17640
+    },
+    "distanceKm": 490,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-bir",
+    "pickup": "Delhi Airport",
+    "destination": "Bir",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 7500,
+      "verna": 8250,
+      "ertiga": 8500,
+      "innova": 11250,
+      "fortuner": 16313,
+      "tempo": 18000
+    },
+    "distanceKm": 500,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-manali",
+    "pickup": "Delhi Airport",
+    "destination": "Manali",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 8250,
+      "verna": 9075,
+      "ertiga": 9350,
+      "innova": 12375,
+      "fortuner": 17944,
+      "tempo": 19800
+    },
+    "distanceKm": 550,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-dalhousie",
+    "pickup": "Delhi Airport",
+    "destination": "Dalhousie",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 8850,
+      "verna": 9735,
+      "ertiga": 10030,
+      "innova": 13275,
+      "fortuner": 19249,
+      "tempo": 21240
+    },
+    "distanceKm": 590,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-chamba",
+    "pickup": "Delhi Airport",
+    "destination": "Chamba",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 9375,
+      "verna": 10313,
+      "ertiga": 10625,
+      "innova": 14062.5,
+      "fortuner": 20391,
+      "tempo": 22500
+    },
+    "distanceKm": 625,
+    "active": true
+  },
+  {
+    "id": "delhi-airport-jibhi",
+    "pickup": "Delhi Airport",
+    "destination": "Jibhi",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 7800,
+      "verna": 8580,
+      "ertiga": 8840,
+      "innova": 11700,
+      "fortuner": 16965,
+      "tempo": 18720
+    },
+    "distanceKm": 520,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-jalandhar",
+    "pickup": "Amritsar Airport",
+    "destination": "Jalandhar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1400,
+      "verna": 1540,
+      "ertiga": 2200,
+      "innova": 3200,
+      "fortuner": 4640,
+      "tempo": 5120
+    },
+    "distanceKm": 95,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-kapurthala",
+    "pickup": "Amritsar Airport",
+    "destination": "Kapurthala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1179,
+      "verna": 1297,
+      "ertiga": 1853,
+      "innova": 2695,
+      "fortuner": 3908,
+      "tempo": 4312
+    },
+    "distanceKm": 80,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-nakodar",
+    "pickup": "Amritsar Airport",
+    "destination": "Nakodar",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1649,
+      "verna": 1814,
+      "ertiga": 2593,
+      "innova": 3772,
+      "fortuner": 5469,
+      "tempo": 6035
+    },
+    "distanceKm": 112,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-phagwara",
+    "pickup": "Amritsar Airport",
+    "destination": "Phagwara",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1517,
+      "verna": 1669,
+      "ertiga": 2386,
+      "innova": 3469,
+      "fortuner": 5030,
+      "tempo": 5550
+    },
+    "distanceKm": 103,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-ludhiana",
+    "pickup": "Amritsar Airport",
+    "destination": "Ludhiana",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2358,
+      "verna": 2594,
+      "ertiga": 3705,
+      "innova": 5389,
+      "fortuner": 7814,
+      "tempo": 8622
+    },
+    "distanceKm": 160,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-moga",
+    "pickup": "Amritsar Airport",
+    "destination": "Moga",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1547,
+      "verna": 1702,
+      "ertiga": 2432,
+      "innova": 3537,
+      "fortuner": 5129,
+      "tempo": 5659
+    },
+    "distanceKm": 105,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-zira",
+    "pickup": "Amritsar Airport",
+    "destination": "Zira",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1237,
+      "verna": 1361,
+      "ertiga": 1945,
+      "innova": 2830,
+      "fortuner": 4104,
+      "tempo": 4528
+    },
+    "distanceKm": 84,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-batala",
+    "pickup": "Amritsar Airport",
+    "destination": "Batala",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 707,
+      "verna": 778,
+      "ertiga": 1112,
+      "innova": 1617,
+      "fortuner": 2345,
+      "tempo": 2587
+    },
+    "distanceKm": 48,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-gurdaspur",
+    "pickup": "Amritsar Airport",
+    "destination": "Gurdaspur",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1208,
+      "verna": 1329,
+      "ertiga": 1899,
+      "innova": 2762,
+      "fortuner": 4005,
+      "tempo": 4419
+    },
+    "distanceKm": 82,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-pathankot",
+    "pickup": "Amritsar Airport",
+    "destination": "Pathankot",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1708,
+      "verna": 1879,
+      "ertiga": 2686,
+      "innova": 3907,
+      "fortuner": 5665,
+      "tempo": 6251
+    },
+    "distanceKm": 116,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-hoshiarpur",
+    "pickup": "Amritsar Airport",
+    "destination": "Hoshiarpur",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1768,
+      "verna": 1945,
+      "ertiga": 2779,
+      "innova": 4042,
+      "fortuner": 5861,
+      "tempo": 6467
+    },
+    "distanceKm": 120,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-firozpur",
+    "pickup": "Amritsar Airport",
+    "destination": "Firozpur",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1576,
+      "verna": 1734,
+      "ertiga": 2478,
+      "innova": 3604,
+      "fortuner": 5226,
+      "tempo": 5766
+    },
+    "distanceKm": 107,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-faridkot",
+    "pickup": "Amritsar Airport",
+    "destination": "Faridkot",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2092,
+      "verna": 2301,
+      "ertiga": 3288,
+      "innova": 4783,
+      "fortuner": 6935,
+      "tempo": 7653
+    },
+    "distanceKm": 142,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-mansa",
+    "pickup": "Amritsar Airport",
+    "destination": "Mansa",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3241,
+      "verna": 3565,
+      "ertiga": 5095,
+      "innova": 7411,
+      "fortuner": 10746,
+      "tempo": 11858
+    },
+    "distanceKm": 220,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-chandigarh",
+    "pickup": "Amritsar Airport",
+    "destination": "Chandigarh",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3375,
+      "verna": 3713,
+      "ertiga": 5303,
+      "innova": 7714,
+      "fortuner": 11185,
+      "tempo": 12342
+    },
+    "distanceKm": 229,
+    "active": true
+  },
+  {
+    "id": "amritsar-airport-dalhousie",
+    "pickup": "Amritsar Airport",
+    "destination": "Dalhousie",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3006,
+      "verna": 3307,
+      "ertiga": 4726,
+      "innova": 6874,
+      "fortuner": 9967,
+      "tempo": 10998
+    },
+    "distanceKm": 204,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-kasauli",
+    "pickup": "Chandigarh Airport",
+    "destination": "Kasauli",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1311,
+      "verna": 1442,
+      "ertiga": 1656,
+      "innova": 2070,
+      "fortuner": 3002,
+      "tempo": 3312
+    },
+    "distanceKm": 69,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-solan",
+    "pickup": "Chandigarh Airport",
+    "destination": "Solan",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 1444,
+      "verna": 1588,
+      "ertiga": 1824,
+      "innova": 2280,
+      "fortuner": 3306,
+      "tempo": 3648
+    },
+    "distanceKm": 76,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-shimla",
+    "pickup": "Chandigarh Airport",
+    "destination": "Shimla",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2337,
+      "verna": 2571,
+      "ertiga": 2952,
+      "innova": 3690,
+      "fortuner": 5351,
+      "tempo": 5904
+    },
+    "distanceKm": 123,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-chail",
+    "pickup": "Chandigarh Airport",
+    "destination": "Chail",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2337,
+      "verna": 2571,
+      "ertiga": 2952,
+      "innova": 3690,
+      "fortuner": 5351,
+      "tempo": 5904
+    },
+    "distanceKm": 123,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-kufri",
+    "pickup": "Chandigarh Airport",
+    "destination": "Kufri",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 2565,
+      "verna": 2822,
+      "ertiga": 3240,
+      "innova": 4050,
+      "fortuner": 5873,
+      "tempo": 6480
+    },
+    "distanceKm": 135,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-narkanda",
+    "pickup": "Chandigarh Airport",
+    "destination": "Narkanda",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 3705,
+      "verna": 4076,
+      "ertiga": 4680,
+      "innova": 5850,
+      "fortuner": 8483,
+      "tempo": 9360
+    },
+    "distanceKm": 195,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-mandi",
+    "pickup": "Chandigarh Airport",
+    "destination": "Mandi",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4180,
+      "verna": 4598,
+      "ertiga": 5280,
+      "innova": 6600,
+      "fortuner": 9570,
+      "tempo": 10560
+    },
+    "distanceKm": 220,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-bir-billing",
+    "pickup": "Chandigarh Airport",
+    "destination": "Bir Billing",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4180,
+      "verna": 4598,
+      "ertiga": 5280,
+      "innova": 6600,
+      "fortuner": 9570,
+      "tempo": 10560
+    },
+    "distanceKm": 220,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-bir",
+    "pickup": "Chandigarh Airport",
+    "destination": "Bir",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4180,
+      "verna": 4598,
+      "ertiga": 5280,
+      "innova": 6600,
+      "fortuner": 9570,
+      "tempo": 10560
+    },
+    "distanceKm": 220,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-palampur",
+    "pickup": "Chandigarh Airport",
+    "destination": "Palampur",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4275,
+      "verna": 4703,
+      "ertiga": 5400,
+      "innova": 6750,
+      "fortuner": 9788,
+      "tempo": 10800
+    },
+    "distanceKm": 225,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-jibhi",
+    "pickup": "Chandigarh Airport",
+    "destination": "Jibhi",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4427,
+      "verna": 4870,
+      "ertiga": 5592,
+      "innova": 6990,
+      "fortuner": 10136,
+      "tempo": 11184
+    },
+    "distanceKm": 233,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-kullu",
+    "pickup": "Chandigarh Airport",
+    "destination": "Kullu",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4636,
+      "verna": 5100,
+      "ertiga": 5856,
+      "innova": 7320,
+      "fortuner": 10614,
+      "tempo": 11712
+    },
+    "distanceKm": 244,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-kasol",
+    "pickup": "Chandigarh Airport",
+    "destination": "Kasol",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4807,
+      "verna": 5288,
+      "ertiga": 6072,
+      "innova": 7590,
+      "fortuner": 11006,
+      "tempo": 12144
+    },
+    "distanceKm": 253,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-dharamshala",
+    "pickup": "Chandigarh Airport",
+    "destination": "Dharamshala",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4807,
+      "verna": 5288,
+      "ertiga": 6072,
+      "innova": 7590,
+      "fortuner": 11006,
+      "tempo": 12144
+    },
+    "distanceKm": 253,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-manikaran",
+    "pickup": "Chandigarh Airport",
+    "destination": "Manikaran",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4902,
+      "verna": 5392,
+      "ertiga": 6192,
+      "innova": 7740,
+      "fortuner": 11223,
+      "tempo": 12384
+    },
+    "distanceKm": 258,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-mcleod-ganj",
+    "pickup": "Chandigarh Airport",
+    "destination": "McLeod Ganj",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4997,
+      "verna": 5497,
+      "ertiga": 6312,
+      "innova": 7890,
+      "fortuner": 11441,
+      "tempo": 12624
+    },
+    "distanceKm": 263,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-manali",
+    "pickup": "Chandigarh Airport",
+    "destination": "Manali",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5320,
+      "verna": 5852,
+      "ertiga": 6720,
+      "innova": 8400,
+      "fortuner": 12180,
+      "tempo": 13440
+    },
+    "distanceKm": 280,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-solang-valley",
+    "pickup": "Chandigarh Airport",
+    "destination": "Solang Valley",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5510,
+      "verna": 6061,
+      "ertiga": 6960,
+      "innova": 8700,
+      "fortuner": 12615,
+      "tempo": 13920
+    },
+    "distanceKm": 290,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-dalhousie",
+    "pickup": "Chandigarh Airport",
+    "destination": "Dalhousie",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 5833,
+      "verna": 6416,
+      "ertiga": 7368,
+      "innova": 9210,
+      "fortuner": 13355,
+      "tempo": 14736
+    },
+    "distanceKm": 307,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-chamba",
+    "pickup": "Chandigarh Airport",
+    "destination": "Chamba",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 6213,
+      "verna": 6834,
+      "ertiga": 7848,
+      "innova": 9810,
+      "fortuner": 14225,
+      "tempo": 15696
+    },
+    "distanceKm": 327,
+    "active": true
+  },
+  {
+    "id": "chandigarh-airport-khajjiar",
+    "pickup": "Chandigarh Airport",
+    "destination": "Khajjiar",
+    "routeType": "HILL",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 6251,
+      "verna": 6876,
+      "ertiga": 7896,
+      "innova": 9870,
+      "fortuner": 14312,
+      "tempo": 15792
+    },
+    "distanceKm": 329,
     "active": true
   }
 ]
