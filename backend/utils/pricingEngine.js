@@ -85,14 +85,14 @@ export const KNOWN_DISTANCES = {
   "panipat|jalandhar": 270,
   "jalandhar|yamunanagar": 250,
   "yamunanagar|jalandhar": 250,
-  "jalandhar|dehradun": 310,
-  "dehradun|jalandhar": 310,
+  "jalandhar|dehradun": 325,
+  "dehradun|jalandhar": 325,
   "jalandhar|muzaffarnagar": 322,
   "muzaffarnagar|jalandhar": 322,
   "jalandhar|meerut": 368,
   "meerut|jalandhar": 368,
-  "jalandhar|delhi": 375,
-  "delhi|jalandhar": 375,
+  "jalandhar|delhi": 370,
+  "delhi|jalandhar": 370,
   "jalandhar|delhi airport": 385,
   "delhi airport|jalandhar": 385,
   "jalandhar|gurugram": 395,
@@ -135,8 +135,8 @@ export const KNOWN_DISTANCES = {
   "batala|delhi": 445,
   "delhi|phagwara": 348,
   "phagwara|delhi": 348,
-  "delhi|ludhiana": 310,
-  "ludhiana|delhi": 310,
+  "delhi|ludhiana": 330,
+  "ludhiana|delhi": 330,
   "delhi|moga": 378,
   "moga|delhi": 378,
   "delhi airport|shimla": 377,
@@ -175,8 +175,8 @@ export const KNOWN_DISTANCES = {
   "nakodar|amritsar airport": 112,
   "amritsar airport|phagwara": 103,
   "phagwara|amritsar airport": 103,
-  "amritsar airport|ludhiana": 160,
-  "ludhiana|amritsar airport": 160,
+  "amritsar airport|ludhiana": 155,
+  "ludhiana|amritsar airport": 155,
   "amritsar airport|moga": 105,
   "moga|amritsar airport": 105,
   "amritsar airport|zira": 84,
@@ -241,21 +241,119 @@ export const KNOWN_DISTANCES = {
   "chamba|chandigarh airport": 327,
   "chandigarh airport|khajjiar": 329,
   "khajjiar|chandigarh airport": 329,
-  "jalandhar|indira gandhi international airport del": 385,
-  "indira gandhi international airport del|jalandhar": 385,
-  "jalandhar|phagwara": 22,
-  "phagwara|jalandhar": 22,
-  "jalandhar|kapurthala": 22,
-  "kapurthala|jalandhar": 22,
-  "jalandhar|adampur": 19,
-  "adampur|jalandhar": 19,
-  "jalandhar|nakodar": 26,
-  "nakodar|jalandhar": 26,
-  "delhi airport|bir billing": 500,
-  "bir billing|delhi airport": 500
+  "mussoorie|delhi airport": 280,
+  "delhi airport|mussoorie": 280,
+  "rishikesh|delhi airport": 260,
+  "delhi airport|rishikesh": 260,
+  "haridwar|delhi airport": 240,
+  "delhi airport|haridwar": 240,
+  "haldwani|delhi airport": 300,
+  "delhi airport|haldwani": 300,
+  "nainital|delhi airport": 300,
+  "delhi airport|nainital": 300,
+  "jalandhar|lansdowne": 450,
+  "lansdowne|jalandhar": 450,
+  "jalandhar|nainital": 585,
+  "nainital|jalandhar": 585,
+  "jalandhar|sonprayag": 590,
+  "sonprayag|jalandhar": 590,
+  "jalandhar|badrinath": 670,
+  "badrinath|jalandhar": 670,
+  "jalandhar|roorkee": 302,
+  "roorkee|jalandhar": 302,
+  "jalandhar|haridwar": 328,
+  "haridwar|jalandhar": 328,
+  "jalandhar|rishikesh": 360,
+  "rishikesh|jalandhar": 360,
+  "jalandhar|kotdwar": 380,
+  "kotdwar|jalandhar": 380,
+  "jalandhar|haldwani": 600,
+  "haldwani|jalandhar": 600,
+  "delhi airport|khatu shyam ji": 280,
+  "khatu shyam ji|delhi airport": 280,
+  "delhi airport|khatu shyam": 280,
+  "khatu shyam|delhi airport": 280,
+  "delhi airport|vrindavan dham": 160,
+  "vrindavan dham|delhi airport": 160,
+  "delhi airport|vrindavan": 160,
+  "vrindavan|delhi airport": 160,
+  "ludhiana|chandigarh": 100,
+  "chandigarh|ludhiana": 100,
+  "ludhiana|chandigarh airport": 110,
+  "chandigarh airport|ludhiana": 110,
+  "ludhiana|rupnagar": 115,
+  "rupnagar|ludhiana": 115,
+  "ludhiana|faridkot": 120,
+  "faridkot|ludhiana": 120,
+  "ludhiana|firozpur": 130,
+  "firozpur|ludhiana": 130,
+  "ludhiana|amritsar": 140,
+  "amritsar|ludhiana": 140,
+  "ludhiana|bathinda": 145,
+  "bathinda|ludhiana": 145,
+  "ludhiana|bathinda airport": 145,
+  "bathinda airport|ludhiana": 145,
+  "ludhiana|muktsar": 150,
+  "muktsar|ludhiana": 150,
+  "ludhiana|sri muktsar sahib": 150,
+  "sri muktsar sahib|ludhiana": 150,
+  "ludhiana|tarn taran": 150,
+  "tarn taran|ludhiana": 150,
+  "ludhiana|batala": 155,
+  "batala|ludhiana": 155,
+  "ludhiana|gurdaspur": 160,
+  "gurdaspur|ludhiana": 160,
+  "ludhiana|pathankot": 165,
+  "pathankot|ludhiana": 165,
+  "ludhiana|anandpur sahib": 150,
+  "anandpur sahib|ludhiana": 150,
+  "ludhiana|nangal": 145,
+  "nangal|ludhiana": 145,
+  "ludhiana|ambala": 110,
+  "ambala|ludhiana": 110,
+  "ludhiana|panchkula": 115,
+  "panchkula|ludhiana": 115,
+  "ludhiana|yamunanagar": 165,
+  "yamunanagar|ludhiana": 165,
+  "ludhiana|kurukshetra": 180,
+  "kurukshetra|ludhiana": 180,
+  "ludhiana|kaithal": 190,
+  "kaithal|ludhiana": 190,
+  "ludhiana|karnal": 200,
+  "karnal|ludhiana": 200,
+  "ludhiana|abohar": 240,
+  "abohar|ludhiana": 240,
+  "ludhiana|fazilka": 205,
+  "fazilka|ludhiana": 205,
+  "ludhiana|fatehabad": 255,
+  "fatehabad|ludhiana": 255,
+  "ludhiana|panipat": 225,
+  "panipat|ludhiana": 225,
+  "ludhiana|sonipat": 270,
+  "sonipat|ludhiana": 270,
+  "ludhiana|rohtak": 280,
+  "rohtak|ludhiana": 280,
+  "ludhiana|hisar": 300,
+  "hisar|ludhiana": 300,
+  "ludhiana|sirsa": 300,
+  "sirsa|ludhiana": 300,
+  "ludhiana|rewari": 300,
+  "rewari|ludhiana": 300,
+  "ludhiana|gurugram": 330,
+  "gurugram|ludhiana": 330,
+  "ludhiana|delhi airport": 330,
+  "delhi airport|ludhiana": 330,
+  "ludhiana|faridabad": 350,
+  "faridabad|ludhiana": 350,
+  "ludhiana|hanumangarh": 300,
+  "hanumangarh|ludhiana": 300,
+  "ludhiana|sri ganganagar": 330,
+  "sri ganganagar|ludhiana": 330,
+  "ludhiana|bhiwadi": 350,
+  "bhiwadi|ludhiana": 350,
+  "ludhiana|alwar": 370,
+  "alwar|ludhiana": 370
 };
-
-const toRad = (deg) => (deg * Math.PI) / 180;
 
 export const normalizeLocation = (str) => {
   if (!str || typeof str !== 'string') return '';
@@ -661,8 +759,23 @@ export const calculateFare = ({
     ratePerKm = extraKmRate;
     pricingRuleApplied = `${hourlyPackage === '4h' ? '4 Hours / ' + includedKm + ' KM' : '8 Hours / ' + includedKm + ' KM'} Package (₹${pkgPrice}${extraKm > 0 ? ` + ₹${extraCharges} for ${extraKm} extra km` : ''})`;
   }
-  // 2. Specific Route Fixed Tariff (Priority 1)
+  // 2. Round Trip Outstation Calculation
+  else if (isRoundTrip) {
+    pricingType = 'round_trip';
+    const effectiveDist = actualDistance * 2;
+    const minDailyKm = outstationMinKm || 250;
+    billableKm = Math.max(effectiveDist, minDailyKm);
+
+    const plainRate = Number(vehicle.roundTripRate) || Number(vehicle.plainRatePerKm) || 12;
+    const hillRate = Number(vehicle.roundTripHillRate) || (Number(vehicle.hillRatePerKm) ? Number(vehicle.hillRatePerKm) - 1 : plainRate + 2);
+    ratePerKm = (routeType === 'HILL' || routeType === 'MIXED') ? hillRate : plainRate;
+
+    baseFare = Math.round(billableKm * ratePerKm);
+    pricingRuleApplied = `Round-Trip Tariff (₹${ratePerKm}/km • ${billableKm} KM Return Distance)`;
+  }
+  // 3. Specific Route Fixed Tariff (One Way / Airport)
   else if (
+    !isRoundTrip &&
     routeDetails.pricingType === 'fixed' &&
     routeDetails.fixedPrices &&
     Number(routeDetails.fixedPrices[vehicle.id]) > 0
@@ -673,7 +786,7 @@ export const calculateFare = ({
     ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
     pricingRuleApplied = `Fixed Route Tariff (${routeDetails.route?.pickup || pickup} → ${routeDetails.route?.destination || destination})`;
   }
-  // 3. Short Local Airport Drop / Transfer (Priority 2 - Local Only <= 35 KM)
+  // 4. Short Local Airport Drop / Transfer (Priority 2 - Local Only <= 35 KM)
   else if (
     (isAirport || normalizeLocation(destination).includes('airport') || normalizeLocation(pickup).includes('airport')) &&
     actualDistance <= 35 &&
@@ -687,19 +800,11 @@ export const calculateFare = ({
     pricingRuleApplied = `Local Airport Drop Tariff (₹${vehicle.airportBasePrice})`;
   }
 
-  // 4. Standard Distance / Long Distance / Hill / Round Trip / Local Slab Calculation
+  // 5. Standard Distance / Long Distance / Hill / Local Slab Calculation
   if (baseFare === 0) {
     const pricingMode = vehicle.pricingMode || 'hybrid'; // 'hybrid' | 'per_km' | 'slabs_only'
 
-    if (isRoundTrip) {
-      const effectiveDist = actualDistance * 2;
-      const effectiveMinKm = outstationMinKm * 2;
-      billableKm = Math.max(effectiveDist, effectiveMinKm);
-      ratePerKm = Number(vehicle.roundTripRate) || (routeType === 'HILL' ? Number(vehicle.hillRatePerKm) : Number(vehicle.plainRatePerKm)) || 11.7;
-      baseFare = Math.round(billableKm * ratePerKm);
-      pricingType = 'round_trip';
-      pricingRuleApplied = `Round-Trip Tariff (₹${ratePerKm}/km, ${billableKm} billable km)`;
-    } else if (routeType === 'HILL' || routeType === 'MIXED') {
+    if (routeType === 'HILL' || routeType === 'MIXED') {
       billableKm = Math.max(actualDistance, outstationMinKm);
       ratePerKm = Number(vehicle.hillRatePerKm) || (Number(vehicle.plainRatePerKm) ? Number(vehicle.plainRatePerKm) + 2.5 : 15.5);
       baseFare = Math.round(billableKm * ratePerKm);

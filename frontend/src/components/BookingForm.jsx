@@ -7,7 +7,16 @@ import {
 } from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 
-export default function BookingForm({ onSearch, initialTripType = 'One Way', compact = false }) {
+export default function BookingForm({ 
+  onSearch, 
+  initialTripType = 'One Way', 
+  initialFromLocation = '',
+  initialToLocation = '',
+  initialDepartureDate = '',
+  initialPickupTime = '',
+  initialValues = null,
+  compact = false 
+}) {
   const navigate = useNavigate();
   const { popularLocations } = useSiteData();
 
@@ -20,12 +29,39 @@ export default function BookingForm({ onSearch, initialTripType = 'One Way', com
     return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
   };
 
-  const [tripType, setTripType] = useState(initialTripType);
-  const [fromLocation, setFromLocation] = useState('');
-  const [toLocation, setToLocation] = useState('');
-  const [departureDate, setDepartureDate] = useState(todayStr);
-  const [pickupTime, setPickupTime] = useState(defaultTimeStr());
+  const effectiveTripType = initialValues?.tripType || initialTripType || 'One Way';
+  const effectiveFrom = initialValues?.fromLocation || initialValues?.from || initialFromLocation || '';
+  const effectiveTo = initialValues?.toLocation || initialValues?.to || initialToLocation || '';
+  const effectiveDate = initialValues?.departureDate || initialValues?.date || initialDepartureDate || todayStr;
+  const effectiveTime = initialValues?.pickupTime || initialValues?.time || initialPickupTime || defaultTimeStr();
+
+  const [tripType, setTripType] = useState(effectiveTripType);
+  const [fromLocation, setFromLocation] = useState(effectiveFrom);
+  const [toLocation, setToLocation] = useState(effectiveTo);
+  const [departureDate, setDepartureDate] = useState(effectiveDate);
+  const [pickupTime, setPickupTime] = useState(effectiveTime);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Sync state if initial props change
+  useEffect(() => {
+    if (effectiveTripType) setTripType(effectiveTripType);
+  }, [effectiveTripType]);
+
+  useEffect(() => {
+    if (effectiveFrom) setFromLocation(effectiveFrom);
+  }, [effectiveFrom]);
+
+  useEffect(() => {
+    if (effectiveTo) setToLocation(effectiveTo);
+  }, [effectiveTo]);
+
+  useEffect(() => {
+    if (effectiveDate) setDepartureDate(effectiveDate);
+  }, [effectiveDate]);
+
+  useEffect(() => {
+    if (effectiveTime) setPickupTime(effectiveTime);
+  }, [effectiveTime]);
 
   // Suggestions state
   const [activeInput, setActiveInput] = useState(null); // 'from' | 'to' | null

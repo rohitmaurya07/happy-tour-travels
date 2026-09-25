@@ -12,6 +12,16 @@
       },
       {
         "from": "Jalandhar",
+        "to": "Chandigarh Airport",
+        "type": "Airport"
+      },
+      {
+        "from": "Jalandhar",
+        "to": "Amritsar Airport",
+        "type": "Airport"
+      },
+      {
+        "from": "Jalandhar",
         "to": "Delhi",
         "type": "One Way"
       },
@@ -19,11 +29,6 @@
         "from": "Jalandhar",
         "to": "Chandigarh",
         "type": "One Way"
-      },
-      {
-        "from": "Jalandhar",
-        "to": "Chandigarh Airport",
-        "type": "Airport"
       },
       {
         "from": "Jalandhar",
@@ -32,181 +37,38 @@
       },
       {
         "from": "Jalandhar",
-        "to": "Amritsar Airport",
-        "type": "Airport"
-      },
-      {
-        "from": "Jalandhar",
         "to": "Ludhiana",
         "type": "One Way"
       },
       {
         "from": "Jalandhar",
         "to": "Shimla",
-        "type": "One Way"
+        "type": "Hill Station"
       },
       {
         "from": "Jalandhar",
         "to": "Manali",
-        "type": "One Way"
-      },
-      {
-        "from": "Jalandhar",
-        "to": "Kullu",
-        "type": "One Way"
+        "type": "Hill Station"
       },
       {
         "from": "Jalandhar",
         "to": "Dharamshala",
-        "type": "One Way"
+        "type": "Hill Station"
       },
       {
         "from": "Jalandhar",
-        "to": "Dalhousie",
-        "type": "One Way"
-      },
-      {
-        "from": "Jalandhar",
-        "to": "Pathankot",
-        "type": "One Way"
-      },
-      {
-        "from": "Jalandhar",
-        "to": "Jammu",
-        "type": "One Way"
-      },
-      {
-        "from": "Jalandhar",
-        "to": "Katra",
-        "type": "One Way"
-      },
-      {
-        "from": "Jalandhar",
-        "to": "Hoshiarpur",
-        "type": "One Way"
-      },
-      {
-        "from": "Jalandhar",
-        "to": "Patiala",
-        "type": "One Way"
-      },
-      {
-        "from": "Jalandhar",
-        "to": "Mohali",
-        "type": "One Way"
-      },
-      {
-        "from": "Jalandhar",
-        "to": "Zirakpur",
+        "to": "Haridwar",
         "type": "One Way"
       },
       {
         "from": "Jalandhar",
         "to": "Dehradun",
         "type": "One Way"
-      }
-    ]
-  },
-  {
-    "id": "amritsar-routes",
-    "title": "Amritsar - Popular Routes",
-    "origin": "Amritsar",
-    "tag": "Heritage & Airport Hub",
-    "routes": [
-      {
-        "from": "Amritsar",
-        "to": "Delhi Airport",
-        "type": "Airport"
       },
       {
-        "from": "Amritsar",
-        "to": "Delhi",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Chandigarh",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Chandigarh Airport",
-        "type": "Airport"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Jalandhar",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Ludhiana",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Amritsar Airport",
-        "type": "Airport"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Shimla",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Manali",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Kullu",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Dharamshala",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Dalhousie",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Pathankot",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Jammu",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Katra",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Hoshiarpur",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Patiala",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Mohali",
-        "type": "One Way"
-      },
-      {
-        "from": "Amritsar",
-        "to": "Dehradun",
-        "type": "One Way"
+        "from": "Jalandhar",
+        "to": "Nainital",
+        "type": "Hill Station"
       }
     ]
   },
@@ -223,6 +85,16 @@
       },
       {
         "from": "Ludhiana",
+        "to": "Chandigarh Airport",
+        "type": "Airport"
+      },
+      {
+        "from": "Ludhiana",
+        "to": "Amritsar Airport",
+        "type": "Airport"
+      },
+      {
+        "from": "Ludhiana",
         "to": "Delhi",
         "type": "One Way"
       },
@@ -233,247 +105,250 @@
       },
       {
         "from": "Ludhiana",
-        "to": "Chandigarh Airport",
-        "type": "Airport"
-      },
-      {
-        "from": "Ludhiana",
         "to": "Amritsar",
         "type": "One Way"
       },
       {
         "from": "Ludhiana",
-        "to": "Amritsar Airport",
-        "type": "Airport"
-      },
-      {
-        "from": "Ludhiana",
-        "to": "Jalandhar",
+        "to": "Bathinda",
         "type": "One Way"
       },
       {
         "from": "Ludhiana",
-        "to": "Shimla",
+        "to": "Gurugram",
         "type": "One Way"
       },
       {
         "from": "Ludhiana",
-        "to": "Manali",
-        "type": "One Way"
-      },
-      {
-        "from": "Ludhiana",
-        "to": "Kullu",
-        "type": "One Way"
-      },
-      {
-        "from": "Ludhiana",
-        "to": "Dharamshala",
-        "type": "One Way"
-      },
-      {
-        "from": "Ludhiana",
-        "to": "Dalhousie",
-        "type": "One Way"
-      },
-      {
-        "from": "Ludhiana",
-        "to": "Pathankot",
-        "type": "One Way"
-      },
-      {
-        "from": "Ludhiana",
-        "to": "Patiala",
-        "type": "One Way"
-      },
-      {
-        "from": "Ludhiana",
-        "to": "Mohali",
-        "type": "One Way"
-      },
-      {
-        "from": "Ludhiana",
-        "to": "Zirakpur",
-        "type": "One Way"
-      },
-      {
-        "from": "Ludhiana",
-        "to": "Dehradun",
-        "type": "One Way"
-      },
-      {
-        "from": "Ludhiana",
-        "to": "Jaipur",
+        "to": "Karnal",
         "type": "One Way"
       }
     ]
   },
   {
-    "id": "delhi-airport-punjab-routes",
-    "title": "Delhi Airport - Punjab",
+    "id": "delhi-airport-routes",
+    "title": "Delhi Airport - Popular Routes",
     "origin": "Delhi Airport",
-    "tag": "Terminal Pickup Express",
+    "tag": "International Gateway",
     "routes": [
       {
         "from": "Delhi Airport",
-        "to": "Jalandhar",
-        "type": "Airport"
+        "to": "Shimla",
+        "type": "Hill Station"
       },
       {
         "from": "Delhi Airport",
-        "to": "Amritsar",
-        "type": "Airport"
+        "to": "Manali",
+        "type": "Hill Station"
+      },
+      {
+        "from": "Delhi Airport",
+        "to": "Dharamshala",
+        "type": "Hill Station"
+      },
+      {
+        "from": "Delhi Airport",
+        "to": "Jalandhar",
+        "type": "One Way"
       },
       {
         "from": "Delhi Airport",
         "to": "Ludhiana",
-        "type": "Airport"
+        "type": "One Way"
+      },
+      {
+        "from": "Delhi Airport",
+        "to": "Amritsar",
+        "type": "One Way"
       },
       {
         "from": "Delhi Airport",
         "to": "Chandigarh",
-        "type": "Airport"
+        "type": "One Way"
       },
       {
         "from": "Delhi Airport",
-        "to": "Patiala",
-        "type": "Airport"
+        "to": "Mussoorie",
+        "type": "Hill Station"
       },
       {
         "from": "Delhi Airport",
-        "to": "Bathinda",
-        "type": "Airport"
+        "to": "Nainital",
+        "type": "Hill Station"
       },
       {
         "from": "Delhi Airport",
-        "to": "Hoshiarpur",
-        "type": "Airport"
+        "to": "Rishikesh",
+        "type": "One Way"
       },
       {
         "from": "Delhi Airport",
-        "to": "Moga",
-        "type": "Airport"
+        "to": "Haridwar",
+        "type": "One Way"
       },
       {
         "from": "Delhi Airport",
-        "to": "Kapurthala",
-        "type": "Airport"
+        "to": "Khatu Shyam Ji",
+        "type": "Pilgrimage"
       },
       {
         "from": "Delhi Airport",
-        "to": "Pathankot",
+        "to": "Vrindavan Dham",
+        "type": "Pilgrimage"
+      }
+    ]
+  },
+  {
+    "id": "chandigarh-routes",
+    "title": "Chandigarh Airport - Popular Routes",
+    "origin": "Chandigarh Airport",
+    "tag": "Himachal Gateway",
+    "routes": [
+      {
+        "from": "Chandigarh Airport",
+        "to": "Shimla",
+        "type": "Hill Station"
+      },
+      {
+        "from": "Chandigarh Airport",
+        "to": "Manali",
+        "type": "Hill Station"
+      },
+      {
+        "from": "Chandigarh Airport",
+        "to": "Kasauli",
+        "type": "Hill Station"
+      },
+      {
+        "from": "Chandigarh Airport",
+        "to": "Dharamshala",
+        "type": "Hill Station"
+      },
+      {
+        "from": "Chandigarh Airport",
+        "to": "Delhi Airport",
+        "type": "Airport"
+      },
+      {
+        "from": "Chandigarh Airport",
+        "to": "Amritsar Airport",
         "type": "Airport"
       }
     ]
   },
   {
-    "id": "delhi-airport-himachal-routes",
-    "title": "Delhi Airport - Himachal",
-    "origin": "Delhi Airport",
-    "tag": "Scenic Hill Tours",
+    "id": "amritsar-routes",
+    "title": "Amritsar Airport - Popular Routes",
+    "origin": "Amritsar Airport",
+    "tag": "Holy City Gateway",
     "routes": [
       {
-        "from": "Delhi Airport",
-        "to": "Shimla",
+        "from": "Amritsar Airport",
+        "to": "Jalandhar",
+        "type": "One Way"
+      },
+      {
+        "from": "Amritsar Airport",
+        "to": "Ludhiana",
+        "type": "One Way"
+      },
+      {
+        "from": "Amritsar Airport",
+        "to": "Chandigarh",
+        "type": "One Way"
+      },
+      {
+        "from": "Amritsar Airport",
+        "to": "Chandigarh Airport",
         "type": "Airport"
       },
       {
-        "from": "Delhi Airport",
-        "to": "Manali",
+        "from": "Amritsar Airport",
+        "to": "Delhi Airport",
         "type": "Airport"
       },
       {
-        "from": "Delhi Airport",
-        "to": "Kullu",
-        "type": "Airport"
-      },
-      {
-        "from": "Delhi Airport",
-        "to": "Dharamshala",
-        "type": "Airport"
-      },
-      {
-        "from": "Delhi Airport",
+        "from": "Amritsar Airport",
         "to": "Dalhousie",
-        "type": "Airport"
-      },
-      {
-        "from": "Delhi Airport",
-        "to": "Kasauli",
-        "type": "Airport"
-      },
-      {
-        "from": "Delhi Airport",
-        "to": "Solan",
-        "type": "Airport"
-      },
-      {
-        "from": "Delhi Airport",
-        "to": "Mandi",
-        "type": "Airport"
-      },
-      {
-        "from": "Delhi Airport",
-        "to": "Palampur",
-        "type": "Airport"
+        "type": "Hill Station"
       }
     ]
   },
   {
-    "id": "chandigarh-himachal-routes",
-    "title": "Chandigarh - Himachal",
-    "origin": "Chandigarh",
-    "tag": "Himachal Gateway Express",
+    "id": "other-popular-airports",
+    "title": "North India Popular Airport Routes",
+    "origin": "Various Hubs",
+    "tag": "Airport Transfers",
     "routes": [
       {
-        "from": "Chandigarh",
-        "to": "Shimla",
-        "type": "One Way"
+        "from": "Dehradun",
+        "to": "Delhi Airport",
+        "type": "Airport"
       },
       {
-        "from": "Chandigarh",
+        "from": "Dehradun",
+        "to": "Chandigarh Airport",
+        "type": "Airport"
+      },
+      {
+        "from": "Dehradun",
         "to": "Manali",
-        "type": "One Way"
+        "type": "Hill Station"
       },
       {
-        "from": "Chandigarh",
-        "to": "Kullu",
-        "type": "One Way"
+        "from": "Manali",
+        "to": "Delhi Airport",
+        "type": "Airport"
       },
       {
-        "from": "Chandigarh",
-        "to": "Dharamshala",
-        "type": "One Way"
+        "from": "Shimla",
+        "to": "Delhi Airport",
+        "type": "Airport"
       },
       {
-        "from": "Chandigarh",
-        "to": "Dalhousie",
-        "type": "One Way"
+        "from": "Rishikesh",
+        "to": "Delhi Airport",
+        "type": "Airport"
       },
       {
-        "from": "Chandigarh",
-        "to": "Kasauli",
-        "type": "One Way"
+        "from": "Haridwar",
+        "to": "Chandigarh Airport",
+        "type": "Airport"
       },
       {
-        "from": "Chandigarh",
-        "to": "Solan",
-        "type": "One Way"
+        "from": "Haridwar",
+        "to": "Delhi Airport",
+        "type": "Airport"
       },
       {
-        "from": "Chandigarh",
-        "to": "Mandi",
-        "type": "One Way"
+        "from": "Ambala",
+        "to": "Chandigarh Airport",
+        "type": "Airport"
       },
       {
-        "from": "Chandigarh",
-        "to": "Palampur",
-        "type": "One Way"
+        "from": "Ambala",
+        "to": "Amritsar Airport",
+        "type": "Airport"
       },
       {
-        "from": "Chandigarh",
-        "to": "Chail",
-        "type": "One Way"
+        "from": "Ambala",
+        "to": "Delhi Airport",
+        "type": "Airport"
+      },
+      {
+        "from": "Firozpur",
+        "to": "Amritsar Airport",
+        "type": "Airport"
+      },
+      {
+        "from": "Firozpur",
+        "to": "Chandigarh Airport",
+        "type": "Airport"
+      },
+      {
+        "from": "Firozpur",
+        "to": "Delhi Airport",
+        "type": "Airport"
       }
     ]
   }

@@ -770,9 +770,9 @@
   {
     "name": "Fazilka",
     "state": "Punjab",
-    "type": "Border City",
-    "lat": 30.4037,
-    "lon": 74.0254,
+    "type": "City",
+    "lat": 30.4036,
+    "lon": 74.0255,
     "regionType": "PLAIN"
   },
   {
@@ -1394,18 +1394,18 @@
   {
     "name": "Haridwar",
     "state": "Uttarakhand",
-    "type": "Pilgrimage",
+    "type": "City",
     "lat": 29.9457,
     "lon": 78.1642,
-    "regionType": "HILL"
+    "regionType": "PLAIN"
   },
   {
     "name": "Rishikesh",
     "state": "Uttarakhand",
-    "type": "Yoga & Adventure",
+    "type": "City",
     "lat": 30.0869,
     "lon": 78.2676,
-    "regionType": "HILL"
+    "regionType": "PLAIN"
   },
   {
     "name": "Mussoorie",
@@ -1622,5 +1622,189 @@
     "lat": 32.0276,
     "lon": 77.3487,
     "regionType": "HILL"
+  },
+  {
+    "name": "Lansdowne",
+    "state": "Uttarakhand",
+    "type": "Hill Station",
+    "lat": 29.8377,
+    "lon": 78.6811,
+    "regionType": "HILL"
+  },
+  {
+    "name": "Sonprayag",
+    "state": "Uttarakhand",
+    "type": "Hill Station",
+    "lat": 30.6305,
+    "lon": 79.0015,
+    "regionType": "HILL"
+  },
+  {
+    "name": "Badrinath",
+    "state": "Uttarakhand",
+    "type": "Hill Station",
+    "lat": 30.7433,
+    "lon": 79.4938,
+    "regionType": "HILL"
+  },
+  {
+    "name": "Haldwani",
+    "state": "Uttarakhand",
+    "type": "City",
+    "lat": 29.2183,
+    "lon": 79.513,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Roorkee",
+    "state": "Uttarakhand",
+    "type": "City",
+    "lat": 29.8543,
+    "lon": 77.888,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Kotdwar",
+    "state": "Uttarakhand",
+    "type": "City",
+    "lat": 29.7464,
+    "lon": 78.5284,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Khatu Shyam Ji",
+    "state": "Rajasthan",
+    "type": "Pilgrimage",
+    "lat": 27.3602,
+    "lon": 75.3995,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Khatu Shyam",
+    "state": "Rajasthan",
+    "type": "Pilgrimage",
+    "lat": 27.3602,
+    "lon": 75.3995,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Vrindavan Dham",
+    "state": "Uttar Pradesh",
+    "type": "Pilgrimage",
+    "lat": 27.5806,
+    "lon": 77.7006,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Vrindavan",
+    "state": "Uttar Pradesh",
+    "type": "Pilgrimage",
+    "lat": 27.5806,
+    "lon": 77.7006,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Muktsar",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.4762,
+    "lon": 74.5161,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Sri Muktsar Sahib",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 30.4762,
+    "lon": 74.5161,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Anandpur Sahib",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 31.2356,
+    "lon": 76.4989,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Nangal",
+    "state": "Punjab",
+    "type": "City",
+    "lat": 31.3654,
+    "lon": 76.3811,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Kaithal",
+    "state": "Haryana",
+    "type": "City",
+    "lat": 29.8015,
+    "lon": 76.3996,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Fatehabad",
+    "state": "Haryana",
+    "type": "City",
+    "lat": 29.5152,
+    "lon": 75.451,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Sirsa",
+    "state": "Haryana",
+    "type": "City",
+    "lat": 29.5349,
+    "lon": 75.029,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Rewari",
+    "state": "Haryana",
+    "type": "City",
+    "lat": 28.192,
+    "lon": 76.6191,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Hanumangarh",
+    "state": "Rajasthan",
+    "type": "City",
+    "lat": 29.5813,
+    "lon": 74.3294,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Sri Ganganagar",
+    "state": "Rajasthan",
+    "type": "City",
+    "lat": 29.9038,
+    "lon": 73.8772,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Bhiwadi",
+    "state": "Rajasthan",
+    "type": "City",
+    "lat": 28.21,
+    "lon": 76.8606,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Alwar",
+    "state": "Rajasthan",
+    "type": "City",
+    "lat": 27.553,
+    "lon": 76.6346,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Bathinda Airport",
+    "state": "Punjab",
+    "type": "Airport",
+    "lat": 30.27,
+    "lon": 74.755,
+    "regionType": "PLAIN"
   }
 ]

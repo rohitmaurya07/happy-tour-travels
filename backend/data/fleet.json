@@ -12,7 +12,7 @@
     "tag": "Budget Sedan",
     "rank": 5,
     "description": "Comfortable and economic 4-seater sedan ideal for city commutes, airport transfers, and one-way outstation trips.",
-    "ratesHint": "₹13/km Plain • ₹15/km Hill • Min 20 KM",
+    "ratesHint": "₹13/km Plain • ₹14/km Hill • Min 20 KM",
     "minBookingKm": 20,
     "slabs": [],
     "longDistance": {
@@ -34,8 +34,8 @@
     },
     "airportBasePrice": 2499,
     "plainRatePerKm": 13,
-    "hillRatePerKm": 15,
-    "minimumKm": 0,
+    "hillRatePerKm": 14,
+    "minimumKm": 250,
     "extraKmRate": 11,
     "driverAllowance": 0,
     "active": true,
@@ -45,7 +45,8 @@
       "eightHours": 1500
     },
     "hourlyRate": 1500,
-    "airportFixedRate": 2499
+    "airportFixedRate": 2499,
+    "roundTripHillRate": 14
   },
   {
     "id": "verna",
@@ -114,7 +115,8 @@
       "eightHours": 2000
     },
     "hourlyRate": 2000,
-    "airportFixedRate": 2999
+    "airportFixedRate": 2999,
+    "roundTripHillRate": 16
   },
   {
     "id": "ertiga",
@@ -129,7 +131,7 @@
     "tag": "Family Choice",
     "rank": 3,
     "description": "Spacious 6–7 seater family car perfectly suited for family trips, outstation tours to Himachal Pradesh, and airport group travel.",
-    "ratesHint": "₹16.5/km Plain • ₹19.5/km Hill • Min 20 KM",
+    "ratesHint": "₹16.5/km Plain • ₹18/km Hill • Min 20 KM",
     "minBookingKm": 20,
     "slabs": [
       {
@@ -172,8 +174,8 @@
     },
     "airportBasePrice": 3499,
     "plainRatePerKm": 16.5,
-    "hillRatePerKm": 19.5,
-    "minimumKm": 0,
+    "hillRatePerKm": 18,
+    "minimumKm": 250,
     "extraKmRate": 15,
     "driverAllowance": 0,
     "active": true,
@@ -183,7 +185,8 @@
       "eightHours": 2300
     },
     "hourlyRate": 2300,
-    "airportFixedRate": 3499
+    "airportFixedRate": 3499,
+    "roundTripHillRate": 18
   },
   {
     "id": "innova",
@@ -242,7 +245,7 @@
     "airportBasePrice": 4999,
     "plainRatePerKm": 20.7,
     "hillRatePerKm": 23.5,
-    "minimumKm": 0,
+    "minimumKm": 250,
     "extraKmRate": 18,
     "driverAllowance": 0,
     "active": true,
@@ -252,7 +255,8 @@
       "eightHours": 3000
     },
     "hourlyRate": 3000,
-    "airportFixedRate": 4999
+    "airportFixedRate": 4999,
+    "roundTripHillRate": 22
   },
   {
     "id": "fortuner",
@@ -321,7 +325,8 @@
       "eightHours": 5000
     },
     "hourlyRate": 5000,
-    "airportFixedRate": 6499
+    "airportFixedRate": 6499,
+    "roundTripHillRate": 31
   },
   {
     "id": "tempo",
@@ -390,6 +395,7 @@
       "eightHours": 5500
     },
     "hourlyRate": 5500,
-    "airportFixedRate": 6999
+    "airportFixedRate": 6999,
+    "roundTripHillRate": 28
   }
 ]

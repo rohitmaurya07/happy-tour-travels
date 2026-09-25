@@ -115,7 +115,7 @@ export default function SearchResultsPage() {
 
       {/* Modify Search Drawer / Box */}
       {showModifyModal && (
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 my-6 animate-fadeIn">
+        <div id="modify-search-box" className="max-w-5xl mx-auto px-4 sm:px-6 my-6 animate-fadeIn">
           <div className="bg-slate-900 p-6 rounded-3xl shadow-2xl border border-slate-800 text-white">
             <h3 className="text-lg font-bold font-nexa text-brand-yellow mb-4 flex items-center">
               <SlidersHorizontal className="w-4 h-4 mr-2" />
@@ -124,6 +124,10 @@ export default function SearchResultsPage() {
             <BookingForm
               onSearch={handleModifySubmit}
               initialTripType={tripType}
+              initialFromLocation={fromLocation}
+              initialToLocation={toLocation}
+              initialDepartureDate={departureDate}
+              initialPickupTime={pickupTime}
               compact={true}
             />
           </div>
@@ -133,7 +137,12 @@ export default function SearchResultsPage() {
       {/* Search Results Component */}
       <SearchResults
         searchParams={searchParamsObj}
-        onModifySearch={() => setShowModifyModal(!showModifyModal)}
+        onModifySearch={() => {
+          setShowModifyModal(true);
+          setTimeout(() => {
+            document.getElementById('modify-search-box')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 100);
+        }}
       />
 
     </div>
