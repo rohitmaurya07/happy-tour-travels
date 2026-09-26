@@ -1,6 +1,7 @@
 import { readJson } from './storage.js';
 
 const ROAD_FACTOR = 1.28;
+const toRad = (deg) => (deg * Math.PI) / 180;
 
 export const KNOWN_DISTANCES = {
   "jalandhar|begowal": 42,
@@ -357,7 +358,60 @@ export const KNOWN_DISTANCES = {
 
 export const normalizeLocation = (str) => {
   if (!str || typeof str !== 'string') return '';
-  return str.replace(/[(),.\-]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+  let clean = str.replace(/[(),.\-]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+
+  // Airport alias normalizations
+  if (
+    clean.includes('indira gandhi') ||
+    clean.includes('igi airport') ||
+    clean.includes('delhi igi') ||
+    clean.includes('delhi t1') ||
+    clean.includes('delhi t2') ||
+    clean.includes('delhi t3') ||
+    clean.includes('delhi international airport') ||
+    clean === 'delhi airport del' ||
+    clean === 'del'
+  ) {
+    return 'delhi airport';
+  }
+
+  if (
+    clean.includes('guru ram dass') ||
+    clean.includes('guru ram das') ||
+    clean.includes('amritsar international airport') ||
+    clean.includes('rajasansi') ||
+    clean === 'amritsar airport atq' ||
+    clean === 'atq'
+  ) {
+    return 'amritsar airport';
+  }
+
+  if (
+    clean.includes('bhagat singh') ||
+    clean.includes('chandigarh international airport') ||
+    clean === 'chandigarh airport ixc' ||
+    clean === 'ixc'
+  ) {
+    return 'chandigarh airport';
+  }
+
+  if (
+    clean.includes('jolly grant') ||
+    clean.includes('dehradun airport') ||
+    clean === 'ded'
+  ) {
+    return 'dehradun airport';
+  }
+
+  if (clean.includes('adampur airport') || clean === 'aip') {
+    return 'adampur airport';
+  }
+
+  if (clean.includes('bathinda airport') || clean === 'bup') {
+    return 'bathinda airport';
+  }
+
+  return clean;
 };
 
 export const findLocationCoords = (name, locationsList = null) => {
@@ -442,7 +496,17 @@ export const calculateDistance = (from, to, fromCoords = null, toCoords = null) 
   if (KNOWN_DISTANCES[key1]) return KNOWN_DISTANCES[key1];
   if (KNOWN_DISTANCES[key2]) return KNOWN_DISTANCES[key2];
 
-  // 2. High-precision coordinate-based calculation using popularLocations
+  // 2. Substring matching in known distances (both directions)
+  const matchingDist = Object.entries(KNOWN_DISTANCES).find(([k]) => {
+    const [kFrom, kTo] = k.split('|');
+    return (
+      (cleanFrom.includes(kFrom) && cleanTo.includes(kTo)) ||
+      (cleanFrom.includes(kTo) && cleanTo.includes(kFrom))
+    );
+  });
+  if (matchingDist) return matchingDist[1];
+
+  // 3. High-precision coordinate-based calculation using popularLocations
   const c1 = fromCoords || findLocationCoords(from);
   const c2 = toCoords || findLocationCoords(to);
 
@@ -463,17 +527,6 @@ export const calculateDistance = (from, to, fromCoords = null, toCoords = null) 
     const factor = getRoadFactor(from, to, c1, c2);
     const roadDist = Math.round(straightDist * factor);
     return Math.max(roadDist, 5);
-  }
-
-  // 3. Substring matching in known distances as fallback
-  for (const [k, dist] of Object.entries(KNOWN_DISTANCES)) {
-    const [kFrom, kTo] = k.split('|');
-    if (
-      (cleanFrom === kFrom || cleanFrom.startsWith(kFrom + ' ') || cleanFrom.endsWith(' ' + kFrom)) &&
-      (cleanTo === kTo || cleanTo.startsWith(kTo + ' ') || cleanTo.endsWith(' ' + kTo))
-    ) {
-      return dist;
-    }
   }
 
   return 60;
@@ -592,7 +645,7 @@ export const resolveRouteDetails = (pickup, destination) => {
   const routes = readJson('pricingRoutes') || [];
   const locations = readJson('popularLocations') || [];
 
-  // 1. First look for direct exact directional match
+  // 1. Direct exact directional match
   let matchedRoute = routes.find((r) => {
     if (r.active === false) return false;
     const rFrom = normalizeLocation(r.pickup);
@@ -600,7 +653,7 @@ export const resolveRouteDetails = (pickup, destination) => {
     return rFrom === cleanFrom && rTo === cleanTo;
   });
 
-  // 2. If no directional match, look for direct exact reverse match
+  // 2. Direct exact reverse match
   if (!matchedRoute) {
     matchedRoute = routes.find((r) => {
       if (r.active === false) return false;
@@ -610,7 +663,8 @@ export const resolveRouteDetails = (pickup, destination) => {
     });
   }
 
-  // 2. If no direct exact match, look for longest substring match (e.g. "Delhi Airport" before "Delhi")
+  // 3. Substring match across entire city/hub (e.g. "Model Town, Jalandhar" -> "Jalandhar", "IGI Delhi Airport" -> "Delhi Airport")
+  // Prioritize longer, most specific matches (e.g. "Delhi Airport" before "Delhi")
   if (!matchedRoute) {
     const candidates = routes.filter((r) => {
       if (r.active === false) return false;
@@ -628,6 +682,30 @@ export const resolveRouteDetails = (pickup, destination) => {
 
     if (candidates.length > 0) {
       matchedRoute = candidates[0];
+    }
+  }
+
+  // 4. Token / Comma-separated or Word boundary match (e.g. "Rama Mandi, Jalandhar" -> check tokens "Rama Mandi", "Jalandhar")
+  if (!matchedRoute) {
+    const fromTokens = (pickup || '').split(/[,/|]+/).map(t => normalizeLocation(t)).filter(Boolean);
+    const toTokens = (destination || '').split(/[,/|]+/).map(t => normalizeLocation(t)).filter(Boolean);
+
+    for (const fTok of [cleanFrom, ...fromTokens]) {
+      for (const tTok of [cleanTo, ...toTokens]) {
+        matchedRoute = routes.find(r => {
+          if (r.active === false) return false;
+          const rFrom = normalizeLocation(r.pickup);
+          const rTo = normalizeLocation(r.destination);
+          return (
+            (rFrom === fTok && rTo === tTok) ||
+            (rFrom === tTok && rTo === fTok) ||
+            (fTok.includes(rFrom) && tTok.includes(rTo)) ||
+            (fTok.includes(rTo) && tTok.includes(rFrom))
+          );
+        });
+        if (matchedRoute) break;
+      }
+      if (matchedRoute) break;
     }
   }
 

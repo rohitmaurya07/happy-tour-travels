@@ -572,6 +572,14 @@ export default function BookingForm({
         </div>
       )}
 
+      {/* Route Search Instruction Notice */}
+      <div className="mb-4 px-3.5 py-2.5 bg-amber-50/90 border border-amber-200/90 rounded-2xl flex items-center space-x-2.5 text-xs text-amber-950 font-medium shadow-xs">
+        <span className="text-base flex-shrink-0">🟡</span>
+        <p className="leading-snug">
+          <strong className="font-bold text-slate-950">Search only CITY to CITY/AIRPORT.</strong> For AREA, VILLAGE or SMALL TOWN, please CALL or send a WhatsApp/Email INQUIRY.
+        </p>
+      </div>
+
       {/* Search Form Fields */}
       <form onSubmit={handleSubmitSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4">
         
@@ -608,8 +616,8 @@ export default function BookingForm({
               setSelectedCategory('all');
             }}
             onChange={(e) => handleLocationInputChange(e.target.value, 'from')}
-            placeholder="Search local pickup, city, airport..."
-            className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder-gray-400"
+            placeholder="Enter City Name / Airport Name Only"
+            className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder:text-gray-400 placeholder:font-normal"
             required
             autoComplete="off"
           />
@@ -654,8 +662,8 @@ export default function BookingForm({
               }
             }}
             onChange={(e) => handleLocationInputChange(e.target.value, 'to')}
-            placeholder={tripType === 'Hourly Rental' ? 'Local Rental' : 'Search destination, hill station, city...'}
-            className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder-gray-400 disabled:opacity-60"
+            placeholder={tripType === 'Hourly Rental' ? 'Local Rental' : 'Enter City Name / Airport Name Only'}
+            className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder:text-gray-400 placeholder:font-normal disabled:opacity-60"
             required={tripType !== 'Hourly Rental'}
             autoComplete="off"
           />

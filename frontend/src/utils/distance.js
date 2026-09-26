@@ -368,7 +368,60 @@ export const knownDistances = {
 
 export const normalizeCity = (str) => {
   if (!str || typeof str !== 'string') return '';
-  return str.replace(/[(),.\-]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+  let clean = str.replace(/[(),.\-]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+
+  // Airport alias normalizations
+  if (
+    clean.includes('indira gandhi') ||
+    clean.includes('igi airport') ||
+    clean.includes('delhi igi') ||
+    clean.includes('delhi t1') ||
+    clean.includes('delhi t2') ||
+    clean.includes('delhi t3') ||
+    clean.includes('delhi international airport') ||
+    clean === 'delhi airport del' ||
+    clean === 'del'
+  ) {
+    return 'delhi airport';
+  }
+
+  if (
+    clean.includes('guru ram dass') ||
+    clean.includes('guru ram das') ||
+    clean.includes('amritsar international airport') ||
+    clean.includes('rajasansi') ||
+    clean === 'amritsar airport atq' ||
+    clean === 'atq'
+  ) {
+    return 'amritsar airport';
+  }
+
+  if (
+    clean.includes('bhagat singh') ||
+    clean.includes('chandigarh international airport') ||
+    clean === 'chandigarh airport ixc' ||
+    clean === 'ixc'
+  ) {
+    return 'chandigarh airport';
+  }
+
+  if (
+    clean.includes('jolly grant') ||
+    clean.includes('dehradun airport') ||
+    clean === 'ded'
+  ) {
+    return 'dehradun airport';
+  }
+
+  if (clean.includes('adampur airport') || clean === 'aip') {
+    return 'adampur airport';
+  }
+
+  if (clean.includes('bathinda airport') || clean === 'bup') {
+    return 'bathinda airport';
+  }
+
+  return clean;
 };
 
 /**
@@ -457,8 +510,8 @@ export const getRoadFactor = (from, to, c1 = null, c2 = null) => {
 /**
  * Compute distance between two points.
  * 1. Checks exact pair in distance dictionary.
- * 2. Uses coordinate-based geodesic formula with dynamic terrain road curvature.
- * 3. Checks substring match in distance dictionary as fallback.
+ * 2. Checks substring match in distance dictionary (both directions).
+ * 3. Uses coordinate-based geodesic formula with dynamic terrain road curvature.
  * 4. Returns null if coordinates cannot be resolved (so caller can fetch live OSM coords).
  */
 export const getDistanceKm = (from, to, fromCoords = null, toCoords = null) => {
@@ -473,7 +526,17 @@ export const getDistanceKm = (from, to, fromCoords = null, toCoords = null) => {
   if (knownDistances[key1]) return knownDistances[key1];
   if (knownDistances[key2]) return knownDistances[key2];
 
-  // 2. High-precision coordinate-based calculation
+  // 2. Substring matching in dictionary (both directions)
+  const matchingDist = Object.entries(knownDistances).find(([k]) => {
+    const [kFrom, kTo] = k.split('|');
+    return (
+      (cleanFrom.includes(kFrom) && cleanTo.includes(kTo)) ||
+      (cleanFrom.includes(kTo) && cleanTo.includes(kFrom))
+    );
+  });
+  if (matchingDist) return matchingDist[1];
+
+  // 3. High-precision coordinate-based calculation
   const c1 = fromCoords || findCoordsByName(from);
   const c2 = toCoords || findCoordsByName(to);
 
@@ -494,17 +557,6 @@ export const getDistanceKm = (from, to, fromCoords = null, toCoords = null) => {
     const factor = getRoadFactor(from, to, c1, c2);
     const roadDist = Math.round(straightDist * factor);
     return Math.max(roadDist, 5);
-  }
-
-  // 3. Substring matches in dictionary only if coordinates could not be resolved
-  for (const [k, dist] of Object.entries(knownDistances)) {
-    const [kFrom, kTo] = k.split('|');
-    if (
-      (cleanFrom === kFrom || cleanFrom.startsWith(kFrom + ' ') || cleanFrom.endsWith(' ' + kFrom)) &&
-      (cleanTo === kTo || cleanTo.startsWith(kTo + ' ') || cleanTo.endsWith(' ' + kTo))
-    ) {
-      return dist;
-    }
   }
 
   return null;
