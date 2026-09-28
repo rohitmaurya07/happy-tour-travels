@@ -1,40 +1,74 @@
 import React, { useState } from 'react';
-import { Users, Wind, ShieldCheck, Clock, Navigation, CheckCircle2, MessageCircle, Star } from 'lucide-react';
+import { Users, Clock, MessageCircle, PhoneCall, ShieldCheck, MapPin, Check } from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
+import { hourlyRentalPricing } from '../data/hourlyRentalPricing';
 
 export default function LocalTaxiRates() {
-  const { fleet, siteConfig } = useSiteData();
-  const [selectedDuration, setSelectedDuration] = useState('all'); // 'all' | '4h' | '8h'
+  const { siteConfig } = useSiteData();
+  const [selectedCity, setSelectedCity] = useState('Jalandhar');
 
-  const localTaxiVehicles = (fleet || []).map((car, idx) => ({
-    id: car.id,
-    name: car.name.toUpperCase(),
-    rankBadge: car.rank || idx + 1,
-    seats: car.seats,
-    features: car.ac + ' • ' + car.category,
-    type: car.category,
-    image: car.image,
-    rate4h: '₹' + (car.packages?.fourHours?.price || car.localPackages?.fourHours || 1000).toLocaleString('en-IN'),
-    rate4hNum: Number(car.packages?.fourHours?.price) || car.localPackages?.fourHours || 1000,
-    rate8h: '₹' + (car.packages?.eightHours?.price || car.localPackages?.eightHours || car.hourlyRate || 1500).toLocaleString('en-IN'),
-    rate8hNum: Number(car.packages?.eightHours?.price) || car.localPackages?.eightHours || car.hourlyRate || 1500,
-    tag: car.tag || car.category,
-    desc: car.description,
-  }));
+  const hourlyCars = [
+    {
+      id: 'dzire',
+      name: 'Dzire / similar',
+      subtitle: 'Dzire size / similar car may be provided',
+      image: '/assets/images/dzire.jpg',
+      seats: '4 Passengers',
+      fuel: 'Diesel / Petrol / CNG',
+      packages: [
+        { id: '4h40k', label: '4 Hours / 40 KM', rate: hourlyRentalPricing.defaultRates?.dzire?.rates?.['4h40k'] || 1100 },
+        { id: '8h80k', label: '8 Hours / 80 KM', rate: hourlyRentalPricing.defaultRates?.dzire?.rates?.['8h80k'] || 1600 },
+        { id: '10h100k', label: '10 Hours / 100 KM', rate: hourlyRentalPricing.defaultRates?.dzire?.rates?.['10h100k'] || 2000 }
+      ]
+    },
+    {
+      id: 'ertiga',
+      name: 'Ertiga / similar',
+      subtitle: 'Ertiga or similar comfortable car may be provided',
+      image: '/assets/images/ertiga.png',
+      seats: '6–7 Seater',
+      fuel: 'Diesel / Petrol / CNG',
+      packages: [
+        { id: '4h40k', label: '4 Hours / 40 KM', rate: hourlyRentalPricing.defaultRates?.ertiga?.rates?.['4h40k'] || 1500 },
+        { id: '8h80k', label: '8 Hours / 80 KM', rate: hourlyRentalPricing.defaultRates?.ertiga?.rates?.['8h80k'] || 2300 },
+        { id: '10h100k', label: '10 Hours / 100 KM', rate: hourlyRentalPricing.defaultRates?.ertiga?.rates?.['10h100k'] || 2800 }
+      ]
+    },
+    {
+      id: 'innova',
+      name: 'Innova Crysta',
+      subtitle: '',
+      image: '/assets/images/innova.png',
+      seats: '7–8 Seater',
+      fuel: 'Diesel',
+      packages: [
+        { id: '4h40k', label: '4 Hours / 40 KM', rate: hourlyRentalPricing.defaultRates?.innova?.rates?.['4h40k'] || 2200 },
+        { id: '8h80k', label: '8 Hours / 80 KM', rate: hourlyRentalPricing.defaultRates?.innova?.rates?.['8h80k'] || 3200 },
+        { id: '10h100k', label: '10 Hours / 100 KM', rate: hourlyRentalPricing.defaultRates?.innova?.rates?.['10h100k'] || 3900 }
+      ]
+    }
+  ];
 
-  const handleBookLocalTaxi = (vehicle, duration = '8 Hours / 80 KM') => {
-    const fare = duration === '4 Hours / 40 KM' ? vehicle.rate4h : vehicle.rate8h;
-    const msg = 'Hello ' + (siteConfig?.businessName || 'Happy Tour & Travels') + ', I want to book Local Taxi Rental.\n\n' +
-      '*Local Taxi Booking Details:*\n' +
-      '• *Vehicle:* ' + vehicle.name + '\n' +
-      '• *Seating:* ' + vehicle.seats + '\n' +
-      '• *Package:* ' + duration + '\n' +
-      '• *Tariff Rate:* ' + fare + '\n' +
-      '• *Inclusions:* AC, Fuel & Chauffeur Included\n\n' +
-      'Please confirm cab availability.';
+  const popularCities = [
+    'Jalandhar', 'Amritsar', 'Ludhiana', 'Chandigarh', 'Mohali',
+    'Shimla', 'Manali', 'Dharamshala', 'Delhi', 'Gurgaon', 'Jaipur'
+  ];
 
-    bookOnWhatsApp(msg);
+  const handleBookNow = (car, pkg) => {
+    const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const msg = `Hello ${siteConfig?.businessName || 'Happy Tour & Travels'}, I would like to book an Hourly Rental car.
+
+*Hourly Rental Booking Details:*
+- City: ${selectedCity}
+- Date: ${today}
+- Car: ${car.name}
+- Package: ${pkg.label}
+- Rate: ₹${pkg.rate.toLocaleString('en-IN')} (Fuel & Chauffeur Included)
+
+Please confirm cab availability.`;
+
+    bookOnWhatsApp(msg, siteConfig?.whatsappNumber);
   };
 
   return (
@@ -42,183 +76,108 @@ export default function LocalTaxiRates() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-gold bg-yellow-400/10 px-4 py-1.5 rounded-full border border-yellow-400/30 inline-flex items-center space-x-1.5">
             <Clock className="w-3.5 h-3.5" />
-            <span>Local City Hourly Packages</span>
+            <span>Hourly Car Rental Packages</span>
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-nexa text-slate-900 font-heading mt-4 tracking-tight">
-            Local Taxi Rental Rates
+            City Hourly Taxi Rental Rates
           </h2>
           <p className="mt-3 text-base sm:text-lg text-gray-600 font-medium">
-            Affordable hourly packages for city commutes, shopping, weddings, business meetings, and local sightseeing.
+            Affordable 4 Hours, 8 Hours & 10 Hours rental packages with verified chauffeurs and clean AC cabs.
           </p>
 
-          {/* Duration Filter Switcher */}
-          <div className="mt-8 inline-flex p-1.5 bg-gray-100 rounded-full border border-gray-200">
-            <button
-              onClick={() => setSelectedDuration('all')}
-              className={'px-5 py-2 rounded-full text-xs font-bold transition-all ' + (
-                selectedDuration === 'all'
-                  ? 'bg-slate-950 text-yellow-400 shadow-md'
-                  : 'text-gray-600 hover:text-slate-900'
-              )}
-            >
-              All Packages
-            </button>
-            <button
-              onClick={() => setSelectedDuration('4h')}
-              className={'px-5 py-2 rounded-full text-xs font-bold transition-all ' + (
-                selectedDuration === '4h'
-                  ? 'bg-slate-950 text-yellow-400 shadow-md'
-                  : 'text-gray-600 hover:text-slate-900'
-              )}
-            >
-              4 Hours / 40 KM
-            </button>
-            <button
-              onClick={() => setSelectedDuration('8h')}
-              className={'px-5 py-2 rounded-full text-xs font-bold transition-all ' + (
-                selectedDuration === '8h'
-                  ? 'bg-slate-950 text-yellow-400 shadow-md'
-                  : 'text-gray-600 hover:text-slate-900'
-              )}
-            >
-              8 Hours / 80 KM
-            </button>
+          {/* Quick City Switcher */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+            <span className="text-xs font-bold text-gray-400 mr-1">Select City:</span>
+            {popularCities.map((city) => (
+              <button
+                key={city}
+                onClick={() => setSelectedCity(city)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+                  selectedCity.toLowerCase() === city.toLowerCase()
+                    ? 'bg-slate-900 text-yellow-400 shadow-md ring-2 ring-yellow-400/40'
+                    : 'bg-gray-100 hover:bg-gray-200 text-slate-800'
+                }`}
+              >
+                📍 {city}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Local Taxi Vehicle Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {localTaxiVehicles.map((vehicle) => (
-            <div
-              key={vehicle.id}
-              className="bg-gray-50 rounded-3xl overflow-hidden border border-gray-200/90 shadow-premium hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1.5"
+        {/* 3 Car Categories Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {hourlyCars.map((car) => (
+            <div 
+              key={car.id}
+              className="bg-gray-50/90 rounded-3xl overflow-hidden border border-gray-200/90 shadow-premium hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1.5 hover:border-yellow-400"
             >
               <div>
-                {/* Vehicle Image Container */}
-                <div className="relative h-60 bg-gradient-to-b from-slate-100 to-gray-200 flex items-center justify-center p-4 overflow-hidden">
-                  <img
-                    src={vehicle.image}
-                    alt={vehicle.name}
-                    loading="lazy"
-                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-md"
+                {/* Image */}
+                <div className="h-48 bg-gradient-to-b from-slate-100 to-gray-200 p-4 flex items-center justify-center">
+                  <img 
+                    src={car.image} 
+                    alt={car.name} 
+                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-md"
                   />
-
-                  {/* Rank Badge */}
-                  <span className="absolute top-4 left-4 bg-slate-950 text-yellow-400 font-nexa text-xs uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md font-bold">
-                    {vehicle.rankBadge}. {vehicle.tag}
-                  </span>
                 </div>
 
-                {/* Card Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold font-nexa text-slate-900 font-heading">
-                    {vehicle.name}
+                {/* Car Details */}
+                <div className="p-6 pb-2">
+                  <h3 className="text-2xl font-black font-nexa text-slate-900">
+                    {car.name}
                   </h3>
+                  {car.subtitle && (
+                    <p className="text-xs text-amber-900 font-semibold mt-0.5">
+                      {car.subtitle}
+                    </p>
+                  )}
 
-                  {/* Features & Seating Chips */}
-                  <div className="flex flex-wrap items-center gap-2 mt-2 text-xs font-semibold text-slate-700">
-                    <span className="bg-white px-3 py-1 rounded-lg border border-gray-200 flex items-center">
-                      <Users className="w-3.5 h-3.5 mr-1 text-brand-gold flex-shrink-0" />
-                      {vehicle.seats}
+                  <div className="flex items-center space-x-3 text-xs text-slate-600 font-semibold mt-3 pt-3 border-t border-gray-200/80">
+                    <span className="flex items-center">
+                      <Users className="w-3.5 h-3.5 mr-1 text-yellow-600" />
+                      {car.seats}
                     </span>
-                    <span className="bg-white px-3 py-1 rounded-lg border border-gray-200 flex items-center">
-                      <Wind className="w-3.5 h-3.5 mr-1 text-blue-500 flex-shrink-0" />
-                      {vehicle.features}
-                    </span>
+                    <span>•</span>
+                    <span className="text-emerald-700 font-bold">{car.fuel}</span>
                   </div>
-
-                  <p className="text-xs text-gray-600 font-medium leading-relaxed mt-3">
-                    {vehicle.desc}
-                  </p>
-
-                  {/* Local Taxi Price Boxes */}
-                  <div className="mt-5 space-y-2.5">
-                    {/* 4 Hours / 40 KM Package */}
-                    {(selectedDuration === 'all' || selectedDuration === '4h') && (
-                      <div className="bg-white p-3 rounded-2xl border border-gray-200/90 flex items-center justify-between">
-                        <div>
-                          <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block">
-                            4 Hours / 40 KM
-                          </span>
-                          <span className="text-lg font-extrabold text-slate-950 font-heading">
-                            {vehicle.rate4h}
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => handleBookLocalTaxi(vehicle, '4 Hours / 40 KM')}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center space-x-1 shadow-sm transition-colors"
-                        >
-                          <span className="w-2 h-2 rounded-full bg-white animate-pulse mr-1" />
-                          <span>Book 4 Hrs</span>
-                        </button>
-                      </div>
-                    )}
-
-                    {/* 8 Hours / 80 KM Package */}
-                    {(selectedDuration === 'all' || selectedDuration === '8h') && (
-                      <div className="bg-white p-3 rounded-2xl border border-gray-200/90 flex items-center justify-between">
-                        <div>
-                          <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider block">
-                            8 Hours / 80 KM (Full Day)
-                          </span>
-                          <span className="text-lg font-extrabold text-slate-950 font-heading">
-                            {vehicle.rate8h}
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => handleBookLocalTaxi(vehicle, '8 Hours / 80 KM')}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center space-x-1 shadow-sm transition-colors"
-                        >
-                          <span className="w-2 h-2 rounded-full bg-white animate-pulse mr-1" />
-                          <span>Book 8 Hrs</span>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
                 </div>
               </div>
 
-              {/* Card Footer Master Book CTA */}
-              <div className="px-6 pb-6 pt-0">
-                <button
-                  onClick={() => handleBookLocalTaxi(vehicle, '8 Hours / 80 KM')}
-                  className="w-full yellow-gradient-btn py-3 rounded-2xl text-slate-950 font-nexa text-xs font-bold flex items-center justify-center space-x-2 shadow-md group-hover:shadow-lg transition-all"
-                >
-                  <MessageCircle className="w-4 h-4 fill-slate-950 stroke-none" />
-                  <span>Book Now on WhatsApp</span>
-                </button>
-              </div>
+              {/* 3 Packages */}
+              <div className="p-6 pt-2 space-y-2.5">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400 block mb-1">
+                  City: <strong className="text-slate-950">{selectedCity}</strong>
+                </span>
 
+                {car.packages.map((pkg) => (
+                  <div 
+                    key={pkg.id}
+                    className="bg-white hover:bg-amber-50/80 rounded-2xl p-3 border border-gray-200 flex items-center justify-between transition-colors"
+                  >
+                    <div>
+                      <span className="text-xs font-bold text-slate-900 block leading-tight">
+                        {pkg.label}
+                      </span>
+                      <span className="text-base font-black font-nexa text-slate-950 mt-0.5 block">
+                        ₹{pkg.rate.toLocaleString('en-IN')}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleBookNow(car, pkg)}
+                      className="py-2 px-3.5 rounded-xl bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-black text-xs transition-transform hover:scale-105 shadow-sm flex items-center space-x-1.5"
+                    >
+                      <PhoneCall className="w-3.5 h-3.5" />
+                      <span>Book Now</span>
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
-        </div>
-
-        {/* Guaranteed Local Service Info */}
-        <div className="mt-12 bg-gray-50 rounded-3xl p-6 sm:p-8 border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 rounded-2xl bg-yellow-400/20 text-brand-gold flex items-center justify-center flex-shrink-0">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <div>
-              <h4 className="text-base font-bold text-slate-900 font-heading">
-                Transparent Local Rentals with Zero Extra Hidden Charges
-              </h4>
-              <p className="text-xs text-gray-600 font-medium mt-0.5">
-                Chauffeur allowance and fuel included in local hourly packages. Toll & parking as actuals.
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={() => bookOnWhatsApp('Hello ' + (siteConfig?.businessName || 'Happy Tour & Travels') + ', I would like to inquire about local city taxi rentals.')}
-            className="yellow-gradient-btn px-6 py-3 rounded-full text-slate-950 font-bold text-xs flex items-center space-x-2 whitespace-nowrap shadow-md"
-          >
-            <MessageCircle className="w-4 h-4 fill-slate-950 stroke-none" />
-            <span>Inquire Local Taxi</span>
-          </button>
         </div>
 
       </div>

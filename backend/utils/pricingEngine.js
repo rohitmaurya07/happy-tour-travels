@@ -822,147 +822,70 @@ export const calculateFare = ({
 
   // 1. Hourly Rental Package
   if (isHourly) {
+    // Only Dzire, Ertiga, and Innova Crysta are allowed for Hourly Rental
+    const allowedHourly = ['dzire', 'ertiga', 'innova'];
+    if (!allowedHourly.includes(vehicle.id)) {
+      throw new Error(`${vehicle.name} is not available for hourly rental.`);
+    }
+
     pricingType = 'hourly_package';
-    const pkg = hourlyPackage === '4h'
-      ? (vehicle.packages?.fourHours || { price: vehicle.localPackages?.fourHours || 1000, includedKm: 40 })
-      : (vehicle.packages?.eightHours || { price: vehicle.localPackages?.eightHours || vehicle.hourlyRate || 1500, includedKm: 80 });
+    const hourlyConfig = readJson('hourlyRentalPricing') || {};
+    const defaultCarConfig = hourlyConfig.defaultRates?.[vehicle.id] || {};
 
-    const pkgPrice = Number(pkg.price) || 0;
-    const includedKm = Number(pkg.includedKm) || (hourlyPackage === '4h' ? 40 : 80);
-    const extraKm = Math.max(0, actualDistance - includedKm);
-    const extraCharges = extraKm * extraKmRate;
+    let pkgPrice = 0;
+    let includedKm = 80;
+    let pkgLabel = '8 Hours / 80 KM';
 
-    baseFare = pkgPrice + extraCharges;
-    billableKm = includedKm + extraKm;
-    ratePerKm = extraKmRate;
-    pricingRuleApplied = `${hourlyPackage === '4h' ? '4 Hours / ' + includedKm + ' KM' : '8 Hours / ' + includedKm + ' KM'} Package (₹${pkgPrice}${extraKm > 0 ? ` + ₹${extraCharges} for ${extraKm} extra km` : ''})`;
+    if (hourlyPackage === '4h' || hourlyPackage === '4h40k') {
+      pkgPrice = defaultCarConfig.rates?.['4h40k'] || vehicle.packages?.fourHours?.price || vehicle.localPackages?.fourHours || 1100;
+      includedKm = 40;
+      pkgLabel = '4 Hours / 40 KM';
+    } else if (hourlyPackage === '10h' || hourlyPackage === '10h100k') {
+      pkgPrice = defaultCarConfig.rates?.['10h100k'] || 2800;
+      includedKm = 100;
+      pkgLabel = '10 Hours / 100 KM';
+    } else {
+      // 8h default
+      pkgPrice = defaultCarConfig.rates?.['8h80k'] || vehicle.packages?.eightHours?.price || vehicle.localPackages?.eightHours || vehicle.hourlyRate || 2300;
+      includedKm = 80;
+      pkgLabel = '8 Hours / 80 KM';
+    }
+
+    baseFare = Number(pkgPrice) || 1500;
+    billableKm = includedKm;
+    ratePerKm = defaultCarConfig.extraKmRate || extraKmRate;
+    pricingRuleApplied = `${pkgLabel} Package (₹${baseFare})`;
   }
-  // 2. Round Trip Outstation Calculation
-  else if (isRoundTrip) {
-    pricingType = 'round_trip';
-    const effectiveDist = actualDistance * 2;
-    const minDailyKm = outstationMinKm || 250;
-    billableKm = Math.max(effectiveDist, minDailyKm);
-
-    const plainRate = Number(vehicle.roundTripRate) || Number(vehicle.plainRatePerKm) || 12;
-    const hillRate = Number(vehicle.roundTripHillRate) || (Number(vehicle.hillRatePerKm) ? Number(vehicle.hillRatePerKm) - 1 : plainRate + 2);
-    ratePerKm = (routeType === 'HILL' || routeType === 'MIXED') ? hillRate : plainRate;
-
-    baseFare = Math.round(billableKm * ratePerKm);
-    pricingRuleApplied = `Round-Trip Tariff (₹${ratePerKm}/km • ${billableKm} KM Return Distance)`;
-  }
-  // 3. Specific Route Fixed Tariff (One Way / Airport)
+  // 2. Specific Predefined Route Fixed Tariff (One Way / Airport / Round Trip)
   else if (
-    !isRoundTrip &&
     routeDetails.pricingType === 'fixed' &&
     routeDetails.fixedPrices &&
     Number(routeDetails.fixedPrices[vehicle.id]) > 0
   ) {
-    pricingType = 'fixed_route';
-    baseFare = Number(routeDetails.fixedPrices[vehicle.id]);
-    billableKm = actualDistance;
-    ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
-    pricingRuleApplied = `Fixed Route Tariff (${routeDetails.route?.pickup || pickup} → ${routeDetails.route?.destination || destination})`;
-  }
-  // 4. Short Local Airport Drop / Transfer (Priority 2 - Local Only <= 35 KM)
-  else if (
-    (isAirport || normalizeLocation(destination).includes('airport') || normalizeLocation(pickup).includes('airport')) &&
-    actualDistance <= 35 &&
-    vehicle.airportBasePrice &&
-    Number(vehicle.airportBasePrice) > 0
-  ) {
-    pricingType = 'fixed_airport';
-    baseFare = Number(vehicle.airportBasePrice);
-    billableKm = actualDistance;
-    ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
-    pricingRuleApplied = `Local Airport Drop Tariff (₹${vehicle.airportBasePrice})`;
-  }
-
-  // 5. Standard Distance / Long Distance / Hill / Local Slab Calculation
-  if (baseFare === 0) {
-    const pricingMode = vehicle.pricingMode || 'hybrid'; // 'hybrid' | 'per_km' | 'slabs_only'
-
-    if (routeType === 'HILL' || routeType === 'MIXED') {
-      billableKm = Math.max(actualDistance, outstationMinKm);
-      ratePerKm = Number(vehicle.hillRatePerKm) || (Number(vehicle.plainRatePerKm) ? Number(vehicle.plainRatePerKm) + 2.5 : 15.5);
+    const oneWayFixedFare = Number(routeDetails.fixedPrices[vehicle.id]);
+    if (isRoundTrip) {
+      pricingType = 'round_trip';
+      const effectiveDist = actualDistance * 2;
+      const plainRate = Number(vehicle.roundTripRate) || Number(vehicle.plainRatePerKm) || 12;
+      const hillRate = Number(vehicle.roundTripHillRate) || (Number(vehicle.hillRatePerKm) ? Number(vehicle.hillRatePerKm) - 1 : plainRate + 2);
+      ratePerKm = (routeType === 'HILL' || routeType === 'MIXED') ? hillRate : plainRate;
+      billableKm = Math.max(effectiveDist, 250);
       baseFare = Math.round(billableKm * ratePerKm);
-      pricingType = 'per_km';
-      pricingRuleApplied = `Hill Terrain Rate (₹${ratePerKm}/km, ${billableKm} billable km)`;
-    } else if (pricingMode === 'per_km') {
-      // Pure Per-KM Pricing Mode
-      billableKm = Math.max(actualDistance, minBookingKm);
-      ratePerKm = Number(vehicle.oneWayRate) || Number(vehicle.plainRatePerKm) || 13;
-      baseFare = Math.round(billableKm * ratePerKm);
-      pricingType = 'per_km';
-      pricingRuleApplied = `Per-KM Rate (₹${ratePerKm}/km, ${billableKm} billable km)`;
+      pricingRuleApplied = `Round-Trip Tariff (₹${ratePerKm}/km • ${billableKm} KM Return Distance)`;
     } else {
-      // Hybrid or Slabs-Only Mode
-      const longDistance = vehicle.longDistance || {
-        startAfterKm: 95,
-        baseFare: 1700,
-        additionalKmRate: Number(vehicle.oneWayRate) || Number(vehicle.plainRatePerKm) || 12
-      };
-
-      const startAfterKm = Number(longDistance.startAfterKm) || 95;
-      const ldBaseFare = Number(longDistance.baseFare) || 1700;
-      const ldAdditionalKmRate = Number(longDistance.additionalKmRate) || (Number(vehicle.oneWayRate) || Number(vehicle.plainRatePerKm) || 12);
-
-      if (pricingMode !== 'slabs_only' && actualDistance > startAfterKm) {
-        // Long distance threshold formula: baseFare + (actualDistance - startAfterKm) * additionalKmRate
-        const extraKm = actualDistance - startAfterKm;
-        baseFare = Math.round(ldBaseFare + (extraKm * ldAdditionalKmRate));
-        billableKm = actualDistance;
-        ratePerKm = ldAdditionalKmRate;
-        pricingType = 'long_distance';
-        pricingRuleApplied = `Long Distance: Base ₹${ldBaseFare} (first ${startAfterKm} km) + ₹${ldAdditionalKmRate}/km for extra ${extraKm} km`;
-      } else {
-        // Local Slab Matching
-        const effectiveKm = Math.max(actualDistance, minBookingKm);
-        billableKm = effectiveKm;
-        const slabs = Array.isArray(vehicle.slabs) ? vehicle.slabs : [];
-
-        // Find slab matching effectiveKm
-        const matchedSlab = slabs.find((s) => {
-          const min = Number(s.minKm);
-          const max = Number(s.maxKm);
-          return effectiveKm >= min && effectiveKm <= max;
-        });
-
-        if (matchedSlab && Number(matchedSlab.price) > 0) {
-          baseFare = Number(matchedSlab.price);
-          appliedSlab = `${matchedSlab.minKm}–${matchedSlab.maxKm} KM`;
-          ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
-          pricingType = 'local_slab';
-          pricingRuleApplied = `Local Slab (${appliedSlab}: ₹${baseFare})`;
-        } else if (slabs.length > 0) {
-          const sortedSlabs = [...slabs].sort((a, b) => Number(a.minKm) - Number(b.minKm));
-          if (effectiveKm < Number(sortedSlabs[0].minKm)) {
-            const firstSlab = sortedSlabs[0];
-            baseFare = Number(firstSlab.price);
-            appliedSlab = `${firstSlab.minKm}–${firstSlab.maxKm} KM (Min Booking)`;
-            ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
-            pricingType = 'local_slab';
-            pricingRuleApplied = `Minimum Local Booking Slab (${firstSlab.minKm}–${firstSlab.maxKm} KM: ₹${baseFare})`;
-          } else {
-            const lastSlab = sortedSlabs[sortedSlabs.length - 1];
-            baseFare = Number(lastSlab.price);
-            appliedSlab = `${lastSlab.minKm}–${lastSlab.maxKm} KM`;
-            ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
-            pricingType = 'local_slab';
-            pricingRuleApplied = `Local Slab (${appliedSlab}: ₹${baseFare})`;
-          }
-        } else {
-          // Fallback if no slabs configured: plainRatePerKm * billableKm
-          ratePerKm = Number(vehicle.oneWayRate) || Number(vehicle.plainRatePerKm) || 13;
-          baseFare = Math.round(billableKm * ratePerKm);
-          pricingType = 'per_km';
-          pricingRuleApplied = `Standard Plain Rate (₹${ratePerKm}/km)`;
-        }
-      }
+      pricingType = 'fixed_route';
+      baseFare = oneWayFixedFare;
+      billableKm = actualDistance;
+      ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
+      pricingRuleApplied = `Fixed Route Tariff (${routeDetails.route?.pickup || pickup} → ${routeDetails.route?.destination || destination})`;
     }
   }
+  else {
+    // Strictly ONLY predefined fixed routes are priced. No arbitrary auto per-km calculations.
+    throw new Error(`Fixed rate is not predefined for "${pickup}" → "${destination}". Please inquire via WhatsApp.`);
+  }
 
-  // 5. Night Charges
+  // Night Charges
   let nightCharges = 0;
   if (isNightHour(pickupTime, pricingSettings.nightChargeStartHour ?? 23, pricingSettings.nightChargeEndHour ?? 5)) {
     nightCharges = pricingSettings.nightChargesAmount ?? 250;
@@ -1052,7 +975,9 @@ export const calculateAllFares = (params) => {
   for (const vehicle of activeFleet) {
     try {
       const fare = calculateFare({ ...params, vehicleId: vehicle.id });
-      results.push(fare);
+      if (fare && fare.baseFare > 0) {
+        results.push(fare);
+      }
     } catch (err) {
       errors.push({ vehicleId: vehicle.id, error: err.message });
     }
@@ -1063,6 +988,8 @@ export const calculateAllFares = (params) => {
   return {
     results,
     count: results.length,
+    isPredefinedRoute: results.length > 0,
+    message: results.length === 0 ? 'Fixed rate is not predefined for this route. Please inquire via WhatsApp.' : undefined,
     errors
   };
 };

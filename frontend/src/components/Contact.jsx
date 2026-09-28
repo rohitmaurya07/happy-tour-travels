@@ -1,66 +1,32 @@
-import React, { useState } from 'react';
-import { Phone, MessageCircle, MapPin, Clock, CheckCircle2 } from 'lucide-react';
+import React from 'react';
+import { Phone, MessageCircle, MapPin, Clock } from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 import Map from './Map';
+import WhatsAppInquiryForm from './WhatsAppInquiryForm';
 
 export default function Contact() {
   const { siteConfig } = useSiteData();
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    from: '',
-    to: '',
-    message: ''
-  });
-
-  const [formSuccess, setFormSuccess] = useState('');
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSendWhatsApp = (e) => {
-    e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      setFormSuccess('Please provide at least your Name and Phone Number.');
-      return;
-    }
-
-    const message = `Hello ${siteConfig.businessName},
-
-Inquiry Details from Website:
-• Name: ${formData.name}
-• Phone: ${formData.phone}
-• Pickup (From): ${formData.from}
-• Destination (To): ${formData.to || 'Not specified'}
-
-Message:
-${formData.message || 'I would like to inquire about taxi booking options and fares.'}`;
-
-    bookOnWhatsApp(message);
-    setFormSuccess('Opening WhatsApp with your pre-filled inquiry...');
-  };
 
   return (
-    <section id="contact" className="py-20 bg-gray-50 relative overflow-hidden">
+    <section id="contact" className="py-16 sm:py-20 bg-gray-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-brand-gold bg-yellow-400/10 px-4 py-1.5 rounded-full border border-yellow-400/30">
-            24/7 Customer Support
+            24/7 Customer Support & Inquiries
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-nexa text-slate-900 font-heading mt-4 tracking-tight">
             Get in Touch With Us
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-gray-600 font-medium">
-            Have questions about fares, customized tour packages, or airport transfers? Contact us directly on WhatsApp or phone.
+          <p className="mt-3 text-base sm:text-lg text-gray-600 font-medium">
+            Send an instant booking inquiry on WhatsApp or call our desk directly for custom quotes.
           </p>
         </div>
 
         {/* 2-Column Contact Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-16">
           
           {/* Column 1: Contact Information */}
           <div className="lg:col-span-5 bg-slate-900 text-white rounded-3xl p-8 sm:p-10 shadow-2xl flex flex-col justify-between relative overflow-hidden">
@@ -140,112 +106,12 @@ ${formData.message || 'I would like to inquire about taxi booking options and fa
 
           </div>
 
-          {/* Column 2: Interactive Contact Form */}
-          <div className="lg:col-span-7 bg-white rounded-3xl p-8 sm:p-10 border border-gray-200 shadow-xl">
-            <h3 className="text-2xl font-bold text-slate-900 font-heading mb-2">
-              Send an Enquiry
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-500 mb-6 font-medium">
-              Fill in your details below to send your inquiry directly via WhatsApp.
-            </p>
-
-            {formSuccess && (
-              <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800 text-xs sm:text-sm flex items-center space-x-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span>{formSuccess}</span>
-              </div>
-            )}
-
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Your Name *
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="e.g. Gurpreet Singh"
-                    className="w-full bg-gray-50 border border-gray-200 p-3.5 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-brand-yellow focus:ring-2 focus:ring-yellow-400/20"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Phone Number *
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="e.g. +91 98765 43210"
-                    className="w-full bg-gray-50 border border-gray-200 p-3.5 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-brand-yellow focus:ring-2 focus:ring-yellow-400/20"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    From
-                  </label>
-                  <input
-                    type="text"
-                    name="from"
-                    value={formData.from}
-                    onChange={handleChange}
-                    placeholder="Jalandhar"
-                    className="w-full bg-gray-50 border border-gray-200 p-3.5 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-brand-yellow focus:ring-2 focus:ring-yellow-400/20"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    To
-                  </label>
-                  <input
-                    type="text"
-                    name="to"
-                    value={formData.to}
-                    onChange={handleChange}
-                    placeholder="e.g. Delhi / Manali"
-                    className="w-full bg-gray-50 border border-gray-200 p-3.5 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-brand-yellow focus:ring-2 focus:ring-yellow-400/20"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  Message / Special Requirements
-                </label>
-                <textarea
-                  name="message"
-                  rows="3"
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Mention trip date, preferred vehicle (Dzire, Ertiga, Innova, Tempo), or passenger count..."
-                  className="w-full bg-gray-50 border border-gray-200 p-3.5 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:border-brand-yellow focus:ring-2 focus:ring-yellow-400/20"
-                ></textarea>
-              </div>
-
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={handleSendWhatsApp}
-                  className="yellow-gradient-btn py-3.5 px-4 rounded-xl text-slate-950 font-nexa text-sm flex items-center justify-center space-x-2 shadow-md hover:shadow-lg transition-all"
-                >
-                  <MessageCircle className="w-4 h-4 fill-slate-950 stroke-none" />
-                  <span>Send via WhatsApp</span>
-                </button>
-
-              </div>
-
-            </form>
+          {/* Column 2: New WhatsApp Inquiry Form */}
+          <div className="lg:col-span-7">
+            <WhatsAppInquiryForm 
+              title="Send WhatsApp Inquiry"
+              subtitle="Fill in the fields below and click Send Inquiry to open WhatsApp with your pre-formatted booking details."
+            />
           </div>
 
         </div>

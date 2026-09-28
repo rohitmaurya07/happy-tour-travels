@@ -2,15 +2,17 @@ import React from 'react';
 import { MessageCircle } from 'lucide-react';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 import { useSiteData } from '../context/SiteDataContext';
+import useMobileKeyboard from '../hooks/useMobileKeyboard';
 
 export default function WhatsAppButton() {
   const { siteConfig } = useSiteData();
+  const isKeyboardOpen = useMobileKeyboard();
   const handleClick = () => {
     bookOnWhatsApp(`Hello ${siteConfig.businessName}, I would like to inquire about taxi booking and availability.`, siteConfig.whatsappNumber);
   };
 
   return (
-    <div className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center group">
+    <div className={`fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center group transition-all duration-200 ${isKeyboardOpen ? 'translate-y-6 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
       
       {/* Tooltip text bubble on hover (Zero emojis, Lucide icon) */}
       <div className="mr-3 px-3 py-1.5 bg-slate-950 text-white text-xs font-bold rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none hidden sm:flex items-center space-x-1.5 border border-slate-800">

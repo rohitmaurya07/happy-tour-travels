@@ -379,3 +379,15 @@ export const updatePopularLocations = async (popularLocations) => {
   });
   return data.data;
 };
+
+export const updateHourlyRentalPricing = async (hourlyPricing) => {
+  const data = await requestJson('/api/admin/hourly-rental-pricing', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders()
+    },
+    body: JSON.stringify(hourlyPricing)
+  });
+  return data.data;
+};

@@ -22,49 +22,13 @@ export default function SearchResultsPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    const compute = async () => {
-      if (tripType === 'Hourly Rental') {
-        setDistanceKm(80);
-        return;
-      }
+    if (tripType === 'Hourly Rental') {
+      setDistanceKm(80);
+      return;
+    }
 
-      // 1. Direct check in known distances and coordinates database
-      const dist = getDistanceKm(fromLocation, toLocation);
-      if (dist && dist > 0) {
-        setDistanceKm(dist);
-        return;
-      }
-
-      // 2. Fetch live coordinates from OpenStreetMap if not in local dataset
-      const fetchCoords = async (query) => {
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-              query
-            )}&countrycodes=in&limit=1`
-          );
-          if (!res.ok) return null;
-          const data = await res.json();
-          if (data && data.length > 0) {
-            return { lat: data[0].lat, lon: data[0].lon };
-          }
-        } catch (e) {}
-        return null;
-      };
-
-      try {
-        const [fromCoords, toCoords] = await Promise.all([
-          fetchCoords(fromLocation),
-          fetchCoords(toLocation),
-        ]);
-        const calculated = getDistanceKm(fromLocation, toLocation, fromCoords, toCoords);
-        setDistanceKm(calculated && calculated > 0 ? calculated : 60);
-      } catch (err) {
-        setDistanceKm(60);
-      }
-    };
-
-    compute();
+    const dist = getDistanceKm(fromLocation, toLocation);
+    setDistanceKm(dist && dist > 0 ? dist : 0);
   }, [tripType, fromLocation, toLocation]);
 
   const searchParamsObj = {

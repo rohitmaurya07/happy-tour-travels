@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Plane, ArrowRightCircle, Repeat, Clock } from 'lucide-react';
+import useMobileKeyboard from '../hooks/useMobileKeyboard';
 
 export default function MobileBottomBar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
+  const isKeyboardOpen = useMobileKeyboard();
+  const [isNavHidden, setIsNavHidden] = useState(false);
 
   const currentTypeFromUrl = searchParams.get('tripType') || 'One Way';
   const [activeType, setActiveType] = useState(currentTypeFromUrl);
@@ -26,6 +29,35 @@ export default function MobileBottomBar() {
       setActiveType(param);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    let previousScrollY = window.scrollY;
+    
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Always show when near the very top of the page
+      if (currentScrollY <= 20) {
+        setIsNavHidden(false);
+        previousScrollY = currentScrollY;
+        return;
+      }
+
+      // Hide when user scrolls down the page (finger swipe up / scrollY increases)
+      if (currentScrollY > previousScrollY + 6) {
+        setIsNavHidden(true);
+      } 
+      // Show when user scrolls up towards the top (finger swipe down / scrollY decreases)
+      else if (currentScrollY < previousScrollY - 6) {
+        setIsNavHidden(false);
+      }
+
+      previousScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const tripTabs = [
     {
@@ -89,7 +121,7 @@ export default function MobileBottomBar() {
   };
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-gray-200 shadow-[0_-6px_25px_rgba(0,0,0,0.08)] px-2 py-1.5">
+    <div className={`md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-gray-200 shadow-[0_-6px_25px_rgba(0,0,0,0.08)] px-2 py-1.5 transition-transform duration-200 ${isKeyboardOpen || isNavHidden ? 'translate-y-full pointer-events-none' : 'translate-y-0'}`}>
       <div className="grid grid-cols-4 gap-1 items-center max-w-md mx-auto">
         {tripTabs.map((tab) => {
           const isActive = activeType === tab.id;

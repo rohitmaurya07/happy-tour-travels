@@ -5,6 +5,7 @@ import { packagesData as defaultPackages } from '../data/packages';
 import { servicesData as defaultServices } from '../data/services';
 import { popularRouteCategories as defaultRoutes } from '../data/popularRoutes';
 import { popularLocations as defaultLocations } from '../data/popularLocations';
+import { hourlyRentalPricing as defaultHourlyPricing } from '../data/hourlyRentalPricing';
 import { API_BASE } from '../services/api';
 
 const normalizeUrl = (url) => {
@@ -54,6 +55,7 @@ export const SiteDataProvider = ({ children }) => {
   const [services, setServices] = useState(defaultServices);
   const [popularRoutes, setPopularRoutes] = useState(defaultRoutes);
   const [popularLocations, setPopularLocations] = useState(defaultLocations);
+  const [hourlyRentalPricing, setHourlyRentalPricing] = useState(defaultHourlyPricing);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isBackendConnected, setIsBackendConnected] = useState(false);
@@ -83,6 +85,7 @@ export const SiteDataProvider = ({ children }) => {
         if (data.services && data.services.length > 0) setServices(data.services);
         if (data.popularRoutes && data.popularRoutes.length > 0) setPopularRoutes(data.popularRoutes);
         if (data.popularLocations && data.popularLocations.length > 0) setPopularLocations(data.popularLocations);
+        if (data.hourlyRentalPricing) setHourlyRentalPricing(data.hourlyRentalPricing);
         setIsBackendConnected(true);
       }
     } catch (err) {
@@ -151,6 +154,7 @@ export const SiteDataProvider = ({ children }) => {
         services,
         popularRoutes,
         popularLocations,
+        hourlyRentalPricing,
         isLoading,
         isBackendConnected,
         refreshSiteData,

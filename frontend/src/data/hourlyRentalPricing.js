@@ -1,0 +1,96 @@
+export const hourlyRentalPricing = {
+  packages: [
+    { id: "4h40k", hours: 4, km: 40, label: "4 Hours / 40 KM" },
+    { id: "8h80k", hours: 8, km: 80, label: "8 Hours / 80 KM" },
+    { id: "10h100k", hours: 10, km: 100, label: "10 Hours / 100 KM" }
+  ],
+  defaultRates: {
+    dzire: {
+      name: "Dzire / similar",
+      subtitle: "Dzire size / similar car may be provided",
+      image: "/assets/images/dzire.jpg",
+      seats: "4 Passengers",
+      luggage: "2-3 Bags",
+      fuel: "Diesel / Petrol / CNG",
+      rates: {
+        "4h40k": 1100,
+        "8h80k": 1600,
+        "10h100k": 2000
+      },
+      extraKmRate: 11,
+      extraHourRate: 100
+    },
+    ertiga: {
+      name: "Ertiga / similar",
+      subtitle: "Ertiga or similar comfortable car may be provided",
+      image: "/assets/images/ertiga.png",
+      seats: "6–7 Seater",
+      luggage: "3-4 Bags",
+      fuel: "Diesel / Petrol / CNG",
+      rates: {
+        "4h40k": 1500,
+        "8h80k": 2300,
+        "10h100k": 2800
+      },
+      extraKmRate: 14,
+      extraHourRate: 150
+    },
+    innova: {
+      name: "Innova Crysta",
+      subtitle: "",
+      image: "/assets/images/innova.png",
+      seats: "7–8 Seater",
+      luggage: "4-5 Bags",
+      fuel: "Diesel",
+      rates: {
+        "4h40k": 2200,
+        "8h80k": 3200,
+        "10h100k": 3900
+      },
+      extraKmRate: 18,
+      extraHourRate: 200
+    }
+  },
+  cities: [
+    { name: "Jalandhar", state: "Punjab", popular: true, active: true },
+    { name: "Amritsar", state: "Punjab", popular: true, active: true },
+    { name: "Ludhiana", state: "Punjab", popular: true, active: true },
+    { name: "Chandigarh", state: "Punjab", popular: true, active: true },
+    { name: "Mohali", state: "Punjab", popular: true, active: true },
+    { name: "Phagwara", state: "Punjab", popular: true, active: true },
+    { name: "Patiala", state: "Punjab", popular: true, active: true },
+    { name: "Bathinda", state: "Punjab", popular: true, active: true },
+    { name: "Kapurthala", state: "Punjab", popular: false, active: true },
+    { name: "Hoshiarpur", state: "Punjab", popular: false, active: true },
+    { name: "Pathankot", state: "Punjab", popular: false, active: true },
+    { name: "Nawanshahr", state: "Punjab", popular: false, active: true },
+    { name: "Batala", state: "Punjab", popular: false, active: true },
+    { name: "Moga", state: "Punjab", popular: false, active: true },
+    { name: "Khanna", state: "Punjab", popular: false, active: true },
+    { name: "Firozpur", state: "Punjab", popular: false, active: true },
+    { name: "Delhi", state: "Delhi NCR", popular: true, active: true },
+    { name: "New Delhi", state: "Delhi NCR", popular: true, active: true },
+    { name: "Gurgaon", state: "Haryana", popular: true, active: true },
+    { name: "Noida", state: "Delhi NCR", popular: true, active: true },
+    { name: "Faridabad", state: "Haryana", popular: false, active: true },
+    { name: "Ambala", state: "Haryana", popular: true, active: true },
+    { name: "Karnal", state: "Haryana", popular: false, active: true },
+    { name: "Panipat", state: "Haryana", popular: false, active: true },
+    { name: "Panchkula", state: "Haryana", popular: false, active: true },
+    { name: "Shimla", state: "Himachal Pradesh", popular: true, active: true },
+    { name: "Manali", state: "Himachal Pradesh", popular: true, active: true },
+    { name: "Dharamshala", state: "Himachal Pradesh", popular: true, active: true },
+    { name: "Kullu", state: "Himachal Pradesh", popular: false, active: true },
+    { name: "Solan", state: "Himachal Pradesh", popular: false, active: true },
+    { name: "Mandi", state: "Himachal Pradesh", popular: false, active: true },
+    { name: "Dalhousie", state: "Himachal Pradesh", popular: false, active: true },
+    { name: "Kasauli", state: "Himachal Pradesh", popular: false, active: true },
+    { name: "Jaipur", state: "Rajasthan", popular: true, active: true },
+    { name: "Udaipur", state: "Rajasthan", popular: true, active: true },
+    { name: "Jodhpur", state: "Rajasthan", popular: true, active: true },
+    { name: "Ajmer", state: "Rajasthan", popular: false, active: true },
+    { name: "Pushkar", state: "Rajasthan", popular: false, active: true },
+    { name: "Bikaner", state: "Rajasthan", popular: false, active: true }
+  ],
+  customCityOverrides: {}
+};

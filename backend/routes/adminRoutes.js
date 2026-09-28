@@ -288,7 +288,37 @@ router.delete('/fleet/:id', (req, res) => {
   res.json({ success: true, message: 'Vehicle removed from fleet' });
 });
 
-// --- PRICING ROUTES MANAGEMENT (CRUD) ---
+// --- PRICING ROUTES MANAGEMENT (Location to Location & Vehicle Prices) ---
+const syncPredefinedLocations = (pickup, destination) => {
+  try {
+    const locations = readJson('popularLocations') || [];
+    const names = [pickup?.trim(), destination?.trim()].filter(Boolean);
+    let modified = false;
+
+    names.forEach(name => {
+      const lower = name.toLowerCase();
+      const exists = locations.some(l => l.name.toLowerCase() === lower);
+      if (!exists) {
+        locations.push({
+          name,
+          state: lower.includes('airport') ? 'Airport Hub' : 'North India',
+          type: lower.includes('airport') ? 'Airport' : 'City',
+          lat: 31.326,
+          lon: 75.576,
+          regionType: 'PLAIN'
+        });
+        modified = true;
+      }
+    });
+
+    if (modified) {
+      writeJson('popularLocations', locations);
+    }
+  } catch (err) {
+    console.error('Error syncing predefined locations:', err);
+  }
+};
+
 router.get('/pricing-routes', (req, res) => {
   res.json({ success: true, data: readJson('pricingRoutes') || [] });
 });
@@ -304,10 +334,10 @@ router.post('/pricing-routes', (req, res) => {
   const id = `${pickup.toLowerCase().replace(/[^a-z0-9]/g, '-')}-to-${destination.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${Date.now()}`;
   const newRoute = {
     id,
-    pickup,
-    destination,
+    pickup: pickup.trim(),
+    destination: destination.trim(),
     routeType: (routeType || 'PLAIN').toUpperCase(),
-    pricingType: pricingType || 'per_km',
+    pricingType: pricingType || 'fixed',
     vehiclePrices: vehiclePrices || {},
     distanceKm: distanceKm ? Number(distanceKm) : null,
     active: active !== undefined ? Boolean(active) : true,
@@ -316,6 +346,7 @@ router.post('/pricing-routes', (req, res) => {
 
   routes.push(newRoute);
   writeJson('pricingRoutes', routes);
+  syncPredefinedLocations(pickup, destination);
   res.json({ success: true, message: 'Pricing route added successfully', data: newRoute });
 });
 
@@ -330,12 +361,17 @@ router.put('/pricing-routes/:id', (req, res) => {
     ...routes[index],
     ...req.body,
     id: req.params.id,
+    pickup: req.body.pickup ? req.body.pickup.trim() : routes[index].pickup,
+    destination: req.body.destination ? req.body.destination.trim() : routes[index].destination,
     routeType: (req.body.routeType || routes[index].routeType || 'PLAIN').toUpperCase(),
+    pricingType: req.body.pricingType || routes[index].pricingType || 'fixed',
+    vehiclePrices: req.body.vehiclePrices || routes[index].vehiclePrices || {},
     active: req.body.active !== undefined ? Boolean(req.body.active) : routes[index].active !== false,
     updatedAt: new Date().toISOString()
   };
 
   writeJson('pricingRoutes', routes);
+  syncPredefinedLocations(routes[index].pickup, routes[index].destination);
   res.json({ success: true, message: 'Pricing route updated successfully', data: routes[index] });
 });
 
@@ -460,6 +496,18 @@ router.put('/locations', (req, res) => {
     return res.json({ success: true, message: 'Locations database updated successfully', data: popularLocations });
   }
   res.status(400).json({ success: false, message: 'Invalid locations format' });
+});
+
+// --- HOURLY RENTAL PRICING & CITIES ---
+router.get('/hourly-rental-pricing', (req, res) => {
+  res.json({ success: true, data: readJson('hourlyRentalPricing') || {} });
+});
+
+router.put('/hourly-rental-pricing', (req, res) => {
+  const current = readJson('hourlyRentalPricing') || {};
+  const updated = { ...current, ...req.body, updatedAt: new Date().toISOString() };
+  writeJson('hourlyRentalPricing', updated);
+  res.json({ success: true, message: 'Hourly rental pricing and cities updated successfully', data: updated });
 });
 
 export default router;

@@ -4,40 +4,20 @@ import { Phone, MessageCircle, Mail, MapPin, ChevronRight } from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 
+import CallToActionBanner from './CallToActionBanner';
+
 export default function Footer() {
-  const { siteConfig, popularLocations } = useSiteData();
-  const popularDestinations = siteConfig.popularDestinations || popularLocations.slice(1, 8);
-  const handleBookClick = () => {
-    bookOnWhatsApp(`Hello ${siteConfig.businessName}, I would like to inquire about taxi booking rates.`, siteConfig.whatsappNumber);
-  };
+  const { siteConfig } = useSiteData();
 
   return (
-    <footer className="bg-slate-950 text-gray-400 text-sm border-t border-slate-800 relative overflow-hidden">
+    <footer className="bg-slate-950  text-gray-400 text-sm border-t border-slate-800 relative overflow-hidden">
       
       {/* Top CTA Banner */}
-      <div className="bg-gradient-to-r from-yellow-500 via-brand-yellow to-yellow-400 text-slate-950 py-10 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-          <div>
-            <h3 className="text-2xl sm:text-3xl font-nexa font-heading tracking-tight text-slate-950">
-              Ready to Book Your Ride From Jalandhar?
-            </h3>
-            <p className="text-sm font-semibold text-slate-900/80 mt-1">
-              Instant booking confirmation via WhatsApp with clean AC cabs and verified drivers.
-            </p>
-          </div>
-          <button
-            onClick={handleBookClick}
-            className="bg-slate-950 hover:bg-slate-900 text-white px-8 py-3.5 rounded-full font-bold text-sm flex items-center space-x-2 shadow-xl hover:scale-105 transition-all whitespace-nowrap"
-          >
-            <MessageCircle className="w-4 h-4 fill-yellow-400 text-slate-950 stroke-none" />
-            <span>Book on WhatsApp Now</span>
-          </button>
-        </div>
-      </div>
+      <CallToActionBanner />
 
       {/* Main Footer Links & Info */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 md:pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           
           {/* Col 1: Company Profile */}
           <div className="lg:col-span-2 space-y-4">
@@ -114,23 +94,6 @@ export default function Footer() {
                     <ChevronRight className="w-3 h-3 mr-1.5 text-brand-yellow" />
                     {item}
                   </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Col 4: Popular Routes */}
-          <div>
-            <h4 className="text-white font-bold text-base font-heading mb-4 border-b border-slate-800 pb-2">
-              Popular Routes
-            </h4>
-            <ul className="space-y-2 text-xs font-medium">
-              {popularDestinations.map((dest) => (
-                <li key={dest.name} className="flex items-center justify-between text-gray-300">
-                  <span className="hover:text-brand-yellow transition-colors cursor-pointer" onClick={handleBookClick}>
-                    Jalandhar ↔ {dest.name}
-                  </span>
-                  <span className="text-[10px] text-gray-500">{dest.state}</span>
                 </li>
               ))}
             </ul>

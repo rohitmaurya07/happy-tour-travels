@@ -1,4 +1,4 @@
-﻿import express from 'express';
+import express from 'express';
 import { readJson } from '../utils/storage.js';
 
 const router = express.Router();
@@ -15,6 +15,7 @@ router.get('/', (req, res) => {
     const pricingRoutes = readJson('pricingRoutes') || [];
     const pricingSettings = readJson('pricingSettings') || {};
     const mediaSettings = readJson('mediaSettings') || {};
+    const hourlyRentalPricing = readJson('hourlyRentalPricing') || {};
 
     return res.json({
       success: true,
@@ -28,7 +29,8 @@ router.get('/', (req, res) => {
         popularLocations,
         pricingRoutes,
         pricingSettings,
-        mediaSettings
+        mediaSettings,
+        hourlyRentalPricing
       }
     });
   } catch (error) {

@@ -14,13 +14,15 @@ import PackagesPage from './pages/PackagesPage';
 import RoutesPage from './pages/RoutesPage';
 import ContactPage from './pages/ContactPage';
 import SearchResultsPage from './pages/SearchResultsPage';
+import CityTaxiPage from './pages/CityTaxiPage';
+import HourlyRentalPage from './pages/HourlyRentalPage';
 
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminLayout from './pages/admin/AdminLayout';
 
 function PublicLayout() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-manrope selection:bg-yellow-300 selection:text-slate-900 pb-16 md:pb-0">
+    <div className="min-h-screen bg-gray-50 flex flex-col font-manrope selection:bg-yellow-300 selection:text-slate-900">
       <Navbar />
       <main className="flex-grow">
         <Outlet />
@@ -52,6 +54,9 @@ export default function App() {
             <Route path="/packages" element={<PackagesPage />} />
             <Route path="/routes" element={<RoutesPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/taxi/:slug" element={<CityTaxiPage />} />
+            <Route path="/hourly-rental" element={<HourlyRentalPage />} />
+            <Route path="/hourly-rental/:citySlug" element={<HourlyRentalPage />} />
           </Route>
         </Routes>
       </Router>
