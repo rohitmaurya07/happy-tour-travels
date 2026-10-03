@@ -7,13 +7,13 @@ import Fleet from '../components/Fleet';
 import LocalTaxiRates from '../components/LocalTaxiRates';
 import WhatsAppInquiryForm from '../components/WhatsAppInquiryForm';
 import LocalSeoSection from '../components/LocalSeoSection';
+import GoogleReviews from '../components/GoogleReviews';
 
 export default function HomePage() {
   return (
     <div>
       {/* Hero Section with Global Search Bar */}
       <Hero />
-
       {/* Popular Routes Section (9 Category Cards with Direct Search Links) */}
       <PopularRoutesSection />
 
@@ -28,6 +28,9 @@ export default function HomePage() {
 
       {/* Local Taxi Hourly Rental Rates (4h/40km & 8h/80km) */}
       <LocalTaxiRates />
+
+      <GoogleReviews/>
+
 
       {/* Quick WhatsApp Inquiry Form Section */}
       <section className="py-16 bg-slate-900 text-white relative overflow-hidden">
@@ -47,6 +50,7 @@ export default function HomePage() {
           <WhatsAppInquiryForm />
         </div>
       </section>
+
 
       {/* Local SEO Section */}
       <LocalSeoSection />
