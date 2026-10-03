@@ -84,15 +84,15 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
           {/* Logo & Company Name */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group min-w-0">
             <img
               src="/assets/images/logo.jpg"
               alt="Happy Tour & Travels Jalandhar Logo"
-              className="h-12 w-auto rounded-lg group-hover:scale-105 transition-transform"
+              className="h-10 sm:h-12 w-auto rounded-lg group-hover:scale-105 transition-transform flex-shrink-0"
             />
-            <div>
+            <div className="min-w-0">
               <span
-                className={`text-xl font-nexa tracking-tight font-heading block leading-none ${
+                className={`text-base sm:text-xl font-nexa tracking-tight font-heading block leading-tight truncate ${
                   showDarkTransparentNav ? 'text-white' : 'text-slate-900'
                 }`}
               >
@@ -123,7 +123,7 @@ export default function Navbar() {
           </div>
 
           {/* Right Action CTA */}
-          <div className="hidden sm:flex items-center space-x-3">
+          <div className="hidden sm:flex items-center space-x-3 flex-shrink-0">
             <button
               onClick={handleBookClick}
               className="yellow-gradient-btn px-5 py-2.5 rounded-full text-slate-950 font-bold text-sm flex items-center space-x-2 shadow-md hover:shadow-lg transition-all"
@@ -134,20 +134,20 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Hamburger Toggle */}
-          <div className="flex lg:hidden items-center">
+          <div className="flex lg:hidden items-center flex-shrink-0">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`p-2 rounded-lg focus:outline-none transition-colors ${
+              className={`p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl focus:outline-none transition-colors ${
                 showDarkTransparentNav
-                  ? 'text-white hover:bg-white/10'
-                  : 'text-slate-900 hover:bg-gray-100'
+                  ? 'text-white hover:bg-white/10 active:bg-white/20'
+                  : 'text-slate-900 hover:bg-gray-100 active:bg-gray-200'
               }`}
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <X className={`w-7 h-7 ${showDarkTransparentNav ? 'text-white' : 'text-slate-900'}`} />
+                <X className={`w-6 h-6 ${showDarkTransparentNav ? 'text-white' : 'text-slate-900'}`} />
               ) : (
-                <Menu className={`w-7 h-7 ${showDarkTransparentNav ? 'text-white' : 'text-slate-900'}`} />
+                <Menu className={`w-6 h-6 ${showDarkTransparentNav ? 'text-white' : 'text-slate-900'}`} />
               )}
             </button>
           </div>
@@ -156,7 +156,7 @@ export default function Navbar() {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div
-            className={`lg:hidden backdrop-blur-xl border-b px-4 pt-4 pb-6 mt-2 space-y-3 transition-all animate-fadeIn ${
+            className={`lg:hidden backdrop-blur-xl border-b px-4 pt-3 pb-6 mt-2 space-y-2.5 transition-all max-h-[calc(100dvh-80px)] overflow-y-auto no-scrollbar animate-fadeIn ${
               showDarkTransparentNav
                 ? 'bg-slate-950/95 text-white border-slate-800'
                 : 'bg-white text-slate-900 border-gray-200 shadow-xl'
@@ -168,7 +168,7 @@ export default function Navbar() {
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `block px-4 py-2.5 rounded-xl text-base font-semibold transition-colors ${
+                  `block px-4 py-3 rounded-xl text-base font-semibold transition-colors ${
                     isActive
                       ? 'bg-brand-yellow text-slate-950 font-nexa'
                       : showDarkTransparentNav
@@ -190,7 +190,7 @@ export default function Navbar() {
                   setMobileMenuOpen(false);
                   handleBookClick();
                 }}
-                className="w-full yellow-gradient-btn py-3 rounded-xl text-slate-950 font-bold text-base flex items-center justify-center space-x-2"
+                className="w-full yellow-gradient-btn py-3.5 rounded-xl text-slate-950 font-bold text-base flex items-center justify-center space-x-2 shadow-md active:scale-98"
               >
                 <MessageCircle className="w-5 h-5 fill-slate-950 stroke-none" />
                 <span>Book / Contact Us on WhatsApp</span>

@@ -243,7 +243,7 @@ Thank you.`);
           </div>
 
           {/* 15 Destination Cards Grid (5 columns on desktop) */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {topDestinations.map((dest) => (
               <div
                 key={dest.id}
@@ -268,11 +268,11 @@ Thank you.`);
                 <div className="p-2 bg-white">
                   <button
                     onClick={() => handleDestinationCardInquiry(dest.name)}
-                    className="w-full bg-[#FBBF24] hover:bg-yellow-500 active:scale-95 text-slate-950 font-black text-[11px] sm:text-xs py-1.5 px-2 rounded-xl flex items-center justify-center space-x-1 shadow-2xs transition-all"
+                    className="w-full bg-[#FBBF24] hover:bg-yellow-500 active:scale-95 text-slate-950 font-black text-[11px] sm:text-xs py-2 px-2 rounded-xl flex items-center justify-center space-x-1 shadow-2xs transition-all touch-manipulation"
                   >
-                    <MessageCircle className="w-3.5 h-3.5 fill-slate-950 stroke-none" />
-                    <span>Send Inquiry</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
+                    <MessageCircle className="w-3.5 h-3.5 fill-slate-950 stroke-none flex-shrink-0" />
+                    <span>Inquiry</span>
+                    <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
                   </button>
                 </div>
               </div>
@@ -284,7 +284,7 @@ Thank you.`);
         {/* PLAN YOUR CUSTOM TOUR CARD / FORM */}
         <div 
           id="custom-tour-form"
-          className="bg-[#FFFDF5] rounded-3xl p-6 sm:p-8 border border-yellow-200 shadow-xl"
+          className="bg-[#FFFDF5] rounded-3xl p-4 sm:p-8 border border-yellow-200 shadow-xl"
         >
           {/* Header */}
           <div className="flex items-center space-x-3 mb-6 pb-4 border-b border-yellow-100">
@@ -301,10 +301,10 @@ Thank you.`);
             </div>
           </div>
 
-          <form className="space-y-6">
+          <form className="space-y-5 sm:space-y-6">
             
             {/* Top 4 Fields Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
               
               {/* 1. Destination */}
               <div>
@@ -316,7 +316,7 @@ Thank you.`);
                   <select
                     value={tourForm.destination}
                     onChange={(e) => setTourForm({ ...tourForm, destination: e.target.value })}
-                    className="w-full bg-white border border-gray-300 pl-10 pr-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 cursor-pointer shadow-xs"
+                    className="w-full bg-white border border-gray-300 pl-10 pr-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 cursor-pointer shadow-xs min-h-[44px]"
                   >
                     {topDestinations.map(d => (
                       <option key={d.id} value={d.name}>{d.name}</option>
@@ -341,7 +341,7 @@ Thank you.`);
                     min={todayStr}
                     value={tourForm.startDate}
                     onChange={(e) => setTourForm({ ...tourForm, startDate: e.target.value })}
-                    className="w-full bg-white border border-gray-300 pl-10 pr-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 cursor-pointer shadow-xs"
+                    className="w-full bg-white border border-gray-300 pl-10 pr-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 cursor-pointer shadow-xs min-h-[44px]"
                   />
                 </div>
               </div>
@@ -358,7 +358,7 @@ Thank you.`);
                     min={tourForm.startDate || todayStr}
                     value={tourForm.endDate}
                     onChange={(e) => setTourForm({ ...tourForm, endDate: e.target.value })}
-                    className="w-full bg-white border border-gray-300 pl-10 pr-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 cursor-pointer shadow-xs"
+                    className="w-full bg-white border border-gray-300 pl-10 pr-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 cursor-pointer shadow-xs min-h-[44px]"
                   />
                 </div>
               </div>
@@ -373,7 +373,7 @@ Thank you.`);
                   <select
                     value={tourForm.days}
                     onChange={(e) => setTourForm({ ...tourForm, days: e.target.value })}
-                    className="w-full bg-white border border-gray-300 pl-10 pr-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 cursor-pointer shadow-xs"
+                    className="w-full bg-white border border-gray-300 pl-10 pr-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 cursor-pointer shadow-xs min-h-[44px]"
                   >
                     <option value="1 Day">1 Day</option>
                     <option value="2 Days">2 Days</option>
@@ -391,14 +391,14 @@ Thank you.`);
             </div>
 
             {/* Select Car & Action Buttons Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-2">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-center pt-2">
               
               {/* Left: 5 Car Radio Cards */}
               <div className="lg:col-span-8">
                 <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">
                   Select Car <span className="text-rose-500">*</span>
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-2.5">
                   {fleetOptions.map((car) => {
                     const isSelected = tourForm.car === car.name;
                     return (
@@ -406,7 +406,7 @@ Thank you.`);
                         type="button"
                         key={car.id}
                         onClick={() => setTourForm({ ...tourForm, car: car.name })}
-                        className={`p-2.5 rounded-2xl border text-center transition-all flex flex-col items-center justify-between ${
+                        className={`p-2 sm:p-2.5 rounded-2xl border text-center transition-all flex flex-col items-center justify-between touch-manipulation active:scale-95 ${
                           isSelected
                             ? 'bg-white border-yellow-400 ring-2 ring-yellow-400/50 shadow-md'
                             : 'bg-white/70 hover:bg-white border-gray-200'
@@ -434,31 +434,31 @@ Thank you.`);
               </div>
 
               {/* Right: 2 Action Buttons */}
-              <div className="lg:col-span-4 flex flex-col space-y-3">
+              <div className="lg:col-span-4 flex flex-col space-y-2.5 sm:space-y-3">
                 {/* WhatsApp Button */}
                 <button
                   type="button"
                   onClick={handleSendWhatsAppInquiry}
-                  className="w-full bg-[#25D366] hover:bg-emerald-600 active:scale-95 text-white font-black font-nexa py-3.5 px-5 rounded-2xl shadow-lg shadow-emerald-500/20 hover:shadow-xl transition-all flex items-center justify-between group text-xs sm:text-sm"
+                  className="w-full bg-[#25D366] hover:bg-emerald-600 active:scale-98 text-white font-black font-nexa py-3.5 sm:py-4 px-4 sm:px-5 rounded-2xl shadow-lg shadow-emerald-500/20 hover:shadow-xl transition-all flex items-center justify-between group text-xs sm:text-sm min-h-[48px]"
                 >
                   <div className="flex items-center space-x-2">
-                    <MessageCircle className="w-5 h-5 fill-white stroke-none" />
+                    <MessageCircle className="w-5 h-5 fill-white stroke-none flex-shrink-0" />
                     <span>Send Inquiry on WhatsApp</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform flex-shrink-0" />
                 </button>
 
                 {/* Email Button */}
                 <button
                   type="button"
                   onClick={handleSendEmailInquiry}
-                  className="w-full bg-white hover:bg-gray-50 active:scale-95 text-slate-900 border border-gray-300 font-bold py-3.5 px-5 rounded-2xl shadow-xs transition-all flex items-center justify-between group text-xs sm:text-sm"
+                  className="w-full bg-white hover:bg-gray-50 active:scale-98 text-slate-900 border border-gray-300 font-bold py-3 sm:py-3.5 px-4 sm:px-5 rounded-2xl shadow-xs transition-all flex items-center justify-between group text-xs sm:text-sm min-h-[44px]"
                 >
                   <div className="flex items-center space-x-2">
-                    <Mail className="w-5 h-5 text-slate-700" />
+                    <Mail className="w-5 h-5 text-slate-700 flex-shrink-0" />
                     <span>Send Inquiry on Email</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform flex-shrink-0" />
                 </button>
               </div>
 

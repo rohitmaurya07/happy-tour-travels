@@ -10,7 +10,7 @@ export default function Footer() {
   const { siteConfig } = useSiteData();
 
   return (
-    <footer className="bg-slate-950  text-gray-400 text-sm border-t border-slate-800 relative overflow-hidden">
+    <footer className="bg-slate-950 text-gray-400 text-sm border-t border-slate-800 relative overflow-hidden">
       
       {/* Top CTA Banner */}
       <CallToActionBanner />
@@ -102,12 +102,12 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar & Copyright */}
-        <div className="mt-12 pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+        <div className="mt-12 pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row  items-center justify-between text-xs text-gray-500 gap-4">
           <p>© 2026 {siteConfig.businessName}. All Rights Reserved.</p>
 
           {/* <p>Designed and developed by <a className='font-manrope font-bold ' href="https://webvault.in/">WebVault</a></p> */}
           
-          <div className="flex items-center space-x-6">
+          <div className="flex items-center   space-x-6 ">
             <Link to="/contact" className="hover:text-gray-400">Contact Support</Link>
           </div>
         </div>

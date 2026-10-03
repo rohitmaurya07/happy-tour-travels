@@ -6,15 +6,50 @@
   html {
     scroll-behavior: smooth;
     font-family: 'Manrope', sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
   }
 
   body {
     @apply bg-gray-50 text-gray-900 overflow-x-hidden antialiased;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100dvh;
   }
 
   h1, h2, h3, .font-heading {
     font-family: 'Outfit', 'Manrope', sans-serif;
   }
+
+  /* Prevent automatic Safari iOS zoom on focus for form controls */
+  @media screen and (max-width: 768px) {
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+  }
+}
+
+/* Touch momentum scroll for horizontal lists / tables */
+.touch-scroll, .no-scrollbar {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbars for clean UI chips/bars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Safe area insets helpers for iPhones */
+.safe-bottom {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+}
+.safe-top {
+  padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
 }
 
 /* Custom Scrollbar */

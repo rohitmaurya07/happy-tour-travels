@@ -8,7 +8,7 @@ import { bookOnWhatsApp } from '../utils/whatsapp';
 export default function FleetPage() {
   const { siteConfig } = useSiteData();
   return (
-    <div className="pt-4 pb-20 bg-gray-50 min-h-screen">
+    <div className="pt-12 pb-20 bg-gray-50 min-h-screen">
       
       {/* Fleet Component */}
       <Fleet />

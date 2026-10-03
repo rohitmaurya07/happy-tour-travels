@@ -96,8 +96,8 @@ export default function CityTaxiPage() {
             </button>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto touch-scroll no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+            <table className="w-full text-left border-collapse min-w-[560px]">
               <thead>
                 <tr className="bg-slate-900 text-white text-xs font-bold uppercase tracking-wider rounded-xl">
                   <th className="p-3.5 rounded-l-xl">Destination Route</th>
@@ -120,7 +120,7 @@ export default function CityTaxiPage() {
                     <td className="p-3.5 text-right">
                       <button
                         onClick={() => handleInquiry(r.destination)}
-                        className="bg-yellow-400 hover:bg-yellow-500 text-slate-950 px-3 py-1.5 rounded-lg text-xs font-black transition-all inline-flex items-center space-x-1 shadow-sm"
+                        className="bg-yellow-400 hover:bg-yellow-500 text-slate-950 px-3 py-1.5 rounded-lg text-xs font-black transition-all inline-flex items-center space-x-1 shadow-sm active:scale-95 touch-manipulation"
                       >
                         <span>Book</span>
                         <ArrowRight className="w-3.5 h-3.5" />

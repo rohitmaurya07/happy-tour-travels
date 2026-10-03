@@ -53,7 +53,7 @@ export default function SearchResultsPage() {
   };
 
   return (
-    <div className="pt-24 pb-28 bg-gray-50 min-h-screen">
+    <div className="pt-20 pb-28 bg-gray-50 min-h-screen">
       
       {/* Breadcrumb & Navigation Top Bar */}
       <div className="bg-white border-b border-gray-200 py-3 px-4 sm:px-6 lg:px-8">
@@ -79,11 +79,11 @@ export default function SearchResultsPage() {
 
       {/* Modify Search Drawer / Box */}
       {showModifyModal && (
-        <div id="modify-search-box" className="max-w-5xl mx-auto px-4 sm:px-6 my-6 animate-fadeIn">
-          <div className="bg-slate-900 p-6 rounded-3xl shadow-2xl border border-slate-800 text-white">
-            <h3 className="text-lg font-bold font-nexa text-brand-yellow mb-4 flex items-center">
-              <SlidersHorizontal className="w-4 h-4 mr-2" />
-              Update Your Travel Route & Timings
+        <div id="modify-search-box" className="max-w-5xl mx-auto px-3 sm:px-6 my-4 sm:my-6 animate-fadeIn">
+          <div className="bg-slate-900 p-4 sm:p-6 rounded-3xl shadow-2xl border border-slate-800 text-white">
+            <h3 className="text-base sm:text-lg font-bold font-nexa text-brand-yellow mb-3 sm:mb-4 flex items-center">
+              <SlidersHorizontal className="w-4 h-4 mr-2 flex-shrink-0" />
+              <span>Update Your Travel Route & Timings</span>
             </h3>
             <BookingForm
               onSearch={handleModifySubmit}

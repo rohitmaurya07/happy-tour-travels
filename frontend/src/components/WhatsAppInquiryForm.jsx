@@ -110,13 +110,13 @@ Message: ${msgContent}`;
   };
 
   return (
-    <div className={`bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-xl relative overflow-hidden ${className}`}>
+    <div className={`bg-white rounded-3xl p-4 sm:p-8 border border-gray-200 shadow-xl relative overflow-hidden ${className}`}>
       
       {/* Decorative top accent */}
       <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-500 via-yellow-400 to-amber-500" />
 
       {/* Header */}
-      <div className="mb-6">
+      <div className="mb-5 sm:mb-6">
         <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-wider mb-2 border border-emerald-200">
           <MessageCircle className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600" />
           <span>Instant WhatsApp Inquiry</span>
@@ -150,7 +150,7 @@ Message: ${msgContent}`;
             onChange={handleChange}
             placeholder="e.g. Rahul Sharma"
             required
-            className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-2xl text-sm font-semibold text-slate-900 placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all"
+            className="w-full bg-gray-50 border border-gray-200 px-4 py-2.5 sm:py-3 rounded-2xl text-sm font-semibold text-slate-900 placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all min-h-[44px]"
           />
         </div>
 
@@ -167,7 +167,7 @@ Message: ${msgContent}`;
                   type="button"
                   key={srv}
                   onClick={() => setFormData(prev => ({ ...prev, service: srv }))}
-                  className={`py-2.5 px-3 rounded-xl text-xs font-bold text-left transition-all border ${
+                  className={`py-2.5 px-3 rounded-xl text-xs font-bold text-left transition-all border touch-manipulation active:scale-95 min-h-[42px] ${
                     isSelected
                       ? 'bg-slate-900 text-yellow-400 border-slate-900 shadow-sm ring-2 ring-yellow-400/50'
                       : 'bg-gray-50 hover:bg-gray-100 text-slate-700 border-gray-200'
@@ -175,7 +175,7 @@ Message: ${msgContent}`;
                 >
                   <div className="flex items-center justify-between">
                     <span>{srv}</span>
-                    {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-yellow-400" />}
+                    {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 flex-shrink-0 ml-1" />}
                   </div>
                 </button>
               );
@@ -184,10 +184,10 @@ Message: ${msgContent}`;
         </div>
 
         {/* 3 & 4. From and To */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center">
-              <MapPin className="w-3.5 h-3.5 text-yellow-600 mr-1" />
+              <MapPin className="w-3.5 h-3.5 text-yellow-600 mr-1 flex-shrink-0" />
               <span>3. From</span> <span className="text-rose-500 ml-0.5">*</span>
             </label>
             <input
@@ -197,13 +197,13 @@ Message: ${msgContent}`;
               onChange={handleChange}
               placeholder="Enter city name / airport name"
               required
-              className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-2xl text-sm font-semibold text-slate-900 placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all"
+              className="w-full bg-gray-50 border border-gray-200 px-4 py-2.5 sm:py-3 rounded-2xl text-sm font-semibold text-slate-900 placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all min-h-[44px]"
             />
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center">
-              <MapPin className="w-3.5 h-3.5 text-emerald-600 mr-1" />
+              <MapPin className="w-3.5 h-3.5 text-emerald-600 mr-1 flex-shrink-0" />
               <span>4. To</span> {formData.service !== 'Local Taxi' && <span className="text-rose-500 ml-0.5">*</span>}
             </label>
             <input
@@ -213,16 +213,16 @@ Message: ${msgContent}`;
               onChange={handleChange}
               placeholder={formData.service === 'Local Taxi' ? 'Local City Travel / Optional' : 'Enter city name / airport name'}
               required={formData.service !== 'Local Taxi'}
-              className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-2xl text-sm font-semibold text-slate-900 placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all"
+              className="w-full bg-gray-50 border border-gray-200 px-4 py-2.5 sm:py-3 rounded-2xl text-sm font-semibold text-slate-900 placeholder:text-gray-400 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all min-h-[44px]"
             />
           </div>
         </div>
 
         {/* 5, 6 & 7. Date, Time & Passengers */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-3.5">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center">
-              <Calendar className="w-3.5 h-3.5 text-slate-500 mr-1" />
+              <Calendar className="w-3.5 h-3.5 text-slate-500 mr-1 flex-shrink-0" />
               <span>5. Travel Date</span> <span className="text-rose-500 ml-0.5">*</span>
             </label>
             <input
@@ -232,13 +232,13 @@ Message: ${msgContent}`;
               value={formData.travelDate}
               onChange={handleChange}
               required
-              className="w-full bg-gray-50 border border-gray-200 px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all cursor-pointer"
+              className="w-full bg-gray-50 border border-gray-200 px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all cursor-pointer min-h-[44px]"
             />
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center">
-              <Clock className="w-3.5 h-3.5 text-slate-500 mr-1" />
+              <Clock className="w-3.5 h-3.5 text-slate-500 mr-1 flex-shrink-0" />
               <span>6. Travel Time</span> <span className="text-rose-500 ml-0.5">*</span>
             </label>
             <input
@@ -247,20 +247,20 @@ Message: ${msgContent}`;
               value={formData.travelTime}
               onChange={handleChange}
               required
-              className="w-full bg-gray-50 border border-gray-200 px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all cursor-pointer"
+              className="w-full bg-gray-50 border border-gray-200 px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all cursor-pointer min-h-[44px]"
             />
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center">
-              <Users className="w-3.5 h-3.5 text-slate-500 mr-1" />
+              <Users className="w-3.5 h-3.5 text-slate-500 mr-1 flex-shrink-0" />
               <span>7. Passengers</span>
             </label>
             <select
               name="passengers"
               value={formData.passengers}
               onChange={handleChange}
-              className="w-full bg-gray-50 border border-gray-200 px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all cursor-pointer"
+              className="w-full bg-gray-50 border border-gray-200 px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:bg-white focus:ring-2 focus:ring-yellow-400/20 transition-all cursor-pointer min-h-[44px]"
             >
               <option value="1">1 Passenger</option>
               <option value="2">2 Passengers</option>

@@ -53,7 +53,7 @@ export default function Contact() {
                   <div>
                     <span className="text-xs text-gray-400 font-semibold block">Call Us Directly</span>
                     <a href={`tel:${siteConfig.phoneNumber}`} className="text-base font-bold text-white hover:text-brand-yellow transition-colors">
-                      {siteConfig.phoneNumberFormatted}
+                      {siteConfig.phoneNumber}
                     </a>
                   </div>
                 </div>

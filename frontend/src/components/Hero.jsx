@@ -10,7 +10,7 @@ export default function Hero({ onSearch }) {
   const heroTitle = mediaSettings?.heroTitle || 'Safe, Reliable and Comfortable Taxi Services.';
   const highlightedWord = mediaSettings?.heroHighlightedWord || 'Taxi Services.';
   const heroSubtitle = mediaSettings?.heroSubtitle || 'Across North India, wherever your journey takes you.';
-  const trustBadge = mediaSettings?.trustBadgeText || 'Best Taxi Service in North India';
+  const trustBadge = mediaSettings?.trustBadgeText || 'Best  Taxi Service in North India';
 
   // Format title with highlighted word in brand yellow
   const renderHeroTitle = () => {
@@ -19,6 +19,7 @@ export default function Hero({ onSearch }) {
       return (
         <>
           {parts[0]}
+          <br />
           <span className="text-brand-yellow">{highlightedWord}</span>
           {parts[1]}
         </>
@@ -28,7 +29,7 @@ export default function Hero({ onSearch }) {
   };
 
   return (
-    <section id="home" className="relative min-h-screen  sm:pt-24 pb-12 pt-5   sm:pb-16 flex flex-col justify-center items-center bg-slate-950 text-white">
+    <section id="home" className="relative min-h-[100dvh]  sm:pt-32 pb-14 sm:pb-20 flex flex-col justify-center items-center bg-slate-950 text-white overflow-hidden">
       
       {/* Hero Background Video & Dark Overlay */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -49,26 +50,26 @@ export default function Hero({ onSearch }) {
       </div>
 
       {/* Main Hero Centered Content */}
-      <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center my-auto flex flex-col items-center justify-center">
+      <div className="relative z-10 w-full max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 text-center my-auto flex flex-col items-center justify-center">
         
         {/* Trust Badge */}
-        <div className="inline-flex items-center space-x-2 bg-[#FFC72C]/10 border border-[#FFC72C]/30 px-3.5 py-1 rounded-full text-[#FFC72C] text-xs font-semibold mb-2 sm:mb-4 backdrop-blur-md">
+        <div className="inline-flex items-center space-x-2 bg-[#FFC72C]/15 border border-[#FFC72C]/35 px-3.5 py-1 rounded-full text-[#FFC72C] text-xs font-semibold mb-2 sm:mb-4 backdrop-blur-md">
           <Star className="w-3.5 h-3.5 fill-[#FFC72C] text-[#FFC72C]" />
           <span>{trustBadge}</span>
         </div>
 
         {/* Clean Hero Title */}
-        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-nexa tracking-tight font-heading leading-tight drop-shadow-md">
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-nexa tracking-tight font-heading leading-tight drop-shadow-md max-w-4xl">
           {renderHeroTitle()}
         </h1>
 
         {/* Supporting Text */}
-        <p className="mt-2 text-xs sm:text-base md:text-lg text-gray-200 max-w-2xl font-medium drop-shadow-sm">
+        <p className="mt-2.5 text-xs sm:text-base md:text-lg text-gray-200 max-w-2xl font-medium drop-shadow-sm px-2">
           {heroSubtitle}
         </p>
 
         {/* Search Form Centered Prominently */}
-        <div className="w-full mt-4 sm:mt-8">
+        <div className="w-full mt-4 sm:mt-7">
           <BookingForm onSearch={onSearch} />
         </div>
 

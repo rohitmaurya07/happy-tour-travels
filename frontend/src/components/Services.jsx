@@ -119,7 +119,7 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="pt-2 bg-[#F8FAFC] relative overflow-hidden">
+    <section id="services" className=" bg-[#F8FAFC] relative overflow-hidden">
       
       {/* Decorative background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-yellow-400/5 rounded-full blur-3xl pointer-events-none" />
@@ -128,10 +128,7 @@ export default function Services() {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
-          <div className="inline-flex items-center space-x-2 bg-yellow-400/15 border border-yellow-400/40 px-4 py-1.5 rounded-full text-slate-950 text-xs sm:text-sm font-think mb-4 shadow-xs">
-            <Sparkles className="w-4 h-4 text-amber-600" />
-            <span className="uppercase tracking-wider">Premium North India Mobility</span>
-          </div>
+         
           
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-think font-nexa text-slate-900 tracking-tight leading-tight">
             Our Core <span className="  decoration-yellow-400 decoration-wavy decoration-2">Services</span>

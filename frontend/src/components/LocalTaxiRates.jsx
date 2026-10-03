@@ -72,11 +72,11 @@ Please confirm cab availability.`;
   };
 
   return (
-    <section id="local-taxi-rates" className=" bg-white relative overflow-hidden border-t border-gray-100">
+    <section id="local-taxi-rates" className="py-14 sm:py-20 bg-white relative overflow-hidden border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-brand-gold bg-yellow-400/10 px-4 py-1.5 rounded-full border border-yellow-400/30 inline-flex items-center space-x-1.5">
             <Clock className="w-3.5 h-3.5" />
             <span>Hourly Car Rental Packages</span>
@@ -84,18 +84,18 @@ Please confirm cab availability.`;
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-nexa text-slate-900 font-heading mt-4 tracking-tight">
             City Hourly Taxi Rental Rates
           </h2>
-          <p className="mt-3 text-base sm:text-lg text-gray-600 font-medium">
+          <p className="mt-3 text-sm sm:text-base md:text-lg text-gray-600 font-medium">
             Affordable 4 Hours, 8 Hours & 10 Hours rental packages with verified chauffeurs and clean AC cabs.
           </p>
 
           {/* Quick City Switcher */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-            <span className="text-xs font-bold text-gray-400 mr-1">Select City:</span>
+          <div className="mt-6 flex items-center justify-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-2 touch-scroll">
+            <span className="text-xs font-bold text-gray-400 mr-1 flex-shrink-0 hidden sm:inline">Select City:</span>
             {popularCities.map((city) => (
               <button
                 key={city}
                 onClick={() => setSelectedCity(city)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap active:scale-95 touch-manipulation ${
                   selectedCity.toLowerCase() === city.toLowerCase()
                     ? 'bg-slate-900 text-yellow-400 shadow-md ring-2 ring-yellow-400/40'
                     : 'bg-gray-100 hover:bg-gray-200 text-slate-800'
@@ -108,7 +108,7 @@ Please confirm cab availability.`;
         </div>
 
         {/* 3 Car Categories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {hourlyCars.map((car) => (
             <div 
               key={car.id}

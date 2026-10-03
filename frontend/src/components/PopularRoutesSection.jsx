@@ -182,14 +182,14 @@ export default function PopularRoutesSection({ onSelectRoute }) {
 
         {/* City Filter Chips Bar */}
         <div className="relative mb-8">
-          <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none no-scrollbar">
+          <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none no-scrollbar touch-scroll">
             {cityList.map((city) => {
               const isActive = selectedCityFilter === city;
               return (
                 <button
                   key={city}
                   onClick={() => setSelectedCityFilter(city)}
-                  className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-nexa whitespace-nowrap transition-all flex items-center space-x-1 ${
+                  className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-nexa whitespace-nowrap transition-all flex items-center space-x-1 active:scale-95 touch-manipulation ${
                     isActive
                       ? 'bg-[#FBBF24] text-slate-950 shadow-md font-extrabold ring-2 ring-yellow-400/50'
                       : 'bg-white text-slate-700 hover:bg-gray-100 border border-gray-200 shadow-2xs'
@@ -203,18 +203,17 @@ export default function PopularRoutesSection({ onSelectRoute }) {
         </div>
 
         {/* City Route Cards Grid (2 Columns on Desktop) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {displayedCityCards.map((card) => (
             <div
               key={card.city}
               className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
             >
               {/* Card Header */}
-              <div className="bg-[#0B1B3D] text-white px-5 py-3.5 flex items-center justify-between">
-                <h3 className="text-sm sm:text-base font-nexa font-nexa">
+              <div className="bg-[#0B1B3D] text-white px-4 sm:px-5 py-3 sm:py-3.5 flex items-center justify-between">
+                <h3 className="text-sm sm:text-base font-nexa">
                   <span className="text-[#FBBF24]">{card.city}</span> - Popular Routes
                 </h3>
-               
               </div>
 
               {/* Routes Rows List */}
@@ -222,18 +221,18 @@ export default function PopularRoutesSection({ onSelectRoute }) {
                 {card.routes.map((r, idx) => (
                   <div
                     key={idx}
-                    className="px-5 py-3 flex items-center justify-between hover:bg-amber-50/40 transition-colors group"
+                    className="px-3.5 sm:px-5 py-3 flex items-center justify-between gap-2 hover:bg-amber-50/40 transition-colors group"
                   >
-                    <div className="flex items-center space-x-2 text-xs sm:text-sm font-nexa text-slate-900">
-                      <MapPin className="w-4 h-4 text-slate-900 flex-shrink-0" />
-                      <span>{r.from}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-yellow-500 transition-colors" />
-                      <span>{r.to}</span>
+                    <div className="flex items-center space-x-1.5 sm:space-x-2 text-xs sm:text-sm font-nexa text-slate-900 min-w-0">
+                      <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-900 flex-shrink-0" />
+                      <span className="truncate">{r.from}</span>
+                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400 group-hover:text-yellow-500 transition-colors flex-shrink-0" />
+                      <span className="truncate">{r.to}</span>
                     </div>
 
                     <button
                       onClick={() => handleBookNow(r.from, r.to)}
-                      className="bg-[#FBBF24] hover:bg-yellow-500 active:scale-95 text-slate-950 font-black text-xs px-3.5 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap"
+                      className="bg-[#FBBF24] hover:bg-yellow-500 active:scale-95 text-slate-950 font-black text-xs px-3 sm:px-3.5 py-1.5 rounded-lg shadow-xs transition-all whitespace-nowrap flex-shrink-0"
                     >
                       Book Now
                     </button>
@@ -245,7 +244,7 @@ export default function PopularRoutesSection({ onSelectRoute }) {
               <div className="p-3 bg-gray-50 border-t border-gray-100">
                 <button
                   onClick={() => handleViewAllCity(card.city, card.routes[0]?.to)}
-                  className="w-full py-2 bg-[#E2E8F0]/70 hover:bg-[#CBD5E1] text-[#1E3A8A] font-nexa text-xs sm:text-sm rounded-xl flex items-center justify-center space-x-1 transition-colors"
+                  className="w-full py-2.5 bg-[#E2E8F0]/70 hover:bg-[#CBD5E1] text-[#1E3A8A] font-nexa text-xs sm:text-sm rounded-xl flex items-center justify-center space-x-1 transition-colors active:scale-98"
                 >
                   <span>See More {card.city} Routes</span>
                   <ChevronRight className="w-3.5 h-3.5" />

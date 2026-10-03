@@ -14,7 +14,7 @@ export default function GoogleReviews() {
   }, []);
 
   return (
-    <section className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+    <section className="bg-gray-50  px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
 
         {/* Section Heading */}
@@ -46,16 +46,12 @@ export default function GoogleReviews() {
 
 
         {/* Reviews Widget */}
-        <div className="bg-white rounded-2xl shadow-lg border  border-gray-100 p-4 sm:p-8">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-8 overflow-hidden">
           <div
-            className="elfsight-app-80ce6747-2e5b-494e-a405-88d6566c5064 "
+            className="elfsight-app-80ce6747-2e5b-494e-a405-88d6566c5064"
             data-elfsight-app-lazy
-            ></div>
-<div className="bg-white h-10 md:w-96 w-82  left-[5%] relative z-10 bottom-8  ">
-    <p className="text-sm text-gray-500">
-            Genuine feedback from our valued customers.
-          </p>
-</div>
+          ></div>
+     
         </div>
 
 

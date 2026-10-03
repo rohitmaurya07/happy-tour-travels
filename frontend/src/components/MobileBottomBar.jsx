@@ -121,7 +121,7 @@ export default function MobileBottomBar() {
   };
 
   return (
-    <div className={`md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-gray-200 shadow-[0_-6px_25px_rgba(0,0,0,0.08)] px-2 py-1.5 transition-transform duration-200 ${isKeyboardOpen || isNavHidden ? 'translate-y-full pointer-events-none' : 'translate-y-0'}`}>
+    <div className={`md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-gray-200 shadow-[0_-6px_25px_rgba(0,0,0,0.08)] px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))] transition-transform duration-200 ${isKeyboardOpen || isNavHidden ? 'translate-y-full pointer-events-none' : 'translate-y-0'}`}>
       <div className="grid grid-cols-4 gap-1 items-center max-w-md mx-auto">
         {tripTabs.map((tab) => {
           const isActive = activeType === tab.id;
@@ -129,7 +129,7 @@ export default function MobileBottomBar() {
             <button
               key={tab.id}
               onClick={() => handleTabClick(tab.id)}
-              className={`flex flex-col items-center justify-center py-1 px-1 rounded-2xl active:scale-95 transition-all text-center relative ${
+              className={`flex flex-col items-center justify-center py-1.5 px-1 rounded-2xl active:scale-95 transition-all text-center relative touch-manipulation min-h-[48px] ${
                 isActive
                   ? 'bg-amber-50/90 border border-yellow-400/80 shadow-sm ring-1 ring-yellow-400/30'
                   : 'hover:bg-gray-50 text-slate-700'

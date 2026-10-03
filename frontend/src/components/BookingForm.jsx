@@ -518,33 +518,7 @@ Please share the best custom quote and available vehicle options.`;
   const isHourly = tripType === 'Hourly Rental';
 
   return (
-    <div className={`w-full ${compact ? 'p-4' : 'max-w-5xl mx-auto p-5 sm:p-8'} bg-white/95 backdrop-blur-xl rounded-3xl shadow-floating border border-gray-100/80`}>
-      
-      {/* Trip Type Selector */}
-      <div className="hidden md:flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-5 mb-6">
-        <span className="text-xs font-bold uppercase tracking-wider text-gray-400 w-full sm:w-auto mb-1 sm:mb-0">
-          Select Trip Type:
-        </span>
-        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-          {tripTypes.map((type) => (
-            <button
-              key={type}
-              type="button"
-              onClick={() => handleTripTypeChange(type)}
-              className={`px-4 py-2 rounded-full text-xs sm:text-sm font-bold transition-all duration-200 flex items-center space-x-1.5 ${
-                tripType === type
-                  ? 'bg-brand-yellow text-slate-950 shadow-md scale-105 ring-2 ring-yellow-400/40'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              {type === 'Airport' && <Plane className="w-3.5 h-3.5" />}
-              {type === 'Hourly Rental' && <Clock className="w-3.5 h-3.5" />}
-              {type === 'Round Trip' && <Repeat className="w-3.5 h-3.5" />}
-              <span>{type}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+    <div className={`w-full ${compact ? 'p-3.5 sm:p-4' : 'max-w-5xl mx-auto p-4 sm:p-8'} bg-white/95 backdrop-blur-xl rounded-3xl shadow-floating border border-gray-100/80`}>
 
       {/* Validation Error Alert */}
       {errorMsg && (
@@ -555,30 +529,30 @@ Please share the best custom quote and available vehicle options.`;
       )}
 
       {/* Mode-Specific Instruction Notice */}
-      <div className="mb-4 px-3.5 py-2.5 bg-amber-50/90 border border-amber-200/90 rounded-2xl flex items-center space-x-2.5 text-xs text-amber-950 font-medium shadow-xs">
+      <div className="mb-4 px-3 sm:px-3.5 py-2 sm:py-2.5 bg-amber-50/90 border border-amber-200/90 rounded-2xl flex items-center space-x-2.5 text-xs text-amber-950 font-medium shadow-xs">
         <span className="text-base flex-shrink-0">🟡</span>
         {isAirport ? (
-          <p className="leading-snug">
+          <p className="leading-snug text-[11px] sm:text-xs">
             <strong className="font-bold text-slate-950">Search में Airport City Name या City Name लिखें</strong> (उदा: Delhi Airport, Amritsar Airport, Chandigarh Airport).
           </p>
         ) : isHourly ? (
-          <p className="leading-snug">
+          <p className="leading-snug text-[11px] sm:text-xs">
             <strong className="font-bold text-slate-950">Enter your city name, select date and time</strong> for local 4 Hrs, 8 Hrs & 10 Hrs packages.
           </p>
         ) : (
-          <p className="leading-snug">
+          <p className="leading-snug text-[11px] sm:text-xs">
             <strong className="font-bold text-slate-950">Search only CITY to CITY/AIRPORT.</strong> For AREA, VILLAGE or SMALL TOWN, please CALL or send a WhatsApp/Email INQUIRY.
           </p>
         )}
       </div>
 
       {/* Search Form Fields */}
-      <form onSubmit={isUnlisted ? handleFormWhatsAppInquiry : handleSubmitSearch} className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
+      <form onSubmit={isUnlisted ? handleFormWhatsAppInquiry : handleSubmitSearch} className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
         
         {/* City / From Field */}
         <div 
           ref={fromRef} 
-          className={`relative bg-gray-50/90 hover:bg-gray-50 p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all ${
+          className={`relative bg-gray-50/90 hover:bg-gray-50 p-3 sm:p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all ${
             activeInput === 'from' ? 'z-40 ring-2 ring-brand-yellow border-brand-yellow bg-white' : 'z-20'
           }`}
         >
@@ -594,9 +568,10 @@ Please share the best custom quote and available vehicle options.`;
                   setFromLocation('');
                   setActiveInput('from');
                 }}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 p-1 -m-1"
+                aria-label="Clear pickup location"
               >
-                <X className="w-3 h-3" />
+                <X className="w-3.5 h-3.5" />
               </button>
             )}
           </label>
@@ -606,7 +581,7 @@ Please share the best custom quote and available vehicle options.`;
             onFocus={() => setActiveInput('from')}
             onChange={(e) => handleLocationInputChange(e.target.value, 'from')}
             placeholder={isAirport ? 'Enter airport city / city name' : isHourly ? 'Enter city name' : 'Enter City Name / Airport City Name'}
-            className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder:text-gray-400 placeholder:font-normal"
+            className="w-full bg-transparent text-slate-900 font-bold text-sm sm:text-sm focus:outline-none placeholder:text-gray-400 placeholder:font-normal py-1"
             required
             autoComplete="off"
           />
@@ -619,7 +594,7 @@ Please share the best custom quote and available vehicle options.`;
         {!isHourly ? (
           <div 
             ref={toRef} 
-            className={`relative bg-gray-50/90 hover:bg-gray-50 p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all ${
+            className={`relative bg-gray-50/90 hover:bg-gray-50 p-3 sm:p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all ${
               activeInput === 'to' ? 'z-40 ring-2 ring-brand-yellow border-brand-yellow bg-white' : 'z-10'
             }`}
           >
@@ -635,9 +610,10 @@ Please share the best custom quote and available vehicle options.`;
                     setToLocation('');
                     setActiveInput('to');
                   }}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 p-1 -m-1"
+                  aria-label="Clear destination"
                 >
-                  <X className="w-3 h-3" />
+                  <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </label>
@@ -647,7 +623,7 @@ Please share the best custom quote and available vehicle options.`;
               onFocus={() => setActiveInput('to')}
               onChange={(e) => handleLocationInputChange(e.target.value, 'to')}
               placeholder={isAirport ? 'Enter airport city / city name' : 'Enter City Name / Airport City Name'}
-              className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder:text-gray-400 placeholder:font-normal"
+              className="w-full bg-transparent text-slate-900 font-bold text-sm sm:text-sm focus:outline-none placeholder:text-gray-400 placeholder:font-normal py-1"
               required
               autoComplete="off"
             />
@@ -657,7 +633,7 @@ Please share the best custom quote and available vehicle options.`;
           </div>
         ) : (
           /* Hourly Package Selector (In place of Destination for Hourly Rental) */
-          <div className="relative bg-gray-50/90 hover:bg-gray-50 p-3.5 rounded-2xl border border-gray-200">
+          <div className="relative bg-gray-50/90 hover:bg-gray-50 p-3 sm:p-3.5 rounded-2xl border border-gray-200">
             <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 flex items-center">
               <Clock className="w-3.5 h-3.5 mr-1 text-purple-600" />
               <span>Rental Type</span>
@@ -672,7 +648,7 @@ Please share the best custom quote and available vehicle options.`;
         )}
 
         {/* Departure Date and Pickup Time Field */}
-        <div className="relative z-0 bg-gray-50/90 hover:bg-gray-50 p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all">
+        <div className="relative z-0 bg-gray-50/90 hover:bg-gray-50 p-3 sm:p-3.5 rounded-2xl border border-gray-200 focus-within:border-brand-yellow focus-within:ring-2 focus-within:ring-yellow-400/30 transition-all">
           <div className="flex items-center justify-between mb-1">
             <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider flex items-center">
               <Calendar className="w-3.5 h-3.5 mr-1 text-blue-500" />
@@ -691,7 +667,7 @@ Please share the best custom quote and available vehicle options.`;
                 value={departureDate}
                 min={todayStr}
                 onChange={(e) => setDepartureDate(e.target.value)}
-                className="w-full bg-white px-2.5 py-1.5 rounded-xl border border-gray-200 text-slate-900 font-bold text-xs focus:outline-none focus:border-brand-yellow"
+                className="w-full bg-white px-2 py-2 rounded-xl border border-gray-200 text-slate-900 font-bold text-xs sm:text-xs focus:outline-none focus:border-brand-yellow min-h-[38px]"
                 required
               />
             </div>
@@ -701,7 +677,7 @@ Please share the best custom quote and available vehicle options.`;
                 value={pickupTime}
                 min={departureDate === todayStr ? minPickupTimeToday : undefined}
                 onChange={(e) => setPickupTime(e.target.value)}
-                className="w-full bg-white px-2.5 py-1.5 rounded-xl border border-gray-200 text-slate-900 font-bold text-xs focus:outline-none focus:border-brand-yellow"
+                className="w-full bg-white px-2 py-2 rounded-xl border border-gray-200 text-slate-900 font-bold text-xs sm:text-xs focus:outline-none focus:border-brand-yellow min-h-[38px]"
                 required
               />
             </div>
@@ -721,7 +697,7 @@ Please share the best custom quote and available vehicle options.`;
                     setFromLocation(r.from);
                     setToLocation(r.to);
                   }}
-                  className="bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-200 px-3 py-1 rounded-full whitespace-nowrap font-bold text-[11px] transition-colors"
+                  className="bg-sky-50 hover:bg-sky-100 text-sky-900 border border-sky-200 px-3 py-1 rounded-full whitespace-nowrap font-bold text-[11px] transition-colors active:scale-95"
                 >
                   {r.label}
                 </button>
@@ -739,7 +715,7 @@ Please share the best custom quote and available vehicle options.`;
                   key={i}
                   type="button"
                   onClick={() => setFromLocation(city)}
-                  className={`px-3 py-1 rounded-full whitespace-nowrap font-bold text-[11px] transition-colors ${
+                  className={`px-3 py-1 rounded-full whitespace-nowrap font-bold text-[11px] transition-colors active:scale-95 ${
                     fromLocation.toLowerCase() === city.toLowerCase()
                       ? 'bg-slate-900 text-yellow-400 shadow-sm'
                       : 'bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200'
@@ -757,7 +733,7 @@ Please share the best custom quote and available vehicle options.`;
           {isUnlisted ? (
             <button
               type="submit"
-              className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-3.5 sm:py-4 rounded-2xl font-bold text-base sm:text-lg flex items-center justify-center space-x-3 shadow-lg shadow-emerald-500/20 hover:scale-[1.01] transition-all group"
+              className="w-full bg-[#25D366] hover:bg-[#20bd5a] active:scale-98 text-white py-3.5 sm:py-4 rounded-2xl font-bold text-base sm:text-lg flex items-center justify-center space-x-3 shadow-lg shadow-emerald-500/20 hover:scale-[1.01] transition-all group min-h-[48px]"
             >
               <MessageCircle className="w-5 h-5 fill-white flex-shrink-0" />
               <span>Enquire on WhatsApp</span>
@@ -766,7 +742,7 @@ Please share the best custom quote and available vehicle options.`;
           ) : (
             <button
               type="submit"
-              className="w-full yellow-gradient-btn py-3.5 sm:py-4 rounded-2xl text-slate-950 font-bold text-base sm:text-lg flex items-center justify-center space-x-3 shadow-yellow-glow group hover:scale-[1.01] transition-transform"
+              className="w-full yellow-gradient-btn py-3.5 sm:py-4 rounded-2xl text-slate-950 font-bold text-base sm:text-lg flex items-center justify-center space-x-3 shadow-yellow-glow group hover:scale-[1.01] active:scale-98 transition-transform min-h-[48px]"
             >
               <Search className="w-5 h-5 stroke-[2.5]" />
               <span>{isHourly ? 'View Hourly Cars & Rates' : 'Search Available Cabs'}</span>
@@ -782,5 +758,5 @@ Please share the best custom quote and available vehicle options.`;
         </div>
       </form>
     </div>
-  );
+  );  
 }

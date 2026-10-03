@@ -20,24 +20,22 @@ Please share availability and booking details.`;
   };
 
   return (
-    <section id="fleet" className="py-20 bg-gray-50 relative overflow-hidden">
+    <section id="fleet" className="py-8 sm:py-20 bg-gray-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-brand-gold bg-yellow-400/10 px-4 py-1.5 rounded-full border border-yellow-400/30">
-            Clean, Comfortable &  Tourist Cabs
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-nexa text-slate-900 font-heading mt-4 tracking-tight">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-nexa text-slate-900 font-heading  tracking-tight">
             Our Premium Fleet & Rates
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-gray-600 font-medium">
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-600 font-medium">
             Choose from economic sedans, executive cars, family MUVs, luxury Fortuner SUVs, and tempo travellers with transparent pricing.
           </p>
         </div>
 
         {/* Fleet Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {fleetData.map((vehicle) => (
             <div
               key={vehicle.id}
@@ -45,7 +43,7 @@ Please share availability and booking details.`;
             >
               <div>
                 {/* Vehicle Image Header */}
-                <div className="relative h-64 w-full bg-slate-100 flex items-center justify-center p-4 overflow-hidden">
+                <div className="relative h-56 sm:h-64 w-full bg-slate-100 flex items-center justify-center p-4 overflow-hidden">
                   <img
                     src={vehicle.image}
                     alt={vehicle.altText}
@@ -64,51 +62,51 @@ Please share availability and booking details.`;
                 </div>
 
                 {/* Content Details */}
-                <div className="p-6">
+                <div className="p-5 sm:p-6">
                   <span className="text-xs font-bold text-amber-700 uppercase tracking-wider block mb-1">
                     {vehicle.category}
                   </span>
 
-                  <h3 className="text-2xl font-bold text-slate-900 font-heading mb-2">
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-heading mb-2">
                     {vehicle.name}
                   </h3>
 
-                  <p className="text-sm text-gray-600 leading-relaxed mb-4 font-medium">
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4 font-medium">
                     {vehicle.description}
                   </p>
 
                   {/* Local Taxi Packages Pill Box */}
                   <div className="bg-yellow-50/80 rounded-2xl p-3 border border-yellow-200/80 mb-4 text-xs">
                     <span className="font-bold text-slate-900 block mb-1 flex items-center">
-                      <Clock className="w-3.5 h-3.5 mr-1 text-amber-600" />
+                      <Clock className="w-3.5 h-3.5 mr-1 text-amber-600 flex-shrink-0" />
                       Local Taxi Packages:
                     </span>
-                    <div className="flex justify-between items-center text-slate-800 font-semibold pt-1">
-                      <span>4 Hrs / 40 KM: <strong className="text-slate-950 font-bold">₹{(vehicle.packages?.fourHours?.price || vehicle.localPackages?.fourHours || 1000).toLocaleString('en-IN')}</strong></span>
-                      <span>8 Hrs / 80 KM: <strong className="text-slate-950 font-bold">₹{(vehicle.packages?.eightHours?.price || vehicle.localPackages?.eightHours || 1500).toLocaleString('en-IN')}</strong></span>
+                    <div className="flex flex-col sm:flex-row justify-between sm:items-center text-slate-800 font-semibold pt-1 gap-1">
+                      <span>4h/40km: <strong className="text-slate-950 font-bold">₹{(vehicle.packages?.fourHours?.price || vehicle.localPackages?.fourHours || 1000).toLocaleString('en-IN')}</strong></span>
+                      <span>8h/80km: <strong className="text-slate-950 font-bold">₹{(vehicle.packages?.eightHours?.price || vehicle.localPackages?.eightHours || 1500).toLocaleString('en-IN')}</strong></span>
                     </div>
                   </div>
 
                   {/* Specs Grid */}
-                  <div className="grid grid-cols-2 gap-3 pt-3 border-t border-gray-100 text-xs font-semibold text-slate-700 mb-6">
-                    <div className="flex items-center bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                  <div className="grid grid-cols-2 gap-2.5 sm:gap-3 pt-3 border-t border-gray-100 text-xs font-semibold text-slate-700 mb-6">
+                    <div className="flex items-center bg-gray-50 p-2 sm:p-2.5 rounded-xl border border-gray-100">
                       <Users className="w-4 h-4 mr-2 text-brand-gold flex-shrink-0" />
-                      <span>{vehicle.seats}</span>
+                      <span className="truncate">{vehicle.seats}</span>
                     </div>
 
-                    <div className="flex items-center bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <div className="flex items-center bg-gray-50 p-2 sm:p-2.5 rounded-xl border border-gray-100">
                       <Luggage className="w-4 h-4 mr-2 text-brand-gold flex-shrink-0" />
-                      <span>{vehicle.luggage}</span>
+                      <span className="truncate">{vehicle.luggage}</span>
                     </div>
 
-                    <div className="flex items-center bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <div className="flex items-center bg-gray-50 p-2 sm:p-2.5 rounded-xl border border-gray-100">
                       <Wind className="w-4 h-4 mr-2 text-blue-500 flex-shrink-0" />
-                      <span>{vehicle.ac}</span>
+                      <span className="truncate">{vehicle.ac}</span>
                     </div>
 
-                    <div className="flex items-center bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <div className="flex items-center bg-gray-50 p-2 sm:p-2.5 rounded-xl border border-gray-100">
                       <Fuel className="w-4 h-4 mr-2 text-amber-500 flex-shrink-0" />
-                      <span>{vehicle.fuel}</span>
+                      <span className="truncate">{vehicle.fuel}</span>
                     </div>
                   </div>
 
@@ -116,10 +114,10 @@ Please share availability and booking details.`;
               </div>
 
               {/* Book Vehicle CTA */}
-              <div className="px-6 pb-6 pt-0">
+              <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-0">
                 <button
                   onClick={() => handleVehicleBooking(vehicle)}
-                  className="w-full yellow-gradient-btn py-3.5 rounded-2xl text-slate-950 font-nexa text-sm font-bold flex items-center justify-center space-x-2 shadow-md group-hover:shadow-lg transition-all"
+                  className="w-full yellow-gradient-btn py-3 sm:py-3.5 rounded-2xl text-slate-950 font-nexa text-sm font-bold flex items-center justify-center space-x-2 shadow-md group-hover:shadow-lg transition-all active:scale-98"
                 >
                   <MessageCircle className="w-4 h-4 fill-slate-950 stroke-none" />
                   <span>Book This Vehicle</span>

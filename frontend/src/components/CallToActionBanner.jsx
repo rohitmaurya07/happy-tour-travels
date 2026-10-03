@@ -148,16 +148,16 @@ export default function CallToActionBanner({ className = '' }) {
         {/* CTA Button */}
         <button
           onClick={handleBookClick}
-          className="bg-[#0A0E1A] hover:bg-slate-900 active:scale-95 text-white pl-4 pr-6 sm:pl-5 sm:pr-8 py-3.5 sm:py-4 rounded-full font-bold text-base sm:text-lg shadow-[0_12px_35px_rgba(0,0,0,0.35)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.45)] transition-all flex items-center space-x-3 group"
+          className="bg-[#0A0E1A] hover:bg-slate-900 active:scale-95 text-white pl-3.5 pr-5 sm:pl-5 sm:pr-8 py-3 sm:py-4 rounded-full font-bold text-sm sm:text-base md:text-lg shadow-[0_12px_35px_rgba(0,0,0,0.35)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.45)] transition-all flex items-center space-x-2.5 sm:space-x-3 group touch-manipulation max-w-full"
         >
           {/* Green WhatsApp Circle */}
           <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#25D366] flex items-center justify-center flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-            <MessageCircle className="w-5 h-5 fill-white stroke-none text-white" />
+            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 fill-white stroke-none text-white" />
           </div>
 
-          <span className="font-nexa tracking-tight">Book on WhatsApp Now</span>
+          <span className="font-nexa tracking-tight truncate">Book on WhatsApp Now</span>
 
-          <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform ml-1" />
+          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-white group-hover:translate-x-1 transition-transform flex-shrink-0 ml-0.5 sm:ml-1" />
         </button>
 
       </div>

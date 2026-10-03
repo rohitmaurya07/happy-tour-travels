@@ -12,7 +12,7 @@ export default function WhatsAppButton() {
   };
 
   return (
-    <div className={`fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-50 flex items-center group transition-all duration-200 ${isKeyboardOpen ? 'translate-y-6 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
+    <div className={`fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] right-3 sm:bottom-6 sm:right-6 z-50 flex items-center group transition-all duration-200 ${isKeyboardOpen ? 'translate-y-6 opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}>
       
       {/* Tooltip text bubble on hover (Zero emojis, Lucide icon) */}
       <div className="mr-3 px-3 py-1.5 bg-slate-950 text-white text-xs font-bold rounded-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none hidden sm:flex items-center space-x-1.5 border border-slate-800">
