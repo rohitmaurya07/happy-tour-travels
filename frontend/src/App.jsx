@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom
 import { SiteDataProvider } from './context/SiteDataContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import WhatsAppButton from './components/WhatsAppButton';
 import ScrollToTop from './components/ScrollToTop';
 import MobileBottomBar from './components/MobileBottomBar';
 
@@ -27,7 +26,6 @@ function PublicLayout() {
       <main className="flex-grow">
         <Outlet />
       </main>
-      <WhatsAppButton />
       <MobileBottomBar />
       <Footer />
     </div>

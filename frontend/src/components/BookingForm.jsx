@@ -487,7 +487,7 @@ Please share the best custom quote and available vehicle options.`;
   const isHourly = tripType === 'Hourly Rental';
 
   return (
-    <div className={`w-full ${compact ? 'p-4' : 'max-w-5xl mx-auto p-6 sm:p-8'} bg-white/95 backdrop-blur-xl rounded-3xl shadow-floating border border-gray-100/80`}>
+    <div className={`w-full ${compact ? 'p-4' : 'max-w-5xl mx-auto p-5 sm:p-8'} bg-white/95 backdrop-blur-xl rounded-3xl shadow-floating border border-gray-100/80`}>
       
       {/* Trip Type Selector */}
       <div className="hidden md:flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-5 mb-6">
@@ -542,7 +542,7 @@ Please share the best custom quote and available vehicle options.`;
       </div>
 
       {/* Search Form Fields */}
-      <form onSubmit={isUnlisted ? handleFormWhatsAppInquiry : handleSubmitSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <form onSubmit={isUnlisted ? handleFormWhatsAppInquiry : handleSubmitSearch} className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
         
         {/* City / From Field */}
         <div 
@@ -574,7 +574,7 @@ Please share the best custom quote and available vehicle options.`;
             value={fromLocation}
             onFocus={() => setActiveInput('from')}
             onChange={(e) => handleLocationInputChange(e.target.value, 'from')}
-            placeholder={isAirport ? 'Enter airport city / city name' : isHourly ? 'Enter city name' : 'Enter City Name Only'}
+            placeholder={isAirport ? 'Enter airport city / city name' : isHourly ? 'Enter city name' : 'Enter City Name / Airport Name Only'}
             className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder:text-gray-400 placeholder:font-normal"
             required
             autoComplete="off"
@@ -726,7 +726,7 @@ Please share the best custom quote and available vehicle options.`;
           {isUnlisted ? (
             <button
               type="submit"
-              className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-4 rounded-2xl font-bold text-base sm:text-lg flex items-center justify-center space-x-3 shadow-lg shadow-emerald-500/20 hover:scale-[1.01] transition-all group"
+              className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-3.5 sm:py-4 rounded-2xl font-bold text-base sm:text-lg flex items-center justify-center space-x-3 shadow-lg shadow-emerald-500/20 hover:scale-[1.01] transition-all group"
             >
               <MessageCircle className="w-5 h-5 fill-white flex-shrink-0" />
               <span>Enquire on WhatsApp</span>
@@ -735,7 +735,7 @@ Please share the best custom quote and available vehicle options.`;
           ) : (
             <button
               type="submit"
-              className="w-full yellow-gradient-btn py-4 rounded-2xl text-slate-950 font-bold text-base sm:text-lg flex items-center justify-center space-x-3 shadow-yellow-glow group hover:scale-[1.01] transition-transform"
+              className="w-full yellow-gradient-btn py-3.5 sm:py-4 rounded-2xl text-slate-950 font-bold text-base sm:text-lg flex items-center justify-center space-x-3 shadow-yellow-glow group hover:scale-[1.01] transition-transform"
             >
               <Search className="w-5 h-5 stroke-[2.5]" />
               <span>{isHourly ? 'View Hourly Cars & Rates' : 'Search Available Cabs'}</span>

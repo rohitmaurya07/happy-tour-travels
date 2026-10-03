@@ -119,7 +119,7 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="py-16 sm:py-24 bg-[#F8FAFC] relative overflow-hidden">
+    <section id="services" className="py-16 sm:py-24  bg-[#F8FAFC] relative overflow-hidden">
       
       {/* Decorative background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-yellow-400/5 rounded-full blur-3xl pointer-events-none" />

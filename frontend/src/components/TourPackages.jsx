@@ -32,7 +32,7 @@ export default function TourPackages() {
     {
       id: 'dalhousie',
       name: 'Dalhousie',
-      image: 'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?auto=format&fit=crop&w=600&q=80'
+      image: 'https://cdn.educba.com/academy/wp-content/uploads/2023/01/Tourist-Places-in-Dalhousie-1.jpg'
     },
     {
       id: 'kasol',
@@ -52,12 +52,12 @@ export default function TourPackages() {
     {
       id: 'chandigarh',
       name: 'Chandigarh',
-      image: 'https://images.unsplash.com/photo-1588416936097-41850ab3d86d?auto=format&fit=crop&w=600&q=80'
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkO9xHJrUzdQcoMKrgTBcZOwXQlZJJcdCPEWta4qfdlj20k-V5NYJfuWc&s=10'
     },
     {
       id: 'srinagar',
       name: 'Srinagar',
-      image: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80'
+      image: 'https://dynamic-media.tacdn.com/media/photo-o/34/27/bb/3c/caption.jpg?w=2400&h=-1&s=1'
     },
     {
       id: 'gulmarg',
@@ -67,7 +67,7 @@ export default function TourPackages() {
     {
       id: 'pahalgam',
       name: 'Pahalgam',
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80'
+      image: 'https://cdn.travelcoffee.in/uploads/d90847bf-d5ad-4ba5-ac78-e5797470c8bb-Timeless_Kashmir_Retreat___Srinagar__Gulmarg___Pahalgam_Experience.webp'
     },
     {
       id: 'sonmarg',
@@ -82,12 +82,12 @@ export default function TourPackages() {
     {
       id: 'vaishno-devi',
       name: 'Vaishno Devi',
-      image: 'https://images.unsplash.com/photo-1545239351-ef35f43d514b?auto=format&fit=crop&w=600&q=80'
+      image: 'https://duniyaghumo360.com/wp-content/uploads/2024/12/mata_vaishno_devi.jpg'
     },
     {
       id: 'wagah-border',
       name: 'Wagah Border',
-      image: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80'
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGdYlxKB2qNSzsDI2D8mLUHhQnCVMzJcRyTv96B-Xf-5G9ydltaeQLP3c&s=10'
     }
   ];
 
