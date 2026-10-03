@@ -43,20 +43,21 @@ export default function GoogleReviews() {
           </div>
         </div>
 
-        {/* Reviews Widget */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-8">
-          <div
-            className="elfsight-app-80ce6747-2e5b-494e-a405-88d6566c5064"
-            data-elfsight-app-lazy
-          ></div>
-        </div>
 
-        {/* Bottom Text */}
-        <div className="text-center mt-8">
-          <p className="text-sm text-gray-500">
+
+        {/* Reviews Widget */}
+        <div className="bg-white rounded-2xl shadow-lg border  border-gray-100 p-4 sm:p-8">
+          <div
+            className="elfsight-app-80ce6747-2e5b-494e-a405-88d6566c5064 "
+            data-elfsight-app-lazy
+            ></div>
+<div className="bg-white h-10 md:w-96 w-82  left-[5%] relative z-10 bottom-8  ">
+    <p className="text-sm text-gray-500">
             Genuine feedback from our valued customers.
           </p>
+</div>
         </div>
+
 
       </div>
     </section>
