@@ -119,7 +119,7 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="py-16 sm:py-24  bg-[#F8FAFC] relative overflow-hidden">
+    <section id="services" className="pt-2 bg-[#F8FAFC] relative overflow-hidden">
       
       {/* Decorative background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-yellow-400/5 rounded-full blur-3xl pointer-events-none" />
@@ -128,12 +128,12 @@ export default function Services() {
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
-          <div className="inline-flex items-center space-x-2 bg-yellow-400/15 border border-yellow-400/40 px-4 py-1.5 rounded-full text-slate-950 text-xs sm:text-sm font-black mb-4 shadow-xs">
+          <div className="inline-flex items-center space-x-2 bg-yellow-400/15 border border-yellow-400/40 px-4 py-1.5 rounded-full text-slate-950 text-xs sm:text-sm font-think mb-4 shadow-xs">
             <Sparkles className="w-4 h-4 text-amber-600" />
             <span className="uppercase tracking-wider">Premium North India Mobility</span>
           </div>
           
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black font-nexa text-slate-900 tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-think font-nexa text-slate-900 tracking-tight leading-tight">
             Our Core <span className="  decoration-yellow-400 decoration-wavy decoration-2">Services</span>
           </h2>
           
@@ -157,7 +157,7 @@ export default function Services() {
                     <IconComponent className="w-7 h-7" />
                   </div>
                   
-                  <span className="text-[10px] uppercase font-black tracking-wider bg-slate-900 text-yellow-400 px-3 py-1 rounded-full shadow-xs">
+                  <span className="text-[10px] uppercase font-think tracking-wider bg-slate-900 text-yellow-400 px-3 py-1 rounded-full shadow-xs">
                     {service.badge}
                   </span>
                 </div>
@@ -168,7 +168,7 @@ export default function Services() {
                     {service.tagline}
                   </span>
                   
-                  <h3 className="text-xl sm:text-2xl font-black font-nexa text-slate-900 mb-2.5 leading-tight">
+                  <h3 className="text-xl sm:text-2xl font-think font-nexa text-slate-900 mb-2.5 leading-tight">
                     {service.title}
                   </h3>
                   
@@ -187,28 +187,28 @@ export default function Services() {
                   </div>
 
                   {/* Popular Connection Chips */}
-                  <div className="mb-6 bg-gray-50/80 p-3 rounded-2xl border border-gray-100">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-2">
+                  {/* <div className="mb-6 bg-gray-50/80 p-3 rounded-2xl border border-gray-100">
+                    <span className="text-[10px] font-think uppercase tracking-wider text-gray-400 block mb-2">
                       Popular Connections:
                     </span>
                     <div className="flex flex-wrap gap-1.5">
                       {service.popularConnections.map((conn, idx) => (
                         <span
                           key={idx}
-                          className="text-[11px] font-bold bg-white px-2 py-0.5 rounded-md border border-gray-200 text-slate-800 shadow-2xs"
+                          className="text-[11px] font-think bg-white px-2 py-0.5 rounded-md border border-gray-200 text-slate-800 shadow-2xs"
                         >
                           {conn.from} → {conn.to}
                         </span>
                       ))}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Action CTA Buttons */}
                 <div className="space-y-2 pt-2 border-t border-gray-100">
                   <button
                     onClick={() => handleWhatsAppBooking(service)}
-                    className="w-full bg-[#25D366] hover:bg-emerald-600 active:scale-95 text-white font-black text-xs sm:text-sm py-3 px-4 rounded-xl flex items-center justify-center space-x-2 shadow-xs transition-all group/btn"
+                    className="w-full bg-[#25D366] hover:bg-emerald-600 active:scale-95 text-white font-think text-xs sm:text-sm py-3 px-4 rounded-xl flex items-center justify-center space-x-2 shadow-xs transition-all group/btn"
                   >
                     <MessageCircle className="w-4 h-4 fill-white stroke-none" />
                     <span>Inquire on WhatsApp</span>
@@ -217,7 +217,7 @@ export default function Services() {
 
                   <button
                     onClick={() => handleSearchAction(service)}
-                    className="w-full bg-[#FBBF24] hover:bg-yellow-500 active:scale-95 text-slate-950 font-black text-xs py-2.5 px-4 rounded-xl flex items-center justify-center space-x-1 transition-all"
+                    className="w-full bg-[#FBBF24] hover:bg-yellow-500 active:scale-95 text-slate-950 font-think text-xs py-2.5 px-4 rounded-xl flex items-center justify-center space-x-1 transition-all"
                   >
                     <span>Check Fares & Book</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -230,26 +230,26 @@ export default function Services() {
         </div>
 
         {/* Bottom Trust & Assurance Strip */}
-        <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800">
+        {/* <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-800">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-800">
             <div className="pt-2 md:pt-0">
-              <span className="text-xl sm:text-2xl font-black font-nexa text-[#FBBF24] block">24/7</span>
-              <span className="text-xs sm:text-sm font-bold text-gray-300">Round-The-Clock Service</span>
+              <span className="text-xl sm:text-2xl font-think font-nexa text-[#FBBF24] block">24/7</span>
+              <span className="text-xs sm:text-sm font-think text-gray-300">Round-The-Clock Service</span>
             </div>
             <div className="pt-4 md:pt-0">
-              <span className="text-xl sm:text-2xl font-black font-nexa text-[#FBBF24] block">100% Fixed</span>
-              <span className="text-xs sm:text-sm font-bold text-gray-300">Transparent Tariffs</span>
+              <span className="text-xl sm:text-2xl font-think font-nexa text-[#FBBF24] block">100% Fixed</span>
+              <span className="text-xs sm:text-sm font-thin text-gray-300">Transparent Tariffs</span>
             </div>
             <div className="pt-4 md:pt-0">
-              <span className="text-xl sm:text-2xl font-black font-nexa text-[#FBBF24] block">Verified</span>
-              <span className="text-xs sm:text-sm font-bold text-gray-300">Expert Highway Chauffeurs</span>
+              <span className="text-xl sm:text-2xl font-think font-nexa text-[#FBBF24] block">Verified</span>
+              <span className="text-xs sm:text-sm font-think text-gray-300">Expert Highway Chauffeurs</span>
             </div>
             <div className="pt-4 md:pt-0">
-              <span className="text-xl sm:text-2xl font-black font-nexa text-[#FBBF24] block">Clean AC</span>
-              <span className="text-xs sm:text-sm font-bold text-gray-300">Disinfected & Modern Fleet</span>
+              <span className="text-xl sm:text-2xl font-think font-nexa text-[#FBBF24] block">Clean AC</span>
+              <span className="text-xs sm:text-sm font-think text-gray-300">Disinfected & Modern Fleet</span>
             </div>
           </div>
-        </div>
+        </div> */}
 
       </div>
     </section>

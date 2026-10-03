@@ -105,7 +105,7 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
           <p>© 2026 {siteConfig.businessName}. All Rights Reserved.</p>
 
-          <p>Designed and developed by <a className='font-manrope font-bold ' href="https://webvault.in/">WebVault</a></p>
+          {/* <p>Designed and developed by <a className='font-manrope font-bold ' href="https://webvault.in/">WebVault</a></p> */}
           
           <div className="flex items-center space-x-6">
             <Link to="/contact" className="hover:text-gray-400">Contact Support</Link>

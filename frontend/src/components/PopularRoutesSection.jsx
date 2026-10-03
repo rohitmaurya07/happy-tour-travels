@@ -126,7 +126,18 @@ export default function PopularRoutesSection({ onSelectRoute }) {
   };
 
   const handleViewAllCity = (city) => {
-    setSelectedCityFilter(city);
+    if (onSelectRoute) {
+      onSelectRoute({ from: city, to: '', type: 'One Way' });
+      return;
+    }
+
+    const homeElem = document.getElementById('home');
+    if (homeElem) {
+      homeElem.scrollIntoView({ behavior: 'smooth' });
+      window.dispatchEvent(new CustomEvent('selectBookingCity', { detail: city }));
+    } else {
+      navigate(`/?from=${encodeURIComponent(city)}#home`);
+    }
   };
 
   return (
@@ -141,7 +152,7 @@ export default function PopularRoutesSection({ onSelectRoute }) {
 
           {/* Left Text */}
           <div className="relative z-10 max-w-2xl text-center md:text-left">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-nexa tracking-tight text-white leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl  font-nexa tracking-tight text-white leading-tight">
               Popular <span className="text-[#FBBF24]">Taxi Routes</span>
             </h2>
             <p className="text-xs sm:text-sm md:text-base text-gray-200 mt-2 font-medium leading-relaxed">
@@ -178,7 +189,7 @@ export default function PopularRoutesSection({ onSelectRoute }) {
                 <button
                   key={city}
                   onClick={() => setSelectedCityFilter(city)}
-                  className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all flex items-center space-x-1 ${
+                  className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-nexa whitespace-nowrap transition-all flex items-center space-x-1 ${
                     isActive
                       ? 'bg-[#FBBF24] text-slate-950 shadow-md font-extrabold ring-2 ring-yellow-400/50'
                       : 'bg-white text-slate-700 hover:bg-gray-100 border border-gray-200 shadow-2xs'
@@ -200,16 +211,10 @@ export default function PopularRoutesSection({ onSelectRoute }) {
             >
               {/* Card Header */}
               <div className="bg-[#0B1B3D] text-white px-5 py-3.5 flex items-center justify-between">
-                <h3 className="text-sm sm:text-base font-black font-nexa">
+                <h3 className="text-sm sm:text-base font-nexa font-nexa">
                   <span className="text-[#FBBF24]">{card.city}</span> - Popular Routes
                 </h3>
-                <button
-                  onClick={() => handleViewAllCity(card.city)}
-                  className="text-xs font-bold text-gray-200 hover:text-[#FBBF24] flex items-center space-x-0.5 transition-colors"
-                >
-                  <span>View All</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
+               
               </div>
 
               {/* Routes Rows List */}
@@ -219,7 +224,7 @@ export default function PopularRoutesSection({ onSelectRoute }) {
                     key={idx}
                     className="px-5 py-3 flex items-center justify-between hover:bg-amber-50/40 transition-colors group"
                   >
-                    <div className="flex items-center space-x-2 text-xs sm:text-sm font-bold text-slate-900">
+                    <div className="flex items-center space-x-2 text-xs sm:text-sm font-nexa text-slate-900">
                       <MapPin className="w-4 h-4 text-slate-900 flex-shrink-0" />
                       <span>{r.from}</span>
                       <ArrowRight className="w-3.5 h-3.5 text-gray-400 group-hover:text-yellow-500 transition-colors" />
@@ -239,8 +244,8 @@ export default function PopularRoutesSection({ onSelectRoute }) {
               {/* Card Footer Button */}
               <div className="p-3 bg-gray-50 border-t border-gray-100">
                 <button
-                  onClick={() => handleViewAllCity(card.city)}
-                  className="w-full py-2 bg-[#E2E8F0]/70 hover:bg-[#CBD5E1] text-[#1E3A8A] font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center space-x-1 transition-colors"
+                  onClick={() => handleViewAllCity(card.city, card.routes[0]?.to)}
+                  className="w-full py-2 bg-[#E2E8F0]/70 hover:bg-[#CBD5E1] text-[#1E3A8A] font-nexa text-xs sm:text-sm rounded-xl flex items-center justify-center space-x-1 transition-colors"
                 >
                   <span>See More {card.city} Routes</span>
                   <ChevronRight className="w-3.5 h-3.5" />

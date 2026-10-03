@@ -26,7 +26,7 @@ Please share availability and booking details.`;
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-brand-gold bg-yellow-400/10 px-4 py-1.5 rounded-full border border-yellow-400/30">
-            Clean, Comfortable & Commercial Tourist Cabs
+            Clean, Comfortable &  Tourist Cabs
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-nexa text-slate-900 font-heading mt-4 tracking-tight">
             Our Premium Fleet & Rates

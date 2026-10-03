@@ -7,22 +7,8 @@ import { bookOnWhatsApp } from '../utils/whatsapp';
 export default function PackagesPage() {
   const { siteConfig } = useSiteData();
   return (
-    <div className="pt-24 pb-20 bg-slate-900 min-h-screen text-white">
+    <div className="pt-24 pb-20 min-h-screen text-white">
       
-      {/* Page Hero Banner */}
-      {/* <div className="bg-slate-950 py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-brand-yellow bg-yellow-400/10 px-4 py-1.5 rounded-full border border-yellow-400/30">
-            Handcrafted North India Itineraries
-          </span>
-          <h1 className="text-4xl sm:text-5xl font-nexa font-heading mt-4 text-white">
-            Tour Packages & Travel Services
-          </h1>
-          <p className="mt-4 text-base sm:text-lg text-gray-300 max-w-3xl mx-auto font-medium">
-            Explore customized holiday packages starting from Jalandhar. From snow-peaked Himachal valleys to spiritual Punjab heritage circuits — book your customized private tour cab.
-          </p>
-        </div>
-      </div> */}
 
       {/* Main Tour Packages Component */}
       <TourPackages />

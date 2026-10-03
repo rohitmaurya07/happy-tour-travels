@@ -59,7 +59,7 @@ export default function RoutesPage() {
   ];
 
   return (
-    <div className="pt-24 pb-20 bg-white min-h-screen">
+    <div className="pt-10 pb-20 bg-white min-h-screen">
       
       {/* Page Hero Banner */}
       {/* <div className="bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-800">

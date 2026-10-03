@@ -48,7 +48,7 @@ export default function ServicesPage() {
   };
 
   return (
-    <div className="pt-24 pb-20 bg-gray-50 min-h-screen">
+    <div className="pt-8 pb-20 bg-gray-50 min-h-screen">
       
       {/* Main Services Grid Component */}
       <Services />

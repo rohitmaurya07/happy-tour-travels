@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   MapPin, Calendar, Clock, ArrowRight, Search, AlertCircle, 
   Plane, Sparkles, X, Crosshair, ShieldCheck, MessageCircle, 
@@ -20,6 +20,7 @@ export default function BookingForm({
   compact = false 
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { popularLocations, siteConfig } = useSiteData();
 
   // Get current date and time defaults
@@ -168,6 +169,36 @@ export default function BookingForm({
     window.addEventListener('selectTripType', handleCustomTripType);
     return () => window.removeEventListener('selectTripType', handleCustomTripType);
   }, []);
+
+  // Listen for city selection from popular routes / external buttons
+  useEffect(() => {
+    const handleCustomBookingCity = (e) => {
+      if (e.detail) {
+        if (typeof e.detail === 'string') {
+          setFromLocation(e.detail);
+          setToLocation('');
+        } else if (e.detail.from) {
+          setFromLocation(e.detail.from);
+          if (e.detail.to !== undefined) setToLocation(e.detail.to);
+        }
+      }
+    };
+    window.addEventListener('selectBookingCity', handleCustomBookingCity);
+    return () => window.removeEventListener('selectBookingCity', handleCustomBookingCity);
+  }, []);
+
+  // Sync from URL search params when landing with ?from=... or ?city=...
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const fromParam = params.get('from') || params.get('city');
+    if (fromParam) {
+      setFromLocation(fromParam);
+    }
+    const toParam = params.get('to');
+    if (toParam) {
+      setToLocation(toParam);
+    }
+  }, [location.search]);
 
   const handleTripTypeChange = (type) => {
     setTripType(type);
@@ -574,7 +605,7 @@ Please share the best custom quote and available vehicle options.`;
             value={fromLocation}
             onFocus={() => setActiveInput('from')}
             onChange={(e) => handleLocationInputChange(e.target.value, 'from')}
-            placeholder={isAirport ? 'Enter airport city / city name' : isHourly ? 'Enter city name' : 'Enter City Name / Airport Name Only'}
+            placeholder={isAirport ? 'Enter airport city / city name' : isHourly ? 'Enter city name' : 'Enter City Name / Airport City Name'}
             className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder:text-gray-400 placeholder:font-normal"
             required
             autoComplete="off"
@@ -615,7 +646,7 @@ Please share the best custom quote and available vehicle options.`;
               value={toLocation}
               onFocus={() => setActiveInput('to')}
               onChange={(e) => handleLocationInputChange(e.target.value, 'to')}
-              placeholder={isAirport ? 'Enter airport city / city name' : 'Enter City Name / Airport Name Only'}
+              placeholder={isAirport ? 'Enter airport city / city name' : 'Enter City Name / Airport City Name'}
               className="w-full bg-transparent text-slate-900 font-bold text-sm focus:outline-none placeholder:text-gray-400 placeholder:font-normal"
               required
               autoComplete="off"

@@ -156,7 +156,7 @@ Thank you.`);
   };
 
   return (
-    <section id="packages" className="py-12 sm:py-16 bg-[#F8FAFC]">
+    <section id="packages" className="  bg-[#F8FAFC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* TOP HERO BANNER */}
@@ -169,7 +169,7 @@ Thank you.`);
             
             {/* Left Column: Heading & 4 Feature Badges */}
             <div className="lg:col-span-7 text-center lg:text-left">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-nexa tracking-tight text-white leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl  tracking-tight text-white leading-tight">
                 Tour Packages & <span className="text-[#FBBF24]">Travel Services</span>
               </h2>
               <p className="text-xs sm:text-sm md:text-base text-gray-200 mt-2 font-medium leading-relaxed max-w-xl">
@@ -229,7 +229,7 @@ Thank you.`);
           
           {/* Header */}
           <div className="flex items-center space-x-2.5 mb-6">
-            <div className="w-9 h-9 rounded-full bg-slate-900 text-yellow-400 flex items-center justify-center shadow-xs">
+            <div className="w-9 h-9 text-yellow-400 flex items-center justify-center shadow-xs">
               <MapPin className="w-5 h-5 text-[#FBBF24]" />
             </div>
             <div>
