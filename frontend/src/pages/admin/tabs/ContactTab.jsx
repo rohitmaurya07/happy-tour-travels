@@ -37,7 +37,7 @@ export default function ContactTab() {
           </div>
           <h1 className="text-2xl font-bold font-nexa text-slate-900">Manage Contact & Location Information</h1>
           <p className="text-xs text-gray-500 font-medium mt-0.5">
-            Update phone numbers, WhatsApp click-to-chat numbers, office address, and Google Maps embed.
+            Update phone numbers, email addresses, WhatsApp click-to-chat details, office address, and Google Maps embed.
           </p>
         </div>
 
@@ -142,16 +142,29 @@ export default function ContactTab() {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Operating Hours
+                Email Address
               </label>
               <input
-                type="text"
-                value={formData.workingHours}
-                onChange={(e) => setFormData({ ...formData, workingHours: e.target.value })}
-                placeholder="24/7 Available (365 Days)"
+                type="email"
+                value={formData.email || ''}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                placeholder="info@happytourandtravels.com"
                 className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl font-bold text-slate-900 text-sm focus:outline-none focus:border-brand-yellow"
               />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Operating Hours
+            </label>
+            <input
+              type="text"
+              value={formData.workingHours}
+              onChange={(e) => setFormData({ ...formData, workingHours: e.target.value })}
+              placeholder="24/7 Available (365 Days)"
+              className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl font-bold text-slate-900 text-sm focus:outline-none focus:border-brand-yellow"
+            />
           </div>
 
         </div>

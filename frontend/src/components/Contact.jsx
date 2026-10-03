@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, MessageCircle, MapPin, Clock } from 'lucide-react';
+import { Phone, MessageCircle, MapPin, Clock, Mail } from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 import Map from './Map';
@@ -70,6 +70,18 @@ export default function Contact() {
                     >
                       {siteConfig.whatsappNumberFormatted}
                     </button>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 rounded-2xl bg-slate-800 text-red-400 flex items-center justify-center flex-shrink-0 border border-slate-700">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="text-xs text-gray-400 font-semibold block">Email Address</span>
+                    <a href={`mailto:${siteConfig.email}`} className="text-sm font-bold text-white hover:text-red-400 transition-colors break-all">
+                      {siteConfig.email}
+                    </a>
                   </div>
                 </div>
 
