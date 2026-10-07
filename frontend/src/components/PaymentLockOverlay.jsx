@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Lock, CreditCard } from 'lucide-react';
 
-export const SHOW_PAYMENT_OVERLAY = false;
+export const SHOW_PAYMENT_OVERLAY = true;
 
 // Custom image path (e.g. QR code, payment scanner, or logo)
 export const OVERLAY_IMAGE_URL = '/assets/images/image.png';
@@ -52,7 +52,7 @@ export default function PaymentLockOverlay({
 
         {/* Sub-text */}
         <p className="text-xs sm:text-sm text-gray-300 mt-3  leading-relaxed">
-          Access to this website is currently restricted. Please complete the required payment to restore full access.
+          Access to this website is currently restricted. Please complete the required payment to get access.
         </p>
 
         {/* Status Tag */}

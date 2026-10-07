@@ -59,7 +59,7 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             <a href={`tel:${siteConfig.phoneNumber}`} className="hover:text-yellow-400 transition-colors flex items-center">
               <Phone className="w-3.5 h-3.5 mr-1 text-yellow-400" />
-              {siteConfig.phoneNumberFormatted}
+              {siteConfig.phoneNumber}
             </a>
             <span>•</span>
             <button 

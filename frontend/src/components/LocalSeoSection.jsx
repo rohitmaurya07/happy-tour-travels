@@ -37,7 +37,7 @@ export default function LocalSeoSection() {
               <div className="bg-gray-50 p-5 rounded-2xl border border-gray-100">
                 <div className="flex items-center space-x-2 text-slate-900 font-bold mb-2">
                   <MapPin className="w-5 h-5 text-brand-yellow flex-shrink-0" />
-                  <h4>Jalandhar Airport Taxi</h4>
+                  <h4>Jalandhar to Airport Taxi</h4>
                 </div>
                 <p className="text-xs text-gray-600 leading-relaxed font-medium">
                   Reliable airport pickup and drop to Sri Guru Ram Dass Jee Airport (Amritsar), Chandigarh Airport, and Delhi IGI Airport. Guaranteed timely arrivals with flight status monitoring.
@@ -78,14 +78,14 @@ export default function LocalSeoSection() {
 
             <div className="mt-8 flex items-center space-x-4">
               <button
-                onClick={() => bookOnWhatsApp(`Hello ${siteConfig.businessName}, I would like to inquire about taxi fares from Jalandhar.`)}
+                onClick={() => bookOnWhatsApp(`Hello ${siteConfig.businessName}, I would like to inquire about taxi fares.`)}
                 className="yellow-gradient-btn px-6 py-3.5 rounded-2xl text-slate-950 font-bold text-sm flex items-center space-x-2 shadow-md"
               >
                 <MessageCircle className="w-4 h-4 fill-slate-950 stroke-none" />
                 <span>Inquire Fares on WhatsApp</span>
               </button>
               <a
-                href={`tel:${siteConfig.phoneNumber}`}
+                href={`tel:7087041604`}
                 className="bg-gray-100 hover:bg-gray-200 text-slate-800 px-6 py-3.5 rounded-2xl font-bold text-sm flex items-center space-x-2 transition-colors"
               >
                 <Phone className="w-4 h-4 text-slate-700" />

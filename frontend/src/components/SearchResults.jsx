@@ -386,10 +386,10 @@ Please share the best discounted custom rate and available vehicle options.`;
               </button>
 
               <a
-                href={`tel:${siteConfig?.phone || '+917837175090'}`}
+                href={`tel:${siteConfig?.phoneNumber || '+917837175090'}`}
                 className="w-full sm:w-auto px-6 py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm sm:text-base rounded-2xl transition-all flex items-center justify-center space-x-2"
               >
-                <span>Call Us: {siteConfig?.phone || '+91 78371 75090'}</span>
+                <span>Call Us: {siteConfig?.phoneNumber || '+91 78371 75090'}</span>
               </a>
             </div>
 

@@ -159,69 +159,14 @@ Thank you.`);
     <section id="packages" className="  bg-[#F8FAFC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* TOP HERO BANNER */}
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-[#0C1B33] via-[#0F284E] to-[#1E3A8A] text-white p-6 sm:p-10 shadow-2xl mb-12 border border-slate-700">
-          
-          {/* Subtle glow / backdrop overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-sky-400/15 via-transparent to-transparent pointer-events-none" />
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-            
-            {/* Left Column: Heading & 4 Feature Badges */}
-            <div className="lg:col-span-7 text-center lg:text-left">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl  tracking-tight text-white leading-tight">
-                Tour Packages & <span className="text-[#FBBF24]">Travel Services</span>
-              </h2>
-              <p className="text-xs sm:text-sm md:text-base text-gray-200 mt-2 font-medium leading-relaxed max-w-xl">
-                Explore North India with our comfortable car services. Choose your destination, select your dates and duration, and get a customized quote for your trip.
-              </p>
-
-              {/* 4 Feature Badges */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-slate-700/80">
-                <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                  <div className="w-10 h-10 rounded-full bg-[#FBBF24] text-slate-950 flex items-center justify-center mb-1.5 shadow-sm">
-                    <Mountain className="w-5 h-5" />
-                  </div>
-                  <span className="text-[11px] sm:text-xs font-bold text-gray-200 leading-tight">
-                    Wide Range of Destinations
-                  </span>
-                </div>
-
-                <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                  <div className="w-10 h-10 rounded-full bg-[#FBBF24] text-slate-950 flex items-center justify-center mb-1.5 shadow-sm">
-                    <Car className="w-5 h-5" />
-                  </div>
-                  <span className="text-[11px] sm:text-xs font-bold text-gray-200 leading-tight">
-                    Well Maintained Cabs
-                  </span>
-                </div>
-
-                <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                  <div className="w-10 h-10 rounded-full bg-[#FBBF24] text-slate-950 flex items-center justify-center mb-1.5 shadow-sm">
-                    <Users className="w-5 h-5" />
-                  </div>
-                  <span className="text-[11px] sm:text-xs font-bold text-gray-200 leading-tight">
-                    Perfect for Family & Groups
-                  </span>
-                </div>
-
-                <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
-                  <div className="w-10 h-10 rounded-full bg-[#FBBF24] text-slate-950 flex items-center justify-center mb-1.5 shadow-sm">
-                    <ShieldCheck className="w-5 h-5" />
-                  </div>
-                  <span className="text-[11px] sm:text-xs font-bold text-gray-200 leading-tight">
-                    Safe & Reliable Service
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Fleet Visual */}
-            <div className="lg:col-span-5 flex items-center justify-center relative">
-              
-            </div>
-
-          </div>
+        {/* TOP HERO BANNER (Tour Packages & Travel Services) */}
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl mb-10 border border-slate-800/80 bg-slate-950">
+          <img 
+            src="/assets/images/tour_packages_banner.jpg" 
+            alt="Tour Packages & Travel Services - Happy Tour & Travels" 
+            className="w-full h-auto object-cover rounded-3xl select-none"
+            loading="eager"
+          />
         </div>
 
         {/* TOP DESTINATIONS SECTION */}

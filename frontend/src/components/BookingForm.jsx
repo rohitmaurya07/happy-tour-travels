@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   MapPin, Calendar, Clock, ArrowRight, Search, AlertCircle, 
   Plane, Sparkles, X, Crosshair, ShieldCheck, MessageCircle, 
-  PhoneCall, Building2, ChevronRight, Repeat, Info
+  PhoneCall, Building2, ChevronRight, Repeat, Info, ArrowLeftRight
 } from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
@@ -232,6 +232,18 @@ export default function BookingForm({
       setToLocation(val);
       setActiveInput('to');
     }
+  };
+
+  const handleSwapLocations = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    const tempFrom = fromLocation;
+    const tempTo = toLocation;
+    setFromLocation(tempTo);
+    setToLocation(tempFrom);
+    setActiveInput(null);
   };
 
   const selectSuggestion = (item, type) => {
@@ -490,24 +502,7 @@ Please share the best custom quote and available vehicle options.`;
               </div>
             ))
           ) : (
-            <div className="p-4 text-center bg-amber-50/60">
-              <p className="text-xs font-bold text-slate-800">
-                {currentQuery ? `"${currentQuery}"No matching locations` : 'No matching locations'}
-              </p>
-              <p className="text-[10px] text-slate-600 mt-0.5 mb-2.5">
-               
-              </p>
-              {currentQuery && (
-                <button
-                  type="button"
-                  onMouseDown={() => handleDirectWhatsAppInquiryForLocation(currentQuery, type)}
-                  className="w-full py-2 px-3 bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold rounded-xl shadow-sm flex items-center justify-center space-x-1.5 transition-all"
-                >
-                  <MessageCircle className="w-3.5 h-3.5 fill-white" />
-                  <span>Enquire for &ldquo;{currentQuery}&rdquo; on WhatsApp</span>
-                </button>
-              )}
-            </div>
+            <div></div>
           )}
         </div>
       </div>
@@ -561,19 +556,24 @@ Please share the best custom quote and available vehicle options.`;
               <MapPin className="w-3.5 h-3.5 mr-1 text-brand-yellow" />
               {isHourly ? 'City Name' : 'From (Pickup)'}
             </span>
-            {fromLocation && (
-              <button
-                type="button"
-                onClick={() => {
-                  setFromLocation('');
-                  setActiveInput('from');
-                }}
-                className="text-gray-400 hover:text-gray-600 p-1 -m-1"
-                aria-label="Clear pickup location"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
+            <div className="flex items-center space-x-1">
+              {!isHourly && (
+                <div></div>
+              )}
+              {fromLocation && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFromLocation('');
+                    setActiveInput('from');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 p-1 -m-1"
+                  aria-label="Clear pickup location"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
           </label>
           <input
             type="text"
@@ -588,6 +588,19 @@ Please share the best custom quote and available vehicle options.`;
 
           {/* Autocomplete Dropdown */}
           {renderSuggestionsDropdown('from')}
+
+          {/* Floating Swap / Exchange Button between From and To */}
+          {!isHourly && (
+            <button
+              type="button"
+              onClick={handleSwapLocations}
+              title="Exchange From and To locations"
+              aria-label="Exchange From and To locations"
+              className="absolute -bottom-3.5 left-1/2 -translate-x-1/2 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:left-auto md:-right-5 z-30 w-8 h-8 rounded-full bg-white hover:bg-yellow-400 text-slate-700 hover:text-slate-950 border border-gray-300 hover:border-yellow-500 shadow-md hover:shadow-lg flex items-center justify-center transition-all duration-300 group active:scale-90"
+            >
+              <ArrowLeftRight className="w-3.5 h-3.5 rotate-90 transition-transform duration-300 group-hover:rotate-180" />
+            </button>
+          )}
         </div>
 
         {/* To Field (Destination) - Hidden in Hourly Rental */}
@@ -603,19 +616,24 @@ Please share the best custom quote and available vehicle options.`;
                 <MapPin className="w-3.5 h-3.5 mr-1 text-red-500" />
                 To (Destination)
               </span>
-              {toLocation && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setToLocation('');
-                    setActiveInput('to');
-                  }}
-                  className="text-gray-400 hover:text-gray-600 p-1 -m-1"
-                  aria-label="Clear destination"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
+              <div className="flex items-center space-x-1">
+                <div>
+                  
+                </div>
+                {toLocation && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setToLocation('');
+                      setActiveInput('to');
+                    }}
+                    className="text-gray-400 hover:text-gray-600 p-1 -m-1"
+                    aria-label="Clear destination"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
             </label>
             <input
               type="text"
