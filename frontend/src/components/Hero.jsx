@@ -52,14 +52,10 @@ export default function Hero({ onSearch }) {
       {/* Main Hero Centered Content */}
       <div className="relative z-10 w-full max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 text-center my-auto flex flex-col items-center justify-center">
         
-        {/* Trust Badge */}
-        <div className="inline-flex items-center space-x-2 bg-[#FFC72C]/15 border border-[#FFC72C]/35 px-3.5 py-1 rounded-full text-[#FFC72C] text-xs font-semibold mb-2 sm:mb-4 backdrop-blur-md">
-          <Star className="w-3.5 h-3.5 fill-[#FFC72C] text-[#FFC72C]" />
-          <span>{trustBadge}</span>
-        </div>
+       
 
         {/* Clean Hero Title */}
-        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-nexa tracking-tight font-heading leading-tight drop-shadow-md max-w-4xl">
+        <h1 className="text-2xl mt-20 sm:text-4xl lg:text-5xl font-nexa tracking-tight font-heading leading-tight drop-shadow-md max-w-4xl">
           {renderHeroTitle()}
         </h1>
 

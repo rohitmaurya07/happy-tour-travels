@@ -358,10 +358,31 @@ export const KNOWN_DISTANCES = {
 
 export const normalizeLocation = (str) => {
   if (!str || typeof str !== 'string') return '';
-  let clean = str.replace(/[(),.\-]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+  let clean = str.replace(/[(),.\-_/]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
 
-  // Airport alias normalizations
+  // Delhi NCR / Delhi Airport Cluster Normalization
+  // Delhi, New Delhi, Delhi Airport, Delhi Airpot, Gurugram, Gurgaon, Noida, Greater Noida, Delhi NCR, Delhi Division, Ghaziabad, Gaziabad, Faridabad
   if (
+    clean === 'delhi' ||
+    clean === 'new delhi' ||
+    clean === 'delhi ncr' ||
+    clean === 'ncr' ||
+    clean === 'delhi division' ||
+    clean === 'gurugram' ||
+    clean === 'gurgaon' ||
+    clean.includes('gurgaon') ||
+    clean.includes('gurugram') ||
+    clean === 'noida' ||
+    clean === 'greater noida' ||
+    clean.includes('noida') ||
+    clean === 'faridabad' ||
+    clean.includes('faridabad') ||
+    clean === 'ghaziabad' ||
+    clean === 'gaziabad' ||
+    clean.includes('ghaziabad') ||
+    clean.includes('gaziabad') ||
+    clean.includes('delhi airpot') ||
+    clean.includes('delhi airport') ||
     clean.includes('indira gandhi') ||
     clean.includes('igi airport') ||
     clean.includes('delhi igi') ||
@@ -375,6 +396,27 @@ export const normalizeLocation = (str) => {
     return 'delhi airport';
   }
 
+  // Chandigarh / Tricity / Chandigarh Airport Cluster Normalization
+  // Chandigarh, Chandigarh Airport, Zirakpur, Mohali, SAS Nagar, S.A.S Nagar, Sahibzada Ajit Singh Nagar
+  if (
+    clean === 'chandigarh' ||
+    clean.includes('chandigarh') ||
+    clean === 'mohali' ||
+    clean.includes('mohali') ||
+    clean === 'zirakpur' ||
+    clean.includes('zirakpur') ||
+    clean.includes('sas nagar') ||
+    clean.includes('s a s nagar') ||
+    clean.includes('ajit singh nagar') ||
+    clean.includes('bhagat singh') ||
+    clean.includes('chandigarh international airport') ||
+    clean === 'chandigarh airport ixc' ||
+    clean === 'ixc'
+  ) {
+    return 'chandigarh airport';
+  }
+
+  // Amritsar Airport
   if (
     clean.includes('guru ram dass') ||
     clean.includes('guru ram das') ||
@@ -386,15 +428,7 @@ export const normalizeLocation = (str) => {
     return 'amritsar airport';
   }
 
-  if (
-    clean.includes('bhagat singh') ||
-    clean.includes('chandigarh international airport') ||
-    clean === 'chandigarh airport ixc' ||
-    clean === 'ixc'
-  ) {
-    return 'chandigarh airport';
-  }
-
+  // Dehradun Airport
   if (
     clean.includes('jolly grant') ||
     clean.includes('dehradun airport') ||

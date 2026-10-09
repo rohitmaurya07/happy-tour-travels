@@ -83,8 +83,8 @@ export default function SearchResults({ searchParams, onModifySearch }) {
 - Capacity: ${fareItem.seats || fleetInfo.seats || '4 Passengers'}, ${fleetInfo.luggage || '2-3 Bags'}
 
 *Price Details (All-Inclusive):*
-- Total Fare: ₹${fareItem.estimatedTotal.toLocaleString('en-IN')} (Fuel & Chauffeur Included)
-- Tolls & Parking: Payable at actuals
+- Total Fare: ₹${fareItem.estimatedTotal.toLocaleString('en-IN')} (Fuel & Chauffeur & Tolls Included)
+- Parking Extra (if used)
 
 Please confirm cab availability.`;
 

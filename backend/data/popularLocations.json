@@ -185,10 +185,26 @@
   },
   {
     "name": "Delhi Airport",
-    "state": "Delhi",
+    "state": "Delhi NCR",
     "type": "Airport",
     "lat": 28.5562,
     "lon": 77.1,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Delhi Division",
+    "state": "Delhi NCR",
+    "type": "City",
+    "lat": 28.6139,
+    "lon": 77.209,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Delhi NCR",
+    "state": "Delhi NCR",
+    "type": "Capital Region",
+    "lat": 28.6139,
+    "lon": 77.209,
     "regionType": "PLAIN"
   },
   {
@@ -256,11 +272,27 @@
     "regionType": "PLAIN"
   },
   {
+    "name": "Gaziabad",
+    "state": "Uttar Pradesh",
+    "type": "NCR Hub",
+    "lat": 28.6692,
+    "lon": 77.4538,
+    "regionType": "PLAIN"
+  },
+  {
     "name": "Ghaziabad",
     "state": "Uttar Pradesh",
     "type": "NCR Hub",
     "lat": 28.6692,
     "lon": 77.4538,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Greater Noida",
+    "state": "Uttar Pradesh",
+    "type": "NCR Hub",
+    "lat": 28.4744,
+    "lon": 77.504,
     "regionType": "PLAIN"
   },
   {
@@ -272,11 +304,19 @@
     "regionType": "PLAIN"
   },
   {
+    "name": "Gurgaon",
+    "state": "Haryana",
+    "type": "NCR Hub",
+    "lat": 28.4595,
+    "lon": 77.0266,
+    "regionType": "PLAIN"
+  },
+  {
     "name": "Gurugram",
     "state": "Haryana",
-    "type": "City",
-    "lat": 31.326,
-    "lon": 75.576,
+    "type": "NCR Hub",
+    "lat": 28.4595,
+    "lon": 77.0266,
     "regionType": "PLAIN"
   },
   {
@@ -624,6 +664,14 @@
     "regionType": "PLAIN"
   },
   {
+    "name": "New Delhi",
+    "state": "Delhi NCR",
+    "type": "Capital & Hub",
+    "lat": 28.6139,
+    "lon": 77.209,
+    "regionType": "PLAIN"
+  },
+  {
     "name": "Noida",
     "state": "Uttar Pradesh",
     "type": "NCR Hub",
@@ -744,6 +792,14 @@
     "regionType": "PLAIN"
   },
   {
+    "name": "S.A.S. Nagar",
+    "state": "Punjab",
+    "type": "Tricity Hub",
+    "lat": 30.7046,
+    "lon": 76.7179,
+    "regionType": "PLAIN"
+  },
+  {
     "name": "Samrala",
     "state": "Punjab",
     "type": "City",
@@ -757,6 +813,14 @@
     "type": "City",
     "lat": 30.2455,
     "lon": 75.842,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "SAS Nagar",
+    "state": "Punjab",
+    "type": "Tricity Hub",
+    "lat": 30.7046,
+    "lon": 76.7179,
     "regionType": "PLAIN"
   },
   {
@@ -893,6 +957,14 @@
     "type": "City",
     "lat": 30.9734,
     "lon": 74.9892,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "Zirakpur",
+    "state": "Punjab",
+    "type": "Tricity Hub",
+    "lat": 30.6425,
+    "lon": 76.8173,
     "regionType": "PLAIN"
   }
 ]

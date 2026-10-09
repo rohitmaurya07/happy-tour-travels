@@ -553,11 +553,11 @@
       "dzire": 2170,
       "verna": 2387,
       "ertiga": 2635,
-      "innova": 3034,
-      "fortuner": 4399,
-      "tempo": 4854
+      "innova": 3116,
+      "fortuner": 4518,
+      "tempo": 4986
     },
-    "distanceKm": 148,
+    "distanceKm": 155,
     "active": true
   },
   {
@@ -584,14 +584,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 2240,
-      "verna": 2464,
-      "ertiga": 2720,
-      "innova": 3300.5,
-      "fortuner": 4786,
-      "tempo": 5281
+      "dzire": 2170,
+      "verna": 2387,
+      "ertiga": 2635,
+      "innova": 3116,
+      "fortuner": 4518,
+      "tempo": 4986
     },
-    "distanceKm": 142,
+    "distanceKm": 155,
     "active": true
   },
   {
@@ -754,14 +754,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 5334,
-      "verna": 5867,
-      "ertiga": 6256,
-      "innova": 7810.5,
-      "fortuner": 11325,
-      "tempo": 12497
+      "dzire": 5460,
+      "verna": 6006,
+      "ertiga": 6630,
+      "innova": 7995,
+      "fortuner": 11593,
+      "tempo": 12792
     },
-    "distanceKm": 375,
+    "distanceKm": 385,
     "active": true
   },
   {
@@ -788,14 +788,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 5194,
-      "verna": 5713,
-      "ertiga": 6307,
-      "innova": 7605.5,
-      "fortuner": 11028,
-      "tempo": 12169
+      "dzire": 5460,
+      "verna": 6006,
+      "ertiga": 6630,
+      "innova": 7995,
+      "fortuner": 11593,
+      "tempo": 12792
     },
-    "distanceKm": 395,
+    "distanceKm": 385,
     "active": true
   },
   {
@@ -805,14 +805,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 5348,
-      "verna": 5883,
-      "ertiga": 6494,
-      "innova": 7831,
-      "fortuner": 11355,
-      "tempo": 12530
+      "dzire": 5460,
+      "verna": 6006,
+      "ertiga": 6630,
+      "innova": 7995,
+      "fortuner": 11593,
+      "tempo": 12792
     },
-    "distanceKm": 410,
+    "distanceKm": 385,
     "active": true
   },
   {
@@ -822,14 +822,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 5698,
-      "verna": 6268,
-      "ertiga": 6919,
-      "innova": 8343.5,
-      "fortuner": 12098,
-      "tempo": 13350
+      "dzire": 5460,
+      "verna": 6006,
+      "ertiga": 6630,
+      "innova": 7995,
+      "fortuner": 11593,
+      "tempo": 12792
     },
-    "distanceKm": 415,
+    "distanceKm": 385,
     "active": true
   },
   {
@@ -839,14 +839,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 5516,
-      "verna": 6068,
-      "ertiga": 6698,
-      "innova": 8077,
-      "fortuner": 11712,
-      "tempo": 12923
+      "dzire": 5460,
+      "verna": 6006,
+      "ertiga": 6630,
+      "innova": 7995,
+      "fortuner": 11593,
+      "tempo": 12792
     },
-    "distanceKm": 394,
+    "distanceKm": 385,
     "active": true
   },
   {
@@ -924,14 +924,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 3455,
-      "verna": 3801,
-      "ertiga": 4196,
-      "innova": 5311,
-      "fortuner": 7701,
-      "tempo": 8498
+      "dzire": 3640,
+      "verna": 4004,
+      "ertiga": 4420,
+      "innova": 5590,
+      "fortuner": 8106,
+      "tempo": 8944
     },
-    "distanceKm": 247,
+    "distanceKm": 260,
     "active": true
   },
   {
@@ -1128,14 +1128,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 5174,
-      "verna": 5691,
-      "ertiga": 6283,
-      "innova": 7955,
-      "fortuner": 11535,
-      "tempo": 12728
+      "dzire": 5460,
+      "verna": 6006,
+      "ertiga": 6630,
+      "innova": 7995,
+      "fortuner": 11593,
+      "tempo": 12792
     },
-    "distanceKm": 370,
+    "distanceKm": 385,
     "active": true
   },
   {
@@ -1145,14 +1145,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4330,
-      "verna": 4763,
-      "ertiga": 5258,
-      "innova": 6644,
-      "fortuner": 9634,
-      "tempo": 10630
+      "dzire": 4500,
+      "verna": 4950,
+      "ertiga": 5500,
+      "innova": 6500,
+      "fortuner": 9425,
+      "tempo": 10400
     },
-    "distanceKm": 310,
+    "distanceKm": 330,
     "active": true
   },
   {
@@ -1703,18 +1703,19 @@
     "id": "chandigarh-airport-kasauli",
     "pickup": "Chandigarh Airport",
     "destination": "Kasauli",
-    "routeType": "HILL",
+    "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 1311,
+      "dzire": 1173,
       "verna": 1442,
       "ertiga": 1656,
-      "innova": 2070,
+      "innova": 2656,
       "fortuner": 3002,
       "tempo": 3312
     },
-    "distanceKm": 69,
-    "active": true
+    "distanceKm": 250,
+    "active": true,
+    "updatedAt": "2026-10-09T14:18:10.913Z"
   },
   {
     "id": "chandigarh-airport-solan",
@@ -1737,18 +1738,19 @@
     "id": "chandigarh-airport-shimla",
     "pickup": "Chandigarh Airport",
     "destination": "Shimla",
-    "routeType": "HILL",
+    "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 2337,
+      "dzire": 2091,
       "verna": 2571,
       "ertiga": 2952,
-      "innova": 3690,
+      "innova": 3952,
       "fortuner": 5351,
       "tempo": 5904
     },
-    "distanceKm": 123,
-    "active": true
+    "distanceKm": 250,
+    "active": true,
+    "updatedAt": "2026-10-09T14:20:28.167Z"
   },
   {
     "id": "chandigarh-airport-chail",
@@ -1771,18 +1773,19 @@
     "id": "chandigarh-airport-kufri",
     "pickup": "Chandigarh Airport",
     "destination": "Kufri",
-    "routeType": "HILL",
+    "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 2565,
+      "dzire": 2295,
       "verna": 2822,
       "ertiga": 3240,
-      "innova": 4050,
+      "innova": 4240,
       "fortuner": 5873,
       "tempo": 6480
     },
-    "distanceKm": 135,
-    "active": true
+    "distanceKm": 250,
+    "active": true,
+    "updatedAt": "2026-10-09T14:21:07.019Z"
   },
   {
     "id": "chandigarh-airport-narkanda",
@@ -1941,18 +1944,19 @@
     "id": "chandigarh-airport-manikaran",
     "pickup": "Chandigarh Airport",
     "destination": "Manikaran",
-    "routeType": "HILL",
+    "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4902,
+      "dzire": 4386,
       "verna": 5392,
       "ertiga": 6192,
-      "innova": 7740,
+      "innova": 7492,
       "fortuner": 11223,
       "tempo": 12384
     },
-    "distanceKm": 258,
-    "active": true
+    "distanceKm": 250,
+    "active": true,
+    "updatedAt": "2026-10-09T14:21:45.076Z"
   },
   {
     "id": "chandigarh-airport-mcleod-ganj",
@@ -1975,18 +1979,19 @@
     "id": "chandigarh-airport-manali",
     "pickup": "Chandigarh Airport",
     "destination": "Manali",
-    "routeType": "HILL",
+    "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 5320,
+      "dzire": 4760,
       "verna": 5852,
       "ertiga": 6720,
-      "innova": 8400,
+      "innova": 8020,
       "fortuner": 12180,
       "tempo": 13440
     },
-    "distanceKm": 280,
-    "active": true
+    "distanceKm": 250,
+    "active": true,
+    "updatedAt": "2026-10-09T14:22:17.639Z"
   },
   {
     "id": "chandigarh-airport-solang-valley",
@@ -2369,14 +2374,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 1360,
-      "verna": 1496,
-      "ertiga": 1960,
-      "innova": 2960,
-      "fortuner": 4292,
-      "tempo": 4736
+      "dzire": 1500,
+      "verna": 1650,
+      "ertiga": 2100,
+      "innova": 3100,
+      "fortuner": 4495,
+      "tempo": 4960
     },
-    "distanceKm": 100,
+    "distanceKm": 110,
     "active": true
   },
   {
@@ -2964,14 +2969,14 @@
     "routeType": "PLAIN",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4770,
-      "verna": 5247,
-      "ertiga": 5770,
-      "innova": 6770,
-      "fortuner": 9817,
-      "tempo": 10832
+      "dzire": 4500,
+      "verna": 4950,
+      "ertiga": 5500,
+      "innova": 6500,
+      "fortuner": 9425,
+      "tempo": 10400
     },
-    "distanceKm": 350,
+    "distanceKm": 330,
     "active": true
   },
   {

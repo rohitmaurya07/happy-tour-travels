@@ -22,7 +22,7 @@ export default function ServicesPage() {
     { from: 'Jalandhar', to: 'Delhi', type: 'One Way Taxi (Jalandhar → Delhi NCR)', vehicle: 'Dzire / Ertiga / Innova', rate: 'Dzire ₹5,460 | Ertiga ₹6,000 | Innova ₹7,500', tripType: 'One Way' },
     { from: 'Jalandhar', to: 'Chandigarh', type: 'One Way Taxi (Jalandhar → Chandigarh)', vehicle: 'Dzire / Ertiga / Innova', rate: 'Dzire ₹2,500 | Ertiga ₹3,000 | Innova ₹4,500', tripType: 'One Way' },
     { from: 'Jalandhar', to: 'Amritsar', type: 'One Way Taxi (Jalandhar → Amritsar)', vehicle: 'Dzire / Ertiga / Innova', rate: 'Dzire ₹1,900 | Ertiga ₹2,400 | Innova ₹3,500', tripType: 'One Way' },
-    { from: 'Jalandhar', to: 'Shimla', type: 'Hill Station One Way (Jalandhar → Shimla)', vehicle: 'Dzire / Ertiga / Innova', rate: 'Dzire ₹3,600 | Ertiga ₹4,320 | Innova ₹5,400', tripType: 'One Way' },
+    { from: 'Jalandhar', to: 'Shimla', type: 'Hill Station One Way (Jalandhar → Shimla)', vehicle: 'Dzire / Ertiga / Innova', rate: 'Dzire ₹5,200 | Ertiga ₹6,500 | Innova ₹8,000', tripType: 'One Way' },
     { from: 'Jalandhar', to: 'Manali', type: 'Himachal Tour (Jalandhar → Manali)', vehicle: 'Dzire / Ertiga / Innova', rate: 'Dzire ₹6,300 | Ertiga ₹7,560 | Innova ₹9,450', tripType: 'One Way' },
     { from: 'Jalandhar', to: 'Haridwar', type: 'Pilgrimage Route (Jalandhar → Haridwar)', vehicle: 'Dzire / Ertiga / Innova', rate: 'Dzire ₹4,500 | Ertiga ₹5,400 | Innova ₹6,750', tripType: 'One Way' },
     { from: 'Jalandhar', to: 'Katra', type: 'Vaishno Devi Route (Jalandhar → Katra)', vehicle: 'Dzire / Ertiga / Innova', rate: 'Dzire ₹4,500 | Ertiga ₹5,400 | Innova ₹6,750', tripType: 'One Way' },

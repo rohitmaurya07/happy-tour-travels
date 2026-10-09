@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
-import { getDistanceKm } from '../utils/distance';
+import { getDistanceKm, normalizeCity } from '../utils/distance';
 
 export default function BookingForm({ 
   onSearch, 
@@ -305,9 +305,11 @@ export default function BookingForm({
     if (!locName || !locName.trim()) return false;
     const clean = locName.trim().toLowerCase();
     if (clean.includes('rental') || clean.includes('local city rental')) return true;
+    const norm = normalizeCity(locName);
+    if (norm === 'delhi airport' || norm === 'chandigarh airport' || norm === 'amritsar airport' || norm === 'dehradun airport') return true;
     return (popularLocations || []).some((item) => {
       const n = (item.name || item.title || '').trim().toLowerCase();
-      return n === clean;
+      return n === clean || normalizeCity(n) === norm;
     });
   };
 
@@ -456,7 +458,7 @@ Please share the best custom quote and available vehicle options.`;
         }`}
       >
         {/* GPS Quick Detect */}
-        <div className="p-2 bg-slate-50 border-b border-slate-100">
+        {/* <div className="p-2 bg-slate-50 border-b border-slate-100">
           <button
             type="button"
             onMouseDown={() => handleDetectLocation(type)}
@@ -465,7 +467,7 @@ Please share the best custom quote and available vehicle options.`;
             <Crosshair className={`w-3.5 h-3.5 text-amber-600 flex-shrink-0 ${isLocating ? 'animate-spin' : ''}`} />
             <span className="truncate">{isLocating ? 'Detecting your city...' : '📍 Auto-Detect Current City (GPS)'}</span>
           </button>
-        </div>
+        </div> */}
 
         {/* Suggestions List */}
         <div className="max-h-60 overflow-y-auto divide-y divide-gray-100 bg-white">
