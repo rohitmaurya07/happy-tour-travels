@@ -1713,9 +1713,9 @@
       "fortuner": 3002,
       "tempo": 3312
     },
-    "distanceKm": 250,
+    "distanceKm": 69,
     "active": true,
-    "updatedAt": "2026-10-09T14:18:10.913Z"
+    "updatedAt": "2026-10-09T16:06:09.992Z"
   },
   {
     "id": "chandigarh-airport-solan",
@@ -1724,15 +1724,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 1444,
-      "verna": 1588,
+      "dzire": 1292,
+      "verna": 1589,
       "ertiga": 1824,
-      "innova": 2280,
+      "innova": 2824,
       "fortuner": 3306,
       "tempo": 3648
     },
     "distanceKm": 76,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-shimla",
@@ -1748,9 +1749,9 @@
       "fortuner": 5351,
       "tempo": 5904
     },
-    "distanceKm": 250,
+    "distanceKm": 123,
     "active": true,
-    "updatedAt": "2026-10-09T14:20:28.167Z"
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-chail",
@@ -1759,15 +1760,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 2337,
+      "dzire": 2091,
       "verna": 2571,
       "ertiga": 2952,
-      "innova": 3690,
+      "innova": 3952,
       "fortuner": 5351,
       "tempo": 5904
     },
     "distanceKm": 123,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-kufri",
@@ -1783,9 +1785,9 @@
       "fortuner": 5873,
       "tempo": 6480
     },
-    "distanceKm": 250,
+    "distanceKm": 135,
     "active": true,
-    "updatedAt": "2026-10-09T14:21:07.019Z"
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-narkanda",
@@ -1794,15 +1796,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 3705,
-      "verna": 4076,
+      "dzire": 3315,
+      "verna": 4077,
       "ertiga": 4680,
-      "innova": 5850,
+      "innova": 5680,
       "fortuner": 8483,
       "tempo": 9360
     },
     "distanceKm": 195,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-mandi",
@@ -1811,15 +1814,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4180,
-      "verna": 4598,
+      "dzire": 3740,
+      "verna": 4600,
       "ertiga": 5280,
-      "innova": 6600,
+      "innova": 6280,
       "fortuner": 9570,
       "tempo": 10560
     },
     "distanceKm": 220,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-bir-billing",
@@ -1828,15 +1832,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4180,
-      "verna": 4598,
+      "dzire": 3740,
+      "verna": 4600,
       "ertiga": 5280,
-      "innova": 6600,
+      "innova": 6280,
       "fortuner": 9570,
       "tempo": 10560
     },
     "distanceKm": 220,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-bir",
@@ -1845,15 +1850,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4180,
-      "verna": 4598,
+      "dzire": 3740,
+      "verna": 4600,
       "ertiga": 5280,
-      "innova": 6600,
+      "innova": 6280,
       "fortuner": 9570,
       "tempo": 10560
     },
     "distanceKm": 220,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-palampur",
@@ -1862,15 +1868,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4275,
-      "verna": 4703,
+      "dzire": 3825,
+      "verna": 4705,
       "ertiga": 5400,
-      "innova": 6750,
+      "innova": 6700,
       "fortuner": 9788,
       "tempo": 10800
     },
     "distanceKm": 225,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-jibhi",
@@ -1879,15 +1886,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4427,
-      "verna": 4870,
+      "dzire": 3961,
+      "verna": 4872,
       "ertiga": 5592,
-      "innova": 6990,
+      "innova": 6892,
       "fortuner": 10136,
       "tempo": 11184
     },
     "distanceKm": 233,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-kullu",
@@ -1896,15 +1904,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4636,
-      "verna": 5100,
+      "dzire": 4148,
+      "verna": 5102,
       "ertiga": 5856,
-      "innova": 7320,
+      "innova": 7156,
       "fortuner": 10614,
       "tempo": 11712
     },
     "distanceKm": 244,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-kasol",
@@ -1913,15 +1922,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4807,
-      "verna": 5288,
+      "dzire": 4301,
+      "verna": 5290,
       "ertiga": 6072,
-      "innova": 7590,
+      "innova": 7372,
       "fortuner": 11006,
       "tempo": 12144
     },
     "distanceKm": 253,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-dharamshala",
@@ -1930,15 +1940,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4807,
-      "verna": 5288,
+      "dzire": 4301,
+      "verna": 5290,
       "ertiga": 6072,
-      "innova": 7590,
+      "innova": 7372,
       "fortuner": 11006,
       "tempo": 12144
     },
     "distanceKm": 253,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-manikaran",
@@ -1954,9 +1965,9 @@
       "fortuner": 11223,
       "tempo": 12384
     },
-    "distanceKm": 250,
+    "distanceKm": 258,
     "active": true,
-    "updatedAt": "2026-10-09T14:21:45.076Z"
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-mcleod-ganj",
@@ -1965,15 +1976,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 4997,
-      "verna": 5497,
+      "dzire": 4471,
+      "verna": 5499,
       "ertiga": 6312,
-      "innova": 7890,
+      "innova": 7612,
       "fortuner": 11441,
       "tempo": 12624
     },
     "distanceKm": 263,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-manali",
@@ -1989,9 +2001,9 @@
       "fortuner": 12180,
       "tempo": 13440
     },
-    "distanceKm": 250,
+    "distanceKm": 280,
     "active": true,
-    "updatedAt": "2026-10-09T14:22:17.639Z"
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-solang-valley",
@@ -2000,15 +2012,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 5510,
-      "verna": 6061,
+      "dzire": 4930,
+      "verna": 6064,
       "ertiga": 6960,
-      "innova": 8700,
+      "innova": 8260,
       "fortuner": 12615,
       "tempo": 13920
     },
     "distanceKm": 290,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-dalhousie",
@@ -2017,15 +2030,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 5833,
-      "verna": 6416,
+      "dzire": 5219,
+      "verna": 6419,
       "ertiga": 7368,
-      "innova": 9210,
+      "innova": 8668,
       "fortuner": 13355,
       "tempo": 14736
     },
     "distanceKm": 307,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-chamba",
@@ -2034,15 +2048,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 6213,
-      "verna": 6834,
+      "dzire": 5559,
+      "verna": 6838,
       "ertiga": 7848,
-      "innova": 9810,
+      "innova": 9148,
       "fortuner": 14225,
       "tempo": 15696
     },
     "distanceKm": 327,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "chandigarh-airport-khajjiar",
@@ -2051,15 +2066,16 @@
     "routeType": "HILL",
     "pricingType": "fixed",
     "vehiclePrices": {
-      "dzire": 6251,
-      "verna": 6876,
+      "dzire": 5593,
+      "verna": 6880,
       "ertiga": 7896,
-      "innova": 9870,
+      "innova": 9196,
       "fortuner": 14312,
       "tempo": 15792
     },
     "distanceKm": 329,
-    "active": true
+    "active": true,
+    "updatedAt": "2026-10-09T16:06:09.994Z"
   },
   {
     "id": "mussoorie-delhi-airport",
