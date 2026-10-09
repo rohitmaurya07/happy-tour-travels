@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Lock, CreditCard } from 'lucide-react';
 
-export const SHOW_PAYMENT_OVERLAY = true;
+export const SHOW_PAYMENT_OVERLAY = false;
 
 // Custom image path (e.g. QR code, payment scanner, or logo)
 export const OVERLAY_IMAGE_URL = '/assets/images/image.png';
