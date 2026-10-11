@@ -23,6 +23,7 @@ export default function PricingTab() {
   const [routeForm, setRouteForm] = useState({
     pickup: '',
     destination: '',
+    distanceKm: '',
     vehiclePrices: {
       dzire: 4000,
       verna: 4500,
@@ -128,6 +129,7 @@ export default function PricingTab() {
     setRouteForm({
       pickup: '',
       destination: '',
+      distanceKm: '',
       vehiclePrices: {
         dzire: 4000,
         verna: 4500,
@@ -145,6 +147,7 @@ export default function PricingTab() {
     setRouteForm({
       pickup: route.pickup || '',
       destination: route.destination || '',
+      distanceKm: route.distanceKm || '',
       vehiclePrices: {
         dzire: route.vehiclePrices?.dzire || 4000,
         verna: route.vehiclePrices?.verna || 4500,
@@ -173,7 +176,7 @@ export default function PricingTab() {
         destination: routeForm.destination.trim(),
         routeType: 'PLAIN',
         pricingType: 'fixed',
-        distanceKm: 250,
+        distanceKm: routeForm.distanceKm ? Number(routeForm.distanceKm) : null,
         active: true,
         vehiclePrices: {
           dzire: Number(routeForm.vehiclePrices.dzire) || 0,
@@ -452,8 +455,8 @@ export default function PricingTab() {
 
               <form onSubmit={handleSaveRoute} className="space-y-6">
                 
-                {/* From and To */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* From, To and Distance */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       From Location (Pickup) <span className="text-rose-500">*</span>
@@ -478,6 +481,20 @@ export default function PricingTab() {
                       onChange={(e) => setRouteForm({ ...routeForm, destination: e.target.value })}
                       placeholder="e.g. Delhi Airport"
                       required
+                      className="w-full bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400 focus:bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      Distance (in KMs)
+                    </label>
+                    <input
+                      type="number"
+                      value={routeForm.distanceKm}
+                      onChange={(e) => setRouteForm({ ...routeForm, distanceKm: e.target.value })}
+                      placeholder="e.g. 385"
+                      min="1"
                       className="w-full bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400 focus:bg-white"
                     />
                   </div>
@@ -627,6 +644,7 @@ export default function PricingTab() {
                   <tr className="border-b border-gray-200 bg-gray-50/90 text-slate-700 font-bold uppercase tracking-wider text-[11px]">
                     <th className="py-3.5 px-4">From Location</th>
                     <th className="py-3.5 px-4">To Location</th>
+                    <th className="py-3.5 px-3">Distance</th>
                     <th className="py-3.5 px-3">Dzire</th>
                     <th className="py-3.5 px-3">Ertiga</th>
                     <th className="py-3.5 px-3">Innova Crysta</th>
@@ -639,7 +657,7 @@ export default function PricingTab() {
                 <tbody className="divide-y divide-gray-100">
                   {filteredRoutes.length === 0 ? (
                     <tr>
-                      <td colSpan="9" className="py-8 text-center text-gray-400 font-medium">
+                      <td colSpan="10" className="py-8 text-center text-gray-400 font-medium">
                         No routes found matching "{searchTerm}". Click "+ Add New Location to Location Route" above.
                       </td>
                     </tr>
@@ -651,6 +669,9 @@ export default function PricingTab() {
                         </td>
                         <td className="py-3 px-4 font-bold text-slate-900">
                           {r.destination}
+                        </td>
+                        <td className="py-3 px-3 font-semibold text-slate-700 whitespace-nowrap">
+                          {r.distanceKm ? `${r.distanceKm} KM` : '—'}
                         </td>
                         <td className="py-3 px-3 font-semibold text-slate-800">
                           ₹{r.vehiclePrices?.dzire || '-'}

@@ -366,6 +366,7 @@ router.put('/pricing-routes/:id', (req, res) => {
     routeType: (req.body.routeType || routes[index].routeType || 'PLAIN').toUpperCase(),
     pricingType: req.body.pricingType || routes[index].pricingType || 'fixed',
     vehiclePrices: req.body.vehiclePrices || routes[index].vehiclePrices || {},
+    distanceKm: req.body.distanceKm !== undefined ? (req.body.distanceKm ? Number(req.body.distanceKm) : null) : routes[index].distanceKm,
     active: req.body.active !== undefined ? Boolean(req.body.active) : routes[index].active !== false,
     updatedAt: new Date().toISOString()
   };

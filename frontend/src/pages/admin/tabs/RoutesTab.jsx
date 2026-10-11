@@ -26,7 +26,7 @@ export default function RoutesTab() {
   const [routeFormData, setRouteFormData] = useState({
     pickup: '',
     destination: '',
-    distanceKm: 200,
+    distanceKm: '',
     routeType: 'PLAIN',
     pricingType: 'fixed',
     active: true,
@@ -108,7 +108,7 @@ export default function RoutesTab() {
     setRouteFormData({
       pickup: '',
       destination: '',
-      distanceKm: 200,
+      distanceKm: '',
       routeType: 'PLAIN',
       pricingType: 'fixed',
       active: true,
@@ -130,7 +130,7 @@ export default function RoutesTab() {
     setRouteFormData({
       pickup: route.pickup || '',
       destination: route.destination || '',
-      distanceKm: route.distanceKm || 100,
+      distanceKm: route.distanceKm || '',
       routeType: route.routeType || 'PLAIN',
       pricingType: 'fixed',
       active: route.active !== false,
@@ -174,12 +174,17 @@ export default function RoutesTab() {
     setStatusMsg({ type: '', text: '' });
 
     try {
+      const payload = {
+        ...routeFormData,
+        distanceKm: routeFormData.distanceKm ? Number(routeFormData.distanceKm) : null
+      };
+
       if (editingRouteId) {
-        await updatePricingRoute(editingRouteId, routeFormData);
-        setStatusMsg({ type: 'success', text: `Route "${routeFormData.pickup} ➔ ${routeFormData.destination}" updated successfully!` });
+        await updatePricingRoute(editingRouteId, payload);
+        setStatusMsg({ type: 'success', text: `Route "${payload.pickup} ➔ ${payload.destination}" updated successfully!` });
       } else {
-        await addPricingRoute(routeFormData);
-        setStatusMsg({ type: 'success', text: `New Route "${routeFormData.pickup} ➔ ${routeFormData.destination}" created with predefined rates!` });
+        await addPricingRoute(payload);
+        setStatusMsg({ type: 'success', text: `New Route "${payload.pickup} ➔ ${payload.destination}" created with predefined rates!` });
       }
 
       setIsModalOpen(false);
@@ -646,12 +651,13 @@ export default function RoutesTab() {
               {/* Distance and Terrain Classification */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-300 mb-1">One-Way Distance (KM) *</label>
+                  <label className="block text-xs font-bold text-gray-300 mb-1">One-Way Distance (KM / KMs) *</label>
                   <input
                     type="number"
                     required
+                    min="1"
                     value={routeFormData.distanceKm}
-                    onChange={e => setRouteFormData({ ...routeFormData, distanceKm: Number(e.target.value) || 0 })}
+                    onChange={e => setRouteFormData({ ...routeFormData, distanceKm: e.target.value })}
                     placeholder="e.g. 385"
                     className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white font-bold text-xs outline-none focus:border-yellow-400"
                   />
