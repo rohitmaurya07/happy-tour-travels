@@ -925,9 +925,14 @@ export const calculateFare = ({
     nightCharges = pricingSettings.nightChargesAmount ?? 250;
   }
 
+  const driverAllowanceIncluded = pricingSettings.driverAllowanceIncluded !== false;
+  // For fixed route tariffs or when driver allowance is included in the fare policy,
+  // driver allowance is already part of baseFare and must not be added again to estimatedTotal.
+  const driverChargeToAdd = (pricingType === 'fixed_route' || driverAllowanceIncluded) ? 0 : driverAllowance;
+
   const additionalCharges = {
     driverAllowance,
-    driverAllowancePolicy: 'Included in Total',
+    driverAllowancePolicy: (pricingType === 'fixed_route' || driverAllowanceIncluded) ? 'Included in Total' : 'Payable Extra',
     nightCharges,
     toll: pricingSettings.toll ?? 'actual',
     parking: pricingSettings.parking ?? 'actual',
@@ -935,7 +940,7 @@ export const calculateFare = ({
     permit: pricingSettings.permit ?? 'actual'
   };
 
-  const estimatedTotal = baseFare + driverAllowance + nightCharges;
+  const estimatedTotal = baseFare + driverChargeToAdd + nightCharges;
 
   const inclusions = [];
   if (driverAllowance > 0) inclusions.push(`Driver Allowance (₹${driverAllowance})`);

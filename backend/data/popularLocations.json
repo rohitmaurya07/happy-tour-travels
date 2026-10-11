@@ -966,5 +966,21 @@
     "lat": 30.6425,
     "lon": 76.8173,
     "regionType": "PLAIN"
+  },
+  {
+    "name": "Pakistan",
+    "state": "North India",
+    "type": "City",
+    "lat": 31.326,
+    "lon": 75.576,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "pak",
+    "state": "North India",
+    "type": "City",
+    "lat": 31.326,
+    "lon": 75.576,
+    "regionType": "PLAIN"
   }
 ]

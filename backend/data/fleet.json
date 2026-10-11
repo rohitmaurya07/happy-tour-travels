@@ -107,7 +107,7 @@
     "hillRatePerKm": 17,
     "minimumKm": 250,
     "extraKmRate": 13,
-    "driverAllowance": 300,
+    "driverAllowance": 0,
     "active": true,
     "pricingMode": "per_km",
     "localPackages": {
@@ -317,7 +317,7 @@
     "hillRatePerKm": 33,
     "minimumKm": 250,
     "extraKmRate": 25,
-    "driverAllowance": 500,
+    "driverAllowance": 0,
     "active": true,
     "pricingMode": "hybrid",
     "localPackages": {
@@ -387,7 +387,7 @@
     "hillRatePerKm": 29,
     "minimumKm": 250,
     "extraKmRate": 22,
-    "driverAllowance": 500,
+    "driverAllowance": 0,
     "active": true,
     "pricingMode": "hybrid",
     "localPackages": {
