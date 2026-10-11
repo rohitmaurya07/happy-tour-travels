@@ -41,68 +41,83 @@ export default function OverviewTab({ setActiveTab }) {
       </div>
 
       {/* Metric Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         
         <div 
           onClick={() => setActiveTab('fleet')}
-          className="bg-white p-6 rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-yellow-400"
+          className="bg-white p-5 rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-yellow-400"
         >
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
-              <Car className="w-6 h-6" />
+          <div className="flex items-center justify-between mb-3">
+            <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+              <Car className="w-5 h-5" />
             </div>
-            <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-amber-600 transition-colors" />
+            <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-amber-600 transition-colors" />
           </div>
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Fleet Vehicles</span>
-          <div className="text-3xl font-extrabold font-heading text-slate-900 mt-1">{fleet.length} Cabs</div>
-          <span className="text-[11px] text-amber-700 font-semibold mt-1 block">Click to manage car rates & specs</span>
+          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">Fleet Vehicles</span>
+          <div className="text-2xl font-extrabold font-heading text-slate-900 mt-1">{fleet.length} Cabs</div>
+          <span className="text-[10px] text-amber-700 font-semibold mt-1 block">Rates, specs & KMs</span>
         </div>
 
         <div 
           onClick={() => setActiveTab('packages')}
-          className="bg-white p-6 rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-yellow-400"
+          className="bg-white p-5 rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-yellow-400"
         >
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
-              <Package className="w-6 h-6" />
+          <div className="flex items-center justify-between mb-3">
+            <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+              <Package className="w-5 h-5" />
             </div>
-            <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
+            <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
           </div>
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Tour Packages</span>
-          <div className="text-3xl font-extrabold font-heading text-slate-900 mt-1">{packages.length} Tours</div>
-          <span className="text-[11px] text-blue-700 font-semibold mt-1 block">Himachal & Punjab tour itineraries</span>
+          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">Top Destinations</span>
+          <div className="text-2xl font-extrabold font-heading text-slate-900 mt-1">{packages.length} Spots</div>
+          <span className="text-[10px] text-blue-700 font-semibold mt-1 block">Shimla, Manali & more</span>
+        </div>
+
+        <div 
+          onClick={() => setActiveTab('services')}
+          className="bg-white p-5 rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-yellow-400"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-600 transition-colors" />
+          </div>
+          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">Travel Services</span>
+          <div className="text-2xl font-extrabold font-heading text-slate-900 mt-1">{services.length} Services</div>
+          <span className="text-[10px] text-emerald-700 font-semibold mt-1 block">Airport, One-Way & Hourly</span>
         </div>
 
         <div 
           onClick={() => setActiveTab('routes')}
-          className="bg-white p-6 rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-yellow-400"
+          className="bg-white p-5 rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-yellow-400"
         >
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-              <Navigation className="w-6 h-6" />
+          <div className="flex items-center justify-between mb-3">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+              <Navigation className="w-5 h-5" />
             </div>
-            <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-emerald-600 transition-colors" />
+            <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-indigo-600 transition-colors" />
           </div>
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Popular Routes</span>
-          <div className="text-3xl font-extrabold font-heading text-slate-900 mt-1">{totalRoutes} Routes</div>
-          <span className="text-[11px] text-emerald-700 font-semibold mt-1 block">Across {popularLocations.length} Pan-India destinations</span>
+          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">Popular Routes</span>
+          <div className="text-2xl font-extrabold font-heading text-slate-900 mt-1">{totalRoutes} Routes</div>
+          <span className="text-[10px] text-indigo-700 font-semibold mt-1 block">{popularLocations.length} Pan-India spots</span>
         </div>
 
         <div 
           onClick={() => setActiveTab('pricing')}
-          className="bg-white p-6 rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-yellow-400"
+          className="bg-white p-5 rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-yellow-400"
         >
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
-              <DollarSign className="w-6 h-6" />
+          <div className="flex items-center justify-between mb-3">
+            <div className="w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+              <DollarSign className="w-5 h-5" />
             </div>
-            <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-purple-600 transition-colors" />
+            <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors" />
           </div>
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">Pricing Policy</span>
-          <div className="text-3xl font-extrabold font-heading text-slate-900 mt-1">
+          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">Pricing Policy</span>
+          <div className="text-2xl font-extrabold font-heading text-slate-900 mt-1">
             {pricingSettings.tollIncluded ? 'All-Inclusive' : 'Custom'}
           </div>
-          <span className="text-[11px] text-purple-700 font-semibold mt-1 block">Tolls, State Tax & Driver Allowance</span>
+          <span className="text-[10px] text-purple-700 font-semibold mt-1 block">Toll & driver allowance</span>
         </div>
 
       </div>
@@ -175,8 +190,21 @@ export default function OverviewTab({ setActiveTab }) {
               <Package className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900">Manage Tour Packages</h3>
-              <p className="text-xs text-gray-500 mt-0.5">Add new Himachal/Punjab tour packages</p>
+              <h3 className="text-sm font-bold text-slate-900">Manage Top Destinations</h3>
+              <p className="text-xs text-gray-500 mt-0.5">Add, edit, or hide 15+ destination tour packages</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('services')}
+            className="p-4 rounded-2xl border border-gray-100 hover:border-yellow-400 bg-gray-50/70 hover:bg-yellow-50/40 text-left transition-all flex items-start space-x-3.5 group"
+          >
+            <div className="p-2.5 rounded-xl bg-white shadow-sm text-yellow-600 group-hover:bg-brand-yellow group-hover:text-slate-950 transition-colors">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-slate-900">Manage Travel Services</h3>
+              <p className="text-xs text-gray-500 mt-0.5">Configure 4 core service cards & connections</p>
             </div>
           </button>
 

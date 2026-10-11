@@ -3062,5 +3062,23 @@
     },
     "distanceKm": 370,
     "active": true
+  },
+  {
+    "id": "jalandhar-to-pakistan-1791715191238",
+    "pickup": "jalandhar",
+    "destination": "pakistan",
+    "routeType": "PLAIN",
+    "pricingType": "fixed",
+    "vehiclePrices": {
+      "dzire": 4000,
+      "verna": 4500,
+      "ertiga": 5000,
+      "innova": 6500,
+      "fortuner": 9500,
+      "tempo": 8500
+    },
+    "distanceKm": 5485,
+    "active": true,
+    "updatedAt": "2026-10-11T10:39:51.238Z"
   }
 ]

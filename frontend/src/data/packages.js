@@ -1,104 +1,167 @@
 export const packagesData = [
   {
-    id: "delhi-airport-himachal",
-    title: "Delhi Airport to Chandigarh, Shimla, Manali & Kasol",
-    category: "Himachal Tours",
-    duration: "Custom Days / Multi-Day Tour",
-    highlights: [
-      "Delhi IGI Airport Terminal Pickup",
-      "Chandigarh Break / Stay",
-      "Shimla & Kufri Views",
-      "Manali, Solang Valley & Atal Tunnel",
-      "Kasol, Manikaran & Tosh Valley",
-      "All Himachal Destinations Covered"
-    ],
-    image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80",
-    altText: "Delhi airport to Chandigarh Shimla Manali Kasol all Himachal taxi service",
-    description: "Direct pickup from Delhi IGI Airport to Chandigarh and scenic Himachal hill stations. Expert mountain chauffeurs with clean AC sedans, Innova Crysta, and Tempo Travellers.",
-    badge: "Top Bestseller"
+    id: "shimla",
+    name: "Shimla",
+    title: "Shimla Tour Package",
+    image: "https://images.unsplash.com/photo-1597074866923-dc0589150358?auto=format&fit=crop&w=600&q=80",
+    category: "Himachal Pradesh",
+    badge: "Hill Station",
+    description: "The Queen of Hills – Mall Road, Ridge, Kufri & Jakhoo Temple.",
+    duration: "2N / 3D Custom Tour",
+    active: true
   },
   {
-    id: "delhi-airport-punjab-direct",
-    title: "Delhi Airport to Ludhiana, Jalandhar, Amritsar & All Punjab",
-    category: "Airport Transfer",
-    duration: "Direct Doorstep Drop",
-    highlights: [
-      "Delhi Airport (T1, T2, T3) 24/7 Pickup",
-      "Drop to Ludhiana, Jalandhar, Amritsar",
-      "Phagwara, Hoshiarpur, Bathinda, Moga",
-      "All Punjab Cities & Villages Covered",
-      "Highway Tolls & State Taxes Included"
-    ],
-    image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80",
-    altText: "Delhi airport to Ludhiana Jalandhar Amritsar all Punjab taxi service",
-    description: "Hassle-free direct taxi service from Delhi Airport to any city, town, or village in Punjab. Safe night travel, luggage assistance, and punctual flight tracking.",
-    badge: "Direct Express"
+    id: "manali",
+    name: "Manali",
+    title: "Manali & Solang Tour Package",
+    image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=600&q=80",
+    category: "Himachal Pradesh",
+    badge: "Adventure Hub",
+    description: "Snow point, Solang Valley, Atal Tunnel & Rohtang Pass.",
+    duration: "3N / 4D Custom Tour",
+    active: true
   },
   {
-    id: "chandigarh-airport-punjab-himachal",
-    title: "Chandigarh Airport to All Punjab & Himachal",
-    category: "Airport Transfer",
-    duration: "Instant Airport Transfer",
-    highlights: [
-      "Chandigarh Airport (IXC) Doorstep Pickup",
-      "To All Punjab (Jalandhar, Ludhiana, Amritsar)",
-      "To Himachal (Shimla, Manali, Dharamshala, Solan)",
-      "Kasauli, Kullu, Mandi & Bilaspur",
-      "Clean AC Fleet Ready at Terminal"
-    ],
-    image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
-    altText: "Chandigarh Airport to all Punjab and Himachal taxi service",
-    description: "Connect seamlessly from your flight at Chandigarh Airport to any destination across Punjab or hill stations in Himachal Pradesh with verified drivers.",
-    badge: "Fast Connection"
+    id: "dharamshala",
+    name: "Dharamshala",
+    title: "Dharamshala & McLeodganj",
+    image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=600&q=80",
+    category: "Himachal Pradesh",
+    badge: "Spiritual & Hills",
+    description: "McLeod Ganj, Dalai Lama Temple, Bhagsu Waterfall & Cricket Stadium.",
+    duration: "2N / 3D Custom Tour",
+    active: true
   },
   {
-    id: "all-punjab-to-delhi",
-    title: "All Punjab to Delhi (One Way & Round Trip)",
-    category: "One Way Taxi",
-    duration: "Daily Highway Express",
-    highlights: [
-      "Door Pickup from Any Location in Punjab",
-      "Drop Anywhere in Delhi NCR / Airport / Stations",
-      "Pay Only One-Way (No Return Charge)",
-      "Dzire, Verna, Ertiga, Innova Crysta & Tempo",
-      "Smooth NH44 Highway Ride"
-    ],
-    image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80",
-    altText: "All Punjab to Delhi taxi one way and round trip",
-    description: "Affordable one-way and round-trip intercity taxi service from Jalandhar, Ludhiana, Amritsar, Patiala, Bathinda, and all of Punjab directly to Delhi.",
-    badge: "Budget Friendly"
+    id: "dalhousie",
+    name: "Dalhousie",
+    title: "Dalhousie & Khajjiar",
+    image: "https://cdn.educba.com/academy/wp-content/uploads/2023/01/Tourist-Places-in-Dalhousie-1.jpg",
+    category: "Himachal Pradesh",
+    badge: "Scenic Escape",
+    description: "Colonial charm, Khajjiar (Mini Switzerland), Dainkund Peak.",
+    duration: "2N / 3D Custom Tour",
+    active: true
   },
   {
-    id: "all-punjab-to-airports",
-    title: "All Punjab to Amritsar & Chandigarh Airports",
-    category: "Airport Transfer",
-    duration: "24/7 Airport Drops",
-    highlights: [
-      "To Sri Guru Ram Dass Jee Airport (ATQ)",
-      "To Shaheed Bhagat Singh Airport (IXC)",
-      "Punctual Flight-Time Pickups",
-      "Luggage Space for Overseas Travellers",
-      "Zero Delay Guarantee"
-    ],
-    image: "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=800&q=80",
-    altText: "All Punjab to Amritsar airport and Chandigarh airport taxi",
-    description: "Reliable, round-the-clock taxi service from any corner of Punjab to Amritsar and Chandigarh International Airports for domestic and NRI international departures.",
-    badge: "NRI Choice"
+    id: "kasol",
+    name: "Kasol",
+    title: "Kasol & Parvati Valley",
+    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+    category: "Himachal Pradesh",
+    badge: "Parvati Valley",
+    description: "Scenic Parvati river, Manikaran Gurudwara, Tosh & Chalal.",
+    duration: "2N / 3D Custom Tour",
+    active: true
   },
   {
-    id: "dharamshala-dalhousie-escape",
-    title: "Dharamshala, Dalhousie & Khajjiar Tour",
-    category: "Himachal Tours",
-    duration: "Custom Days / Multi-Day Tour",
-    highlights: [
-      "McLeod Ganj & Dalai Lama Temple",
-      "Dalhousie & Mini Switzerland (Khajjiar)",
-      "Bhagsunag Falls & St. John Church",
-      "Pickups from All Punjab & Delhi/Chandigarh"
-    ],
-    image: "https://images.unsplash.com/photo-1597074866923-dc0589150358?auto=format&fit=crop&w=800&q=80",
-    altText: "Dharamshala and Dalhousie outstation tour taxi package",
-    description: "Serene hill holiday package covering Little Lhasa and Khajjiar. Customized itineraries with hill driving specialists and well-maintained cabs.",
-    badge: "Scenic Escape"
+    id: "spiti",
+    name: "Spiti",
+    title: "Spiti Valley Expedition",
+    image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=600&q=80",
+    category: "Himachal Pradesh",
+    badge: "Cold Desert",
+    description: "Kaza, Key Monastery, Chandratal Lake & world's highest post office.",
+    duration: "5N / 6D Road Trip",
+    active: true
+  },
+  {
+    id: "amritsar",
+    name: "Amritsar",
+    title: "Amritsar Heritage & Golden Temple",
+    image: "https://images.unsplash.com/photo-1514222134-b57cbb8ce073?auto=format&fit=crop&w=600&q=80",
+    category: "Punjab",
+    badge: "Heritage & Pilgrimage",
+    description: "Golden Temple, Jallianwala Bagh, Gobindgarh Fort & local food trail.",
+    duration: "1N / 2D City Tour",
+    active: true
+  },
+  {
+    id: "chandigarh",
+    name: "Chandigarh",
+    title: "Chandigarh City Tour",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkO9xHJrUzdQcoMKrgTBcZOwXQlZJJcdCPEWta4qfdlj20k-V5NYJfuWc&s=10",
+    category: "Punjab / UT",
+    badge: "The City Beautiful",
+    description: "Rock Garden, Sukhna Lake, Rose Garden & Elante Mall.",
+    duration: "1 Day / Multi-Day",
+    active: true
+  },
+  {
+    id: "srinagar",
+    name: "Srinagar",
+    title: "Srinagar & Dal Lake",
+    image: "https://dynamic-media.tacdn.com/media/photo-o/34/27/bb/3c/caption.jpg?w=2400&h=-1&s=1",
+    category: "Jammu & Kashmir",
+    badge: "Paradise Valley",
+    description: "Dal Lake Shikara ride, Mughal Gardens & houseboats.",
+    duration: "3N / 4D Tour",
+    active: true
+  },
+  {
+    id: "gulmarg",
+    name: "Gulmarg",
+    title: "Gulmarg Snow & Gondola",
+    image: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=600&q=80",
+    category: "Jammu & Kashmir",
+    badge: "Snow & Gondola",
+    description: "World famous Gondola cable car ride, snow skiing & meadows.",
+    duration: "2N / 3D Tour",
+    active: true
+  },
+  {
+    id: "pahalgam",
+    name: "Pahalgam",
+    title: "Pahalgam Valley Tour",
+    image: "https://cdn.travelcoffee.in/uploads/d90847bf-d5ad-4ba5-ac78-e5797470c8bb-Timeless_Kashmir_Retreat___Srinagar__Gulmarg___Pahalgam_Experience.webp",
+    category: "Jammu & Kashmir",
+    badge: "Valley of Shepherds",
+    description: "Betaab Valley, Aru Valley, Chandanwari & Lidder River.",
+    duration: "2N / 3D Tour",
+    active: true
+  },
+  {
+    id: "sonmarg",
+    name: "Sonmarg",
+    title: "Sonmarg Meadow of Gold",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
+    category: "Jammu & Kashmir",
+    badge: "Meadow of Gold",
+    description: "Thajiwas Glacier, Sindh river & gateway to Ladakh.",
+    duration: "Day Trip / 1N",
+    active: true
+  },
+  {
+    id: "patnitop",
+    name: "Patnitop",
+    title: "Patnitop Hill Resort",
+    image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=600&q=80",
+    category: "Jammu & Kashmir",
+    badge: "Pine Forest Resort",
+    description: "Skyview Patnitop cable car, Sanasar lake & cedar forests.",
+    duration: "2N / 3D Tour",
+    active: true
+  },
+  {
+    id: "vaishno-devi",
+    name: "Vaishno Devi",
+    title: "Maa Vaishno Devi Katra Tour",
+    image: "https://duniyaghumo360.com/wp-content/uploads/2024/12/mata_vaishno_devi.jpg",
+    category: "Jammu & Kashmir",
+    badge: "Sacred Pilgrimage",
+    description: "Katra base camp, Bhawan Yatra, Ardhkuwari & Bhairon Ghati.",
+    duration: "2N / 3D Pilgrimage",
+    active: true
+  },
+  {
+    id: "wagah-border",
+    name: "Wagah Border",
+    title: "Wagah Border Beating Retreat",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGdYlxKB2qNSzsDI2D8mLUHhQnCVMzJcRyTv96B-Xf-5G9ydltaeQLP3c&s=10",
+    category: "Punjab",
+    badge: "Patriotic Ceremony",
+    description: "Electrifying evening Beating Retreat ceremony at India-Pakistan border.",
+    duration: "Evening Excursion",
+    active: true
   }
 ];

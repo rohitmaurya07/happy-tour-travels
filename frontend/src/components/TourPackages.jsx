@@ -7,7 +7,7 @@ import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 
 export default function TourPackages() {
-  const { siteConfig } = useSiteData();
+  const { siteConfig, packages: dynamicPackages } = useSiteData();
 
   // Helper for today's date in YYYY-MM-DD
   const todayStr = new Date().toISOString().split('T')[0];
@@ -90,6 +90,14 @@ export default function TourPackages() {
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGdYlxKB2qNSzsDI2D8mLUHhQnCVMzJcRyTv96B-Xf-5G9ydltaeQLP3c&s=10'
     }
   ];
+
+  const activeDestinations = (dynamicPackages && dynamicPackages.length > 0)
+    ? dynamicPackages.filter(p => p.active !== false).map(p => ({
+        id: p.id,
+        name: p.name || p.title,
+        image: p.image || 'https://images.unsplash.com/photo-1597074866923-dc0589150358?auto=format&fit=crop&w=600&q=80'
+      }))
+    : topDestinations;
 
   // Fleet for Custom Tour Form
   const fleetOptions = [
@@ -187,9 +195,9 @@ Thank you.`);
             </div>
           </div>
 
-          {/* 15 Destination Cards Grid (5 columns on desktop) */}
+          {/* Top Destination Cards Grid (5 columns on desktop) */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-            {topDestinations.map((dest) => (
+            {activeDestinations.map((dest) => (
               <div
                 key={dest.id}
                 className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
@@ -263,7 +271,7 @@ Thank you.`);
                     onChange={(e) => setTourForm({ ...tourForm, destination: e.target.value })}
                     className="w-full bg-white border border-gray-300 pl-10 pr-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 cursor-pointer shadow-xs min-h-[44px]"
                   >
-                    {topDestinations.map(d => (
+                    {activeDestinations.map(d => (
                       <option key={d.id} value={d.name}>{d.name}</option>
                     ))}
                     <option value="All Himachal Tour">All Himachal Tour</option>

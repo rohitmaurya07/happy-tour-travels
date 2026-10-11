@@ -47,7 +47,7 @@ export default function FleetTab() {
     hillRatePerKm: 12,
     minimumKm: 250,
     extraKmRate: 11,
-    driverAllowance: 300,
+    driverAllowance: 0,
     active: true
   };
 
@@ -88,7 +88,7 @@ export default function FleetTab() {
       hillRatePerKm: vehicle.hillRatePerKm !== undefined ? Number(vehicle.hillRatePerKm) : (vehicle.roundTripRate || 12),
       minimumKm: vehicle.minimumKm !== undefined ? Number(vehicle.minimumKm) : 250,
       extraKmRate: vehicle.extraKmRate !== undefined ? Number(vehicle.extraKmRate) : (vehicle.plainRatePerKm || 10),
-      driverAllowance: vehicle.driverAllowance !== undefined ? Number(vehicle.driverAllowance) : 300,
+      driverAllowance: vehicle.driverAllowance !== undefined ? Number(vehicle.driverAllowance) : 0,
       active: vehicle.active !== false
     });
     setModalOpen(true);
@@ -122,7 +122,7 @@ export default function FleetTab() {
         hillRatePerKm: Number(formData.hillRatePerKm) || 12,
         minimumKm: Number(formData.minimumKm) || 250,
         extraKmRate: Number(formData.extraKmRate) || (Number(formData.plainRatePerKm) || 10),
-        driverAllowance: Number(formData.driverAllowance) || 300,
+        driverAllowance: formData.driverAllowance !== undefined && formData.driverAllowance !== '' ? Number(formData.driverAllowance) : 0,
         airportBasePrice: Number(formData.airportBasePrice) || 2499,
         active: Boolean(formData.active),
         ratesHint: '₹' + formData.plainRatePerKm + '/km Plain • ₹' + formData.hillRatePerKm + '/km Hill • Min ' + formData.minBookingKm + ' KM'
@@ -188,11 +188,15 @@ export default function FleetTab() {
               <div className="h-32 w-full flex items-center justify-center my-3 bg-gray-50 rounded-2xl overflow-hidden p-2">
                 <img src={vehicle.image || '/assets/images/dzire.jpg'} alt={vehicle.name} className="max-h-full max-w-full object-contain" onError={(e) => { e.target.src = '/assets/images/dzire.jpg'; }} />
               </div>
-              <div className="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-gray-100 mb-3">
+              <div className="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-gray-100 mb-2">
                 <div className="bg-slate-50 p-2 rounded-xl"><span className="text-[10px] text-gray-500 font-medium block">Plain Rate:</span><span className="font-bold text-slate-900">₹{vehicle.plainRatePerKm || vehicle.oneWayRate || 10}/km</span></div>
                 <div className="bg-emerald-50 p-2 rounded-xl"><span className="text-[10px] text-emerald-700 font-medium block">Hill Rate:</span><span className="font-bold text-emerald-900">₹{vehicle.hillRatePerKm || 12}/km</span></div>
                 <div className="bg-slate-50 p-2 rounded-xl"><span className="text-[10px] text-gray-500 font-medium block">Min. Distance:</span><span className="font-bold text-slate-900">{vehicle.minimumKm || 250} KM</span></div>
-                <div className="bg-slate-50 p-2 rounded-xl"><span className="text-[10px] text-gray-500 font-medium block">Driver Allowance:</span><span className="font-bold text-slate-900">₹{vehicle.driverAllowance || 300}</span></div>
+                <div className="bg-slate-50 p-2 rounded-xl"><span className="text-[10px] text-gray-500 font-medium block">Driver Allowance:</span><span className="font-bold text-slate-900">{Number(vehicle.driverAllowance) > 0 ? `₹${vehicle.driverAllowance}` : '₹0 (Included)'}</span></div>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs mb-3">
+                <div className="bg-amber-50/60 p-2 rounded-xl"><span className="text-[10px] text-amber-800 font-medium block">Local 8h/80km:</span><span className="font-bold text-slate-900">₹{vehicle.packages?.eightHours?.price || vehicle.localPackages?.eightHours || 1500}</span></div>
+                <div className="bg-amber-50/60 p-2 rounded-xl"><span className="text-[10px] text-amber-800 font-medium block">Airport Transfer:</span><span className="font-bold text-slate-900">₹{vehicle.airportBasePrice || vehicle.airportFixedRate || 2499}</span></div>
               </div>
               <p className="text-xs text-gray-500 line-clamp-2">{vehicle.description || 'Reliable chauffeur-driven taxi service.'}</p>
             </div>

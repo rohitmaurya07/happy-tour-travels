@@ -2,65 +2,93 @@ export const servicesData = [
   {
     id: "airport-transfers",
     title: "Airport Transfer Services",
-    tagline: "Punjab • Delhi • Chandigarh",
-    description: "Specialized 24/7 airport pickup and drop services connecting all regions. Flight tracking, terminal doorstep pickup, and fixed upfront fares.",
+    tagline: "DEL • ATQ • IXC TERMINALS",
+    badge: "24/7 AIRPORT PICKUP/DROPS",
+    image: "/assets/images/airport_cars_fleet.jpg",
     iconName: "Plane",
-    popularRoutes: [
-      "All Punjab - Delhi IGI Airport (DEL)",
-      "All Punjab - Amritsar Airport (ATQ)",
-      "All Punjab - Chandigarh Airport (IXC)",
-      "Delhi Airport - Ludhiana, Jalandhar & Amritsar",
-      "Chandigarh  - All Punjab & Himachal",
+    description: "Punctual airport pickup and drop services for domestic and international flights with live terminal flight tracking.",
+    features: [
+      "Delhi IGI Airport (T1, T2, T3) Doorstep Pickup & Drop",
+      "Amritsar (ATQ) & Chandigarh (IXC) Airport Transfers",
+      "Luggage Assistance & Live Flight Tracking",
+      "Transparent Fixed All-Inclusive Fares"
     ],
-    badge: "24/7 Airport Cab",
-    defaultMessage: `Hello Happy Tour & Travels, I want to book an Airport Transfer taxi. Please share fare and cab availability.`
+    popularConnections: [
+      { from: "Punjab", to: "Delhi Airport" },
+      { from: "Delhi Airport", to: "Chandigarh" },
+      { from: "Jalandhar", to: "Amritsar Airport" }
+    ],
+    searchType: "Airport",
+    defaultMessage: "Hello Happy Tour & Travels, I want to book an Airport Transfer taxi. Please share cab options and fare details.",
+    active: true
   },
   {
-    id: "delhi-airport-himachal",
-    title: "Delhi Airport to Himachal Tours",
-    tagline: "Scenic Hill Transfers",
-    description: "Direct pickup from Delhi IGI Airport Terminal 1, 2 & 3 to all Himachal hill stations with expert mountain drivers and comfortable AC sedans/SUVs.",
-    iconName: "Compass",
-    popularRoutes: [
-      "Delhi Airport - Chandigarh",
-      "Delhi Airport - Shimla & Kufri",
-      "Delhi Airport - Manali & Solang",
-      "Delhi Airport - Kasol & Tosh",
-      "Delhi Airport - All Himachal Destinations",
-    ],
-    badge: "Hill Station Special",
-    defaultMessage: `Hello Happy Tour & Travels, I want to book a taxi from Delhi Airport to Himachal Pradesh (Shimla / Manali / Kasol). Please share tariff.`
-  },
-  {
-    id: "chandigarh-airport-gateway",
-    title: "Chandigarh Airport to Punjab & Himachal",
-    tagline: "Instant Airport Connections",
-    description: "Punctual pickup from Shaheed Bhagat Singh International Airport (IXC) Chandigarh to every city in Punjab and hill stations across Himachal Pradesh.",
+    id: "one-way-taxi",
+    title: "One-Way Intercity Cabs",
+    tagline: "PUNJAB • DELHI • HARYANA",
+    badge: "SAVE UP TO 40%",
+    image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=600&q=80",
     iconName: "Navigation",
-    popularRoutes: [
-      "Chandigarh Airport - Jalandhar & Ludhiana",
-      "Chandigarh Airport - Amritsar & Bathinda",
-      "Chandigarh Airport - Shimla & Kasauli",
-      "Chandigarh Airport - Manali & Dharamshala",
-      "Chandigarh Airport - All Punjab & Himachal",
+    description: "Affordable one-way intercity taxi on national highways without paying any return fare or unnecessary driver return charges.",
+    features: [
+      "Doorstep Pickup across All Punjab, Haryana & Delhi",
+      "No Return Fare charged on Outstation Trips",
+      "All Tolls & State Taxes assistance",
+      "Dzire, Ertiga, Innova Crysta & Tempo"
     ],
-    badge: "Fast Pickup",
-    defaultMessage: `Hello Happy Tour & Travels, I need a taxi from Chandigarh Airport to Punjab / Himachal. Please share available cabs.`
+    popularConnections: [
+      { from: "Jalandhar", to: "Delhi NCR" },
+      { from: "Amritsar", to: "Chandigarh" },
+      { from: "Ludhiana", to: "Delhi Airport" }
+    ],
+    searchType: "One Way",
+    defaultMessage: "Hello Happy Tour & Travels, I need a One-Way taxi quote for intercity travel. Please share available cars.",
+    active: true
   },
   {
-    id: "punjab-to-delhi-intercity",
-    title: "All Punjab to Delhi One-Way & Round Trip",
-    tagline: "Doorstep Pickup Across Punjab",
-    description: "Comfortable highway cab service on NH44 connecting every district of Punjab (Jalandhar, Ludhiana, Amritsar, Bathinda, Patiala, Phagwara, Hoshiarpur) to Delhi NCR.",
-    iconName: "Car",
-    popularRoutes: [
-      "All Punjab - Delhi NCR",
-      "Delhi Airport - Ludhiana, Jalandhar, Amritsar",
-      "Jalandhar ↔ Delhi One Way / Round Trip",
-      "Amritsar ↔ Delhi One Way / Round Trip",
-      "Ludhiana ↔ Delhi One Way / Round Trip",
+    id: "himachal-tours",
+    title: "Himachal & Hill Station Tours",
+    tagline: "SHIMLA • MANALI • DHARAMSHALA",
+    badge: "EXPERT HILL DRIVERS",
+    image: "https://images.unsplash.com/photo-1597074866923-dc0589150358?auto=format&fit=crop&w=600&q=80",
+    iconName: "Mountain",
+    description: "Scenic customized holiday tour packages across Himachal Pradesh and Jammu & Kashmir with experienced mountain chauffeurs.",
+    features: [
+      "Custom Multi-Day Family & Group Itineraries",
+      "Solang Valley, Rohtang, Atal Tunnel & Kasol",
+      "Mountain-Tested Safe Vehicles (Innova & Tempo)",
+      "Local Sightseeing & Hotel Point Drops"
     ],
-    badge: "Most Popular",
-    defaultMessage: `Hello Happy Tour & Travels, I would like to book a taxi from Punjab to Delhi / Delhi Airport. Please share rates.`
+    popularConnections: [
+      { from: "Chandigarh", to: "Shimla" },
+      { from: "Delhi", to: "Manali & Solang" },
+      { from: "Punjab", to: "Dharamshala" }
+    ],
+    searchType: "Round Trip",
+    defaultMessage: "Hello Happy Tour & Travels, I would like to inquire about Himachal Hill Tour packages. Please share itinerary and fare.",
+    active: true
+  },
+  {
+    id: "hourly-rentals",
+    title: "Local Hourly Car Rentals",
+    tagline: "4 HRS • 8 HRS • 10 HRS",
+    badge: "FLEXIBLE CITY TRAVEL",
+    image: "/assets/images/dzire.jpg",
+    iconName: "Clock",
+    description: "Rent a dedicated chauffeur-driven car for shopping, business meetings, wedding functions, or local city errands.",
+    features: [
+      "4h/40km, 8h/80km & 10h/100km Packages",
+      "Dzire, Ertiga and Innova Crysta Available",
+      "Unlimited Stops within Booked City Hours",
+      "Affordable Extra KM & Extra Hour Rates"
+    ],
+    popularConnections: [
+      { from: "Jalandhar", to: "City Rental" },
+      { from: "Amritsar", to: "Local Package" },
+      { from: "Chandigarh", to: "Local Rental" }
+    ],
+    searchType: "Hourly Rental",
+    defaultMessage: "Hello Happy Tour & Travels, I want to book an Hourly Local Car Rental package. Please share available options.",
+    active: true
   }
 ];

@@ -924,7 +924,7 @@ export default function PricingTab() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
+            {/* <div>
               <label className="block text-xs font-bold text-slate-700 mb-1.5">Driver Allowance (₹/Day)</label>
               <input
                 type="number"
@@ -932,7 +932,7 @@ export default function PricingTab() {
                 onChange={(e) => setCharges({ ...charges, driverAllowance: e.target.value })}
                 className="w-full bg-gray-50 border border-gray-200 px-3.5 py-2.5 rounded-xl font-bold text-sm text-slate-900"
               />
-            </div>
+            </div> */}
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1.5">Night Charge (₹)</label>

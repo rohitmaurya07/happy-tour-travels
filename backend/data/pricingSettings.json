@@ -3,7 +3,7 @@
   "parking": "actual",
   "stateTax": "actual",
   "permit": "actual",
-  "driverAllowance": 300,
+  "driverAllowance": 1000,
   "tollIncluded": false,
   "stateTaxIncluded": false,
   "driverAllowanceIncluded": true,
@@ -55,5 +55,5 @@
       }
     }
   ],
-  "updatedAt": "2026-09-16T11:53:11.731Z"
+  "updatedAt": "2026-10-11T10:39:38.428Z"
 }

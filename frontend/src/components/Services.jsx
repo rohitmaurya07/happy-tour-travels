@@ -9,8 +9,19 @@ import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 
 export default function Services() {
-  const { siteConfig } = useSiteData();
+  const { siteConfig, services: dynamicServices } = useSiteData();
   const navigate = useNavigate();
+
+  const getServiceIcon = (iconName) => {
+    switch (iconName) {
+      case 'Plane': return Plane;
+      case 'Navigation': return Navigation;
+      case 'Mountain': return Mountain;
+      case 'Clock': return Clock;
+      case 'Car': return Car;
+      default: return Car;
+    }
+  };
 
   const coreServices = [
     {
@@ -107,6 +118,22 @@ export default function Services() {
     }
   ];
 
+  const displayServices = (dynamicServices && dynamicServices.length > 0)
+    ? dynamicServices.filter(s => s.active !== false).map(s => {
+        const fallback = coreServices.find(cs => cs.id === s.id) || {};
+        return {
+          ...s,
+          features: Array.isArray(s.features) && s.features.length > 0 
+            ? s.features 
+            : (Array.isArray(fallback.features) ? fallback.features : (Array.isArray(s.popularRoutes) ? s.popularRoutes : [])),
+          popularConnections: Array.isArray(s.popularConnections) && s.popularConnections.length > 0
+            ? s.popularConnections
+            : (Array.isArray(fallback.popularConnections) ? fallback.popularConnections : []),
+          icon: typeof s.icon === 'function' ? s.icon : getServiceIcon(s.iconName || s.icon)
+        };
+      })
+    : coreServices;
+
   const handleWhatsAppBooking = (service) => {
     bookOnWhatsApp(service.defaultMessage, siteConfig?.whatsappNumber);
   };
@@ -143,7 +170,7 @@ export default function Services() {
 
         {/* 4 Core Service Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-14">
-          {coreServices.map((service) => {
+          {displayServices.map((service) => {
             const IconComponent = service.icon;
             return (
               <div
@@ -190,14 +217,16 @@ export default function Services() {
                   </p>
 
                   {/* Feature Highlights List */}
-                  <div className="space-y-2 mb-5 pt-3.5 border-t border-gray-100">
-                    {service.features.map((feat, idx) => (
-                      <div key={idx} className="flex items-start text-xs font-semibold text-slate-800">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2 flex-shrink-0 mt-0.5" />
-                        <span className="leading-snug">{feat}</span>
-                      </div>
-                    ))}
-                  </div>
+                  {Array.isArray(service.features) && service.features.length > 0 && (
+                    <div className="space-y-2 mb-5 pt-3.5 border-t border-gray-100">
+                      {service.features.map((feat, idx) => (
+                        <div key={idx} className="flex items-start text-xs font-semibold text-slate-800">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-2 flex-shrink-0 mt-0.5" />
+                          <span className="leading-snug">{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Action CTA Buttons */}
