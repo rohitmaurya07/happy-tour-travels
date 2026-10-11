@@ -127,20 +127,5 @@
     "searchType": "Hourly Rental",
     "defaultMessage": "Hello Happy Tour & Travels, I want to book an Hourly Local Car Rental package. Please share available options.",
     "active": true
-  },
-  {
-    "id": "service-1791716579652",
-    "title": "kdjvhhdvjvf",
-    "tagline": "Punjab • Delhi • Chandigarh",
-    "description": "jlhdfkkf",
-    "iconName": "Car",
-    "popularRoutes": [],
-    "badge": "Popular Service",
-    "defaultMessage": "Hello Happy Tour & Travels, I want to inquire about this service.",
-    "image": "http://localhost:5000/uploads/media-1791716926354-206758470.png",
-    "features": [],
-    "popularConnections": [],
-    "searchType": "One Way",
-    "active": true
   }
 ]
