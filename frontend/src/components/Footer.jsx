@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, MessageCircle, Mail, MapPin, ChevronRight } from 'lucide-react';
+import { MapPin, ChevronRight, Instagram, Facebook } from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 
@@ -48,6 +48,33 @@ export default function Footer() {
               </span>
               <span>•</span>
               <span>24/7 Available</span>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="pt-2">
+              <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider block mb-2.5">
+                Follow Us
+              </span>
+              <div className="flex items-center space-x-3">
+                <a
+                  href={siteConfig?.instagramUrl || "https://www.instagram.com/happytourandtravels.in?vrfl=MWRrc29mMDJ6ZHQ1Yw%3D%3D&utm_source=qr"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow Happy Tour & Travels on Instagram"
+                  className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-500 hover:border-transparent transition-all duration-200 shadow-sm hover:scale-105 group"
+                >
+                  <Instagram className="w-5 h-5 transition-transform group-hover:scale-110" />
+                </a>
+                <a
+                  href={siteConfig?.facebookUrl || "https://www.facebook.com/share/19v6CVtddz/?mibextid=wwXIfr"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow Happy Tour & Travels on Facebook"
+                  className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#1877F2] hover:border-[#1877F2] transition-all duration-200 shadow-sm hover:scale-105 group"
+                >
+                  <Facebook className="w-5 h-5 transition-transform group-hover:scale-110" />
+                </a>
+              </div>
             </div>
           </div>
 
@@ -102,12 +129,30 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar & Copyright */}
-        <div className="mt-12 pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row  items-center justify-between text-xs text-gray-500 gap-4">
+        <div className="mt-12 pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
           <p>© 2026 {siteConfig.businessName}. All Rights Reserved.</p>
-
-          <p>Designed and developed by <a className='font-manrope font-bold ' href="https://rohitmaurya.space/">Rohit Maurya</a></p>
-          
-          <div className="flex items-center   space-x-6 ">
+          <div className="flex items-center space-x-4">
+            <a
+              href={siteConfig?.instagramUrl || "https://www.instagram.com/happytourandtravels.in?vrfl=MWRrc29mMDJ6ZHQ1Yw%3D%3D&utm_source=qr"}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="text-gray-400 hover:text-pink-400 transition-colors flex items-center"
+            >
+              <Instagram className="w-4 h-4" />
+            </a>
+            <a
+              href={siteConfig?.facebookUrl || "https://www.facebook.com/share/19v6CVtddz/?mibextid=wwXIfr"}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="text-gray-400 hover:text-blue-500 transition-colors flex items-center"
+            >
+              <Facebook className="w-4 h-4" />
+            </a>
+          </div>
+          <p>Designed and developed by <a className='font-manrope font-bold hover:text-gray-400 transition-colors' href="https://rohitmaurya.space/">Rohit Maurya</a></p>
+          <div className="flex items-center space-x-6">
             <Link to="/contact" className="hover:text-gray-400">Contact Support</Link>
           </div>
         </div>

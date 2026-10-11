@@ -12,6 +12,10 @@ export const siteConfig = {
   email: "info@happytourandtravels.com",
   address: "Phagwara Road, Jalandhar Cantt, Jalandhar, Punjab 144005, India",
 
+  // Social Media Links
+  instagramUrl: "https://www.instagram.com/",
+  facebookUrl: "https://www.facebook.com/",
+
   // Local SEO & Geographical Info
   primaryCity: "Jalandhar",
   primaryState: "Punjab",

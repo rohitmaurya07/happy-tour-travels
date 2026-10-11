@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, MessageCircle, MapPin, Clock, Save, CheckCircle2, AlertCircle, Building2 } from 'lucide-react';
+import { Phone, MessageCircle, MapPin, Clock, Save, CheckCircle2, AlertCircle, Building2, Instagram, Facebook } from 'lucide-react';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { updateSiteConfig } from '../../../services/api';
 
@@ -165,6 +165,37 @@ export default function ContactTab() {
               placeholder="24/7 Available (365 Days)"
               className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl font-bold text-slate-900 text-sm focus:outline-none focus:border-brand-yellow"
             />
+          </div>
+
+          {/* Social Media Links */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-gray-100">
+            <div>
+              <label className="flex items-center space-x-1.5 text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                <Instagram className="w-3.5 h-3.5 text-pink-500" />
+                <span>Instagram Profile URL</span>
+              </label>
+              <input
+                type="url"
+                value={formData.instagramUrl || ''}
+                onChange={(e) => setFormData({ ...formData, instagramUrl: e.target.value })}
+                placeholder="https://instagram.com/yourprofile"
+                className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl font-medium text-slate-900 text-xs sm:text-sm focus:outline-none focus:border-brand-yellow"
+              />
+            </div>
+
+            <div>
+              <label className="flex items-center space-x-1.5 text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                <Facebook className="w-3.5 h-3.5 text-blue-600" />
+                <span>Facebook Page URL</span>
+              </label>
+              <input
+                type="url"
+                value={formData.facebookUrl || ''}
+                onChange={(e) => setFormData({ ...formData, facebookUrl: e.target.value })}
+                placeholder="https://facebook.com/yourpage"
+                className="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl font-medium text-slate-900 text-xs sm:text-sm focus:outline-none focus:border-brand-yellow"
+              />
+            </div>
           </div>
 
         </div>
