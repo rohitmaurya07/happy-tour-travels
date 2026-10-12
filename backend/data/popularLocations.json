@@ -982,5 +982,13 @@
     "lat": 31.326,
     "lon": 75.576,
     "regionType": "PLAIN"
+  },
+  {
+    "name": "Kabir Nagare",
+    "state": "North India",
+    "type": "City",
+    "lat": 31.326,
+    "lon": 75.576,
+    "regionType": "PLAIN"
   }
 ]

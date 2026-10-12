@@ -110,6 +110,7 @@ export default function TourPackages() {
 
   // Custom Tour Form State
   const [tourForm, setTourForm] = useState({
+    fromLocation: siteConfig?.primaryCity || 'Jalandhar',
     destination: 'Shimla',
     startDate: todayStr,
     endDate: '',
@@ -123,14 +124,17 @@ export default function TourPackages() {
     if (formElem) {
       formElem.scrollIntoView({ behavior: 'smooth' });
     }
-    const msg = `Hello ${siteConfig?.businessName || 'Happy Tour & Travels'}, I would like to inquire about a tour package to *${destName}*. Please share available cars, itinerary and best price quote.`;
+    const fromCity = tourForm.fromLocation?.trim() || siteConfig?.primaryCity || 'Jalandhar';
+    const msg = `Hello ${siteConfig?.businessName || 'Happy Tour & Travels'}, I would like to inquire about a tour package from *${fromCity}* to *${destName}*. Please share available cars, itinerary and best price quote.`;
     bookOnWhatsApp(msg, siteConfig?.whatsappNumber);
   };
 
   const handleSendWhatsAppInquiry = (e) => {
     e.preventDefault();
+    const fromCity = tourForm.fromLocation?.trim() || siteConfig?.primaryCity || 'Jalandhar';
     const msg = `Custom Tour Package Inquiry – ${siteConfig?.businessName || 'Happy Tour & Travels'}
 
+From Location: ${fromCity}
 Destination: ${tourForm.destination}
 Start Date: ${tourForm.startDate || 'Not specified'}
 End Date: ${tourForm.endDate || 'Not specified'}
@@ -144,11 +148,13 @@ Please share the best tour package price, hotel options, and cab itinerary.`;
 
   const handleSendEmailInquiry = (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Tour Package Inquiry for ${tourForm.destination}`);
+    const fromCity = tourForm.fromLocation?.trim() || siteConfig?.primaryCity || 'Jalandhar';
+    const subject = encodeURIComponent(`Tour Package Inquiry: ${fromCity} to ${tourForm.destination}`);
     const body = encodeURIComponent(`Hello Happy Tour & Travels,
 
 I would like to get a quote for a tour package with the following details:
 
+From (Pickup): ${fromCity}
 Destination: ${tourForm.destination}
 Start Date: ${tourForm.startDate}
 End Date: ${tourForm.endDate || 'N/A'}
@@ -256,10 +262,40 @@ Thank you.`);
 
           <form className="space-y-5 sm:space-y-6">
             
-            {/* Top 4 Fields Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+            {/* Top 5 Fields Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
               
-              {/* 1. Destination */}
+              {/* 1. From Location */}
+              <div>
+                <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">
+                  From Location <span className="text-rose-500">*</span>
+                </label>
+                <div className="relative">
+                  <MapPin className="w-4 h-4 text-[#FBBF24] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    type="text"
+                    list="custom-tour-from-list"
+                    value={tourForm.fromLocation}
+                    onChange={(e) => setTourForm({ ...tourForm, fromLocation: e.target.value })}
+                    placeholder="e.g. Jalandhar"
+                    className="w-full bg-white border border-gray-300 pl-10 pr-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 shadow-xs min-h-[44px]"
+                  />
+                  <datalist id="custom-tour-from-list">
+                    <option value="Jalandhar" />
+                    <option value="Amritsar" />
+                    <option value="Ludhiana" />
+                    <option value="Chandigarh" />
+                    <option value="Delhi NCR" />
+                    <option value="Phagwara" />
+                    <option value="Hoshiarpur" />
+                    <option value="Bathinda" />
+                    <option value="Mohali" />
+                    <option value="Patiala" />
+                  </datalist>
+                </div>
+              </div>
+
+              {/* 2. Destination */}
               <div>
                 <label className="block text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5">
                   Destination <span className="text-rose-500">*</span>

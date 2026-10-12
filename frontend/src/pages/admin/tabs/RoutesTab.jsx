@@ -37,6 +37,14 @@ export default function RoutesTab() {
       innova: 4800,
       fortuner: 7200,
       tempo: 7800
+    },
+    roundTripPrices: {
+      dzire: 0,
+      verna: 0,
+      ertiga: 0,
+      innova: 0,
+      fortuner: 0,
+      tempo: 0
     }
   });
 
@@ -119,6 +127,14 @@ export default function RoutesTab() {
         innova: 4800,
         fortuner: 7200,
         tempo: 7800
+      },
+      roundTripPrices: {
+        dzire: 0,
+        verna: 0,
+        ertiga: 0,
+        innova: 0,
+        fortuner: 0,
+        tempo: 0
       }
     });
     setIsModalOpen(true);
@@ -141,6 +157,14 @@ export default function RoutesTab() {
         innova: route.vehiclePrices?.innova || Math.round((route.vehiclePrices?.dzire || 0) * 1.5),
         fortuner: route.vehiclePrices?.fortuner || Math.round((route.vehiclePrices?.innova || 0) * 1.45),
         tempo: route.vehiclePrices?.tempo || Math.round((route.vehiclePrices?.innova || 0) * 1.6)
+      },
+      roundTripPrices: {
+        dzire: route.roundTripPrices?.dzire || 0,
+        verna: route.roundTripPrices?.verna || 0,
+        ertiga: route.roundTripPrices?.ertiga || 0,
+        innova: route.roundTripPrices?.innova || 0,
+        fortuner: route.roundTripPrices?.fortuner || 0,
+        tempo: route.roundTripPrices?.tempo || 0
       }
     });
     setIsModalOpen(true);
@@ -149,15 +173,28 @@ export default function RoutesTab() {
   // Auto-calculate vehicle rates based on Dzire base price
   const handleAutoCalculateRates = (dzireBase) => {
     const base = Number(dzireBase) || 0;
+    const vernaBase = Math.round(base * 1.1);
+    const ertigaBase = Math.round(base * 1.2);
+    const innovaBase = Math.round(base * 1.5);
+    const fortunerBase = Math.round(base * 1.5 * 1.45);
+    const tempoBase = Math.round(base * 1.5 * 1.6);
     setRouteFormData(prev => ({
       ...prev,
       vehiclePrices: {
         dzire: base,
-        verna: Math.round(base * 1.1),
-        ertiga: Math.round(base * 1.2),
-        innova: Math.round(base * 1.5),
-        fortuner: Math.round(base * 1.5 * 1.45),
-        tempo: Math.round(base * 1.5 * 1.6)
+        verna: vernaBase,
+        ertiga: ertigaBase,
+        innova: innovaBase,
+        fortuner: fortunerBase,
+        tempo: tempoBase
+      },
+      roundTripPrices: {
+        dzire: Math.round(base * 1.8),
+        verna: Math.round(vernaBase * 1.8),
+        ertiga: Math.round(ertigaBase * 1.8),
+        innova: Math.round(innovaBase * 1.8),
+        fortuner: Math.round(fortunerBase * 1.8),
+        tempo: Math.round(tempoBase * 1.8)
       }
     }));
   };
@@ -432,13 +469,22 @@ export default function RoutesTab() {
                             </span>
                           </td>
                           <td className="py-3.5 px-4 text-center font-bold text-slate-900">
-                            {dzirePrice > 0 ? `₹${dzirePrice.toLocaleString('en-IN')}` : '—'}
+                            <div>{dzirePrice > 0 ? `₹${dzirePrice.toLocaleString('en-IN')}` : '—'}</div>
+                            {route.roundTripPrices?.dzire > 0 && (
+                              <span className="text-[10px] text-amber-700 font-black block">RT ₹{route.roundTripPrices.dzire.toLocaleString('en-IN')}</span>
+                            )}
                           </td>
                           <td className="py-3.5 px-4 text-center font-bold text-slate-900">
-                            {ertigaPrice > 0 ? `₹${ertigaPrice.toLocaleString('en-IN')}` : '—'}
+                            <div>{ertigaPrice > 0 ? `₹${ertigaPrice.toLocaleString('en-IN')}` : '—'}</div>
+                            {route.roundTripPrices?.ertiga > 0 && (
+                              <span className="text-[10px] text-amber-700 font-black block">RT ₹{route.roundTripPrices.ertiga.toLocaleString('en-IN')}</span>
+                            )}
                           </td>
                           <td className="py-3.5 px-4 text-center font-bold text-slate-900">
-                            {innovaPrice > 0 ? `₹${innovaPrice.toLocaleString('en-IN')}` : '—'}
+                            <div>{innovaPrice > 0 ? `₹${innovaPrice.toLocaleString('en-IN')}` : '—'}</div>
+                            {route.roundTripPrices?.innova > 0 && (
+                              <span className="text-[10px] text-amber-700 font-black block">RT ₹{route.roundTripPrices.innova.toLocaleString('en-IN')}</span>
+                            )}
                           </td>
                           <td className="py-3.5 px-3 text-center">
                             <button
@@ -715,6 +761,50 @@ export default function RoutesTab() {
                                 vehiclePrices: { ...routeFormData.vehiclePrices, [v.id]: val }
                               });
                             }
+                          }}
+                          className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-6 pr-3 py-2 text-white font-black text-sm outline-none focus:border-yellow-400"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Round Trip Fixed Vehicle Prices */}
+              <div className="pt-3 border-t border-slate-800">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-1">
+                  <div>
+                    <label className="text-xs font-bold text-amber-400 uppercase tracking-wider block">
+                      Fixed Round-Trip Rates (₹)
+                    </label>
+                    <span className="text-[11px] text-gray-400">
+                      Optional return fare override. If left 0, per-km vehicle return tariff applies.
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {[
+                    { id: 'dzire', label: 'Maruti Dzire RT' },
+                    { id: 'ertiga', label: 'Maruti Ertiga RT' },
+                    { id: 'innova', label: 'Innova Crysta RT' },
+                    { id: 'verna', label: 'Hyundai Verna RT' },
+                    { id: 'fortuner', label: 'Toyota Fortuner RT' },
+                    { id: 'tempo', label: 'Tempo Traveller RT' },
+                  ].map(v => (
+                    <div key={v.id} className="bg-slate-900/90 p-3 rounded-2xl border border-amber-950/60">
+                      <span className="block text-[11px] font-bold text-amber-400 mb-1">{v.label}</span>
+                      <div className="relative">
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-xs">₹</span>
+                        <input
+                          type="number"
+                          value={routeFormData.roundTripPrices?.[v.id] || 0}
+                          onChange={e => {
+                            const val = Number(e.target.value) || 0;
+                            setRouteFormData({
+                              ...routeFormData,
+                              roundTripPrices: { ...routeFormData.roundTripPrices, [v.id]: val }
+                            });
                           }}
                           className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-6 pr-3 py-2 text-white font-black text-sm outline-none focus:border-yellow-400"
                         />

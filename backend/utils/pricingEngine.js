@@ -749,6 +749,7 @@ export const resolveRouteDetails = (pickup, destination) => {
       routeType: (matchedRoute.routeType || 'PLAIN').toUpperCase(),
       pricingType: matchedRoute.pricingType || 'per_km',
       fixedPrices: matchedRoute.vehiclePrices || {},
+      roundTripPrices: matchedRoute.roundTripPrices || {},
       customDistance: matchedRoute.distanceKm || null
     };
   }
@@ -898,14 +899,22 @@ export const calculateFare = ({
   ) {
     const oneWayFixedFare = Number(routeDetails.fixedPrices[vehicle.id]);
     if (isRoundTrip) {
-      pricingType = 'round_trip';
-      const effectiveDist = actualDistance * 2;
-      const plainRate = Number(vehicle.roundTripRate) || Number(vehicle.plainRatePerKm) || 12;
-      const hillRate = Number(vehicle.roundTripHillRate) || (Number(vehicle.hillRatePerKm) ? Number(vehicle.hillRatePerKm) - 1 : plainRate + 2);
-      ratePerKm = (routeType === 'HILL' || routeType === 'MIXED') ? hillRate : plainRate;
-      billableKm = Math.max(effectiveDist, 250);
-      baseFare = Math.round(billableKm * ratePerKm);
-      pricingRuleApplied = `Round-Trip Tariff (₹${ratePerKm}/km • ${billableKm} KM Return Distance)`;
+      if (routeDetails.roundTripPrices && Number(routeDetails.roundTripPrices[vehicle.id]) > 0) {
+        pricingType = 'round_trip_fixed';
+        baseFare = Number(routeDetails.roundTripPrices[vehicle.id]);
+        billableKm = (actualDistance || 50) * 2;
+        ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
+        pricingRuleApplied = `Fixed Round-Trip Route Tariff (${routeDetails.route?.pickup || pickup} ↔ ${routeDetails.route?.destination || destination})`;
+      } else {
+        pricingType = 'round_trip';
+        const effectiveDist = actualDistance * 2;
+        const plainRate = Number(vehicle.roundTripRate) || Number(vehicle.plainRatePerKm) || 12;
+        const hillRate = Number(vehicle.roundTripHillRate) || (Number(vehicle.hillRatePerKm) ? Number(vehicle.hillRatePerKm) - 1 : plainRate + 2);
+        ratePerKm = (routeType === 'HILL' || routeType === 'MIXED') ? hillRate : plainRate;
+        billableKm = Math.max(effectiveDist, 250);
+        baseFare = Math.round(billableKm * ratePerKm);
+        pricingRuleApplied = `Round-Trip Tariff (₹${ratePerKm}/km • ${billableKm} KM Return Distance)`;
+      }
     } else {
       pricingType = 'fixed_route';
       baseFare = oneWayFixedFare;

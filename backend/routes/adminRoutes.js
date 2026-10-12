@@ -125,6 +125,7 @@ router.post('/fleet', (req, res) => {
     },
     oneWayRate: Number(req.body.oneWayRate) || 12,
     roundTripRate: Number(req.body.roundTripRate) || 11,
+    roundTripHillRate: Number(req.body.roundTripHillRate) || (Number(req.body.hillRatePerKm) ? Number(req.body.hillRatePerKm) : 13),
     packages: req.body.packages || {
       fourHours: { price: 1000, includedKm: 40 },
       eightHours: { price: 1500, includedKm: 80 }
@@ -137,7 +138,7 @@ router.post('/fleet', (req, res) => {
     driverAllowance: Number(req.body.driverAllowance) || 300,
     active: req.body.active !== undefined ? Boolean(req.body.active) : true,
     rank: Number(req.body.rank) || fleet.length + 1,
-    ratesHint: `₹${req.body.plainRatePerKm || 10}/km Plain • ₹${req.body.hillRatePerKm || 12}/km Hill • Min ${req.body.minBookingKm || 20} KM`
+    ratesHint: `₹${req.body.plainRatePerKm || 10}/km Plain • ₹${req.body.roundTripRate || 11}/km RT • ₹${req.body.hillRatePerKm || 12}/km Hill • Min ${req.body.minBookingKm || 20} KM`
   };
 
   fleet.push(newVehicle);
@@ -175,7 +176,8 @@ router.put('/fleet/:id', (req, res) => {
       additionalKmRate: 12
     },
     oneWayRate: merged.oneWayRate !== undefined ? Number(merged.oneWayRate) : fleet[index].oneWayRate,
-    roundTripRate: merged.roundTripRate !== undefined ? Number(merged.roundTripRate) : fleet[index].roundTripRate,
+    roundTripRate: merged.roundTripRate !== undefined ? Number(merged.roundTripRate) : (fleet[index].roundTripRate || 11),
+    roundTripHillRate: merged.roundTripHillRate !== undefined ? Number(merged.roundTripHillRate) : (fleet[index].roundTripHillRate || 13),
     packages: merged.packages || fleet[index].packages || {
       fourHours: { price: 1000, includedKm: 40 },
       eightHours: { price: 1500, includedKm: 80 }
@@ -193,7 +195,7 @@ router.put('/fleet/:id', (req, res) => {
     },
     hourlyRate: Number(merged.packages?.eightHours?.price) || Number(merged.hourlyRate) || 1500,
     airportFixedRate: Number(merged.airportBasePrice) || Number(merged.airportFixedRate) || 2499,
-    ratesHint: `₹${merged.plainRatePerKm || 10}/km Plain • ₹${merged.hillRatePerKm || 12}/km Hill • Min ${merged.minBookingKm || 20} KM`
+    ratesHint: `₹${merged.plainRatePerKm || 10}/km Plain • ₹${merged.roundTripRate || 11}/km RT • ₹${merged.hillRatePerKm || 12}/km Hill • Min ${merged.minBookingKm || 20} KM`
   };
 
   writeJson('fleet', fleet);
@@ -220,18 +222,22 @@ router.put('/vehicle-pricing-all', (req, res) => {
     const p4 = item.packages?.fourHours?.price !== undefined ? Number(item.packages.fourHours.price) : (item.localPackages?.fourHours || 1000);
     const p8 = item.packages?.eightHours?.price !== undefined ? Number(item.packages.eightHours.price) : (item.localPackages?.eightHours || 1500);
     const airportPrice = item.airportBasePrice !== undefined ? Number(item.airportBasePrice) : (item.airportFixedRate || 2499);
+    const rtRate = item.roundTripRate !== undefined ? Number(item.roundTripRate) : (existing.roundTripRate || 11);
+    const rtHillRate = item.roundTripHillRate !== undefined ? Number(item.roundTripHillRate) : (existing.roundTripHillRate || 13);
 
     return {
       ...existing,
       ...item,
       pricingMode: item.pricingMode || existing.pricingMode || 'hybrid',
+      roundTripRate: rtRate,
+      roundTripHillRate: rtHillRate,
       localPackages: {
         fourHours: p4,
         eightHours: p8
       },
       hourlyRate: p8,
       airportFixedRate: airportPrice,
-      ratesHint: `₹${item.plainRatePerKm || 10}/km Plain • ₹${item.hillRatePerKm || 12}/km Hill • Min ${item.minBookingKm || 20} KM`
+      ratesHint: `₹${item.plainRatePerKm || 10}/km Plain • ₹${rtRate}/km RT • ₹${item.hillRatePerKm || 12}/km Hill • Min ${item.minBookingKm || 20} KM`
     };
   });
 
@@ -325,7 +331,7 @@ router.get('/pricing-routes', (req, res) => {
 
 router.post('/pricing-routes', (req, res) => {
   const routes = readJson('pricingRoutes') || [];
-  const { pickup, destination, routeType, pricingType, vehiclePrices, distanceKm, active } = req.body;
+  const { pickup, destination, routeType, pricingType, vehiclePrices, roundTripPrices, distanceKm, active } = req.body;
 
   if (!pickup || !destination) {
     return res.status(400).json({ success: false, message: 'Pickup and destination are required' });
@@ -339,6 +345,7 @@ router.post('/pricing-routes', (req, res) => {
     routeType: (routeType || 'PLAIN').toUpperCase(),
     pricingType: pricingType || 'fixed',
     vehiclePrices: vehiclePrices || {},
+    roundTripPrices: roundTripPrices || {},
     distanceKm: distanceKm ? Number(distanceKm) : null,
     active: active !== undefined ? Boolean(active) : true,
     updatedAt: new Date().toISOString()
@@ -366,6 +373,7 @@ router.put('/pricing-routes/:id', (req, res) => {
     routeType: (req.body.routeType || routes[index].routeType || 'PLAIN').toUpperCase(),
     pricingType: req.body.pricingType || routes[index].pricingType || 'fixed',
     vehiclePrices: req.body.vehiclePrices || routes[index].vehiclePrices || {},
+    roundTripPrices: req.body.roundTripPrices !== undefined ? req.body.roundTripPrices : (routes[index].roundTripPrices || {}),
     distanceKm: req.body.distanceKm !== undefined ? (req.body.distanceKm ? Number(req.body.distanceKm) : null) : routes[index].distanceKm,
     active: req.body.active !== undefined ? Boolean(req.body.active) : routes[index].active !== false,
     updatedAt: new Date().toISOString()

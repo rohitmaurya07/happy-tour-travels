@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   MapPin, Plus, Trash2, Edit2, Search, Save, 
-  CheckCircle2, AlertCircle, Clock, Plane, ShieldCheck, X, RefreshCw
+  CheckCircle2, AlertCircle, Clock, Plane, ShieldCheck, X, RefreshCw, RotateCcw
 } from 'lucide-react';
 import { useSiteData } from '../../../context/SiteDataContext';
 import { 
@@ -11,7 +11,7 @@ import {
 
 export default function PricingTab() {
   const { pricingSettings, fleet, hourlyRentalPricing, refreshSiteData } = useSiteData();
-  const [activeTab, setActiveTab] = useState('routes'); // 'routes' | 'hourly' | 'airport' | 'charges'
+  const [activeTab, setActiveTab] = useState('routes'); // 'routes' | 'roundtrip' | 'hourly' | 'airport' | 'charges'
   const [isSaving, setIsSaving] = useState(false);
   const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
 
@@ -31,6 +31,14 @@ export default function PricingTab() {
       innova: 6500,
       fortuner: 9500,
       tempo: 8500
+    },
+    roundTripPrices: {
+      dzire: '',
+      verna: '',
+      ertiga: '',
+      innova: '',
+      fortuner: '',
+      tempo: ''
     }
   });
 
@@ -137,6 +145,14 @@ export default function PricingTab() {
         innova: 6500,
         fortuner: 9500,
         tempo: 8500
+      },
+      roundTripPrices: {
+        dzire: '',
+        verna: '',
+        ertiga: '',
+        innova: '',
+        fortuner: '',
+        tempo: ''
       }
     });
     setIsAddingOrEditing(true);
@@ -155,6 +171,14 @@ export default function PricingTab() {
         innova: route.vehiclePrices?.innova || 6500,
         fortuner: route.vehiclePrices?.fortuner || 9500,
         tempo: route.vehiclePrices?.tempo || 8500
+      },
+      roundTripPrices: {
+        dzire: route.roundTripPrices?.dzire !== undefined ? route.roundTripPrices.dzire : '',
+        verna: route.roundTripPrices?.verna !== undefined ? route.roundTripPrices.verna : '',
+        ertiga: route.roundTripPrices?.ertiga !== undefined ? route.roundTripPrices.ertiga : '',
+        innova: route.roundTripPrices?.innova !== undefined ? route.roundTripPrices.innova : '',
+        fortuner: route.roundTripPrices?.fortuner !== undefined ? route.roundTripPrices.fortuner : '',
+        tempo: route.roundTripPrices?.tempo !== undefined ? route.roundTripPrices.tempo : ''
       }
     });
     setIsAddingOrEditing(true);
@@ -185,6 +209,14 @@ export default function PricingTab() {
           innova: Number(routeForm.vehiclePrices.innova) || 0,
           fortuner: Number(routeForm.vehiclePrices.fortuner) || 0,
           tempo: Number(routeForm.vehiclePrices.tempo) || 0
+        },
+        roundTripPrices: {
+          dzire: routeForm.roundTripPrices?.dzire ? Number(routeForm.roundTripPrices.dzire) : 0,
+          verna: routeForm.roundTripPrices?.verna ? Number(routeForm.roundTripPrices.verna) : 0,
+          ertiga: routeForm.roundTripPrices?.ertiga ? Number(routeForm.roundTripPrices.ertiga) : 0,
+          innova: routeForm.roundTripPrices?.innova ? Number(routeForm.roundTripPrices.innova) : 0,
+          fortuner: routeForm.roundTripPrices?.fortuner ? Number(routeForm.roundTripPrices.fortuner) : 0,
+          tempo: routeForm.roundTripPrices?.tempo ? Number(routeForm.roundTripPrices.tempo) : 0
         }
       };
 
@@ -206,6 +238,9 @@ export default function PricingTab() {
       setIsSaving(false);
     }
   };
+
+  // View filter for routes table: 'both' | 'oneway' | 'roundtrip'
+  const [priceViewMode, setPriceViewMode] = useState('both');
 
   const handleDeleteRoute = async (id, name) => {
     if (!window.confirm(`Are you sure you want to delete the route "${name}"?`)) return;
@@ -410,7 +445,7 @@ export default function PricingTab() {
         <div className="space-y-6">
           
           {/* Action Top Bar */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
             <div className="relative flex-grow max-w-md">
               <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
@@ -422,12 +457,43 @@ export default function PricingTab() {
               />
             </div>
 
+            {/* Price View Switcher */}
+            <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl self-start md:self-auto">
+              <button
+                type="button"
+                onClick={() => setPriceViewMode('both')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  priceViewMode === 'both' ? 'bg-white text-slate-900 shadow-xs' : 'text-gray-600 hover:text-slate-900'
+                }`}
+              >
+                All Rates
+              </button>
+              <button
+                type="button"
+                onClick={() => setPriceViewMode('oneway')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  priceViewMode === 'oneway' ? 'bg-white text-slate-900 shadow-xs' : 'text-gray-600 hover:text-slate-900'
+                }`}
+              >
+                One-Way Only
+              </button>
+              <button
+                type="button"
+                onClick={() => setPriceViewMode('roundtrip')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  priceViewMode === 'roundtrip' ? 'bg-amber-400 text-slate-950 shadow-xs' : 'text-gray-600 hover:text-slate-900'
+                }`}
+              >
+                Round-Trip Only
+              </button>
+            </div>
+
             <button
               onClick={handleOpenAddRoute}
               className="px-5 py-2.5 bg-yellow-400 hover:bg-yellow-500 active:scale-95 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
             >
               <Plus className="w-4 h-4" />
-              <span>+ Add New Location to Location Route</span>
+              <span>+ Add Route Price</span>
             </button>
           </div>
 
@@ -612,6 +678,69 @@ export default function PricingTab() {
                   </div>
                 </div>
 
+                {/* Round Trip Prices for Each Vehicle (Optional Return Fixed Fare) */}
+                <div className="pt-3 border-t border-gray-100">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2.5 gap-2">
+                    <div>
+                      <label className="block text-xs font-bold text-amber-900 uppercase tracking-wider">
+                        Round-Trip Return Rates (₹)
+                      </label>
+                      <span className="text-[11px] text-gray-500 font-normal">
+                        Optional fixed return fare. If left empty, calculated via vehicle round-trip rate per KM.
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const dzireOneway = Number(routeForm.vehiclePrices.dzire) || 0;
+                        if (dzireOneway > 0) {
+                          setRouteForm(prev => ({
+                            ...prev,
+                            roundTripPrices: {
+                              dzire: Math.round(dzireOneway * 1.8),
+                              verna: Math.round((Number(prev.vehiclePrices.verna) || dzireOneway * 1.1) * 1.8),
+                              ertiga: Math.round((Number(prev.vehiclePrices.ertiga) || dzireOneway * 1.2) * 1.8),
+                              innova: Math.round((Number(prev.vehiclePrices.innova) || dzireOneway * 1.5) * 1.8),
+                              fortuner: Math.round((Number(prev.vehiclePrices.fortuner) || dzireOneway * 2.2) * 1.8),
+                              tempo: Math.round((Number(prev.vehiclePrices.tempo) || dzireOneway * 2.0) * 1.8)
+                            }
+                          }));
+                        }
+                      }}
+                      className="text-[11px] font-bold text-amber-800 hover:text-amber-950 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-xl border border-amber-200 transition-colors self-start sm:self-auto"
+                    >
+                      ⚡ Auto Calculate RT (1.8× One-Way)
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                    {[
+                      { id: 'dzire', label: 'Dzire RT' },
+                      { id: 'ertiga', label: 'Ertiga RT' },
+                      { id: 'innova', label: 'Innova RT' },
+                      { id: 'verna', label: 'Verna RT' },
+                      { id: 'fortuner', label: 'Fortuner RT' },
+                      { id: 'tempo', label: 'Tempo RT' }
+                    ].map(v => (
+                      <div key={v.id} className="bg-amber-50/50 p-3 rounded-2xl border border-amber-200/70">
+                        <span className="text-[10px] font-black uppercase text-amber-900 block">{v.label}</span>
+                        <div className="relative mt-1">
+                          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">₹</span>
+                          <input
+                            type="number"
+                            value={routeForm.roundTripPrices?.[v.id] || ''}
+                            onChange={(e) => setRouteForm({
+                              ...routeForm,
+                              roundTripPrices: { ...routeForm.roundTripPrices, [v.id]: e.target.value }
+                            })}
+                            placeholder="Optional"
+                            className="w-full bg-white border border-amber-300 pl-6 pr-2 py-1.5 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Form Buttons */}
                 <div className="flex items-center justify-end space-x-3 pt-3 border-t border-gray-100">
                   <button
@@ -645,12 +774,12 @@ export default function PricingTab() {
                     <th className="py-3.5 px-4">From Location</th>
                     <th className="py-3.5 px-4">To Location</th>
                     <th className="py-3.5 px-3">Distance</th>
-                    <th className="py-3.5 px-3">Dzire</th>
-                    <th className="py-3.5 px-3">Ertiga</th>
-                    <th className="py-3.5 px-3">Innova Crysta</th>
-                    <th className="py-3.5 px-3">Verna</th>
-                    <th className="py-3.5 px-3">Fortuner</th>
-                    <th className="py-3.5 px-3">Tempo</th>
+                    <th className="py-3.5 px-3">Dzire {priceViewMode === 'roundtrip' ? '(RT)' : priceViewMode === 'oneway' ? '(OW)' : ''}</th>
+                    <th className="py-3.5 px-3">Ertiga {priceViewMode === 'roundtrip' ? '(RT)' : priceViewMode === 'oneway' ? '(OW)' : ''}</th>
+                    <th className="py-3.5 px-3">Innova Crysta {priceViewMode === 'roundtrip' ? '(RT)' : priceViewMode === 'oneway' ? '(OW)' : ''}</th>
+                    <th className="py-3.5 px-3">Verna {priceViewMode === 'roundtrip' ? '(RT)' : priceViewMode === 'oneway' ? '(OW)' : ''}</th>
+                    <th className="py-3.5 px-3">Fortuner {priceViewMode === 'roundtrip' ? '(RT)' : priceViewMode === 'oneway' ? '(OW)' : ''}</th>
+                    <th className="py-3.5 px-3">Tempo {priceViewMode === 'roundtrip' ? '(RT)' : priceViewMode === 'oneway' ? '(OW)' : ''}</th>
                     <th className="py-3.5 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
@@ -658,40 +787,66 @@ export default function PricingTab() {
                   {filteredRoutes.length === 0 ? (
                     <tr>
                       <td colSpan="10" className="py-8 text-center text-gray-400 font-medium">
-                        No routes found matching "{searchTerm}". Click "+ Add New Location to Location Route" above.
+                        No routes found matching "{searchTerm}". Click "+ Add Route Price" above.
                       </td>
                     </tr>
                   ) : (
-                    filteredRoutes.map((r) => (
-                      <tr key={r.id} className="hover:bg-amber-50/30 transition-colors">
-                        <td className="py-3 px-4 font-bold text-slate-900">
-                          {r.pickup}
-                        </td>
-                        <td className="py-3 px-4 font-bold text-slate-900">
-                          {r.destination}
-                        </td>
-                        <td className="py-3 px-3 font-semibold text-slate-700 whitespace-nowrap">
-                          {r.distanceKm ? `${r.distanceKm} KM` : '—'}
-                        </td>
-                        <td className="py-3 px-3 font-semibold text-slate-800">
-                          ₹{r.vehiclePrices?.dzire || '-'}
-                        </td>
-                        <td className="py-3 px-3 font-semibold text-slate-800">
-                          ₹{r.vehiclePrices?.ertiga || '-'}
-                        </td>
-                        <td className="py-3 px-3 font-bold text-amber-700">
-                          ₹{r.vehiclePrices?.innova || '-'}
-                        </td>
-                        <td className="py-3 px-3 text-gray-600">
-                          ₹{r.vehiclePrices?.verna || '-'}
-                        </td>
-                        <td className="py-3 px-3 text-gray-600">
-                          ₹{r.vehiclePrices?.fortuner || '-'}
-                        </td>
-                        <td className="py-3 px-3 text-gray-600">
-                          ₹{r.vehiclePrices?.tempo || '-'}
-                        </td>
-                        <td className="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
+                    filteredRoutes.map((r) => {
+                      const renderCell = (vKey) => {
+                        const ow = r.vehiclePrices?.[vKey];
+                        const rt = r.roundTripPrices?.[vKey];
+
+                        if (priceViewMode === 'oneway') {
+                          return (
+                            <span className="font-semibold text-slate-800">
+                              {ow ? `₹${ow}` : '—'}
+                            </span>
+                          );
+                        }
+
+                        if (priceViewMode === 'roundtrip') {
+                          return (
+                            <span className={`font-bold ${rt > 0 ? 'text-amber-800' : 'text-gray-400'}`}>
+                              {rt > 0 ? `₹${rt}` : '—'}
+                            </span>
+                          );
+                        }
+
+                        // 'both' mode
+                        return (
+                          <div>
+                            <div className="font-semibold text-slate-800">{ow ? `₹${ow}` : '—'}</div>
+                            {rt > 0 ? (
+                              <span className="text-[10px] text-amber-700 font-bold block">
+                                RT ₹{rt}
+                              </span>
+                            ) : (
+                              <span className="text-[10px] text-gray-400 font-medium block">
+                                RT: Not set
+                              </span>
+                            )}
+                          </div>
+                        );
+                      };
+
+                      return (
+                        <tr key={r.id} className="hover:bg-amber-50/30 transition-colors">
+                          <td className="py-3 px-4 font-bold text-slate-900">
+                            {r.pickup}
+                          </td>
+                          <td className="py-3 px-4 font-bold text-slate-900">
+                            {r.destination}
+                          </td>
+                          <td className="py-3 px-3 font-semibold text-slate-700 whitespace-nowrap">
+                            {r.distanceKm ? `${r.distanceKm} KM` : '—'}
+                          </td>
+                          <td className="py-3 px-3">{renderCell('dzire')}</td>
+                          <td className="py-3 px-3">{renderCell('ertiga')}</td>
+                          <td className="py-3 px-3">{renderCell('innova')}</td>
+                          <td className="py-3 px-3">{renderCell('verna')}</td>
+                          <td className="py-3 px-3">{renderCell('fortuner')}</td>
+                          <td className="py-3 px-3">{renderCell('tempo')}</td>
+                          <td className="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
                           <button
                             onClick={() => handleEditRoute(r)}
                             className="p-1.5 bg-gray-100 hover:bg-yellow-400 text-slate-800 hover:text-slate-950 rounded-lg transition-colors"
@@ -709,8 +864,9 @@ export default function PricingTab() {
                           </button>
                         </td>
                       </tr>
-                    ))
-                  )}
+                    );
+                  })
+                )}
                 </tbody>
               </table>
             </div>

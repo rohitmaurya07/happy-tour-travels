@@ -38,6 +38,7 @@ export default function FleetTab() {
     },
     oneWayRate: 12,
     roundTripRate: 11,
+    roundTripHillRate: 13,
     packages: {
       fourHours: { price: 1000, includedKm: 40 },
       eightHours: { price: 1500, includedKm: 80 }
@@ -85,7 +86,9 @@ export default function FleetTab() {
       },
       airportBasePrice: vehicle.airportBasePrice !== undefined ? Number(vehicle.airportBasePrice) : 2499,
       plainRatePerKm: vehicle.plainRatePerKm !== undefined ? Number(vehicle.plainRatePerKm) : (vehicle.oneWayRate || 10),
-      hillRatePerKm: vehicle.hillRatePerKm !== undefined ? Number(vehicle.hillRatePerKm) : (vehicle.roundTripRate || 12),
+      hillRatePerKm: vehicle.hillRatePerKm !== undefined ? Number(vehicle.hillRatePerKm) : 12,
+      roundTripRate: vehicle.roundTripRate !== undefined ? Number(vehicle.roundTripRate) : (vehicle.plainRatePerKm || 11),
+      roundTripHillRate: vehicle.roundTripHillRate !== undefined ? Number(vehicle.roundTripHillRate) : (vehicle.hillRatePerKm || 13),
       minimumKm: vehicle.minimumKm !== undefined ? Number(vehicle.minimumKm) : 250,
       extraKmRate: vehicle.extraKmRate !== undefined ? Number(vehicle.extraKmRate) : (vehicle.plainRatePerKm || 10),
       driverAllowance: vehicle.driverAllowance !== undefined ? Number(vehicle.driverAllowance) : 0,
@@ -120,12 +123,14 @@ export default function FleetTab() {
         minBookingKm: Number(formData.minBookingKm) || 20,
         plainRatePerKm: Number(formData.plainRatePerKm) || 10,
         hillRatePerKm: Number(formData.hillRatePerKm) || 12,
+        roundTripRate: Number(formData.roundTripRate) || Number(formData.plainRatePerKm) || 11,
+        roundTripHillRate: Number(formData.roundTripHillRate) || (Number(formData.hillRatePerKm) ? Number(formData.hillRatePerKm) : 13),
         minimumKm: Number(formData.minimumKm) || 250,
         extraKmRate: Number(formData.extraKmRate) || (Number(formData.plainRatePerKm) || 10),
         driverAllowance: formData.driverAllowance !== undefined && formData.driverAllowance !== '' ? Number(formData.driverAllowance) : 0,
         airportBasePrice: Number(formData.airportBasePrice) || 2499,
         active: Boolean(formData.active),
-        ratesHint: '₹' + formData.plainRatePerKm + '/km Plain • ₹' + formData.hillRatePerKm + '/km Hill • Min ' + formData.minBookingKm + ' KM'
+        ratesHint: '₹' + formData.plainRatePerKm + '/km Plain • ₹' + (formData.roundTripRate || 11) + '/km RT • ₹' + formData.hillRatePerKm + '/km Hill • Min ' + formData.minBookingKm + ' KM'
       };
       if (editingVehicle) {
         await updateFleetVehicle(editingVehicle.id, payload);
@@ -166,7 +171,7 @@ export default function FleetTab() {
             Manage Fleet & Vehicle Tariffs
           </h1>
           <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Add new cars, update images, configure plain-area / hill-area rates, minimum billable kilometers, and active availability.
+            Add new cars, update images, configure plain, hill, and round-trip rates, minimum billable kilometers, and active availability.
           </p>
         </div>
         <div className="flex items-center space-x-3">
@@ -191,6 +196,8 @@ export default function FleetTab() {
               <div className="grid grid-cols-2 gap-2 text-xs pt-3 border-t border-gray-100 mb-2">
                 <div className="bg-slate-50 p-2 rounded-xl"><span className="text-[10px] text-gray-500 font-medium block">Plain Rate:</span><span className="font-bold text-slate-900">₹{vehicle.plainRatePerKm || vehicle.oneWayRate || 10}/km</span></div>
                 <div className="bg-emerald-50 p-2 rounded-xl"><span className="text-[10px] text-emerald-700 font-medium block">Hill Rate:</span><span className="font-bold text-emerald-900">₹{vehicle.hillRatePerKm || 12}/km</span></div>
+                <div className="bg-amber-50 p-2 rounded-xl border border-amber-200/70"><span className="text-[10px] text-amber-800 font-bold block">Round Trip:</span><span className="font-bold text-amber-950">₹{vehicle.roundTripRate || 11}/km</span></div>
+                <div className="bg-amber-50 p-2 rounded-xl border border-amber-200/70"><span className="text-[10px] text-amber-800 font-bold block">RT (Hill):</span><span className="font-bold text-amber-950">₹{vehicle.roundTripHillRate || vehicle.hillRatePerKm || 13}/km</span></div>
                 <div className="bg-slate-50 p-2 rounded-xl"><span className="text-[10px] text-gray-500 font-medium block">Min. Distance:</span><span className="font-bold text-slate-900">{vehicle.minimumKm || 250} KM</span></div>
                 <div className="bg-slate-50 p-2 rounded-xl"><span className="text-[10px] text-gray-500 font-medium block">Driver Allowance:</span><span className="font-bold text-slate-900">{Number(vehicle.driverAllowance) > 0 ? `₹${vehicle.driverAllowance}` : '₹0 (Included)'}</span></div>
               </div>
@@ -213,7 +220,7 @@ export default function FleetTab() {
           <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-gray-100 text-left relative my-8">
             <button onClick={() => setModalOpen(false)} className="absolute top-6 right-6 text-gray-400 hover:text-slate-900 transition-colors"><X className="w-5 h-5" /></button>
             <h3 className="text-xl font-bold font-nexa text-slate-900 mb-1">{editingVehicle ? 'Edit Vehicle & Tariff Slabs' : 'Add New Vehicle to Fleet'}</h3>
-            <p className="text-xs text-gray-500 mb-5">Configure specs, photos, plain/hill rates, and minimum distance rules.</p>
+            <p className="text-xs text-gray-500 mb-5">Configure specs, photos, plain/hill rates, round-trip rates, and minimum distance rules.</p>
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><label className="block text-gray-600 font-semibold mb-1">Vehicle Name *</label><input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="e.g. Maruti Suzuki Dzire" className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-yellow-400" /></div>
@@ -222,10 +229,12 @@ export default function FleetTab() {
               <div><label className="block text-gray-600 font-semibold mb-1">Vehicle Image</label><div className="flex gap-2"><input type="text" value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value })} placeholder="/assets/images/dzire.jpg or https://..." className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-slate-900 font-mono text-xs outline-none focus:ring-2 focus:ring-yellow-400" /><label className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl cursor-pointer flex items-center space-x-1 flex-shrink-0"><Upload className="w-3.5 h-3.5 text-brand-yellow" /><span>{isUploading ? 'Uploading...' : 'Upload'}</span><input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" /></label></div></div>
               <div className="bg-yellow-400/10 p-4 rounded-2xl border border-yellow-400/20 space-y-3">
                 <h4 className="font-bold text-slate-900 text-xs flex items-center"><Mountain className="w-3.5 h-3.5 mr-1.5 text-yellow-700" />Pricing & Distance Rules</h4>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <div><label className="block text-gray-600 font-semibold mb-1">Plain Rate (₹/km)</label><input type="number" required value={formData.plainRatePerKm} onChange={e => setFormData({ ...formData, plainRatePerKm: e.target.value })} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl font-bold text-slate-900 outline-none" /></div>
-                  <div><label className="block text-gray-600 font-semibold mb-1">Hill Rate (₹/km)</label><input type="number" required value={formData.hillRatePerKm} onChange={e => setFormData({ ...formData, hillRatePerKm: e.target.value })} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl font-bold text-slate-900 outline-none" /></div>
-                  <div><label className="block text-gray-600 font-semibold mb-1">Min. Distance (KM)</label><input type="number" required value={formData.minimumKm} onChange={e => setFormData({ ...formData, minimumKm: e.target.value })} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl font-bold text-slate-900 outline-none" /></div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div><label className="block text-gray-600 font-semibold mb-1">Plain Rate (₹/km) *</label><input type="number" required value={formData.plainRatePerKm} onChange={e => setFormData({ ...formData, plainRatePerKm: e.target.value })} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl font-bold text-slate-900 outline-none" /></div>
+                  <div><label className="block text-gray-600 font-semibold mb-1">Hill Rate (₹/km) *</label><input type="number" required value={formData.hillRatePerKm} onChange={e => setFormData({ ...formData, hillRatePerKm: e.target.value })} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl font-bold text-slate-900 outline-none" /></div>
+                  <div><label className="block text-amber-900 font-bold mb-1">Round Trip Rate (₹/km) *</label><input type="number" required value={formData.roundTripRate} onChange={e => setFormData({ ...formData, roundTripRate: e.target.value })} className="w-full px-3 py-2 bg-amber-50/70 border border-amber-300 rounded-xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-yellow-400" /></div>
+                  <div><label className="block text-amber-900 font-bold mb-1">Round Trip Hill (₹/km)</label><input type="number" value={formData.roundTripHillRate} onChange={e => setFormData({ ...formData, roundTripHillRate: e.target.value })} className="w-full px-3 py-2 bg-amber-50/70 border border-amber-300 rounded-xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-yellow-400" /></div>
+                  <div><label className="block text-gray-600 font-semibold mb-1">Min. Distance (KM) *</label><input type="number" required value={formData.minimumKm} onChange={e => setFormData({ ...formData, minimumKm: e.target.value })} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl font-bold text-slate-900 outline-none" /></div>
                   <div><label className="block text-gray-600 font-semibold mb-1">Driver Allowance (₹)</label><input type="number" required value={formData.driverAllowance} onChange={e => setFormData({ ...formData, driverAllowance: e.target.value })} className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl font-bold text-slate-900 outline-none" /></div>
                 </div>
               </div>
