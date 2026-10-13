@@ -94,6 +94,8 @@ export default function RoutesTab() {
       );
     } else if (filterType === 'hill') {
       list = list.filter(r => r.routeType === 'HILL');
+    } else if (filterType === 'mixed') {
+      list = list.filter(r => r.routeType === 'MIXED');
     } else if (filterType === 'plain') {
       list = list.filter(r => r.routeType === 'PLAIN');
     }
@@ -170,14 +172,34 @@ export default function RoutesTab() {
     setIsModalOpen(true);
   };
 
-  // Auto-calculate vehicle rates based on Dzire base price
-  const handleAutoCalculateRates = (dzireBase) => {
+  // Auto-calculate vehicle rates based on Dzire base price & route classification
+  const handleAutoCalculateRates = (dzireBase, currentType = null, currentDist = null) => {
     const base = Number(dzireBase) || 0;
     const vernaBase = Math.round(base * 1.1);
     const ertigaBase = Math.round(base * 1.2);
     const innovaBase = Math.round(base * 1.5);
     const fortunerBase = Math.round(base * 1.5 * 1.45);
     const tempoBase = Math.round(base * 1.5 * 1.6);
+
+    const dist = currentDist !== null ? Number(currentDist) : (Number(routeFormData.distanceKm) || 0);
+    const type = (currentType || routeFormData.routeType || 'PLAIN').toUpperCase();
+
+    // Multiplier logic:
+    // Below 82km -> 2.0x
+    // Hill -> 1.9x
+    // Mixed -> 1.8x
+    // Plain / Airport -> 1.7x
+    let mult = 1.7;
+    if (dist > 0 && dist < 82) {
+      mult = 2.0;
+    } else if (type === 'HILL') {
+      mult = 1.9;
+    } else if (type === 'MIXED') {
+      mult = 1.8;
+    } else {
+      mult = 1.7;
+    }
+
     setRouteFormData(prev => ({
       ...prev,
       vehiclePrices: {
@@ -189,12 +211,12 @@ export default function RoutesTab() {
         tempo: tempoBase
       },
       roundTripPrices: {
-        dzire: Math.round(base * 1.8),
-        verna: Math.round(vernaBase * 1.8),
-        ertiga: Math.round(ertigaBase * 1.8),
-        innova: Math.round(innovaBase * 1.8),
-        fortuner: Math.round(fortunerBase * 1.8),
-        tempo: Math.round(tempoBase * 1.8)
+        dzire: Math.round(base * mult),
+        verna: Math.round(vernaBase * mult),
+        ertiga: Math.round(ertigaBase * mult),
+        innova: Math.round(innovaBase * mult),
+        fortuner: Math.round(fortunerBase * mult),
+        tempo: Math.round(tempoBase * mult)
       }
     }));
   };
@@ -393,6 +415,7 @@ export default function RoutesTab() {
                 { id: 'all', label: `All (${pricingRoutesList.length})` },
                 { id: 'airport', label: '✈️ Airport Routes' },
                 { id: 'hill', label: '🏔️ Hill Stations' },
+                { id: 'mixed', label: '🛣️ Mixed Routes' },
                 { id: 'plain', label: '🏙️ Plain Corridors' }
               ].map(tab => (
                 <button
@@ -461,6 +484,8 @@ export default function RoutesTab() {
                             <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
                               route.routeType === 'HILL' 
                                 ? 'bg-emerald-100 text-emerald-800' 
+                                : route.routeType === 'MIXED'
+                                ? 'bg-purple-100 text-purple-800'
                                 : route.routeType === 'AIRPORT'
                                 ? 'bg-sky-100 text-sky-800'
                                 : 'bg-blue-100 text-blue-800'
@@ -772,15 +797,27 @@ export default function RoutesTab() {
 
               {/* Round Trip Fixed Vehicle Prices */}
               <div className="pt-3 border-t border-slate-800">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-1">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-2">
                   <div>
                     <label className="text-xs font-bold text-amber-400 uppercase tracking-wider block">
                       Fixed Round-Trip Rates (₹)
                     </label>
                     <span className="text-[11px] text-gray-400">
-                      Optional return fare override. If left 0, per-km vehicle return tariff applies.
+                      Auto-calculated: Plane 1.7× | Mixed 1.8× | Hill 1.9× | &lt;82km 2.0×
                     </span>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const dzireVal = Number(routeFormData.vehiclePrices?.dzire) || 0;
+                      if (dzireVal > 0) {
+                        handleAutoCalculateRates(dzireVal, routeFormData.routeType, routeFormData.distanceKm);
+                      }
+                    }}
+                    className="text-[11px] font-bold text-amber-950 bg-amber-400 hover:bg-amber-300 px-3 py-1.5 rounded-xl transition-all self-start sm:self-auto"
+                  >
+                    ⚡ Auto-Fill RT Rates
+                  </button>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">

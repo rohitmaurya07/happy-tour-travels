@@ -990,5 +990,21 @@
     "lat": 31.326,
     "lon": 75.576,
     "regionType": "PLAIN"
+  },
+  {
+    "name": "axyz",
+    "state": "North India",
+    "type": "City",
+    "lat": 31.326,
+    "lon": 75.576,
+    "regionType": "PLAIN"
+  },
+  {
+    "name": "lhik",
+    "state": "North India",
+    "type": "City",
+    "lat": 31.326,
+    "lon": 75.576,
+    "regionType": "PLAIN"
   }
 ]

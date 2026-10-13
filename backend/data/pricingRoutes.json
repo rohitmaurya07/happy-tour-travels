@@ -14,7 +14,16 @@
       "tempo": 3184
     },
     "distanceKm": 42,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1998,
+      "verna": 2198,
+      "ertiga": 2380,
+      "innova": 3980,
+      "fortuner": 5772,
+      "tempo": 6368
+    },
+    "updatedAt": "2026-10-13T17:27:27.340Z"
   },
   {
     "id": "jalandhar-shahkot",
@@ -31,7 +40,16 @@
       "tempo": 3184
     },
     "distanceKm": 38,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1998,
+      "verna": 2198,
+      "ertiga": 2380,
+      "innova": 3980,
+      "fortuner": 5772,
+      "tempo": 6368
+    },
+    "updatedAt": "2026-10-13T17:27:27.340Z"
   },
   {
     "id": "jalandhar-sultanpur-lodhi",
@@ -48,7 +66,16 @@
       "tempo": 3184
     },
     "distanceKm": 40,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1998,
+      "verna": 2198,
+      "ertiga": 2380,
+      "innova": 3980,
+      "fortuner": 5772,
+      "tempo": 6368
+    },
+    "updatedAt": "2026-10-13T17:27:27.340Z"
   },
   {
     "id": "jalandhar-phillaur",
@@ -65,7 +92,16 @@
       "tempo": 3184
     },
     "distanceKm": 44,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1998,
+      "verna": 2198,
+      "ertiga": 2380,
+      "innova": 3980,
+      "fortuner": 5772,
+      "tempo": 6368
+    },
+    "updatedAt": "2026-10-13T17:27:27.341Z"
   },
   {
     "id": "jalandhar-hoshiarpur",
@@ -82,7 +118,16 @@
       "tempo": 3184
     },
     "distanceKm": 42,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1998,
+      "verna": 2198,
+      "ertiga": 2380,
+      "innova": 3980,
+      "fortuner": 5772,
+      "tempo": 6368
+    },
+    "updatedAt": "2026-10-13T17:27:27.341Z"
   },
   {
     "id": "jalandhar-banga",
@@ -99,7 +144,16 @@
       "tempo": 3184
     },
     "distanceKm": 46,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1998,
+      "verna": 2198,
+      "ertiga": 2380,
+      "innova": 3980,
+      "fortuner": 5772,
+      "tempo": 6368
+    },
+    "updatedAt": "2026-10-13T17:27:27.341Z"
   },
   {
     "id": "jalandhar-hariana",
@@ -116,7 +170,16 @@
       "tempo": 3184
     },
     "distanceKm": 54,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1998,
+      "verna": 2198,
+      "ertiga": 2380,
+      "innova": 3980,
+      "fortuner": 5772,
+      "tempo": 6368
+    },
+    "updatedAt": "2026-10-13T17:27:27.341Z"
   },
   {
     "id": "jalandhar-gardhiwala",
@@ -133,7 +196,16 @@
       "tempo": 3184
     },
     "distanceKm": 62,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1998,
+      "verna": 2198,
+      "ertiga": 2380,
+      "innova": 3980,
+      "fortuner": 5772,
+      "tempo": 6368
+    },
+    "updatedAt": "2026-10-13T17:27:27.341Z"
   },
   {
     "id": "jalandhar-ludhiana",
@@ -150,7 +222,16 @@
       "tempo": 3184
     },
     "distanceKm": 61,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1998,
+      "verna": 2198,
+      "ertiga": 2380,
+      "innova": 3980,
+      "fortuner": 5772,
+      "tempo": 6368
+    },
+    "updatedAt": "2026-10-13T17:27:27.341Z"
   },
   {
     "id": "jalandhar-nawanshahr",
@@ -167,7 +248,16 @@
       "tempo": 3184
     },
     "distanceKm": 58,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1998,
+      "verna": 2198,
+      "ertiga": 2380,
+      "innova": 3980,
+      "fortuner": 5772,
+      "tempo": 6368
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-amritsar",
@@ -184,7 +274,16 @@
       "tempo": 5424
     },
     "distanceKm": 82,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2533,
+      "verna": 2786,
+      "ertiga": 3043,
+      "innova": 5763,
+      "fortuner": 8357,
+      "tempo": 9221
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-amritsar-airport",
@@ -201,7 +300,16 @@
       "tempo": 5424
     },
     "distanceKm": 95,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2533,
+      "verna": 2786,
+      "ertiga": 3043,
+      "innova": 5763,
+      "fortuner": 8357,
+      "tempo": 9221
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-batala",
@@ -218,7 +326,16 @@
       "tempo": 5424
     },
     "distanceKm": 78,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2980,
+      "verna": 3278,
+      "ertiga": 3580,
+      "innova": 6780,
+      "fortuner": 9832,
+      "tempo": 10848
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-moga",
@@ -235,7 +352,16 @@
       "tempo": 5424
     },
     "distanceKm": 70,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2980,
+      "verna": 3278,
+      "ertiga": 3580,
+      "innova": 6780,
+      "fortuner": 9832,
+      "tempo": 10848
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-jagraon",
@@ -252,7 +378,16 @@
       "tempo": 5424
     },
     "distanceKm": 76,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2980,
+      "verna": 3278,
+      "ertiga": 3580,
+      "innova": 6780,
+      "fortuner": 9832,
+      "tempo": 10848
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-khanna",
@@ -269,7 +404,16 @@
       "tempo": 4560
     },
     "distanceKm": 95,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2261,
+      "verna": 2487,
+      "ertiga": 2746,
+      "innova": 4845,
+      "fortuner": 7026,
+      "tempo": 7752
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-samrala",
@@ -286,7 +430,16 @@
       "tempo": 4800
     },
     "distanceKm": 100,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2380,
+      "verna": 2618,
+      "ertiga": 2890,
+      "innova": 5100,
+      "fortuner": 7395,
+      "tempo": 8160
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-rajpura",
@@ -303,7 +456,16 @@
       "tempo": 6960
     },
     "distanceKm": 145,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3451,
+      "verna": 3796,
+      "ertiga": 4191,
+      "innova": 7395,
+      "fortuner": 10724,
+      "tempo": 11832
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-mandi-gobindgarh",
@@ -320,7 +482,16 @@
       "tempo": 5520
     },
     "distanceKm": 115,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2737,
+      "verna": 3011,
+      "ertiga": 3324,
+      "innova": 5865,
+      "fortuner": 8505,
+      "tempo": 9384
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-sirhind",
@@ -337,7 +508,16 @@
       "tempo": 6000
     },
     "distanceKm": 125,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2975,
+      "verna": 3273,
+      "ertiga": 3613,
+      "innova": 6375,
+      "fortuner": 9245,
+      "tempo": 10200
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-fatehgarh-sahib",
@@ -354,7 +534,16 @@
       "tempo": 6000
     },
     "distanceKm": 125,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2975,
+      "verna": 3273,
+      "ertiga": 3613,
+      "innova": 6375,
+      "fortuner": 9245,
+      "tempo": 10200
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-rupnagar",
@@ -371,7 +560,16 @@
       "tempo": 6000
     },
     "distanceKm": 125,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2975,
+      "verna": 3273,
+      "ertiga": 3613,
+      "innova": 6375,
+      "fortuner": 9245,
+      "tempo": 10200
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-pathankot",
@@ -388,7 +586,16 @@
       "tempo": 5520
     },
     "distanceKm": 112,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2737,
+      "verna": 3011,
+      "ertiga": 3324,
+      "innova": 5865,
+      "fortuner": 8505,
+      "tempo": 9384
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-gurdaspur",
@@ -405,7 +612,16 @@
       "tempo": 5040
     },
     "distanceKm": 105,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2499,
+      "verna": 2749,
+      "ertiga": 3035,
+      "innova": 5355,
+      "fortuner": 7766,
+      "tempo": 8568
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-tarn-taran",
@@ -422,7 +638,16 @@
       "tempo": 5040
     },
     "distanceKm": 105,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2499,
+      "verna": 2749,
+      "ertiga": 3035,
+      "innova": 5355,
+      "fortuner": 7766,
+      "tempo": 8568
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-barnala",
@@ -439,7 +664,16 @@
       "tempo": 5760
     },
     "distanceKm": 120,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2856,
+      "verna": 3142,
+      "ertiga": 3468,
+      "innova": 6120,
+      "fortuner": 8874,
+      "tempo": 9792
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-sangrur",
@@ -456,7 +690,16 @@
       "tempo": 6480
     },
     "distanceKm": 135,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3213,
+      "verna": 3534,
+      "ertiga": 3902,
+      "innova": 6885,
+      "fortuner": 9984,
+      "tempo": 11016
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-malerkotla",
@@ -473,7 +716,16 @@
       "tempo": 5760
     },
     "distanceKm": 120,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2856,
+      "verna": 3142,
+      "ertiga": 3468,
+      "innova": 6120,
+      "fortuner": 8874,
+      "tempo": 9792
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-nabha",
@@ -490,7 +742,16 @@
       "tempo": 6720
     },
     "distanceKm": 140,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3332,
+      "verna": 3665,
+      "ertiga": 4046,
+      "innova": 7140,
+      "fortuner": 10353,
+      "tempo": 11424
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-firozpur",
@@ -507,7 +768,16 @@
       "tempo": 4953
     },
     "distanceKm": 151,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3594,
+      "verna": 3953,
+      "ertiga": 4364,
+      "innova": 5262,
+      "fortuner": 7630,
+      "tempo": 8420
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-patiala",
@@ -524,7 +794,16 @@
       "tempo": 5084
     },
     "distanceKm": 150,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3570,
+      "verna": 3927,
+      "ertiga": 4335,
+      "innova": 5402,
+      "fortuner": 7832,
+      "tempo": 8643
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-bathinda",
@@ -541,7 +820,16 @@
       "tempo": 5379
     },
     "distanceKm": 184,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 4379,
+      "verna": 4818,
+      "ertiga": 5318,
+      "innova": 5715,
+      "fortuner": 8288,
+      "tempo": 9144
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-chandigarh",
@@ -558,7 +846,16 @@
       "tempo": 4986
     },
     "distanceKm": 155,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3689,
+      "verna": 4058,
+      "ertiga": 4480,
+      "innova": 5297,
+      "fortuner": 7681,
+      "tempo": 8476
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-chandigarh-airport",
@@ -575,7 +872,16 @@
       "tempo": 4986
     },
     "distanceKm": 155,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3689,
+      "verna": 4058,
+      "ertiga": 4480,
+      "innova": 5297,
+      "fortuner": 7681,
+      "tempo": 8476
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-mohali",
@@ -592,7 +898,16 @@
       "tempo": 4986
     },
     "distanceKm": 155,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3689,
+      "verna": 4058,
+      "ertiga": 4480,
+      "innova": 5297,
+      "fortuner": 7681,
+      "tempo": 8476
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-ambala",
@@ -609,7 +924,16 @@
       "tempo": 5609
     },
     "distanceKm": 171,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 4070,
+      "verna": 4476,
+      "ertiga": 4942,
+      "innova": 5959,
+      "fortuner": 8641,
+      "tempo": 9535
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-kurukshetra",
@@ -626,7 +950,16 @@
       "tempo": 7150
     },
     "distanceKm": 200,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 4760,
+      "verna": 5236,
+      "ertiga": 5780,
+      "innova": 7597,
+      "fortuner": 11016,
+      "tempo": 12155
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-thanesar",
@@ -643,7 +976,16 @@
       "tempo": 7150
     },
     "distanceKm": 200,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 4760,
+      "verna": 5236,
+      "ertiga": 5780,
+      "innova": 7597,
+      "fortuner": 11016,
+      "tempo": 12155
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-karnal",
@@ -660,7 +1002,16 @@
       "tempo": 8167
     },
     "distanceKm": 235,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5593,
+      "verna": 6152,
+      "ertiga": 6792,
+      "innova": 8678,
+      "fortuner": 12583,
+      "tempo": 13884
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-panipat",
@@ -677,7 +1028,16 @@
       "tempo": 9512
     },
     "distanceKm": 270,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6426,
+      "verna": 7069,
+      "ertiga": 7803,
+      "innova": 10107,
+      "fortuner": 14654,
+      "tempo": 16170
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-yamunanagar",
@@ -694,7 +1054,16 @@
       "tempo": 7478
     },
     "distanceKm": 250,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5950,
+      "verna": 6545,
+      "ertiga": 7225,
+      "innova": 7946,
+      "fortuner": 11521,
+      "tempo": 12713
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-dehradun",
@@ -711,7 +1080,16 @@
       "tempo": 12120
     },
     "distanceKm": 325,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 8288,
+      "verna": 9117,
+      "ertiga": 10328,
+      "innova": 12878,
+      "fortuner": 18673,
+      "tempo": 20604
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-muzaffarnagar",
@@ -728,7 +1106,16 @@
       "tempo": 10562
     },
     "distanceKm": 322,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7664,
+      "verna": 8430,
+      "ertiga": 9306,
+      "innova": 11222,
+      "fortuner": 16271,
+      "tempo": 17955
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-meerut",
@@ -745,7 +1132,16 @@
       "tempo": 12070
     },
     "distanceKm": 368,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 8758,
+      "verna": 9634,
+      "ertiga": 10635,
+      "innova": 12825,
+      "fortuner": 18596,
+      "tempo": 20519
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-delhi",
@@ -762,7 +1158,16 @@
       "tempo": 12792
     },
     "distanceKm": 385,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 9282,
+      "verna": 10210,
+      "ertiga": 11271,
+      "innova": 13592,
+      "fortuner": 19708,
+      "tempo": 21746
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-delhi-airport",
@@ -779,7 +1184,16 @@
       "tempo": 12792
     },
     "distanceKm": 385,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 9282,
+      "verna": 10210,
+      "ertiga": 11271,
+      "innova": 13592,
+      "fortuner": 19708,
+      "tempo": 21746
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-gurugram",
@@ -796,7 +1210,16 @@
       "tempo": 12792
     },
     "distanceKm": 385,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 9282,
+      "verna": 10210,
+      "ertiga": 11271,
+      "innova": 13592,
+      "fortuner": 19708,
+      "tempo": 21746
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-noida",
@@ -813,7 +1236,16 @@
       "tempo": 12792
     },
     "distanceKm": 385,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 9282,
+      "verna": 10210,
+      "ertiga": 11271,
+      "innova": 13592,
+      "fortuner": 19708,
+      "tempo": 21746
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-faridabad",
@@ -830,7 +1262,16 @@
       "tempo": 12792
     },
     "distanceKm": 385,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 9282,
+      "verna": 10210,
+      "ertiga": 11271,
+      "innova": 13592,
+      "fortuner": 19708,
+      "tempo": 21746
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "jalandhar-ghaziabad",
@@ -847,7 +1288,16 @@
       "tempo": 12792
     },
     "distanceKm": 385,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 9282,
+      "verna": 10210,
+      "ertiga": 11271,
+      "innova": 13592,
+      "fortuner": 19708,
+      "tempo": 21746
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-dehradun",
@@ -864,7 +1314,16 @@
       "tempo": 8600
     },
     "distanceKm": 250,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5950,
+      "verna": 6545,
+      "ertiga": 7225,
+      "innova": 9138,
+      "fortuner": 13250,
+      "tempo": 14620
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-ambala",
@@ -881,7 +1340,16 @@
       "tempo": 8325
     },
     "distanceKm": 242,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5760,
+      "verna": 6336,
+      "ertiga": 6994,
+      "innova": 8845,
+      "fortuner": 12825,
+      "tempo": 14153
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-bathinda",
@@ -898,7 +1366,16 @@
       "tempo": 10837
     },
     "distanceKm": 315,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7492,
+      "verna": 8242,
+      "ertiga": 9098,
+      "innova": 11514,
+      "fortuner": 16696,
+      "tempo": 18423
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-chandigarh",
@@ -915,7 +1392,16 @@
       "tempo": 8944
     },
     "distanceKm": 260,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6188,
+      "verna": 6807,
+      "ertiga": 7514,
+      "innova": 9503,
+      "fortuner": 13780,
+      "tempo": 15205
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-mohali",
@@ -932,7 +1418,16 @@
       "tempo": 8944
     },
     "distanceKm": 260,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6188,
+      "verna": 6807,
+      "ertiga": 7514,
+      "innova": 9503,
+      "fortuner": 13780,
+      "tempo": 15205
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-firozpur",
@@ -949,7 +1444,16 @@
       "tempo": 14930
     },
     "distanceKm": 435,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 10339,
+      "verna": 11373,
+      "ertiga": 12555,
+      "innova": 15863,
+      "fortuner": 23001,
+      "tempo": 25381
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-patiala",
@@ -966,7 +1470,16 @@
       "tempo": 8635
     },
     "distanceKm": 251,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5981,
+      "verna": 6579,
+      "ertiga": 7262,
+      "innova": 9175,
+      "fortuner": 13304,
+      "tempo": 14680
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-malerkotla",
@@ -983,7 +1496,16 @@
       "tempo": 10768
     },
     "distanceKm": 313,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7449,
+      "verna": 8194,
+      "ertiga": 9046,
+      "innova": 11441,
+      "fortuner": 16590,
+      "tempo": 18306
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-gurdaspur",
@@ -1000,7 +1522,16 @@
       "tempo": 15962
     },
     "distanceKm": 465,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 11033,
+      "verna": 12136,
+      "ertiga": 13398,
+      "innova": 16959,
+      "fortuner": 24591,
+      "tempo": 27135
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-ropar",
@@ -1017,7 +1548,16 @@
       "tempo": 9494
     },
     "distanceKm": 276,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6571,
+      "verna": 7228,
+      "ertiga": 7980,
+      "innova": 10088,
+      "fortuner": 14627,
+      "tempo": 16140
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-rupnagar",
@@ -1034,7 +1574,16 @@
       "tempo": 9494
     },
     "distanceKm": 276,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6571,
+      "verna": 7228,
+      "ertiga": 7980,
+      "innova": 10088,
+      "fortuner": 14627,
+      "tempo": 16140
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-rajpura",
@@ -1051,7 +1600,16 @@
       "tempo": 7774
     },
     "distanceKm": 225,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5367,
+      "verna": 5904,
+      "ertiga": 6518,
+      "innova": 8260,
+      "fortuner": 11978,
+      "tempo": 13216
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-khanna",
@@ -1068,7 +1626,16 @@
       "tempo": 9254
     },
     "distanceKm": 270,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6402,
+      "verna": 7043,
+      "ertiga": 7774,
+      "innova": 9833,
+      "fortuner": 14258,
+      "tempo": 15732
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-amritsar",
@@ -1085,7 +1652,16 @@
       "tempo": 15515
     },
     "distanceKm": 450,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 10744,
+      "verna": 11818,
+      "ertiga": 13046,
+      "innova": 16485,
+      "fortuner": 23904,
+      "tempo": 26376
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-batala",
@@ -1102,7 +1678,16 @@
       "tempo": 15309
     },
     "distanceKm": 445,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 10581,
+      "verna": 11638,
+      "ertiga": 12849,
+      "innova": 16266,
+      "fortuner": 23586,
+      "tempo": 26025
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-phagwara",
@@ -1119,7 +1704,16 @@
       "tempo": 11971
     },
     "distanceKm": 348,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 8272,
+      "verna": 9100,
+      "ertiga": 10045,
+      "innova": 12719,
+      "fortuner": 18443,
+      "tempo": 20351
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-jalandhar",
@@ -1136,7 +1730,16 @@
       "tempo": 12792
     },
     "distanceKm": 385,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 9282,
+      "verna": 10210,
+      "ertiga": 11271,
+      "innova": 13592,
+      "fortuner": 19708,
+      "tempo": 21746
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-ludhiana",
@@ -1153,7 +1756,16 @@
       "tempo": 10400
     },
     "distanceKm": 330,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7650,
+      "verna": 8415,
+      "ertiga": 9350,
+      "innova": 11050,
+      "fortuner": 16023,
+      "tempo": 17680
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-moga",
@@ -1170,13 +1782,22 @@
       "tempo": 13003
     },
     "distanceKm": 378,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 8991,
+      "verna": 9891,
+      "ertiga": 10919,
+      "innova": 13816,
+      "fortuner": 20033,
+      "tempo": 22105
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-shimla",
     "pickup": "Delhi Airport",
     "destination": "Shimla",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 5655,
@@ -1187,13 +1808,22 @@
       "tempo": 13572
     },
     "distanceKm": 377,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 10179,
+      "verna": 11198,
+      "ertiga": 11536,
+      "innova": 15269,
+      "fortuner": 22140,
+      "tempo": 24430
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-kasauli",
     "pickup": "Delhi Airport",
     "destination": "Kasauli",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 4800,
@@ -1204,13 +1834,22 @@
       "tempo": 11520
     },
     "distanceKm": 320,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 8640,
+      "verna": 9504,
+      "ertiga": 9792,
+      "innova": 12960,
+      "fortuner": 18792,
+      "tempo": 20736
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-solan",
     "pickup": "Delhi Airport",
     "destination": "Solan",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 4950,
@@ -1221,13 +1860,22 @@
       "tempo": 11880
     },
     "distanceKm": 330,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 8910,
+      "verna": 9801,
+      "ertiga": 10098,
+      "innova": 13365,
+      "fortuner": 19379,
+      "tempo": 21384
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-chail",
     "pickup": "Delhi Airport",
     "destination": "Chail",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 6000,
@@ -1238,13 +1886,22 @@
       "tempo": 14400
     },
     "distanceKm": 400,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 10800,
+      "verna": 11880,
+      "ertiga": 12240,
+      "innova": 16200,
+      "fortuner": 23490,
+      "tempo": 25920
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-mandi",
     "pickup": "Delhi Airport",
     "destination": "Mandi",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 7200,
@@ -1255,13 +1912,22 @@
       "tempo": 17280
     },
     "distanceKm": 480,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 12960,
+      "verna": 14256,
+      "ertiga": 14688,
+      "innova": 19440,
+      "fortuner": 28188,
+      "tempo": 31104
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-kullu",
     "pickup": "Delhi Airport",
     "destination": "Kullu",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 7500,
@@ -1272,13 +1938,22 @@
       "tempo": 18000
     },
     "distanceKm": 500,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 13500,
+      "verna": 14850,
+      "ertiga": 15300,
+      "innova": 20250,
+      "fortuner": 29363,
+      "tempo": 32400
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-kasol",
     "pickup": "Delhi Airport",
     "destination": "Kasol",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 7800,
@@ -1289,13 +1964,22 @@
       "tempo": 18720
     },
     "distanceKm": 520,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 14040,
+      "verna": 15444,
+      "ertiga": 15912,
+      "innova": 21060,
+      "fortuner": 30537,
+      "tempo": 33696
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-dharamshala",
     "pickup": "Delhi Airport",
     "destination": "Dharamshala",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 7650,
@@ -1306,13 +1990,22 @@
       "tempo": 18360
     },
     "distanceKm": 510,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 13770,
+      "verna": 15147,
+      "ertiga": 15606,
+      "innova": 20655,
+      "fortuner": 29950,
+      "tempo": 33048
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-mcleod-ganj",
     "pickup": "Delhi Airport",
     "destination": "McLeod Ganj",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 7725,
@@ -1323,13 +2016,22 @@
       "tempo": 18540
     },
     "distanceKm": 515,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 13905,
+      "verna": 15296,
+      "ertiga": 15759,
+      "innova": 20858,
+      "fortuner": 30244,
+      "tempo": 33372
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-palampur",
     "pickup": "Delhi Airport",
     "destination": "Palampur",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 7350,
@@ -1340,13 +2042,22 @@
       "tempo": 17640
     },
     "distanceKm": 490,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 13230,
+      "verna": 14553,
+      "ertiga": 14994,
+      "innova": 19845,
+      "fortuner": 28775,
+      "tempo": 31752
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-bir",
     "pickup": "Delhi Airport",
     "destination": "Bir",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 7500,
@@ -1357,13 +2068,22 @@
       "tempo": 18000
     },
     "distanceKm": 500,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 13500,
+      "verna": 14850,
+      "ertiga": 15300,
+      "innova": 20250,
+      "fortuner": 29363,
+      "tempo": 32400
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-manali",
     "pickup": "Delhi Airport",
     "destination": "Manali",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 8250,
@@ -1374,13 +2094,22 @@
       "tempo": 19800
     },
     "distanceKm": 550,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 14850,
+      "verna": 16335,
+      "ertiga": 16830,
+      "innova": 22275,
+      "fortuner": 32299,
+      "tempo": 35640
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-dalhousie",
     "pickup": "Delhi Airport",
     "destination": "Dalhousie",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 8850,
@@ -1391,13 +2120,22 @@
       "tempo": 21240
     },
     "distanceKm": 590,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 15930,
+      "verna": 17523,
+      "ertiga": 18054,
+      "innova": 23895,
+      "fortuner": 34648,
+      "tempo": 38232
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-chamba",
     "pickup": "Delhi Airport",
     "destination": "Chamba",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 9375,
@@ -1408,13 +2146,22 @@
       "tempo": 22500
     },
     "distanceKm": 625,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 16875,
+      "verna": 18563,
+      "ertiga": 19125,
+      "innova": 25313,
+      "fortuner": 36704,
+      "tempo": 40500
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "delhi-airport-jibhi",
     "pickup": "Delhi Airport",
     "destination": "Jibhi",
-    "routeType": "HILL",
+    "routeType": "MIXED",
     "pricingType": "fixed",
     "vehiclePrices": {
       "dzire": 7800,
@@ -1425,7 +2172,16 @@
       "tempo": 18720
     },
     "distanceKm": 520,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 14040,
+      "verna": 15444,
+      "ertiga": 15912,
+      "innova": 21060,
+      "fortuner": 30537,
+      "tempo": 33696
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-jalandhar",
@@ -1442,7 +2198,16 @@
       "tempo": 5120
     },
     "distanceKm": 95,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2380,
+      "verna": 2618,
+      "ertiga": 3740,
+      "innova": 5440,
+      "fortuner": 7888,
+      "tempo": 8704
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-kapurthala",
@@ -1459,7 +2224,16 @@
       "tempo": 4312
     },
     "distanceKm": 80,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2358,
+      "verna": 2594,
+      "ertiga": 3706,
+      "innova": 5390,
+      "fortuner": 7816,
+      "tempo": 8624
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-nakodar",
@@ -1476,7 +2250,16 @@
       "tempo": 6035
     },
     "distanceKm": 112,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2803,
+      "verna": 3084,
+      "ertiga": 4408,
+      "innova": 6412,
+      "fortuner": 9297,
+      "tempo": 10260
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-phagwara",
@@ -1493,7 +2276,16 @@
       "tempo": 5550
     },
     "distanceKm": 103,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2579,
+      "verna": 2837,
+      "ertiga": 4056,
+      "innova": 5897,
+      "fortuner": 8551,
+      "tempo": 9435
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-ludhiana",
@@ -1510,7 +2302,16 @@
       "tempo": 8622
     },
     "distanceKm": 160,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 4009,
+      "verna": 4410,
+      "ertiga": 6299,
+      "innova": 9161,
+      "fortuner": 13284,
+      "tempo": 14657
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-moga",
@@ -1527,7 +2328,16 @@
       "tempo": 5659
     },
     "distanceKm": 105,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2630,
+      "verna": 2893,
+      "ertiga": 4134,
+      "innova": 6013,
+      "fortuner": 8719,
+      "tempo": 9620
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-zira",
@@ -1544,7 +2354,16 @@
       "tempo": 4528
     },
     "distanceKm": 84,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2103,
+      "verna": 2314,
+      "ertiga": 3307,
+      "innova": 4811,
+      "fortuner": 6977,
+      "tempo": 7698
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-batala",
@@ -1561,7 +2380,16 @@
       "tempo": 2587
     },
     "distanceKm": 48,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 1414,
+      "verna": 1556,
+      "ertiga": 2224,
+      "innova": 3234,
+      "fortuner": 4690,
+      "tempo": 5174
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-gurdaspur",
@@ -1578,7 +2406,16 @@
       "tempo": 4419
     },
     "distanceKm": 82,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2054,
+      "verna": 2259,
+      "ertiga": 3228,
+      "innova": 4695,
+      "fortuner": 6809,
+      "tempo": 7512
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-pathankot",
@@ -1595,7 +2432,16 @@
       "tempo": 6251
     },
     "distanceKm": 116,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2904,
+      "verna": 3194,
+      "ertiga": 4566,
+      "innova": 6642,
+      "fortuner": 9631,
+      "tempo": 10627
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-hoshiarpur",
@@ -1612,7 +2458,16 @@
       "tempo": 6467
     },
     "distanceKm": 120,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3006,
+      "verna": 3307,
+      "ertiga": 4724,
+      "innova": 6871,
+      "fortuner": 9964,
+      "tempo": 10994
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-firozpur",
@@ -1629,7 +2484,16 @@
       "tempo": 5766
     },
     "distanceKm": 107,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2679,
+      "verna": 2948,
+      "ertiga": 4213,
+      "innova": 6127,
+      "fortuner": 8884,
+      "tempo": 9802
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-faridkot",
@@ -1646,7 +2510,16 @@
       "tempo": 7653
     },
     "distanceKm": 142,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3556,
+      "verna": 3912,
+      "ertiga": 5590,
+      "innova": 8131,
+      "fortuner": 11790,
+      "tempo": 13010
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-mansa",
@@ -1663,7 +2536,16 @@
       "tempo": 11858
     },
     "distanceKm": 220,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5510,
+      "verna": 6061,
+      "ertiga": 8662,
+      "innova": 12599,
+      "fortuner": 18268,
+      "tempo": 20159
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-chandigarh",
@@ -1680,7 +2562,16 @@
       "tempo": 12342
     },
     "distanceKm": 229,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5738,
+      "verna": 6312,
+      "ertiga": 9015,
+      "innova": 13114,
+      "fortuner": 19015,
+      "tempo": 20981
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "amritsar-airport-dalhousie",
@@ -1697,7 +2588,16 @@
       "tempo": 10998
     },
     "distanceKm": 204,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5711,
+      "verna": 6283,
+      "ertiga": 8979,
+      "innova": 13061,
+      "fortuner": 18937,
+      "tempo": 20896
+    },
+    "updatedAt": "2026-10-13T17:27:27.342Z"
   },
   {
     "id": "chandigarh-airport-kasauli",
@@ -1715,7 +2615,15 @@
     },
     "distanceKm": 69,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.992Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 2346,
+      "verna": 2884,
+      "ertiga": 3312,
+      "innova": 5312,
+      "fortuner": 6004,
+      "tempo": 6624
+    }
   },
   {
     "id": "chandigarh-airport-solan",
@@ -1733,7 +2641,15 @@
     },
     "distanceKm": 76,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 2584,
+      "verna": 3178,
+      "ertiga": 3648,
+      "innova": 5648,
+      "fortuner": 6612,
+      "tempo": 7296
+    }
   },
   {
     "id": "chandigarh-airport-shimla",
@@ -1751,7 +2667,15 @@
     },
     "distanceKm": 123,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 3555,
+      "verna": 4371,
+      "ertiga": 5018,
+      "innova": 6718,
+      "fortuner": 9097,
+      "tempo": 10037
+    }
   },
   {
     "id": "chandigarh-airport-chail",
@@ -1769,7 +2693,15 @@
     },
     "distanceKm": 123,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 3973,
+      "verna": 4885,
+      "ertiga": 5609,
+      "innova": 7509,
+      "fortuner": 10167,
+      "tempo": 11218
+    }
   },
   {
     "id": "chandigarh-airport-kufri",
@@ -1787,7 +2719,15 @@
     },
     "distanceKm": 135,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 3902,
+      "verna": 4797,
+      "ertiga": 5508,
+      "innova": 7208,
+      "fortuner": 9984,
+      "tempo": 11016
+    }
   },
   {
     "id": "chandigarh-airport-narkanda",
@@ -1805,7 +2745,15 @@
     },
     "distanceKm": 195,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 6299,
+      "verna": 7746,
+      "ertiga": 8892,
+      "innova": 10792,
+      "fortuner": 16118,
+      "tempo": 17784
+    }
   },
   {
     "id": "chandigarh-airport-mandi",
@@ -1823,7 +2771,15 @@
     },
     "distanceKm": 220,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 7106,
+      "verna": 8740,
+      "ertiga": 10032,
+      "innova": 11932,
+      "fortuner": 18183,
+      "tempo": 20064
+    }
   },
   {
     "id": "chandigarh-airport-bir-billing",
@@ -1841,7 +2797,15 @@
     },
     "distanceKm": 220,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 7106,
+      "verna": 8740,
+      "ertiga": 10032,
+      "innova": 11932,
+      "fortuner": 18183,
+      "tempo": 20064
+    }
   },
   {
     "id": "chandigarh-airport-bir",
@@ -1859,7 +2823,15 @@
     },
     "distanceKm": 220,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 7106,
+      "verna": 8740,
+      "ertiga": 10032,
+      "innova": 11932,
+      "fortuner": 18183,
+      "tempo": 20064
+    }
   },
   {
     "id": "chandigarh-airport-palampur",
@@ -1877,7 +2849,15 @@
     },
     "distanceKm": 225,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 7268,
+      "verna": 8940,
+      "ertiga": 10260,
+      "innova": 12730,
+      "fortuner": 18597,
+      "tempo": 20520
+    }
   },
   {
     "id": "chandigarh-airport-jibhi",
@@ -1895,7 +2875,15 @@
     },
     "distanceKm": 233,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 7526,
+      "verna": 9257,
+      "ertiga": 10625,
+      "innova": 13095,
+      "fortuner": 19258,
+      "tempo": 21250
+    }
   },
   {
     "id": "chandigarh-airport-kullu",
@@ -1913,7 +2901,15 @@
     },
     "distanceKm": 244,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 7881,
+      "verna": 9694,
+      "ertiga": 11126,
+      "innova": 13596,
+      "fortuner": 20167,
+      "tempo": 22253
+    }
   },
   {
     "id": "chandigarh-airport-kasol",
@@ -1931,7 +2927,15 @@
     },
     "distanceKm": 253,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 8172,
+      "verna": 10051,
+      "ertiga": 11537,
+      "innova": 14007,
+      "fortuner": 20911,
+      "tempo": 23074
+    }
   },
   {
     "id": "chandigarh-airport-dharamshala",
@@ -1949,7 +2953,15 @@
     },
     "distanceKm": 253,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 8172,
+      "verna": 10051,
+      "ertiga": 11537,
+      "innova": 14007,
+      "fortuner": 20911,
+      "tempo": 23074
+    }
   },
   {
     "id": "chandigarh-airport-manikaran",
@@ -1967,7 +2979,15 @@
     },
     "distanceKm": 258,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 7456,
+      "verna": 9166,
+      "ertiga": 10526,
+      "innova": 12736,
+      "fortuner": 19079,
+      "tempo": 21053
+    }
   },
   {
     "id": "chandigarh-airport-mcleod-ganj",
@@ -1985,7 +3005,15 @@
     },
     "distanceKm": 263,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 8495,
+      "verna": 10448,
+      "ertiga": 11993,
+      "innova": 14463,
+      "fortuner": 21738,
+      "tempo": 23986
+    }
   },
   {
     "id": "chandigarh-airport-manali",
@@ -2003,7 +3031,15 @@
     },
     "distanceKm": 280,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 8092,
+      "verna": 9948,
+      "ertiga": 11424,
+      "innova": 13634,
+      "fortuner": 20706,
+      "tempo": 22848
+    }
   },
   {
     "id": "chandigarh-airport-solang-valley",
@@ -2021,7 +3057,15 @@
     },
     "distanceKm": 290,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 9367,
+      "verna": 11522,
+      "ertiga": 13224,
+      "innova": 15694,
+      "fortuner": 23969,
+      "tempo": 26448
+    }
   },
   {
     "id": "chandigarh-airport-dalhousie",
@@ -2039,7 +3083,15 @@
     },
     "distanceKm": 307,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 9916,
+      "verna": 12196,
+      "ertiga": 13999,
+      "innova": 16469,
+      "fortuner": 25375,
+      "tempo": 27998
+    }
   },
   {
     "id": "chandigarh-airport-chamba",
@@ -2057,7 +3109,15 @@
     },
     "distanceKm": 327,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 10562,
+      "verna": 12992,
+      "ertiga": 14911,
+      "innova": 17381,
+      "fortuner": 27028,
+      "tempo": 29822
+    }
   },
   {
     "id": "chandigarh-airport-khajjiar",
@@ -2075,7 +3135,15 @@
     },
     "distanceKm": 329,
     "active": true,
-    "updatedAt": "2026-10-09T16:06:09.994Z"
+    "updatedAt": "2026-10-13T17:27:27.342Z",
+    "roundTripPrices": {
+      "dzire": 10627,
+      "verna": 13072,
+      "ertiga": 15002,
+      "innova": 17472,
+      "fortuner": 27193,
+      "tempo": 30005
+    }
   },
   {
     "id": "mussoorie-delhi-airport",
@@ -2092,7 +3160,16 @@
       "tempo": 10080
     },
     "distanceKm": 280,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7980,
+      "verna": 8778,
+      "ertiga": 9576,
+      "innova": 11970,
+      "fortuner": 17357,
+      "tempo": 19152
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "rishikesh-delhi-airport",
@@ -2109,7 +3186,16 @@
       "tempo": 9360
     },
     "distanceKm": 260,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6630,
+      "verna": 7293,
+      "ertiga": 7956,
+      "innova": 9945,
+      "fortuner": 14421,
+      "tempo": 15912
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "haridwar-delhi-airport",
@@ -2126,7 +3212,16 @@
       "tempo": 8640
     },
     "distanceKm": 240,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6120,
+      "verna": 6732,
+      "ertiga": 7344,
+      "innova": 9180,
+      "fortuner": 13311,
+      "tempo": 14688
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "haldwani-delhi-airport",
@@ -2143,7 +3238,16 @@
       "tempo": 10800
     },
     "distanceKm": 300,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7650,
+      "verna": 8415,
+      "ertiga": 9180,
+      "innova": 11475,
+      "fortuner": 16640,
+      "tempo": 18360
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "nainital-delhi-airport",
@@ -2160,7 +3264,16 @@
       "tempo": 11920
     },
     "distanceKm": 300,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 9500,
+      "verna": 10450,
+      "ertiga": 11400,
+      "innova": 14155,
+      "fortuner": 20526,
+      "tempo": 22648
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "jalandhar-lansdowne",
@@ -2177,7 +3290,16 @@
       "tempo": 16200
     },
     "distanceKm": 450,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 12825,
+      "verna": 14108,
+      "ertiga": 15390,
+      "innova": 19238,
+      "fortuner": 27894,
+      "tempo": 30780
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "jalandhar-nainital",
@@ -2194,7 +3316,16 @@
       "tempo": 21060
     },
     "distanceKm": 585,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 16673,
+      "verna": 18341,
+      "ertiga": 20007,
+      "innova": 25009,
+      "fortuner": 36263,
+      "tempo": 40014
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "jalandhar-sonprayag",
@@ -2211,7 +3342,16 @@
       "tempo": 21240
     },
     "distanceKm": 590,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 16815,
+      "verna": 18497,
+      "ertiga": 20178,
+      "innova": 25223,
+      "fortuner": 36573,
+      "tempo": 40356
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "jalandhar-badrinath",
@@ -2228,7 +3368,16 @@
       "tempo": 24120
     },
     "distanceKm": 670,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 19095,
+      "verna": 21005,
+      "ertiga": 22914,
+      "innova": 28643,
+      "fortuner": 41532,
+      "tempo": 45828
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "jalandhar-roorkee",
@@ -2245,7 +3394,16 @@
       "tempo": 11568
     },
     "distanceKm": 302,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7701,
+      "verna": 8471,
+      "ertiga": 9741,
+      "innova": 12291,
+      "fortuner": 17823,
+      "tempo": 19666
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "jalandhar-haridwar",
@@ -2262,7 +3420,16 @@
       "tempo": 12192
     },
     "distanceKm": 328,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 8364,
+      "verna": 9200,
+      "ertiga": 10404,
+      "innova": 12954,
+      "fortuner": 18783,
+      "tempo": 20726
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "jalandhar-rishikesh",
@@ -2279,7 +3446,16 @@
       "tempo": 12960
     },
     "distanceKm": 360,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 9180,
+      "verna": 10098,
+      "ertiga": 11220,
+      "innova": 13770,
+      "fortuner": 19967,
+      "tempo": 22032
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "jalandhar-kotdwar",
@@ -2296,7 +3472,16 @@
       "tempo": 13440
     },
     "distanceKm": 380,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 9690,
+      "verna": 10659,
+      "ertiga": 11730,
+      "innova": 14280,
+      "fortuner": 20706,
+      "tempo": 22848
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "jalandhar-haldwani",
@@ -2313,7 +3498,16 @@
       "tempo": 18720
     },
     "distanceKm": 600,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 15300,
+      "verna": 16830,
+      "ertiga": 17340,
+      "innova": 19890,
+      "fortuner": 28841,
+      "tempo": 31824
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "delhi-airport-khatu-shyam-ji",
@@ -2330,7 +3524,16 @@
       "tempo": 10480
     },
     "distanceKm": 280,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6885,
+      "verna": 7574,
+      "ertiga": 8585,
+      "innova": 11135,
+      "fortuner": 16147,
+      "tempo": 17816
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "delhi-airport-khatu-shyam",
@@ -2347,7 +3550,16 @@
       "tempo": 10480
     },
     "distanceKm": 280,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6885,
+      "verna": 7574,
+      "ertiga": 8585,
+      "innova": 11135,
+      "fortuner": 16147,
+      "tempo": 17816
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "delhi-airport-vrindavan-dham",
@@ -2364,7 +3576,16 @@
       "tempo": 8960
     },
     "distanceKm": 160,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5270,
+      "verna": 5797,
+      "ertiga": 6970,
+      "innova": 9520,
+      "fortuner": 13804,
+      "tempo": 15232
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "delhi-airport-vrindavan",
@@ -2381,7 +3602,16 @@
       "tempo": 8960
     },
     "distanceKm": 160,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5270,
+      "verna": 5797,
+      "ertiga": 6970,
+      "innova": 9520,
+      "fortuner": 13804,
+      "tempo": 15232
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-chandigarh",
@@ -2398,7 +3628,16 @@
       "tempo": 4960
     },
     "distanceKm": 110,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2550,
+      "verna": 2805,
+      "ertiga": 3570,
+      "innova": 5270,
+      "fortuner": 7642,
+      "tempo": 8432
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-chandigarh-airport",
@@ -2415,7 +3654,16 @@
       "tempo": 4960
     },
     "distanceKm": 110,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2550,
+      "verna": 2805,
+      "ertiga": 3570,
+      "innova": 5270,
+      "fortuner": 7642,
+      "tempo": 8432
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-rupnagar",
@@ -2432,7 +3680,16 @@
       "tempo": 5072
     },
     "distanceKm": 115,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2669,
+      "verna": 2936,
+      "ertiga": 3689,
+      "innova": 5389,
+      "fortuner": 7815,
+      "tempo": 8622
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-faridkot",
@@ -2449,7 +3706,16 @@
       "tempo": 5184
     },
     "distanceKm": 120,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2788,
+      "verna": 3067,
+      "ertiga": 3808,
+      "innova": 5508,
+      "fortuner": 7987,
+      "tempo": 8813
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-firozpur",
@@ -2466,7 +3732,16 @@
       "tempo": 5392
     },
     "distanceKm": 130,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3009,
+      "verna": 3310,
+      "ertiga": 4029,
+      "innova": 5729,
+      "fortuner": 8308,
+      "tempo": 9166
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-amritsar",
@@ -2483,7 +3758,16 @@
       "tempo": 5616
     },
     "distanceKm": 140,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3247,
+      "verna": 3572,
+      "ertiga": 4267,
+      "innova": 5967,
+      "fortuner": 8653,
+      "tempo": 9547
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-bathinda",
@@ -2500,7 +3784,16 @@
       "tempo": 5728
     },
     "distanceKm": 145,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3366,
+      "verna": 3703,
+      "ertiga": 4386,
+      "innova": 6086,
+      "fortuner": 8825,
+      "tempo": 9738
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-bathinda-airport",
@@ -2517,7 +3810,16 @@
       "tempo": 5728
     },
     "distanceKm": 145,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3366,
+      "verna": 3703,
+      "ertiga": 4386,
+      "innova": 6086,
+      "fortuner": 8825,
+      "tempo": 9738
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-muktsar",
@@ -2534,7 +3836,16 @@
       "tempo": 5840
     },
     "distanceKm": 150,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3485,
+      "verna": 3834,
+      "ertiga": 4505,
+      "innova": 6205,
+      "fortuner": 8998,
+      "tempo": 9928
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-sri-muktsar-sahib",
@@ -2551,7 +3862,16 @@
       "tempo": 5840
     },
     "distanceKm": 150,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3485,
+      "verna": 3834,
+      "ertiga": 4505,
+      "innova": 6205,
+      "fortuner": 8998,
+      "tempo": 9928
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-tarn-taran",
@@ -2568,7 +3888,16 @@
       "tempo": 5840
     },
     "distanceKm": 150,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3485,
+      "verna": 3834,
+      "ertiga": 4505,
+      "innova": 6205,
+      "fortuner": 8998,
+      "tempo": 9928
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-batala",
@@ -2585,7 +3914,16 @@
       "tempo": 5936
     },
     "distanceKm": 155,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3587,
+      "verna": 3946,
+      "ertiga": 4607,
+      "innova": 6307,
+      "fortuner": 9146,
+      "tempo": 10091
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-amritsar-airport",
@@ -2602,7 +3940,16 @@
       "tempo": 5936
     },
     "distanceKm": 155,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3587,
+      "verna": 3946,
+      "ertiga": 4607,
+      "innova": 6307,
+      "fortuner": 9146,
+      "tempo": 10091
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-gurdaspur",
@@ -2619,7 +3966,16 @@
       "tempo": 6048
     },
     "distanceKm": 160,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3706,
+      "verna": 4077,
+      "ertiga": 4726,
+      "innova": 6426,
+      "fortuner": 9318,
+      "tempo": 10282
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-pathankot",
@@ -2636,7 +3992,16 @@
       "tempo": 6160
     },
     "distanceKm": 165,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3825,
+      "verna": 4208,
+      "ertiga": 4845,
+      "innova": 6545,
+      "fortuner": 9491,
+      "tempo": 10472
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-anandpur-sahib",
@@ -2653,7 +4018,16 @@
       "tempo": 5840
     },
     "distanceKm": 150,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3485,
+      "verna": 3834,
+      "ertiga": 4505,
+      "innova": 6205,
+      "fortuner": 8998,
+      "tempo": 9928
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-nangal",
@@ -2670,7 +4044,16 @@
       "tempo": 5728
     },
     "distanceKm": 145,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3366,
+      "verna": 3703,
+      "ertiga": 4386,
+      "innova": 6086,
+      "fortuner": 8825,
+      "tempo": 9738
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-ambala",
@@ -2687,7 +4070,16 @@
       "tempo": 4960
     },
     "distanceKm": 110,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2550,
+      "verna": 2805,
+      "ertiga": 3570,
+      "innova": 5270,
+      "fortuner": 7642,
+      "tempo": 8432
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-panchkula",
@@ -2704,7 +4096,16 @@
       "tempo": 5072
     },
     "distanceKm": 115,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 2669,
+      "verna": 2936,
+      "ertiga": 3689,
+      "innova": 5389,
+      "fortuner": 7815,
+      "tempo": 8622
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-yamunanagar",
@@ -2721,7 +4122,16 @@
       "tempo": 6160
     },
     "distanceKm": 165,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 3825,
+      "verna": 4208,
+      "ertiga": 4845,
+      "innova": 6545,
+      "fortuner": 9491,
+      "tempo": 10472
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-kurukshetra",
@@ -2738,7 +4148,16 @@
       "tempo": 6480
     },
     "distanceKm": 180,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 4165,
+      "verna": 4582,
+      "ertiga": 5185,
+      "innova": 6885,
+      "fortuner": 9984,
+      "tempo": 11016
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-kaithal",
@@ -2755,7 +4174,16 @@
       "tempo": 6704
     },
     "distanceKm": 190,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 4403,
+      "verna": 4843,
+      "ertiga": 5423,
+      "innova": 7123,
+      "fortuner": 10329,
+      "tempo": 11397
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-karnal",
@@ -2772,7 +4200,16 @@
       "tempo": 6928
     },
     "distanceKm": 200,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 4641,
+      "verna": 5105,
+      "ertiga": 5661,
+      "innova": 7361,
+      "fortuner": 10674,
+      "tempo": 11778
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-abohar",
@@ -2789,7 +4226,16 @@
       "tempo": 8432
     },
     "distanceKm": 240,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5559,
+      "verna": 6115,
+      "ertiga": 7259,
+      "innova": 8959,
+      "fortuner": 12991,
+      "tempo": 14334
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-fazilka",
@@ -2806,7 +4252,16 @@
       "tempo": 7680
     },
     "distanceKm": 205,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 4760,
+      "verna": 5236,
+      "ertiga": 6460,
+      "innova": 8160,
+      "fortuner": 11832,
+      "tempo": 13056
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-fatehabad",
@@ -2823,7 +4278,16 @@
       "tempo": 8768
     },
     "distanceKm": 255,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5916,
+      "verna": 6508,
+      "ertiga": 7616,
+      "innova": 9316,
+      "fortuner": 13508,
+      "tempo": 14906
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-panipat",
@@ -2840,7 +4304,16 @@
       "tempo": 8112
     },
     "distanceKm": 225,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 5219,
+      "verna": 5741,
+      "ertiga": 6919,
+      "innova": 8619,
+      "fortuner": 12498,
+      "tempo": 13790
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-sonipat",
@@ -2857,7 +4330,16 @@
       "tempo": 9088
     },
     "distanceKm": 270,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6256,
+      "verna": 6882,
+      "ertiga": 7956,
+      "innova": 9656,
+      "fortuner": 14001,
+      "tempo": 15450
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-rohtak",
@@ -2874,7 +4356,16 @@
       "tempo": 9312
     },
     "distanceKm": 280,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6494,
+      "verna": 7143,
+      "ertiga": 8194,
+      "innova": 9894,
+      "fortuner": 14346,
+      "tempo": 15830
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-hisar",
@@ -2891,7 +4382,16 @@
       "tempo": 9744
     },
     "distanceKm": 300,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6953,
+      "verna": 7648,
+      "ertiga": 8653,
+      "innova": 10353,
+      "fortuner": 15013,
+      "tempo": 16565
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-sirsa",
@@ -2908,7 +4408,16 @@
       "tempo": 9744
     },
     "distanceKm": 300,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6953,
+      "verna": 7648,
+      "ertiga": 8653,
+      "innova": 10353,
+      "fortuner": 15013,
+      "tempo": 16565
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-rewari",
@@ -2925,7 +4434,16 @@
       "tempo": 9744
     },
     "distanceKm": 300,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6953,
+      "verna": 7648,
+      "ertiga": 8653,
+      "innova": 10353,
+      "fortuner": 15013,
+      "tempo": 16565
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-gurugram",
@@ -2942,7 +4460,16 @@
       "tempo": 10400
     },
     "distanceKm": 330,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7650,
+      "verna": 8415,
+      "ertiga": 9350,
+      "innova": 11050,
+      "fortuner": 16023,
+      "tempo": 17680
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-delhi",
@@ -2959,7 +4486,16 @@
       "tempo": 10400
     },
     "distanceKm": 330,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7650,
+      "verna": 8415,
+      "ertiga": 9350,
+      "innova": 11050,
+      "fortuner": 16023,
+      "tempo": 17680
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-delhi-airport",
@@ -2976,7 +4512,16 @@
       "tempo": 10400
     },
     "distanceKm": 330,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7650,
+      "verna": 8415,
+      "ertiga": 9350,
+      "innova": 11050,
+      "fortuner": 16023,
+      "tempo": 17680
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-faridabad",
@@ -2993,7 +4538,16 @@
       "tempo": 10400
     },
     "distanceKm": 330,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7650,
+      "verna": 8415,
+      "ertiga": 9350,
+      "innova": 11050,
+      "fortuner": 16023,
+      "tempo": 17680
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-hanumangarh",
@@ -3010,7 +4564,16 @@
       "tempo": 9744
     },
     "distanceKm": 300,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 6953,
+      "verna": 7648,
+      "ertiga": 8653,
+      "innova": 10353,
+      "fortuner": 15013,
+      "tempo": 16565
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-sri-ganganagar",
@@ -3027,7 +4590,16 @@
       "tempo": 10400
     },
     "distanceKm": 330,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 7650,
+      "verna": 8415,
+      "ertiga": 9350,
+      "innova": 11050,
+      "fortuner": 16023,
+      "tempo": 17680
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-bhiwadi",
@@ -3044,7 +4616,16 @@
       "tempo": 10832
     },
     "distanceKm": 350,
-    "active": true
+    "active": true,
+    "roundTripPrices": {
+      "dzire": 8109,
+      "verna": 8920,
+      "ertiga": 9809,
+      "innova": 11509,
+      "fortuner": 16689,
+      "tempo": 18414
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   },
   {
     "id": "ludhiana-alwar",
@@ -3061,24 +4642,15 @@
       "tempo": 11280
     },
     "distanceKm": 370,
-    "active": true
-  },
-  {
-    "id": "jalandhar-to-pakistan-1791715191238",
-    "pickup": "jalandhar",
-    "destination": "pakistan",
-    "routeType": "PLAIN",
-    "pricingType": "fixed",
-    "vehiclePrices": {
-      "dzire": 4000,
-      "verna": 4500,
-      "ertiga": 5000,
-      "innova": 6500,
-      "fortuner": 9500,
-      "tempo": 8500
-    },
-    "distanceKm": 5485,
     "active": true,
-    "updatedAt": "2026-10-11T10:39:51.238Z"
+    "roundTripPrices": {
+      "dzire": 8585,
+      "verna": 9444,
+      "ertiga": 10285,
+      "innova": 11985,
+      "fortuner": 17379,
+      "tempo": 19176
+    },
+    "updatedAt": "2026-10-13T17:27:27.343Z"
   }
 ]

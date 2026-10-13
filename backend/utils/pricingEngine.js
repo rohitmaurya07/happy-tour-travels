@@ -769,8 +769,11 @@ export const resolveRouteDetails = (pickup, destination) => {
   const toRegion = (locTo?.regionType || '').toUpperCase();
 
   const isHillKeyword = HILL_KEYWORDS.some(k => cleanTo.includes(k) || cleanFrom.includes(k));
+  const isDelhi = cleanFrom.includes('delhi') || cleanTo.includes('delhi');
 
-  if (toRegion === 'HILL' || fromRegion === 'HILL' || isHillKeyword) {
+  if (isDelhi && (isHillKeyword || toRegion === 'HILL' || fromRegion === 'HILL' || locTo?.type === 'Hill Station' || locFrom?.type === 'Hill Station')) {
+    routeType = 'MIXED';
+  } else if (toRegion === 'HILL' || fromRegion === 'HILL' || isHillKeyword) {
     routeType = 'HILL';
   } else if (toRegion === 'MIXED' || fromRegion === 'MIXED') {
     routeType = 'MIXED';
@@ -785,6 +788,31 @@ export const resolveRouteDetails = (pickup, destination) => {
     fixedPrices: {},
     customDistance: null
   };
+};
+
+export const getRoundTripMultiplier = (routeType, distanceKm, pricingSettings = null) => {
+  const settings = pricingSettings || readJson('pricingSettings') || {};
+  const multipliers = settings.roundTripMultipliers || {
+    plain: 1.7,
+    mixed: 1.8,
+    hill: 1.9,
+    belowKm: 2.0
+  };
+  const threshold = Number(settings.roundTripBelowKmThreshold) || 82;
+
+  const dist = Number(distanceKm) || 0;
+  if (dist > 0 && dist < threshold) {
+    return Number(multipliers.belowKm) || 2.0;
+  }
+
+  const type = (routeType || 'PLAIN').toUpperCase();
+  if (type === 'HILL') {
+    return Number(multipliers.hill) || 1.9;
+  }
+  if (type === 'MIXED') {
+    return Number(multipliers.mixed) || 1.8;
+  }
+  return Number(multipliers.plain) || 1.7;
 };
 
 export const isNightHour = (timeStr, startHour = 23, endHour = 5) => {
@@ -907,13 +935,11 @@ export const calculateFare = ({
         pricingRuleApplied = `Fixed Round-Trip Route Tariff (${routeDetails.route?.pickup || pickup} ↔ ${routeDetails.route?.destination || destination})`;
       } else {
         pricingType = 'round_trip';
-        const effectiveDist = actualDistance * 2;
-        const plainRate = Number(vehicle.roundTripRate) || Number(vehicle.plainRatePerKm) || 12;
-        const hillRate = Number(vehicle.roundTripHillRate) || (Number(vehicle.hillRatePerKm) ? Number(vehicle.hillRatePerKm) - 1 : plainRate + 2);
-        ratePerKm = (routeType === 'HILL' || routeType === 'MIXED') ? hillRate : plainRate;
-        billableKm = Math.max(effectiveDist, 250);
-        baseFare = Math.round(billableKm * ratePerKm);
-        pricingRuleApplied = `Round-Trip Tariff (₹${ratePerKm}/km • ${billableKm} KM Return Distance)`;
+        const mult = getRoundTripMultiplier(routeType, actualDistance, pricingSettings);
+        baseFare = Math.round(oneWayFixedFare * mult);
+        billableKm = (actualDistance || 50) * 2;
+        ratePerKm = Math.round((baseFare / billableKm) * 100) / 100;
+        pricingRuleApplied = `Round-Trip Fare (${mult}× One-Way Route Tariff)`;
       }
     } else {
       pricingType = 'fixed_route';

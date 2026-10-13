@@ -6,7 +6,8 @@ import {
 import { useSiteData } from '../../../context/SiteDataContext';
 import { 
   fetchPricingRoutes, addPricingRoute, updatePricingRoute, deletePricingRoute,
-  updatePricingSettings, updateHourlyRentalPricing, updateAllVehiclePricing
+  updatePricingSettings, updateHourlyRentalPricing, updateAllVehiclePricing,
+  bulkApplyRoundTripRates
 } from '../../../services/api';
 
 export default function PricingTab() {
@@ -24,6 +25,7 @@ export default function PricingTab() {
     pickup: '',
     destination: '',
     distanceKm: '',
+    routeType: 'PLAIN',
     vehiclePrices: {
       dzire: 4000,
       verna: 4500,
@@ -116,6 +118,13 @@ export default function PricingTab() {
     nightChargesAmount: 250,
     nightChargeStartHour: 23,
     nightChargeEndHour: 5,
+    roundTripMultipliers: {
+      plain: 1.7,
+      mixed: 1.8,
+      hill: 1.9,
+      belowKm: 2.0
+    },
+    roundTripBelowKmThreshold: 82,
     termsAndConditions: 'All rates include Fuel & Driver. Tolls and state taxes at actuals.'
   });
 
@@ -126,6 +135,13 @@ export default function PricingTab() {
         nightChargesAmount: pricingSettings.nightChargesAmount ?? 250,
         nightChargeStartHour: pricingSettings.nightChargeStartHour ?? 23,
         nightChargeEndHour: pricingSettings.nightChargeEndHour ?? 5,
+        roundTripMultipliers: pricingSettings.roundTripMultipliers || {
+          plain: 1.7,
+          mixed: 1.8,
+          hill: 1.9,
+          belowKm: 2.0
+        },
+        roundTripBelowKmThreshold: Number(pricingSettings.roundTripBelowKmThreshold) || 82,
         termsAndConditions: pricingSettings.termsAndConditions || 'All rates include Fuel & Driver. Tolls and state taxes at actuals.'
       });
     }
@@ -138,6 +154,7 @@ export default function PricingTab() {
       pickup: '',
       destination: '',
       distanceKm: '',
+      routeType: 'PLAIN',
       vehiclePrices: {
         dzire: 4000,
         verna: 4500,
@@ -164,6 +181,7 @@ export default function PricingTab() {
       pickup: route.pickup || '',
       destination: route.destination || '',
       distanceKm: route.distanceKm || '',
+      routeType: route.routeType || 'PLAIN',
       vehiclePrices: {
         dzire: route.vehiclePrices?.dzire || 4000,
         verna: route.vehiclePrices?.verna || 4500,
@@ -198,7 +216,7 @@ export default function PricingTab() {
       const payload = {
         pickup: routeForm.pickup.trim(),
         destination: routeForm.destination.trim(),
-        routeType: 'PLAIN',
+        routeType: routeForm.routeType || 'PLAIN',
         pricingType: 'fixed',
         distanceKm: routeForm.distanceKm ? Number(routeForm.distanceKm) : null,
         active: true,
@@ -342,10 +360,17 @@ export default function PricingTab() {
         nightChargesAmount: Number(charges.nightChargesAmount) || 250,
         nightChargeStartHour: Number(charges.nightChargeStartHour) || 23,
         nightChargeEndHour: Number(charges.nightChargeEndHour) || 5,
+        roundTripMultipliers: {
+          plain: Number(charges.roundTripMultipliers?.plain) || 1.7,
+          mixed: Number(charges.roundTripMultipliers?.mixed) || 1.8,
+          hill: Number(charges.roundTripMultipliers?.hill) || 1.9,
+          belowKm: Number(charges.roundTripMultipliers?.belowKm) || 2.0
+        },
+        roundTripBelowKmThreshold: Number(charges.roundTripBelowKmThreshold) || 82,
         termsAndConditions: charges.termsAndConditions
       });
       await refreshSiteData();
-      setStatusMsg({ type: 'success', text: 'Driver allowance and surcharges saved successfully!' });
+      setStatusMsg({ type: 'success', text: 'Pricing policies and round-trip multipliers saved successfully!' });
     } catch (err) {
       setStatusMsg({ type: 'error', text: err.message || 'Failed to save surcharges.' });
     } finally {
@@ -488,20 +513,48 @@ export default function PricingTab() {
               </button>
             </div>
 
-            <button
-              onClick={handleOpenAddRoute}
-              className="px-5 py-2.5 bg-yellow-400 hover:bg-yellow-500 active:scale-95 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
-            >
-              <Plus className="w-4 h-4" />
-              <span>+ Add Route Price</span>
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={async () => {
+                  if (!window.confirm('Apply official Round Trip Multipliers (Plane 1.7×, Mixed 1.8×, Hill 1.9×, <82km 2.0×) to ALL routes?')) return;
+                  setIsSaving(true);
+                  setStatusMsg({ type: '', text: '' });
+                  try {
+                    const res = await bulkApplyRoundTripRates();
+                    setStatusMsg({ type: 'success', text: res.message || 'Updated all routes with round-trip rates!' });
+                    await loadRoutes();
+                    await refreshSiteData();
+                  } catch (err) {
+                    setStatusMsg({ type: 'error', text: err.message || 'Failed to apply round trip rates.' });
+                  } finally {
+                    setIsSaving(false);
+                  }
+                }}
+                disabled={isSaving}
+                className="px-3.5 py-2.5 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-950 font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
+                title="Recalculate RT rates for all routes according to configured multipliers"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 text-amber-700 ${isSaving ? 'animate-spin' : ''}`} />
+                <span>Bulk Recalculate RT</span>
+              </button>
+
+              <button
+                onClick={handleOpenAddRoute}
+                className="px-5 py-2.5 bg-yellow-400 hover:bg-yellow-500 active:scale-95 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center space-x-1.5"
+              >
+                <Plus className="w-4 h-4" />
+                <span>+ Add Route Price</span>
+              </button>
+            </div>
           </div>
 
-          {/* Add / Edit Route Modal / Box */}
+          {/* Add / Edit Route Modal Overlay */}
           {isAddingOrEditing && (
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-yellow-400 shadow-xl space-y-6 animate-fadeIn">
-              <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-                <div className="flex items-center space-x-2">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fadeIn overflow-y-auto">
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-yellow-400 shadow-2xl max-w-3xl w-full my-8 max-h-[90vh] overflow-y-auto space-y-6 animate-scaleUp text-left relative">
+                <div className="flex items-center justify-between pb-4 border-b border-gray-100 sticky -top-6 sm:-top-8 bg-white/95 backdrop-blur-xs z-10 pt-2">
+                  <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-xl bg-slate-900 text-yellow-400 flex items-center justify-center font-bold">
                     <MapPin className="w-4 h-4" />
                   </div>
@@ -521,8 +574,8 @@ export default function PricingTab() {
 
               <form onSubmit={handleSaveRoute} className="space-y-6">
                 
-                {/* From, To and Distance */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* From, To, Distance and Terrain */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                       From Location (Pickup) <span className="text-rose-500">*</span>
@@ -563,6 +616,22 @@ export default function PricingTab() {
                       min="1"
                       className="w-full bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400 focus:bg-white"
                     />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                      Route Terrain / Type
+                    </label>
+                    <select
+                      value={routeForm.routeType || 'PLAIN'}
+                      onChange={(e) => setRouteForm({ ...routeForm, routeType: e.target.value })}
+                      className="w-full bg-gray-50 border border-gray-200 px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400 focus:bg-white"
+                    >
+                      <option value="PLAIN">PLAIN TERRAIN (1.7× RT)</option>
+                      <option value="MIXED">MIXED TERRAIN (1.8× RT)</option>
+                      <option value="HILL">HILL TERRAIN (1.9× RT)</option>
+                      <option value="AIRPORT">AIRPORT CORRIDOR</option>
+                    </select>
                   </div>
                 </div>
 
@@ -692,24 +761,43 @@ export default function PricingTab() {
                     <button
                       type="button"
                       onClick={() => {
-                        const dzireOneway = Number(routeForm.vehiclePrices.dzire) || 0;
-                        if (dzireOneway > 0) {
-                          setRouteForm(prev => ({
-                            ...prev,
-                            roundTripPrices: {
-                              dzire: Math.round(dzireOneway * 1.8),
-                              verna: Math.round((Number(prev.vehiclePrices.verna) || dzireOneway * 1.1) * 1.8),
-                              ertiga: Math.round((Number(prev.vehiclePrices.ertiga) || dzireOneway * 1.2) * 1.8),
-                              innova: Math.round((Number(prev.vehiclePrices.innova) || dzireOneway * 1.5) * 1.8),
-                              fortuner: Math.round((Number(prev.vehiclePrices.fortuner) || dzireOneway * 2.2) * 1.8),
-                              tempo: Math.round((Number(prev.vehiclePrices.tempo) || dzireOneway * 2.0) * 1.8)
-                            }
-                          }));
+                        const dist = Number(routeForm.distanceKm) || 0;
+                        const type = (routeForm.routeType || 'PLAIN').toUpperCase();
+                        let mult = 1.7;
+                        if (dist > 0 && dist < (Number(charges.roundTripBelowKmThreshold) || 82)) {
+                          mult = Number(charges.roundTripMultipliers?.belowKm) || 2.0;
+                        } else if (type === 'HILL') {
+                          mult = Number(charges.roundTripMultipliers?.hill) || 1.9;
+                        } else if (type === 'MIXED') {
+                          mult = Number(charges.roundTripMultipliers?.mixed) || 1.8;
+                        } else {
+                          mult = Number(charges.roundTripMultipliers?.plain) || 1.7;
                         }
+
+                        const vp = routeForm.vehiclePrices || {};
+                        setRouteForm(prev => ({
+                          ...prev,
+                          roundTripPrices: {
+                            dzire: vp.dzire ? Math.round(Number(vp.dzire) * mult) : '',
+                            verna: vp.verna ? Math.round(Number(vp.verna) * mult) : '',
+                            ertiga: vp.ertiga ? Math.round(Number(vp.ertiga) * mult) : '',
+                            innova: vp.innova ? Math.round(Number(vp.innova) * mult) : '',
+                            fortuner: vp.fortuner ? Math.round(Number(vp.fortuner) * mult) : '',
+                            tempo: vp.tempo ? Math.round(Number(vp.tempo) * mult) : ''
+                          }
+                        }));
                       }}
-                      className="text-[11px] font-bold text-amber-800 hover:text-amber-950 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-xl border border-amber-200 transition-colors self-start sm:self-auto"
+                      className="text-[11px] font-bold text-amber-900 hover:text-amber-950 bg-amber-100 hover:bg-amber-200 px-3 py-1.5 rounded-xl border border-amber-300 transition-colors self-start sm:self-auto shadow-xs"
                     >
-                      ⚡ Auto Calculate RT (1.8× One-Way)
+                      ⚡ Auto Calculate RT ({
+                        (Number(routeForm.distanceKm) > 0 && Number(routeForm.distanceKm) < (Number(charges.roundTripBelowKmThreshold) || 82))
+                          ? '2.0× (<82 KM)'
+                          : (routeForm.routeType === 'HILL')
+                          ? '1.9× (Hill)'
+                          : (routeForm.routeType === 'MIXED')
+                          ? '1.8× (Mixed)'
+                          : '1.7× (Plane)'
+                      })
                     </button>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
@@ -762,6 +850,7 @@ export default function PricingTab() {
                 </div>
 
               </form>
+              </div>
             </div>
           )}
 
@@ -774,6 +863,7 @@ export default function PricingTab() {
                     <th className="py-3.5 px-4">From Location</th>
                     <th className="py-3.5 px-4">To Location</th>
                     <th className="py-3.5 px-3">Distance</th>
+                    <th className="py-3.5 px-3">Terrain</th>
                     <th className="py-3.5 px-3">Dzire {priceViewMode === 'roundtrip' ? '(RT)' : priceViewMode === 'oneway' ? '(OW)' : ''}</th>
                     <th className="py-3.5 px-3">Ertiga {priceViewMode === 'roundtrip' ? '(RT)' : priceViewMode === 'oneway' ? '(OW)' : ''}</th>
                     <th className="py-3.5 px-3">Innova Crysta {priceViewMode === 'roundtrip' ? '(RT)' : priceViewMode === 'oneway' ? '(OW)' : ''}</th>
@@ -839,6 +929,19 @@ export default function PricingTab() {
                           </td>
                           <td className="py-3 px-3 font-semibold text-slate-700 whitespace-nowrap">
                             {r.distanceKm ? `${r.distanceKm} KM` : '—'}
+                          </td>
+                          <td className="py-3 px-3 whitespace-nowrap">
+                            <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
+                              r.routeType === 'HILL' 
+                                ? 'bg-emerald-100 text-emerald-800' 
+                                : r.routeType === 'MIXED'
+                                ? 'bg-purple-100 text-purple-800'
+                                : r.routeType === 'AIRPORT'
+                                ? 'bg-sky-100 text-sky-800'
+                                : 'bg-blue-100 text-blue-800'
+                            }`}>
+                              {r.routeType || 'PLAIN'}
+                            </span>
                           </td>
                           <td className="py-3 px-3">{renderCell('dzire')}</td>
                           <td className="py-3 px-3">{renderCell('ertiga')}</td>
@@ -1077,6 +1180,113 @@ export default function PricingTab() {
               <Save className="w-4 h-4" />
               <span>{isSaving ? 'Saving...' : 'Save Charges'}</span>
             </button>
+          </div>
+
+          {/* Round Trip Rates Configuration */}
+          <div className="bg-amber-50/60 p-5 rounded-2xl border border-amber-200/70 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-amber-200/50">
+              <div>
+                <h3 className="text-sm font-black font-nexa text-amber-950 flex items-center space-x-2">
+                  <span>Round-Trip Fare Multipliers (Admin Configuration)</span>
+                </h3>
+                <p className="text-[11px] text-amber-900/80 font-medium mt-0.5">
+                  Configure multipliers applied to one-way fares: Plane areas (1.7×), Mixed (1.8×), Hill (1.9×), and Below 82 KM (2.0×).
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={async () => {
+                  if (!window.confirm('Apply these multipliers to all existing routes right now?')) return;
+                  setIsSaving(true);
+                  try {
+                    await handleSaveCharges();
+                    const res = await bulkApplyRoundTripRates();
+                    setStatusMsg({ type: 'success', text: res.message || 'All routes recalculated!' });
+                    await loadRoutes();
+                  } catch (err) {
+                    setStatusMsg({ type: 'error', text: err.message });
+                  } finally {
+                    setIsSaving(false);
+                  }
+                }}
+                disabled={isSaving}
+                className="px-4 py-2 bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-xs rounded-xl shadow-xs transition-all flex items-center space-x-1.5 self-start sm:self-auto"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isSaving ? 'animate-spin' : ''}`} />
+                <span>Save & Apply to All Routes</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-amber-950 mb-1">
+                  Plane Areas (× One-Way)
+                </label>
+                <input
+                  type="number"
+                  step="0.05"
+                  value={charges.roundTripMultipliers?.plain || 1.7}
+                  onChange={(e) => setCharges({
+                    ...charges,
+                    roundTripMultipliers: { ...charges.roundTripMultipliers, plain: e.target.value }
+                  })}
+                  className="w-full bg-white border border-amber-300 px-3.5 py-2.5 rounded-xl font-bold text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                />
+                <span className="text-[10px] text-amber-800 font-medium">Standard National Highway plains</span>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-amber-950 mb-1">
+                  Mixed Routes (× One-Way)
+                </label>
+                <input
+                  type="number"
+                  step="0.05"
+                  value={charges.roundTripMultipliers?.mixed || 1.8}
+                  onChange={(e) => setCharges({
+                    ...charges,
+                    roundTripMultipliers: { ...charges.roundTripMultipliers, mixed: e.target.value }
+                  })}
+                  className="w-full bg-white border border-amber-300 px-3.5 py-2.5 rounded-xl font-bold text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                />
+                <span className="text-[10px] text-amber-800 font-medium">e.g. Delhi to Shimla, Kasauli, Manali</span>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-amber-950 mb-1">
+                  Hill Areas (× One-Way)
+                </label>
+                <input
+                  type="number"
+                  step="0.05"
+                  value={charges.roundTripMultipliers?.hill || 1.9}
+                  onChange={(e) => setCharges({
+                    ...charges,
+                    roundTripMultipliers: { ...charges.roundTripMultipliers, hill: e.target.value }
+                  })}
+                  className="w-full bg-white border border-amber-300 px-3.5 py-2.5 rounded-xl font-bold text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                />
+                <span className="text-[10px] text-amber-800 font-medium">Pure mountainous hill terrain</span>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-amber-950 mb-1">
+                  Below 82 KM (× One-Way)
+                </label>
+                <input
+                  type="number"
+                  step="0.05"
+                  value={charges.roundTripMultipliers?.belowKm || 2.0}
+                  onChange={(e) => setCharges({
+                    ...charges,
+                    roundTripMultipliers: { ...charges.roundTripMultipliers, belowKm: e.target.value }
+                  })}
+                  className="w-full bg-white border border-amber-300 px-3.5 py-2.5 rounded-xl font-bold text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                />
+                <span className="text-[10px] text-amber-800 font-medium">Short distance trips (&lt; 82 KM)</span>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

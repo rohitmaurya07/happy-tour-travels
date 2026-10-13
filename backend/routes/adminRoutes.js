@@ -4,7 +4,7 @@ import path from 'path';
 import multer from 'multer';
 import { readJson, writeJson } from '../utils/storage.js';
 import { authMiddleware } from '../middleware/auth.js';
-import { validateVehiclePricing, calculateFare } from '../utils/pricingEngine.js';
+import { validateVehiclePricing, calculateFare, getRoundTripMultiplier } from '../utils/pricingEngine.js';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -389,6 +389,44 @@ router.delete('/pricing-routes/:id', (req, res) => {
   const filtered = routes.filter(r => r.id !== req.params.id);
   writeJson('pricingRoutes', filtered);
   res.json({ success: true, message: 'Pricing route deleted successfully' });
+});
+
+// Bulk apply round-trip multiplier rates to all existing routes
+router.post('/pricing-routes/bulk-roundtrip-rates', (req, res) => {
+  try {
+    const routes = readJson('pricingRoutes') || [];
+    const pricingSettings = readJson('pricingSettings') || {};
+    let updatedCount = 0;
+
+    const updatedRoutes = routes.map(route => {
+      const mult = getRoundTripMultiplier(route.routeType, route.distanceKm, pricingSettings);
+      const vp = route.vehiclePrices || {};
+      const newRt = {
+        dzire: vp.dzire ? Math.round(Number(vp.dzire) * mult) : 0,
+        verna: vp.verna ? Math.round(Number(vp.verna) * mult) : 0,
+        ertiga: vp.ertiga ? Math.round(Number(vp.ertiga) * mult) : 0,
+        innova: vp.innova ? Math.round(Number(vp.innova) * mult) : 0,
+        fortuner: vp.fortuner ? Math.round(Number(vp.fortuner) * mult) : 0,
+        tempo: vp.tempo ? Math.round(Number(vp.tempo) * mult) : 0
+      };
+
+      updatedCount++;
+      return {
+        ...route,
+        roundTripPrices: newRt,
+        updatedAt: new Date().toISOString()
+      };
+    });
+
+    writeJson('pricingRoutes', updatedRoutes);
+    res.json({
+      success: true,
+      message: `Successfully applied round-trip multipliers to ${updatedCount} routes.`,
+      count: updatedCount
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 // --- BOOKINGS MANAGEMENT (Admin inspection of historical snapshots) ---

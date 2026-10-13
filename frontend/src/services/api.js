@@ -269,6 +269,14 @@ export const deletePricingRoute = async (id) => {
   return true;
 };
 
+export const bulkApplyRoundTripRates = async () => {
+  const data = await requestJson('/api/admin/pricing-routes/bulk-roundtrip-rates', {
+    method: 'POST',
+    headers: { ...getAuthHeaders() }
+  });
+  return data;
+};
+
 // 9. Admin Bookings Inspection
 export const fetchAdminBookings = async () => {
   const data = await requestJson('/api/admin/bookings', {

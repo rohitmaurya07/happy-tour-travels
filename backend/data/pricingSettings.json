@@ -14,6 +14,13 @@
   "gstPercent": 0,
   "gstIncluded": true,
   "termsAndConditions": "Base fare includes Highway Fuel and Chauffeur services. Toll taxes, Parking charges, State border taxes & Permits are payable as per actual receipts.",
+  "roundTripMultipliers": {
+    "plain": 1.7,
+    "mixed": 1.8,
+    "hill": 1.9,
+    "belowKm": 2.0
+  },
+  "roundTripBelowKmThreshold": 82,
   "airportOverrides": [
     {
       "id": "delhi-airport",
