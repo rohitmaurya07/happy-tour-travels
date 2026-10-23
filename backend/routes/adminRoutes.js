@@ -5,6 +5,7 @@ import multer from 'multer';
 import { readJson, writeJson } from '../utils/storage.js';
 import { authMiddleware } from '../middleware/auth.js';
 import { validateVehiclePricing, calculateFare, getRoundTripMultiplier } from '../utils/pricingEngine.js';
+import { uploadStreamToCloudinary, isDemoCloudinary } from '../config/cloudinary.js';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,23 +16,12 @@ const router = express.Router();
 // Protect all /api/admin/* endpoints with authMiddleware
 router.use(authMiddleware);
 
-// Multer Storage Configuration for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = path.join(__dirname, '..', 'uploads');
-    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, `media-${uniqueSuffix}${ext}`);
-  }
-});
+// Multer in-memory storage (Zero server-disk storage: files are streamed directly to Cloudinary)
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
-  limits: { fileSize: 100 * 1024 * 1024 },
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100 MB max file size for videos and high-res images
   fileFilter: (req, file, cb) => {
     const allowed = /jpeg|jpg|png|webp|svg|gif|mp4|webm|mov|ogg/;
     const ext = path.extname(file.originalname).toLowerCase().replace('.', '');
@@ -43,23 +33,42 @@ const upload = multer({
   }
 });
 
-// POST /api/admin/upload - Upload image or video
-router.post('/upload', upload.single('file'), (req, res) => {
+// POST /api/admin/upload - Upload image or video directly to Cloudinary
+router.post('/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'No file uploaded.' });
   }
 
-  const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
-  const host = req.get('host');
-  const fileUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
-  return res.json({
-    success: true,
-    message: 'File uploaded successfully',
-    url: fileUrl,
-    filename: req.file.filename,
-    size: req.file.size,
-    mimetype: req.file.mimetype
-  });
+  try {
+    const isVideo = req.file.mimetype && req.file.mimetype.startsWith('video');
+    const folder = isVideo ? 'happytravels/videos' : 'happytravels/images';
+    const resourceType = isVideo ? 'video' : 'auto';
+
+    const result = await uploadStreamToCloudinary(req.file.buffer, {
+      folder,
+      resource_type: resourceType
+    });
+
+    return res.json({
+      success: true,
+      message: 'File uploaded successfully to Cloudinary',
+      url: result.secure_url,
+      public_id: result.public_id,
+      format: result.format,
+      resource_type: result.resource_type,
+      size: req.file.size,
+      mimetype: req.file.mimetype
+    });
+  } catch (error) {
+    console.error('Cloudinary upload error:', error);
+    const demoWarning = isDemoCloudinary()
+      ? ' (Demo Cloudinary credentials detected. Please update CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in backend/.env with your real Cloudinary credentials)'
+      : '';
+    return res.status(500).json({
+      success: false,
+      message: `Failed to upload file to Cloudinary: ${error.message}${demoWarning}`
+    });
+  }
 });
 
 // --- SITE CONFIG & CONTACT INFO ---

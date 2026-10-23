@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
+import connectDb, { isDbConnected } from '../config/db.js';
+import { MODEL_REGISTRY } from '../models/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,41 +13,183 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
+// In-memory cache to guarantee ultra-fast synchronous access for pricingEngine and route handlers
+const memoryCache = new Map();
+
 export const getFilePath = (fileName) => path.join(DATA_DIR, fileName.endsWith('.json') ? fileName : `${fileName}.json`);
 
+/**
+ * Read data from memory cache or JSON file fallback
+ */
 export const readJson = (fileName, defaultValue = null) => {
+  const cleanName = fileName.replace(/\.json$/, '');
+
+  // 1. Check in-memory cache first
+  if (memoryCache.has(cleanName)) {
+    const cached = memoryCache.get(cleanName);
+    return cached !== undefined && cached !== null ? cached : defaultValue;
+  }
+
+  // 2. Fallback to local JSON file if not in cache
   try {
-    const filePath = getFilePath(fileName);
+    const filePath = getFilePath(cleanName);
     if (!fs.existsSync(filePath)) {
       if (defaultValue !== null) {
-        writeJson(fileName, defaultValue);
+        memoryCache.set(cleanName, defaultValue);
         return defaultValue;
       }
       return null;
     }
-    const data = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(data);
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    memoryCache.set(cleanName, data);
+    return data;
   } catch (error) {
-    console.error(`Error reading ${fileName}:`, error);
+    console.error(`Error reading ${cleanName}:`, error);
     return defaultValue;
   }
 };
 
+/**
+ * Write data to in-memory cache and asynchronously persist to MongoDB
+ * Note: Zero server-disk write when MongoDB is connected
+ */
 export const writeJson = (fileName, data) => {
+  const cleanName = fileName.replace(/\.json$/, '');
+
+  // Update in-memory cache immediately
+  memoryCache.set(cleanName, data);
+
+  // If MongoDB is connected, persist directly to MongoDB
+  if (isDbConnected()) {
+    saveToDb(cleanName, data).catch((err) => {
+      console.error(`[MongoDB] Error saving ${cleanName}:`, err.message);
+    });
+    return true;
+  }
+
+  // Fallback to local disk file only when MongoDB is offline
   try {
-    const filePath = getFilePath(fileName);
+    const filePath = getFilePath(cleanName);
     const tempPath = `${filePath}.tmp`;
     fs.writeFileSync(tempPath, JSON.stringify(data, null, 2), 'utf-8');
     fs.renameSync(tempPath, filePath);
     return true;
   } catch (error) {
-    console.error(`Error writing ${fileName}:`, error);
+    console.error(`Error writing fallback for ${cleanName}:`, error);
     return false;
   }
 };
 
+/**
+ * Save an entity or array directly to MongoDB
+ * @param {string} entityName - Key in MODEL_REGISTRY (e.g. 'fleet', 'siteConfig')
+ * @param {Object|Array} data - The data payload to save
+ */
+export const saveToDb = async (entityName, data) => {
+  const registry = MODEL_REGISTRY[entityName];
+  if (!registry) {
+    return false;
+  }
+
+  const { model, type, keyField, idField } = registry;
+
+  try {
+    if (type === 'single') {
+      const keyVal = entityName;
+      const payload = {
+        ...data,
+        [keyField || 'key']: keyVal,
+        updatedAt: new Date().toISOString()
+      };
+      await model.findOneAndUpdate(
+        { [keyField || 'key']: keyVal },
+        { $set: payload },
+        { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
+      );
+    } else if (type === 'array') {
+      if (!Array.isArray(data)) return false;
+
+      // Replace collection contents or bulk upsert
+      await model.deleteMany({});
+      if (data.length > 0) {
+        // Strip _id or __v if present to prevent MongoDB duplicate key errors
+        const sanitized = data.map((item) => {
+          const clone = { ...item };
+          delete clone._id;
+          delete clone.__v;
+          return clone;
+        });
+        await model.insertMany(sanitized, { ordered: false });
+      }
+    }
+    return true;
+  } catch (error) {
+    console.error(`[MongoDB] Failed to persist ${entityName}:`, error.message);
+    return false;
+  }
+};
+
+/**
+ * Load entity or array from MongoDB
+ * @param {string} entityName
+ * @returns {Promise<Object|Array|null>}
+ */
+export const loadFromDb = async (entityName) => {
+  const registry = MODEL_REGISTRY[entityName];
+  if (!registry) return null;
+
+  const { model, type, keyField } = registry;
+
+  try {
+    if (type === 'single') {
+      const doc = await model.findOne({ [keyField || 'key']: entityName }).lean();
+      if (!doc) return null;
+      delete doc._id;
+      delete doc.__v;
+      return doc;
+    } else {
+      const docs = await model.find({}).lean();
+      return docs.map((doc) => {
+        delete doc._id;
+        delete doc.__v;
+        return doc;
+      });
+    }
+  } catch (error) {
+    console.error(`[MongoDB] Failed to load ${entityName}:`, error.message);
+    return null;
+  }
+};
+
 export const initDb = async () => {
-  // 1. Admin User
+  // Connect to MongoDB
+  const db = await connectDb();
+
+  // If connected to MongoDB, sync MongoDB data into in-memory cache
+  if (db && isDbConnected()) {
+    console.log('[MongoDB] Synchronizing collections into memory cache...');
+    for (const [entityName, config] of Object.entries(MODEL_REGISTRY)) {
+      try {
+        const count = await config.model.countDocuments();
+        if (count > 0) {
+          const data = await loadFromDb(entityName);
+          memoryCache.set(entityName, data);
+        } else {
+          // If collection is empty in MongoDB, check if local JSON exists and seed MongoDB
+          const localData = readJson(entityName);
+          if (localData !== null) {
+            await saveToDb(entityName, localData);
+            memoryCache.set(entityName, localData);
+            console.log(`[MongoDB] Seeded ${entityName} to database from initial data.`);
+          }
+        }
+      } catch (err) {
+        console.warn(`[MongoDB] Could not sync ${entityName}:`, err.message);
+      }
+    }
+  }
+
+  // 1. Admin User Initialization
   const adminUser = readJson('adminUser');
   if (!adminUser) {
     const salt = await bcrypt.genSalt(10);
@@ -59,18 +203,18 @@ export const initDb = async () => {
     console.log('[OK] Admin user initialized: username=admin');
   }
 
-  // 2. Site Config
+  // 2. Site Config Initialization
   if (!readJson('siteConfig')) {
     writeJson('siteConfig', {
       businessName: 'Happy Tour & Travels',
       slogan: 'Travel Comfortably. Arrive Confidently.',
       subtitle: 'Reliable taxi services, airport transfers, outstation rides, and tour packages from Jalandhar to destinations across Punjab, Himachal, Delhi and beyond.',
-      whatsappNumber: '917837175090',
-      whatsappNumberFormatted: '+91 78371 75090',
+      whatsappNumber: '917087041604',
+      whatsappNumberFormatted: '+91 70870 41604',
       phoneNumberFormatted: '+91 78371 75090',
-      phoneNumber: '+91 78371 75090',
-      email: 'info@happytourandtravels.com',
-      address: 'Phagwara Road, Jalandhar Cantt, Jalandhar, Punjab 144005, India',
+      phoneNumber: '+91 70870 41604',
+      email: 'booking@happytourtravels.in',
+      address: 'Deep Nagar, Jalandhar Cantt, Jalandhar, Punjab 144005, India',
       primaryCity: 'Jalandhar',
       primaryState: 'Punjab',
       serviceAreas: ['Jalandhar', 'Punjab', 'Himachal Pradesh', 'Delhi NCR', 'Chandigarh', 'Amritsar', 'Ludhiana'],
@@ -136,8 +280,7 @@ export const initDb = async () => {
     });
   }
 
-  // 5. Fleet Data with Plain/Hill Rates, Minimum KM, Driver Allowance & Active status
-  // 5. Fleet Data with Full Configurable Pricing (Slabs, Long Distance, Hourly Packages, Airport, Terrain Rates)
+  // 5. Fleet Normalization
   let fleet = readJson('fleet');
   const normalizeFleet = (list) => {
     const defaultPricing = [
@@ -385,8 +528,8 @@ export const initDb = async () => {
 
     if (!list || list.length === 0) return defaultPricing;
 
-    return list.map(item => {
-      const def = defaultPricing.find(d => d.id === item.id) || {};
+    return list.map((item) => {
+      const def = defaultPricing.find((d) => d.id === item.id) || {};
       const slabs = Array.isArray(item.slabs) ? item.slabs : (def.slabs || []);
       const longDistance = item.longDistance || def.longDistance || {
         startAfterKm: 95,
@@ -433,7 +576,7 @@ export const initDb = async () => {
     writeJson('fleet', normalizedFleet);
   }
 
-  // 6. Pricing Routes Data (Specific Routes, Fixed/Per-Km & Plain/Hill Classifications)
+  // 6. Pricing Routes Data
   if (!readJson('pricingRoutes')) {
     writeJson('pricingRoutes', [
       {
@@ -541,10 +684,10 @@ export const initDb = async () => {
     ]);
   }
 
-  // 7. Popular Locations with regionType classification
+  // 7. Popular Locations
   let locations = readJson('popularLocations');
   if (locations && !locations[0]?.regionType) {
-    const enrichedLocations = locations.map(loc => {
+    const enrichedLocations = locations.map((loc) => {
       let regionType = 'PLAIN';
       const name = (loc.name || '').toLowerCase();
       const state = (loc.state || '').toLowerCase();
@@ -582,5 +725,25 @@ export const initDb = async () => {
   // 8. Bookings collection
   if (!readJson('bookings')) {
     writeJson('bookings', []);
+  }
+
+  // 9. Packages collection
+  if (!readJson('packages')) {
+    writeJson('packages', []);
+  }
+
+  // 10. Services collection
+  if (!readJson('services')) {
+    writeJson('services', []);
+  }
+
+  // 11. Popular Routes
+  if (!readJson('popularRoutes')) {
+    writeJson('popularRoutes', []);
+  }
+
+  // 12. Hourly Rental Pricing
+  if (!readJson('hourlyRentalPricing')) {
+    writeJson('hourlyRentalPricing', {});
   }
 };

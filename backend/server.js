@@ -1,17 +1,21 @@
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
-import path from 'path';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
 import { initDb } from './utils/storage.js';
 import authRoutes from './routes/authRoutes.js';
 import siteDataRoutes from './routes/siteDataRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import fareRoutes from './routes/fareRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
