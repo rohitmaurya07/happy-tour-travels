@@ -7,10 +7,10 @@ import {
 import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
 import { calculateAllFaresApi, createBookingApi } from '../services/api';
-import { hourlyRentalPricing } from '../data/hourlyRentalPricing';
+import { hourlyRentalPricing as fallbackHourlyPricing } from '../data/hourlyRentalPricing';
 
 export default function SearchResults({ searchParams, onModifySearch }) {
-  const { fleet, siteConfig } = useSiteData();
+  const { fleet, siteConfig, hourlyRentalPricing: contextHourly } = useSiteData();
   const [calculatedFares, setCalculatedFares] = useState([]);
   const [isLoadingFares, setIsLoadingFares] = useState(true);
   const [bookingSuccessModal, setBookingSuccessModal] = useState(null);
@@ -21,8 +21,18 @@ export default function SearchResults({ searchParams, onModifySearch }) {
   const isRoundTrip = tripType === 'Round Trip';
   const isHourly = tripType === 'Hourly Rental';
 
+  const hourlyData = contextHourly?.defaultRates ? contextHourly : fallbackHourlyPricing;
+  const ratesDzire = hourlyData.defaultRates?.dzire?.rates || {};
+  const ratesErtiga = hourlyData.defaultRates?.ertiga?.rates || {};
+  const ratesInnova = hourlyData.defaultRates?.innova?.rates || {};
+
   // Fetch server-authoritative calculations
   useEffect(() => {
+    if (isHourly) {
+      setIsLoadingFares(false);
+      return;
+    }
+
     let isMounted = true;
     setIsLoadingFares(true);
 
@@ -53,7 +63,7 @@ export default function SearchResults({ searchParams, onModifySearch }) {
     return () => {
       isMounted = false;
     };
-  }, [fromLocation, toLocation, tripType, departureDate, pickupTime, distanceKm]);
+  }, [fromLocation, toLocation, tripType, departureDate, pickupTime, distanceKm, isHourly]);
 
   const formattedDate = departureDate ? new Date(departureDate).toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -92,6 +102,13 @@ Please confirm cab availability.`;
   };
 
   const handleHourlyWhatsAppBooking = (carKey, carConfig, pkg) => {
+    const extraKm = carConfig.extraKmRate || hourlyData.defaultRates?.[carKey]?.extraKmRate;
+    const extraHour = carConfig.extraHourRate || hourlyData.defaultRates?.[carKey]?.extraHourRate;
+    const extraText = [
+      extraKm ? `Extra KM: ₹${extraKm}/km` : '',
+      extraHour ? `Extra Hour: ₹${extraHour}/hr` : ''
+    ].filter(Boolean).join(' | ');
+
     const message = `Hello ${siteConfig?.businessName || 'Happy Tour & Travels'}, I would like to book an Hourly Rental car.
 
 *Hourly Rental Booking Details:*
@@ -100,7 +117,7 @@ Please confirm cab availability.`;
 - Time: ${pickupTime}
 - Car: ${carConfig.name}
 - Package: ${pkg.label}
-- Rate: ₹${pkg.rate.toLocaleString('en-IN')} (Fuel & Chauffeur Included)
+- Rate: ₹${pkg.rate.toLocaleString('en-IN')} (Fuel & Chauffeur Included)${extraText ? `\n- Additional: ${extraText}` : ''}
 
 Please confirm cab availability.`;
 
@@ -127,49 +144,57 @@ Please share the best discounted custom rate and available vehicle options.`;
   const hourlyCars = [
     {
       id: 'dzire',
-      name: 'Dzire / similar',
-      subtitle: 'Dzire size / similar car may be provided',
-      image: '/assets/images/dzire.jpg',
-      seats: '4 Passengers',
-      fuel: 'Diesel / Petrol / CNG',
+      name: hourlyData.defaultRates?.dzire?.name || 'Dzire / similar',
+      subtitle: hourlyData.defaultRates?.dzire?.subtitle || 'Dzire size / similar car may be provided',
+      image: hourlyData.defaultRates?.dzire?.image || '/assets/images/dzire.jpg',
+      seats: hourlyData.defaultRates?.dzire?.seats || '4 Passengers',
+      fuel: hourlyData.defaultRates?.dzire?.fuel || 'Diesel / Petrol / CNG',
+      extraKmRate: hourlyData.defaultRates?.dzire?.extraKmRate || 11,
+      extraHourRate: hourlyData.defaultRates?.dzire?.extraHourRate || 100,
       packages: [
-        { id: '4h40k', label: '4 Hours / 40 KM', rate: hourlyRentalPricing.defaultRates?.dzire?.rates?.['4h40k'] || 1100 },
-        { id: '8h80k', label: '8 Hours / 80 KM', rate: hourlyRentalPricing.defaultRates?.dzire?.rates?.['8h80k'] || 1600 },
-        { id: '10h100k', label: '10 Hours / 100 KM', rate: hourlyRentalPricing.defaultRates?.dzire?.rates?.['10h100k'] || 2000 }
+        { id: '4h40k', label: '4 Hours / 40 KM', rate: Number(ratesDzire['4h40k']) || 1100 },
+        { id: '8h80k', label: '8 Hours / 80 KM', rate: Number(ratesDzire['8h80k']) || 1600 },
+        { id: '10h100k', label: '10 Hours / 100 KM', rate: Number(ratesDzire['10h100k']) || 2000 }
       ]
     },
     {
       id: 'ertiga',
-      name: 'Ertiga / similar',
-      subtitle: 'Ertiga or similar comfortable car may be provided',
-      image: '/assets/images/ertiga.png',
-      seats: '6–7 Seater',
-      fuel: 'Diesel / Petrol / CNG',
+      name: hourlyData.defaultRates?.ertiga?.name || 'Ertiga / similar',
+      subtitle: hourlyData.defaultRates?.ertiga?.subtitle || 'Ertiga or similar comfortable car may be provided',
+      image: hourlyData.defaultRates?.ertiga?.image || '/assets/images/ertiga.png',
+      seats: hourlyData.defaultRates?.ertiga?.seats || '6–7 Seater',
+      fuel: hourlyData.defaultRates?.ertiga?.fuel || 'Diesel / Petrol / CNG',
+      extraKmRate: hourlyData.defaultRates?.ertiga?.extraKmRate || 14,
+      extraHourRate: hourlyData.defaultRates?.ertiga?.extraHourRate || 150,
       packages: [
-        { id: '4h40k', label: '4 Hours / 40 KM', rate: hourlyRentalPricing.defaultRates?.ertiga?.rates?.['4h40k'] || 1500 },
-        { id: '8h80k', label: '8 Hours / 80 KM', rate: hourlyRentalPricing.defaultRates?.ertiga?.rates?.['8h80k'] || 2300 },
-        { id: '10h100k', label: '10 Hours / 100 KM', rate: hourlyRentalPricing.defaultRates?.ertiga?.rates?.['10h100k'] || 2800 }
+        { id: '4h40k', label: '4 Hours / 40 KM', rate: Number(ratesErtiga['4h40k']) || 1500 },
+        { id: '8h80k', label: '8 Hours / 80 KM', rate: Number(ratesErtiga['8h80k']) || 2300 },
+        { id: '10h100k', label: '10 Hours / 100 KM', rate: Number(ratesErtiga['10h100k']) || 2800 }
       ]
     },
     {
       id: 'innova',
-      name: 'Innova Crysta',
-      subtitle: '',
-      image: '/assets/images/innova.png',
-      seats: '7–8 Seater',
-      fuel: 'Diesel',
+      name: hourlyData.defaultRates?.innova?.name || 'Innova Crysta',
+      subtitle: hourlyData.defaultRates?.innova?.subtitle || '',
+      image: hourlyData.defaultRates?.innova?.image || '/assets/images/innova.png',
+      seats: hourlyData.defaultRates?.innova?.seats || '7–8 Seater',
+      fuel: hourlyData.defaultRates?.innova?.fuel || 'Diesel',
+      extraKmRate: hourlyData.defaultRates?.innova?.extraKmRate || 18,
+      extraHourRate: hourlyData.defaultRates?.innova?.extraHourRate || 200,
       packages: [
-        { id: '4h40k', label: '4 Hours / 40 KM', rate: hourlyRentalPricing.defaultRates?.innova?.rates?.['4h40k'] || 2200 },
-        { id: '8h80k', label: '8 Hours / 80 KM', rate: hourlyRentalPricing.defaultRates?.innova?.rates?.['8h80k'] || 3200 },
-        { id: '10h100k', label: '10 Hours / 100 KM', rate: hourlyRentalPricing.defaultRates?.innova?.rates?.['10h100k'] || 3900 }
+        { id: '4h40k', label: '4 Hours / 40 KM', rate: Number(ratesInnova['4h40k']) || 2200 },
+        { id: '8h80k', label: '8 Hours / 80 KM', rate: Number(ratesInnova['8h80k']) || 3200 },
+        { id: '10h100k', label: '10 Hours / 100 KM', rate: Number(ratesInnova['10h100k']) || 3900 }
       ]
     }
   ];
 
-  const popularHourlyCities = [
-    'Jalandhar', 'Amritsar', 'Ludhiana', 'Chandigarh', 'Mohali',
-    'Shimla', 'Manali', 'Dharamshala', 'Delhi', 'Gurgaon', 'Jaipur'
-  ];
+  const popularHourlyCities = (Array.isArray(hourlyData.cities) && hourlyData.cities.length > 0)
+    ? hourlyData.cities.filter(c => c.popular && c.active !== false).map(c => c.name)
+    : [
+        'Jalandhar', 'Amritsar', 'Ludhiana', 'Chandigarh', 'Mohali',
+        'Shimla', 'Manali', 'Dharamshala', 'Delhi', 'Gurgaon', 'Jaipur'
+      ];
 
   return (
     <div id="search-results" className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fadeIn">
@@ -277,6 +302,14 @@ Please share the best discounted custom rate and available vehicle options.`;
                       <span>•</span>
                       <span className="text-emerald-700 font-bold">{car.fuel}</span>
                     </div>
+
+                    {(car.extraKmRate || car.extraHourRate) && (
+                      <div className="text-[11px] text-gray-500 font-semibold mt-1.5 flex items-center space-x-1.5">
+                        <span>Extra: ₹{car.extraKmRate}/km</span>
+                        <span>•</span>
+                        <span>₹{car.extraHourRate}/hr</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 

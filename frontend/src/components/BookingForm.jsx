@@ -21,7 +21,7 @@ export default function BookingForm({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { popularLocations, siteConfig } = useSiteData();
+  const { popularLocations, siteConfig, hourlyRentalPricing } = useSiteData();
 
   // Get current date and time defaults
   const todayStr = new Date().toISOString().split('T')[0];
@@ -154,10 +154,12 @@ export default function BookingForm({
     { label: 'Phagwara ↔ Delhi Airport', from: 'Phagwara', to: 'Delhi Airport' },
   ];
 
-  const popularHourlyCities = [
-    'Jalandhar', 'Amritsar', 'Ludhiana', 'Chandigarh', 'Mohali',
-    'Shimla', 'Manali', 'Dharamshala', 'Delhi', 'Gurgaon', 'Jaipur'
-  ];
+  const popularHourlyCities = (Array.isArray(hourlyRentalPricing?.cities) && hourlyRentalPricing.cities.length > 0)
+    ? hourlyRentalPricing.cities.filter(c => c.popular && c.active !== false).map(c => c.name)
+    : [
+        'Jalandhar', 'Amritsar', 'Ludhiana', 'Chandigarh', 'Mohali',
+        'Shimla', 'Manali', 'Dharamshala', 'Delhi', 'Gurgaon', 'Jaipur'
+      ];
 
   // Listen for mobile bottom bar trip type selection
   useEffect(() => {
