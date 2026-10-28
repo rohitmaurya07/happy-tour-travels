@@ -31,8 +31,14 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const { isAuthenticated, adminUser, logout, refreshSiteData, siteConfig, isBackendConnected } = useSiteData();
   const [activeTab, setActiveTab] = useState('overview');
+  const [pricingInitialSubTab, setPricingInitialSubTab] = useState('routes');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const navigateToPricingHourly = () => {
+    setPricingInitialSubTab('hourly');
+    setActiveTab('pricing');
+  };
 
   // If not logged in, redirect to login
   if (!isAuthenticated) {
@@ -170,10 +176,15 @@ export default function AdminLayout() {
       {/* Main Content Area */}
       <main className="flex-1 p-4 sm:p-6 lg:p-10 max-w-7xl mx-auto w-full overflow-y-auto">
         {activeTab === 'overview' && <OverviewTab setActiveTab={setActiveTab} />}
-        {activeTab === 'pricing' && <PricingTab />}
+        {activeTab === 'pricing' && <PricingTab initialSubTab={pricingInitialSubTab} />}
         {activeTab === 'fleet' && <FleetTab />}
         {activeTab === 'packages' && <PackagesTab />}
-        {activeTab === 'services' && <ServicesTab />}
+        {activeTab === 'services' && (
+          <ServicesTab 
+            setActiveTab={setActiveTab} 
+            onNavigateToHourly={navigateToPricingHourly} 
+          />
+        )}
         {activeTab === 'routes' && <RoutesTab />}
         {activeTab === 'contact' && <ContactTab />}
         {activeTab === 'media' && <MediaTab />}

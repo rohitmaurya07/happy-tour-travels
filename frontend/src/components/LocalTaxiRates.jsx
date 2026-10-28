@@ -2,58 +2,65 @@ import React, { useState } from 'react';
 import { Users, Clock, MessageCircle, PhoneCall, ShieldCheck, MapPin, Check } from 'lucide-react';
 import { useSiteData } from '../context/SiteDataContext';
 import { bookOnWhatsApp } from '../utils/whatsapp';
-import { hourlyRentalPricing } from '../data/hourlyRentalPricing';
+import { hourlyRentalPricing as fallbackHourlyPricing } from '../data/hourlyRentalPricing';
 
 export default function LocalTaxiRates() {
-  const { siteConfig } = useSiteData();
+  const { siteConfig, hourlyRentalPricing: contextHourly } = useSiteData();
   const [selectedCity, setSelectedCity] = useState('Jalandhar');
+
+  const hourlyData = contextHourly?.defaultRates ? contextHourly : fallbackHourlyPricing;
+  const ratesDzire = hourlyData.defaultRates?.dzire?.rates || {};
+  const ratesErtiga = hourlyData.defaultRates?.ertiga?.rates || {};
+  const ratesInnova = hourlyData.defaultRates?.innova?.rates || {};
 
   const hourlyCars = [
     {
       id: 'dzire',
-      name: 'Dzire / similar',
-      subtitle: 'Dzire size / similar car may be provided',
-      image: '/assets/images/dzire.jpg',
-      seats: '4 Passengers',
-      fuel: 'Diesel / Petrol / CNG',
+      name: hourlyData.defaultRates?.dzire?.name || 'Dzire / similar',
+      subtitle: hourlyData.defaultRates?.dzire?.subtitle || 'Dzire size / similar car may be provided',
+      image: hourlyData.defaultRates?.dzire?.image || '/assets/images/dzire.jpg',
+      seats: hourlyData.defaultRates?.dzire?.seats || '4 Passengers',
+      fuel: hourlyData.defaultRates?.dzire?.fuel || 'Diesel / Petrol / CNG',
       packages: [
-        { id: '4h40k', label: '4 Hours / 40 KM', rate: hourlyRentalPricing.defaultRates?.dzire?.rates?.['4h40k'] || 1100 },
-        { id: '8h80k', label: '8 Hours / 80 KM', rate: hourlyRentalPricing.defaultRates?.dzire?.rates?.['8h80k'] || 1600 },
-        { id: '10h100k', label: '10 Hours / 100 KM', rate: hourlyRentalPricing.defaultRates?.dzire?.rates?.['10h100k'] || 2000 }
+        { id: '4h40k', label: '4 Hours / 40 KM', rate: Number(ratesDzire['4h40k']) || 1100 },
+        { id: '8h80k', label: '8 Hours / 80 KM', rate: Number(ratesDzire['8h80k']) || 1600 },
+        { id: '10h100k', label: '10 Hours / 100 KM', rate: Number(ratesDzire['10h100k']) || 2000 }
       ]
     },
     {
       id: 'ertiga',
-      name: 'Ertiga / similar',
-      subtitle: 'Ertiga or similar comfortable car may be provided',
-      image: '/assets/images/ertiga.png',
-      seats: '6–7 Seater',
-      fuel: 'Diesel / Petrol / CNG',
+      name: hourlyData.defaultRates?.ertiga?.name || 'Ertiga / similar',
+      subtitle: hourlyData.defaultRates?.ertiga?.subtitle || 'Ertiga or similar comfortable car may be provided',
+      image: hourlyData.defaultRates?.ertiga?.image || '/assets/images/ertiga.png',
+      seats: hourlyData.defaultRates?.ertiga?.seats || '6–7 Seater',
+      fuel: hourlyData.defaultRates?.ertiga?.fuel || 'Diesel / Petrol / CNG',
       packages: [
-        { id: '4h40k', label: '4 Hours / 40 KM', rate: hourlyRentalPricing.defaultRates?.ertiga?.rates?.['4h40k'] || 1500 },
-        { id: '8h80k', label: '8 Hours / 80 KM', rate: hourlyRentalPricing.defaultRates?.ertiga?.rates?.['8h80k'] || 2300 },
-        { id: '10h100k', label: '10 Hours / 100 KM', rate: hourlyRentalPricing.defaultRates?.ertiga?.rates?.['10h100k'] || 2800 }
+        { id: '4h40k', label: '4 Hours / 40 KM', rate: Number(ratesErtiga['4h40k']) || 1500 },
+        { id: '8h80k', label: '8 Hours / 80 KM', rate: Number(ratesErtiga['8h80k']) || 2300 },
+        { id: '10h100k', label: '10 Hours / 100 KM', rate: Number(ratesErtiga['10h100k']) || 2800 }
       ]
     },
     {
       id: 'innova',
-      name: 'Innova Crysta',
-      subtitle: '',
-      image: '/assets/images/innova.png',
-      seats: '7–8 Seater',
-      fuel: 'Diesel',
+      name: hourlyData.defaultRates?.innova?.name || 'Innova Crysta',
+      subtitle: hourlyData.defaultRates?.innova?.subtitle || '',
+      image: hourlyData.defaultRates?.innova?.image || '/assets/images/innova.png',
+      seats: hourlyData.defaultRates?.innova?.seats || '7–8 Seater',
+      fuel: hourlyData.defaultRates?.innova?.fuel || 'Diesel',
       packages: [
-        { id: '4h40k', label: '4 Hours / 40 KM', rate: hourlyRentalPricing.defaultRates?.innova?.rates?.['4h40k'] || 2200 },
-        { id: '8h80k', label: '8 Hours / 80 KM', rate: hourlyRentalPricing.defaultRates?.innova?.rates?.['8h80k'] || 3200 },
-        { id: '10h100k', label: '10 Hours / 100 KM', rate: hourlyRentalPricing.defaultRates?.innova?.rates?.['10h100k'] || 3900 }
+        { id: '4h40k', label: '4 Hours / 40 KM', rate: Number(ratesInnova['4h40k']) || 2200 },
+        { id: '8h80k', label: '8 Hours / 80 KM', rate: Number(ratesInnova['8h80k']) || 3200 },
+        { id: '10h100k', label: '10 Hours / 100 KM', rate: Number(ratesInnova['10h100k']) || 3900 }
       ]
     }
   ];
 
-  const popularCities = [
-    'Jalandhar', 'Amritsar', 'Ludhiana', 'Chandigarh', 'Mohali',
-    'Shimla', 'Manali', 'Dharamshala', 'Delhi', 'Gurgaon', 'Jaipur'
-  ];
+  const popularCities = (Array.isArray(hourlyData.cities) && hourlyData.cities.length > 0)
+    ? hourlyData.cities.filter(c => c.popular && c.active !== false).map(c => c.name)
+    : [
+        'Jalandhar', 'Amritsar', 'Ludhiana', 'Chandigarh', 'Mohali',
+        'Shimla', 'Manali', 'Dharamshala', 'Delhi', 'Gurgaon', 'Jaipur'
+      ];
 
   const handleBookNow = (car, pkg) => {
     const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });

@@ -10,11 +10,17 @@ import {
   bulkApplyRoundTripRates
 } from '../../../services/api';
 
-export default function PricingTab() {
+export default function PricingTab({ initialSubTab = 'routes' }) {
   const { pricingSettings, fleet, hourlyRentalPricing, refreshSiteData } = useSiteData();
-  const [activeTab, setActiveTab] = useState('routes'); // 'routes' | 'roundtrip' | 'hourly' | 'airport' | 'charges'
+  const [activeTab, setActiveTab] = useState(initialSubTab); // 'routes' | 'roundtrip' | 'hourly' | 'airport' | 'charges'
   const [isSaving, setIsSaving] = useState(false);
   const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
+
+  useEffect(() => {
+    if (initialSubTab) {
+      setActiveTab(initialSubTab);
+    }
+  }, [initialSubTab]);
 
   // --- 1. ROUTES STATE ---
   const [routesList, setRoutesList] = useState([]);

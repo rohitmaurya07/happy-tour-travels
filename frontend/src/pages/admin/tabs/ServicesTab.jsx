@@ -1,19 +1,112 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Layers, Plus, Edit2, Trash2, CheckCircle2, AlertCircle, X, 
   ArrowUpRight, Plane, Navigation, Car, Mountain, Clock, 
-  Upload, Eye, EyeOff, Sparkles, Check 
+  Upload, Eye, EyeOff, Sparkles, Check, Save, Zap
 } from 'lucide-react';
 import { useSiteData } from '../../../context/SiteDataContext';
-import { addService, updateService, deleteService, uploadMediaFile } from '../../../services/api';
+import { addService, updateService, deleteService, uploadMediaFile, updateHourlyRentalPricing } from '../../../services/api';
 
-export default function ServicesTab() {
-  const { services, refreshSiteData } = useSiteData();
+export default function ServicesTab({ setActiveTab, onNavigateToHourly }) {
+  const { services, hourlyRentalPricing, refreshSiteData } = useSiteData();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingService, setEditingService] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [statusMsg, setStatusMsg] = useState({ type: '', text: '' });
+
+  // Hourly Rental Modal & Form State
+  const [hourlyModalOpen, setHourlyModalOpen] = useState(false);
+  const [isSavingHourly, setIsSavingHourly] = useState(false);
+  const [hourlyRatesForm, setHourlyRatesForm] = useState({
+    dzire: { "4h40k": 1100, "8h80k": 1600, "10h100k": 2000, extraKmRate: 11, extraHourRate: 100 },
+    ertiga: { "4h40k": 1500, "8h80k": 2300, "10h100k": 2800, extraKmRate: 14, extraHourRate: 150 },
+    innova: { "4h40k": 2200, "8h80k": 3200, "10h100k": 3900, extraKmRate: 18, extraHourRate: 200 }
+  });
+
+  useEffect(() => {
+    if (hourlyRentalPricing?.defaultRates) {
+      setHourlyRatesForm({
+        dzire: {
+          "4h40k": hourlyRentalPricing.defaultRates?.dzire?.rates?.['4h40k'] || 1100,
+          "8h80k": hourlyRentalPricing.defaultRates?.dzire?.rates?.['8h80k'] || 1600,
+          "10h100k": hourlyRentalPricing.defaultRates?.dzire?.rates?.['10h100k'] || 2000,
+          extraKmRate: hourlyRentalPricing.defaultRates?.dzire?.extraKmRate || 11,
+          extraHourRate: hourlyRentalPricing.defaultRates?.dzire?.extraHourRate || 100
+        },
+        ertiga: {
+          "4h40k": hourlyRentalPricing.defaultRates?.ertiga?.rates?.['4h40k'] || 1500,
+          "8h80k": hourlyRentalPricing.defaultRates?.ertiga?.rates?.['8h80k'] || 2300,
+          "10h100k": hourlyRentalPricing.defaultRates?.ertiga?.rates?.['10h100k'] || 2800,
+          extraKmRate: hourlyRentalPricing.defaultRates?.ertiga?.extraKmRate || 14,
+          extraHourRate: hourlyRentalPricing.defaultRates?.ertiga?.extraHourRate || 150
+        },
+        innova: {
+          "4h40k": hourlyRentalPricing.defaultRates?.innova?.rates?.['4h40k'] || 2200,
+          "8h80k": hourlyRentalPricing.defaultRates?.innova?.rates?.['8h80k'] || 3200,
+          "10h100k": hourlyRentalPricing.defaultRates?.innova?.rates?.['10h100k'] || 3900,
+          extraKmRate: hourlyRentalPricing.defaultRates?.innova?.extraKmRate || 18,
+          extraHourRate: hourlyRentalPricing.defaultRates?.innova?.extraHourRate || 200
+        }
+      });
+    }
+  }, [hourlyRentalPricing]);
+
+  const handleSaveHourlyRates = async (e) => {
+    e.preventDefault();
+    setIsSavingHourly(true);
+    try {
+      const currentHourly = hourlyRentalPricing || {};
+      const updatedPayload = {
+        ...currentHourly,
+        defaultRates: {
+          ...currentHourly.defaultRates,
+          dzire: {
+            ...(currentHourly.defaultRates?.dzire || {}),
+            name: "Dzire / similar",
+            rates: {
+              "4h40k": Number(hourlyRatesForm.dzire["4h40k"]) || 1100,
+              "8h80k": Number(hourlyRatesForm.dzire["8h80k"]) || 1600,
+              "10h100k": Number(hourlyRatesForm.dzire["10h100k"]) || 2000
+            },
+            extraKmRate: Number(hourlyRatesForm.dzire.extraKmRate) || 11,
+            extraHourRate: Number(hourlyRatesForm.dzire.extraHourRate) || 100
+          },
+          ertiga: {
+            ...(currentHourly.defaultRates?.ertiga || {}),
+            name: "Ertiga / similar",
+            rates: {
+              "4h40k": Number(hourlyRatesForm.ertiga["4h40k"]) || 1500,
+              "8h80k": Number(hourlyRatesForm.ertiga["8h80k"]) || 2300,
+              "10h100k": Number(hourlyRatesForm.ertiga["10h100k"]) || 2800
+            },
+            extraKmRate: Number(hourlyRatesForm.ertiga.extraKmRate) || 14,
+            extraHourRate: Number(hourlyRatesForm.ertiga.extraHourRate) || 150
+          },
+          innova: {
+            ...(currentHourly.defaultRates?.innova || {}),
+            name: "Innova Crysta",
+            rates: {
+              "4h40k": Number(hourlyRatesForm.innova["4h40k"]) || 2200,
+              "8h80k": Number(hourlyRatesForm.innova["8h80k"]) || 3200,
+              "10h100k": Number(hourlyRatesForm.innova["10h100k"]) || 3900
+            },
+            extraKmRate: Number(hourlyRatesForm.innova.extraKmRate) || 18,
+            extraHourRate: Number(hourlyRatesForm.innova.extraHourRate) || 200
+          }
+        }
+      };
+
+      await updateHourlyRentalPricing(updatedPayload);
+      await refreshSiteData();
+      setHourlyModalOpen(false);
+      setStatusMsg({ type: 'success', text: 'City Hourly Taxi Rental Rates updated successfully! The new rates are now live on your Services page.' });
+    } catch (err) {
+      setStatusMsg({ type: 'error', text: err.message || 'Failed to update hourly rental rates.' });
+    } finally {
+      setIsSavingHourly(false);
+    }
+  };
 
   // Feature input state
   const [newFeatureText, setNewFeatureText] = useState('');
@@ -249,6 +342,127 @@ export default function ServicesTab() {
           <span>{statusMsg.text}</span>
         </div>
       )}
+
+      {/* City Hourly Taxi Rental Rates Section Manager (Live on Services Page) */}
+      <div className="bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 rounded-3xl p-6 sm:p-7 text-white shadow-xl border border-yellow-400/20 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-72 h-72 bg-yellow-400/10 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="space-y-1.5 max-w-xl">
+            <div className="inline-flex items-center space-x-1.5 bg-yellow-400/20 border border-yellow-400/40 text-yellow-300 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider">
+              <Clock className="w-3.5 h-3.5 text-yellow-400" />
+              <span>Services Page Component</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black font-nexa text-white">
+              City Hourly Taxi Rental Rates
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-300">
+              Update the 4-Hour, 8-Hour, and 10-Hour rental packages shown in the <strong className="text-yellow-400">&quot;City Hourly Taxi Rental Rates&quot;</strong> section on your public Services page.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5">
+            <button
+              type="button"
+              onClick={() => setHourlyModalOpen(true)}
+              className="bg-yellow-400 hover:bg-yellow-500 text-slate-950 px-5 py-3 rounded-2xl font-black text-xs sm:text-sm flex items-center space-x-2 shadow-lg transition-transform hover:scale-105 active:scale-95"
+            >
+              <Edit2 className="w-4 h-4" />
+              <span>Update Hourly Rates</span>
+            </button>
+
+            {onNavigateToHourly && (
+              <button
+                type="button"
+                onClick={onNavigateToHourly}
+                className="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 px-4 py-3 rounded-2xl font-bold text-xs flex items-center space-x-1.5 transition-colors"
+                title="Open in Pricing & Charges Tab"
+              >
+                <span>Pricing Tab</span>
+                <ArrowUpRight className="w-3.5 h-3.5 text-yellow-400" />
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Live Quick Preview of Packages */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mt-6 pt-5 border-t border-slate-800/80">
+          {/* Dzire */}
+          <div className="bg-slate-900/90 rounded-2xl p-4 border border-slate-800 flex flex-col justify-between">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <span className="font-nexa font-bold text-sm text-white block">Dzire / Sedan</span>
+                <span className="text-[10px] text-gray-400 font-medium">Extra: ₹{hourlyRatesForm.dzire.extraKmRate}/km • ₹{hourlyRatesForm.dzire.extraHourRate}/hr</span>
+              </div>
+              <span className="text-[10px] bg-yellow-400/20 text-yellow-300 font-bold px-2 py-0.5 rounded">4 Seater</span>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5 text-center bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60 text-xs">
+              <div>
+                <span className="text-[10px] text-gray-400 block font-semibold">4h/40k</span>
+                <strong className="text-yellow-400 font-black">₹{hourlyRatesForm.dzire["4h40k"]}</strong>
+              </div>
+              <div>
+                <span className="text-[10px] text-gray-400 block font-semibold">8h/80k</span>
+                <strong className="text-yellow-400 font-black">₹{hourlyRatesForm.dzire["8h80k"]}</strong>
+              </div>
+              <div>
+                <span className="text-[10px] text-gray-400 block font-semibold">10h/100k</span>
+                <strong className="text-yellow-400 font-black">₹{hourlyRatesForm.dzire["10h100k"]}</strong>
+              </div>
+            </div>
+          </div>
+
+          {/* Ertiga */}
+          <div className="bg-slate-900/90 rounded-2xl p-4 border border-slate-800 flex flex-col justify-between">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <span className="font-nexa font-bold text-sm text-white block">Ertiga / SUV</span>
+                <span className="text-[10px] text-gray-400 font-medium">Extra: ₹{hourlyRatesForm.ertiga.extraKmRate}/km • ₹{hourlyRatesForm.ertiga.extraHourRate}/hr</span>
+              </div>
+              <span className="text-[10px] bg-yellow-400/20 text-yellow-300 font-bold px-2 py-0.5 rounded">6 Seater</span>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5 text-center bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60 text-xs">
+              <div>
+                <span className="text-[10px] text-gray-400 block font-semibold">4h/40k</span>
+                <strong className="text-yellow-400 font-black">₹{hourlyRatesForm.ertiga["4h40k"]}</strong>
+              </div>
+              <div>
+                <span className="text-[10px] text-gray-400 block font-semibold">8h/80k</span>
+                <strong className="text-yellow-400 font-black">₹{hourlyRatesForm.ertiga["8h80k"]}</strong>
+              </div>
+              <div>
+                <span className="text-[10px] text-gray-400 block font-semibold">10h/100k</span>
+                <strong className="text-yellow-400 font-black">₹{hourlyRatesForm.ertiga["10h100k"]}</strong>
+              </div>
+            </div>
+          </div>
+
+          {/* Innova */}
+          <div className="bg-slate-900/90 rounded-2xl p-4 border border-slate-800 flex flex-col justify-between">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <span className="font-nexa font-bold text-sm text-white block">Innova Crysta</span>
+                <span className="text-[10px] text-gray-400 font-medium">Extra: ₹{hourlyRatesForm.innova.extraKmRate}/km • ₹{hourlyRatesForm.innova.extraHourRate}/hr</span>
+              </div>
+              <span className="text-[10px] bg-yellow-400/20 text-yellow-300 font-bold px-2 py-0.5 rounded">7 Seater</span>
+            </div>
+            <div className="grid grid-cols-3 gap-1.5 text-center bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60 text-xs">
+              <div>
+                <span className="text-[10px] text-gray-400 block font-semibold">4h/40k</span>
+                <strong className="text-yellow-400 font-black">₹{hourlyRatesForm.innova["4h40k"]}</strong>
+              </div>
+              <div>
+                <span className="text-[10px] text-gray-400 block font-semibold">8h/80k</span>
+                <strong className="text-yellow-400 font-black">₹{hourlyRatesForm.innova["8h80k"]}</strong>
+              </div>
+              <div>
+                <span className="text-[10px] text-gray-400 block font-semibold">10h/100k</span>
+                <strong className="text-yellow-400 font-black">₹{hourlyRatesForm.innova["10h100k"]}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Services Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -658,6 +872,277 @@ export default function ServicesTab() {
                   className="yellow-gradient-btn px-6 py-3 rounded-xl text-slate-950 font-extrabold text-xs shadow-md"
                 >
                   {isSaving ? 'Saving...' : editingService ? 'Update Service' : 'Add Service'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Quick Editing Hourly Rental Rates */}
+      {hourlyModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border-2 border-yellow-400 my-8 max-h-[90vh] overflow-y-auto text-left relative">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-2xl bg-slate-900 text-yellow-400 flex items-center justify-center">
+                  <Clock className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold font-nexa text-slate-900">
+                    Update City Hourly Taxi Rental Rates
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Modifying these rates updates both the Services Page and Hourly Rental booking cards instantly.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setHourlyModalOpen(false)}
+                className="text-gray-400 hover:text-slate-800 p-1.5 rounded-full hover:bg-gray-100"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveHourlyRates} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Dzire */}
+                <div className="bg-gray-50 rounded-2xl p-5 border border-gray-200 space-y-3.5">
+                  <div className="flex items-center justify-between pb-2 border-b border-gray-200">
+                    <h4 className="text-sm font-black font-nexa text-slate-900">Dzire / Sedan</h4>
+                    <span className="text-[10px] bg-slate-900 text-yellow-400 font-bold px-2 py-0.5 rounded">4 Seater</span>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-700 mb-1">4 Hours / 40 KM (₹)</label>
+                    <input
+                      type="number"
+                      value={hourlyRatesForm.dzire["4h40k"]}
+                      onChange={(e) => setHourlyRatesForm({
+                        ...hourlyRatesForm,
+                        dzire: { ...hourlyRatesForm.dzire, "4h40k": e.target.value }
+                      })}
+                      className="w-full bg-white border border-gray-300 px-3 py-2 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-700 mb-1">8 Hours / 80 KM (₹)</label>
+                    <input
+                      type="number"
+                      value={hourlyRatesForm.dzire["8h80k"]}
+                      onChange={(e) => setHourlyRatesForm({
+                        ...hourlyRatesForm,
+                        dzire: { ...hourlyRatesForm.dzire, "8h80k": e.target.value }
+                      })}
+                      className="w-full bg-white border border-gray-300 px-3 py-2 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-700 mb-1">10 Hours / 100 KM (₹)</label>
+                    <input
+                      type="number"
+                      value={hourlyRatesForm.dzire["10h100k"]}
+                      onChange={(e) => setHourlyRatesForm({
+                        ...hourlyRatesForm,
+                        dzire: { ...hourlyRatesForm.dzire, "10h100k": e.target.value }
+                      })}
+                      className="w-full bg-white border border-gray-300 px-3 py-2 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      required
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-500 mb-0.5">Extra ₹/KM</label>
+                      <input
+                        type="number"
+                        value={hourlyRatesForm.dzire.extraKmRate}
+                        onChange={(e) => setHourlyRatesForm({
+                          ...hourlyRatesForm,
+                          dzire: { ...hourlyRatesForm.dzire, extraKmRate: e.target.value }
+                        })}
+                        className="w-full bg-white border border-gray-300 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-500 mb-0.5">Extra ₹/Hour</label>
+                      <input
+                        type="number"
+                        value={hourlyRatesForm.dzire.extraHourRate}
+                        onChange={(e) => setHourlyRatesForm({
+                          ...hourlyRatesForm,
+                          dzire: { ...hourlyRatesForm.dzire, extraHourRate: e.target.value }
+                        })}
+                        className="w-full bg-white border border-gray-300 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ertiga */}
+                <div className="bg-gray-50 rounded-2xl p-5 border border-gray-200 space-y-3.5">
+                  <div className="flex items-center justify-between pb-2 border-b border-gray-200">
+                    <h4 className="text-sm font-black font-nexa text-slate-900">Ertiga / SUV</h4>
+                    <span className="text-[10px] bg-slate-900 text-yellow-400 font-bold px-2 py-0.5 rounded">6 Seater</span>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-700 mb-1">4 Hours / 40 KM (₹)</label>
+                    <input
+                      type="number"
+                      value={hourlyRatesForm.ertiga["4h40k"]}
+                      onChange={(e) => setHourlyRatesForm({
+                        ...hourlyRatesForm,
+                        ertiga: { ...hourlyRatesForm.ertiga, "4h40k": e.target.value }
+                      })}
+                      className="w-full bg-white border border-gray-300 px-3 py-2 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-700 mb-1">8 Hours / 80 KM (₹)</label>
+                    <input
+                      type="number"
+                      value={hourlyRatesForm.ertiga["8h80k"]}
+                      onChange={(e) => setHourlyRatesForm({
+                        ...hourlyRatesForm,
+                        ertiga: { ...hourlyRatesForm.ertiga, "8h80k": e.target.value }
+                      })}
+                      className="w-full bg-white border border-gray-300 px-3 py-2 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-700 mb-1">10 Hours / 100 KM (₹)</label>
+                    <input
+                      type="number"
+                      value={hourlyRatesForm.ertiga["10h100k"]}
+                      onChange={(e) => setHourlyRatesForm({
+                        ...hourlyRatesForm,
+                        ertiga: { ...hourlyRatesForm.ertiga, "10h100k": e.target.value }
+                      })}
+                      className="w-full bg-white border border-gray-300 px-3 py-2 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      required
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-500 mb-0.5">Extra ₹/KM</label>
+                      <input
+                        type="number"
+                        value={hourlyRatesForm.ertiga.extraKmRate}
+                        onChange={(e) => setHourlyRatesForm({
+                          ...hourlyRatesForm,
+                          ertiga: { ...hourlyRatesForm.ertiga, extraKmRate: e.target.value }
+                        })}
+                        className="w-full bg-white border border-gray-300 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-500 mb-0.5">Extra ₹/Hour</label>
+                      <input
+                        type="number"
+                        value={hourlyRatesForm.ertiga.extraHourRate}
+                        onChange={(e) => setHourlyRatesForm({
+                          ...hourlyRatesForm,
+                          ertiga: { ...hourlyRatesForm.ertiga, extraHourRate: e.target.value }
+                        })}
+                        className="w-full bg-white border border-gray-300 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Innova */}
+                <div className="bg-gray-50 rounded-2xl p-5 border border-gray-200 space-y-3.5">
+                  <div className="flex items-center justify-between pb-2 border-b border-gray-200">
+                    <h4 className="text-sm font-black font-nexa text-slate-900">Innova Crysta</h4>
+                    <span className="text-[10px] bg-slate-900 text-yellow-400 font-bold px-2 py-0.5 rounded">7 Seater</span>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-700 mb-1">4 Hours / 40 KM (₹)</label>
+                    <input
+                      type="number"
+                      value={hourlyRatesForm.innova["4h40k"]}
+                      onChange={(e) => setHourlyRatesForm({
+                        ...hourlyRatesForm,
+                        innova: { ...hourlyRatesForm.innova, "4h40k": e.target.value }
+                      })}
+                      className="w-full bg-white border border-gray-300 px-3 py-2 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-700 mb-1">8 Hours / 80 KM (₹)</label>
+                    <input
+                      type="number"
+                      value={hourlyRatesForm.innova["8h80k"]}
+                      onChange={(e) => setHourlyRatesForm({
+                        ...hourlyRatesForm,
+                        innova: { ...hourlyRatesForm.innova, "8h80k": e.target.value }
+                      })}
+                      className="w-full bg-white border border-gray-300 px-3 py-2 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-700 mb-1">10 Hours / 100 KM (₹)</label>
+                    <input
+                      type="number"
+                      value={hourlyRatesForm.innova["10h100k"]}
+                      onChange={(e) => setHourlyRatesForm({
+                        ...hourlyRatesForm,
+                        innova: { ...hourlyRatesForm.innova, "10h100k": e.target.value }
+                      })}
+                      className="w-full bg-white border border-gray-300 px-3 py-2 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      required
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-500 mb-0.5">Extra ₹/KM</label>
+                      <input
+                        type="number"
+                        value={hourlyRatesForm.innova.extraKmRate}
+                        onChange={(e) => setHourlyRatesForm({
+                          ...hourlyRatesForm,
+                          innova: { ...hourlyRatesForm.innova, extraKmRate: e.target.value }
+                        })}
+                        className="w-full bg-white border border-gray-300 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-500 mb-0.5">Extra ₹/Hour</label>
+                      <input
+                        type="number"
+                        value={hourlyRatesForm.innova.extraHourRate}
+                        onChange={(e) => setHourlyRatesForm({
+                          ...hourlyRatesForm,
+                          innova: { ...hourlyRatesForm.innova, extraHourRate: e.target.value }
+                        })}
+                        className="w-full bg-white border border-gray-300 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-yellow-400"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-3 border-t border-gray-100 flex items-center justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={() => setHourlyModalOpen(false)}
+                  className="px-5 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-slate-800 font-bold text-xs transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSavingHourly}
+                  className="yellow-gradient-btn px-6 py-3 rounded-xl text-slate-950 font-extrabold text-xs shadow-md flex items-center space-x-1.5"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>{isSavingHourly ? 'Saving...' : 'Save Hourly Rates'}</span>
                 </button>
               </div>
             </form>
